@@ -1,0 +1,23 @@
+URL: https://seafoodmiddleeast.net:2083/
+Username: hnmdjxmy
+Password: Dubai_113968
+
+Doc Mgr
+***********
+docmgr / 12345678
+
+https://sketchmeglobal.com:2096/
+Username: suman@sketchmeglobal.com
+Password: suman123!@#
+
+Git Hb LOgin
+**************
+sketchsuman
+asbfg123!@#
+
+New table created:
+*******************
+document_master
+
+
+$this->db->select('am_id, name, am_code')->get_where('acc_master', array('status' => 1, 'supplier_buyer' => 0))->result();
