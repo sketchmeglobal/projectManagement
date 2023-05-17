@@ -685,7 +685,7 @@
             },
             "serverSide": true,
             "ajax": {
-                "url": "<?=base_url('admin/ajax-offer-table-data?show=')?>"+ $url_segment,
+                "url": "<?=base_url('admin/ajax-project-table-data?show=')?>"+ $url_segment,
                 "type": "POST",
                 "dataType": "json",
                 "data": function(data){
@@ -706,9 +706,9 @@
             },
             //will get these values from JSON 'data' variable
             "columns": [
-                { "data": "offer_name" },
-                { "data": "offer_no" },
-                { "data": "offer_date" },
+                { "data": "sl_no" },
+                { "data": "project_name" },
+                { "data": "create_dt" },
                 { "data": "action" }
             ],
             //column initialisation properties

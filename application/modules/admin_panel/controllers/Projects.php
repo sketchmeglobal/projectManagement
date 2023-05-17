@@ -26,6 +26,15 @@ class Projects extends My_Controller {
         }
     }
 
+    public function ajax_project_table_data() {
+        if($this->check_permission() == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_project_table_data($_GET['show']);
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
     public function check_permission($auth_usertype = array()) {
         //if not logged-in
         if($this->user_type == null) {
@@ -53,15 +62,6 @@ class Projects extends My_Controller {
             $this->load->model('Projects_m');
             $data = $this->Projects_m->offer_comments();
             $this->load->view($data['page'], $data['data']);
-        }
-    }
-
-    public function ajax_offer_table_data() {
-        if($this->check_permission() == true) {
-            $this->load->model('Projects_m');
-            $data = $this->Projects_m->ajax_offer_table_data($_GET['show']);
-            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
-            exit();
         }
     }
 

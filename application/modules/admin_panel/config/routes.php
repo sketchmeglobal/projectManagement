@@ -81,6 +81,7 @@
 
 	//Project part start	
 	$route['admin/projects'] = 'admin_panel/Projects/projects';
+	$route['admin/ajax-project-table-data'] = 'admin_panel/Projects/ajax_project_table_data';
 
 		//delete
 	/*$route['admin/ajax-delete-user'] = 'admin_panel/User/ajax_delete_user';	

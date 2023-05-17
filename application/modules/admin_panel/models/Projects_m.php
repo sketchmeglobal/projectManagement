@@ -215,12 +215,13 @@ class Projects_m extends CI_Model {
         return $data;
     }
 
-    public function ajax_offer_table_data($offer_type) {
+    public function ajax_project_table_data($offer_type) {
 
         $usertype = $this->session->usertype;
         $user_id = $this->session->user_id;
         //actual db table column names
-
+        
+        /****
         if($usertype == 2){
              $column_orderable = array(
             0 => 'offer_name',
@@ -245,6 +246,7 @@ class Projects_m extends CI_Model {
 
         $limit = $this->input->post('length');
         $start = $this->input->post('start');
+        
         
         $order = $column_orderable[$this->input->post('order')[0]['column']];
         $dir = $this->input->post('order')[0]['dir'];
@@ -281,12 +283,12 @@ class Projects_m extends CI_Model {
                 $totalFiltered = count((array)$rs);
 
                 $rs = $this->_offer_common_query($offer_type,$usertype, $user_id);
-                /*echo $this->db->last_query();
-                die();*/
+                //echo $this->db->last_query();
+                //die();
             }
 
-            /*echo $this->db->last_query();
-                die();*/
+            //echo $this->db->last_query();
+            //die();
             
         }else {
 
@@ -312,8 +314,8 @@ class Projects_m extends CI_Model {
 
             if (!empty($searchByFromdate) && !empty($searchByTodate)) {
                 $this->db->where('offer_date BETWEEN "'. date('Y-m-d', strtotime($searchByFromdate)). '" and "'. date('Y-m-d', strtotime($searchByTodate)).'"');
-                /*echo $this->db->last_query();
-                die();*/
+                //echo $this->db->last_query();
+                //die();
             }
             
             $this->db->stop_cache();
@@ -327,12 +329,13 @@ class Projects_m extends CI_Model {
 
             $this->db->flush_cache();
 
-           /* echo $this->db->last_query();
-            die();*/
+           //echo $this->db->last_query();
+            //die();
         }
         
-        /*echo $this->db->last_query();
-        die();*/
+        //echo $this->db->last_query();
+        //die();
+
         $data = array();
 
         foreach ($rs as $val) {
@@ -363,18 +366,21 @@ class Projects_m extends CI_Model {
             $nestedData['resource_developer'] = $val->username . ' ('. $val->firstname . ' ' . $val->lastname .')';
             $nestedData['remark1'] = $val->remark;
             $nestedData['inspection_clause'] = '<label>'.substr($val->inspection_clause, 0, 10) . '</label><span class="full hidden">'.$val->inspection_clause.'</span>';
-;
             $nestedData['wip'] = $wip;
             $nestedData['coi'] = $val->cloned_offer_id;
 
             $nestedData['action'] = $this->_offer_common_actions($usertype, $val->resource_edit_status, $val->at_id, $val->offer_id, $val->offer_name, $val->offer_number);
-           
-            
-
-            $data[] = $nestedData;
-
             // echo '<pre>', print_r($rs), '</pre>'; 
         }
+        **********/
+
+        $nestedData['sl_no'] = '1';
+        $nestedData['project_name'] = 'Sea Food';
+        $nestedData['create_dt'] = date("d-m-Y");
+        $nestedData['action'] = '';//$this->_offer_common_actions(0, 0, 0, 0, '', 0);
+        $data[] = $nestedData;
+        $totalData = sizeof($nestedData);
+        $totalFiltered = sizeof($nestedData);
 
         $json_data = array(
             "draw"            => intval($this->input->post('draw')),
