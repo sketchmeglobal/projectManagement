@@ -14,7 +14,7 @@
 	
 	
 	// MASTER AREA STARS 
-	$route['admin/colors'] = 'admin_panel/Master/colors';
+	/*$route['admin/colors'] = 'admin_panel/Master/colors';
 	$route['admin/word-colors'] = 'admin_panel/Master/word_colors';
 	$route['admin/units'] = 'admin_panel/Master/units';
 	$route['admin/incoterms'] = 'admin_panel/Master/incoterms';
@@ -51,20 +51,20 @@
 
 	// USER MANAGEMENT
 
-	/*list*/
+	//list
 	$route['admin/user-management'] = 'admin_panel/User/user_management';
 	$route['admin/ajax-user-table-data'] = 'admin_panel/User/ajax_user_table_data';
 
-		/*add user*/
+		//add user
 	$route['admin/add-user'] = 'admin_panel/User/add_user';	
 	$route['admin/ajax-unique-username'] = 'admin_panel/User/ajax_unique_username';	
 	$route['admin/acc_master-on-usertype'] = 'admin_panel/User/acc_master_on_usertype';		
 	$route['admin/form-add-user'] = 'admin_panel/User/form_add_user';	
 
-		/*edit*/
+		//edit
 	$route['admin/edit-user/(:num)'] = 'admin_panel/User/edit_user/$1';	
  	$route['admin/form-edit-user'] = 'admin_panel/User/form_edit_user';
- 	$route['admin/ajax-unique-username-edit'] = 'admin_panel/User/ajax_unique_username_edit';
+ 	$route['admin/ajax-unique-username-edit'] = 'admin_panel/User/ajax_unique_username_edit';*/
 
 	//For Document manager types user START
 	$route['admin/my-documents/(:num)'] = 'admin_panel/Documents/my_documents/$1';
@@ -79,8 +79,11 @@
 	$route['admin/shared-with-me/(:num)'] = 'admin_panel/SharedWithMe/shared_with_me/$1';
 	//For Document manager types user END
 
-		/*delete*/
-	$route['admin/ajax-delete-user'] = 'admin_panel/User/ajax_delete_user';	
+	//Project part start	
+	$route['admin/projects'] = 'admin_panel/Projects/projects';
+
+		//delete
+	/*$route['admin/ajax-delete-user'] = 'admin_panel/User/ajax_delete_user';	
 
 	// OFFER LIST AREA
 	$route['admin/offers'] = 'admin_panel/Offer/offer';
@@ -144,45 +147,45 @@
 	$route['admin/update-final-marketing-approval-status/(:num)'] = 'admin_panel/Offer/update_final_marketing_approval_status/$1';
 
 	// OFFER PRICING AREA - Buying
-		/*add*/
+		//add
 	$route['admin/offer-buying-price/(:num)/(:num)'] = 'admin_panel/Pricing/offer_buying_price/$1/$2';	
 	$route['admin/fetch-line-items-on-type'] = 'admin_panel/Pricing/fetch_line_items_on_type';
 	$route['admin/form-add-buying-price'] = 'admin_panel/Pricing/add_buying_price';
 
-		/*edit*/
+		//edit
 	$route['admin/fetch-buying-price-on-pk/(:num)'] = 'admin_panel/Pricing/fetch_buying_price_on_pk/$1';
 
-		/*list*/
+		//list
 	$route['admin/ajax-buying-price-table-data/(:num)'] = 'admin_panel/Pricing/ajax_buying_price_table_data/$1';
 	
-		/*export*/
+		//export
 	$route['admin/fetch-offer-products-on-offer_id/(:num)'] = 'admin_panel/Pricing/fetch_offer_products_on_offer_id/$1';
 
 	$route['admin/form-export-product-pricing'] = 'admin_panel/Pricing/form_export_product_pricing';
 
 	$route['admin/form-export-product-selling-pricing'] = 'admin_panel/Pricing/form_export_product_selling_pricing';
 
-		/*delete*/
+		//delete
 	$route['admin/ajax-delete-buying-price/(:num)'] = 'admin_panel/Pricing/ajax_delete_buying_price/$1';	
 
 	// OFFER PRICING AREA - Selling
 
 	$route['admin/offer-selling-price/(:num)/(:num)'] = 'admin_panel/Pricing/offer_selling_price/$1/$2';
 
-		/*list*/
+		//list
 	$route['admin/ajax-selling-price-table-data/(:num)'] = 'admin_panel/Pricing/ajax_selling_price_table_data/$1';
 	$route['admin/ajax-selling-price-details-table-data/(:num)/(:num)'] = 'admin_panel/Pricing/ajax_selling_price_details_table_data/$1/$2';
 
-		/*add*/
+		//add
 	$route['admin/form-add-selling-price'] = 'admin_panel/Pricing/add_selling_price';	
-		/*edit*/
+		//edit
 	$route['admin/fetch-selling-price-on-pk/(:num)'] = 'admin_panel/Pricing/fetch_selling_price_on_pk/$1';
 
-		/*delete*/
+		//delete
 	$route['admin/ajax-delete-selling-price/(:num)'] = 'admin_panel/Pricing/ajax_delete_selling_price/$1';	
 	$route['admin/ajax-delete-selling-price-details/(:num)'] = 'admin_panel/Pricing/ajax_delete_selling_price_details/$1';	
 
-		/*marketing*/
+		///marketing
 	$route['admin/form-add-country-wise-selling-price'] = 'admin_panel/Pricing/add_country_wise_selling_price';
 
 	// OFFER EXPORT AREA
@@ -235,7 +238,7 @@
 
     $route['admin/ajax-clause-on-customer'] = 'admin_panel/Accounts/ajax_clause_on_customer';
 
-    /*purchase order area*/
+    //purchase order area
     	
 
     $route['admin/purchase-order'] = 'admin_panel/Accounts/purchase_order';
@@ -282,7 +285,7 @@
 
 	$route['admin/generate-report'] = 'admin_panel/Export/generate_report';
 
-	$route['admin/ajax_get_offer_data'] = 'admin_panel/Export/ajax_get_offer_data';
+	$route['admin/ajax_get_offer_data'] = 'admin_panel/Export/ajax_get_offer_data';*/
 
 
 	

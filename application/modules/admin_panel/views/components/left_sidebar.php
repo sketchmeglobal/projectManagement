@@ -56,6 +56,10 @@ $user_type = $this->session->usertype;
                 <a href="<?=base_url();?>admin/profile"><i class="fa fa-vcard-o"></i> <span>Profile</span></a>
             </li>
 
+            <li class="<?= (($class_name == 'Projects') && ($method_name == 'projects')) ? 'active' : ''; ?>">
+                <a href="<?=base_url();?>admin/projects"><i class="fa fa-vcard-o"></i> <span>Projects</span></a>
+            </li>
+
             <!-- <li class="menu-list <?=($class_name == 'Master') ? 'active' : ''; ?>"><a href=""><i class="fa fa-wrench"></i> <span>Master Tables</span></a>
                 <ul class="child-list">
 

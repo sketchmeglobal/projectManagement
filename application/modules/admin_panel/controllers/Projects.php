@@ -1,6 +1,6 @@
 <?php
 
-class Offer extends My_Controller {
+class Projects extends My_Controller {
 
     private $user_type = null;
 
@@ -15,7 +15,15 @@ class Offer extends My_Controller {
     }
 
     public function index() {
-        redirect(base_url('admin/offers'));
+        redirect(base_url('admin/projects'));
+    }
+
+    public function projects() {
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->projects();
+            $this->load->view($data['page'], $data['data']);
+        }
     }
 
     public function check_permission($auth_usertype = array()) {
@@ -42,24 +50,16 @@ class Offer extends My_Controller {
 
     public function offer_comments() {
         if($this->check_permission(array()) == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->offer_comments();
-            $this->load->view($data['page'], $data['data']);
-        }
-    }
-
-    public function offer() {
-        if($this->check_permission(array()) == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->offer();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->offer_comments();
             $this->load->view($data['page'], $data['data']);
         }
     }
 
     public function ajax_offer_table_data() {
         if($this->check_permission() == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->ajax_offer_table_data($_GET['show']);
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_offer_table_data($_GET['show']);
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -67,8 +67,8 @@ class Offer extends My_Controller {
 
     public function ajax_update_offer_wip() {
         if($this->check_permission() == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->ajax_update_offer_wip();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_update_offer_wip();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -76,8 +76,8 @@ class Offer extends My_Controller {
 
     public function request_offer(){
         if($this->check_permission() == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->request_offer();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->request_offer();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }   
@@ -85,8 +85,8 @@ class Offer extends My_Controller {
 
     public function ajax_show_all_comments(){
         if($this->check_permission() == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->ajax_show_all_comments();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_show_all_comments();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }   
@@ -94,8 +94,8 @@ class Offer extends My_Controller {
 
     public function ajax_update_offer_comments(){
         if($this->check_permission() == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->ajax_update_offer_comments();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_update_offer_comments();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }   
@@ -105,16 +105,16 @@ class Offer extends My_Controller {
 
     public function add_offer() {
         if($this->check_permission(array()) == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->add_offer();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->add_offer();
             $this->load->view($data['page'], $data['data']);
         }
     }
 
     public function ajax_unique_offer_number(){
         if($this->check_permission() == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->ajax_unique_offer_number();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_unique_offer_number();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -122,8 +122,8 @@ class Offer extends My_Controller {
 
     public function form_add_offer() {
         if($this->check_permission(array()) == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->form_add_offer();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->form_add_offer();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -133,16 +133,16 @@ class Offer extends My_Controller {
 
     public function edit_offer($offer_id) {
         if($this->check_permission(array()) == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->edit_offer($offer_id);
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->edit_offer($offer_id);
             $this->load->view($data['page'], $data['data']);
         }
     }
 
     public function update_final_marketing_approval_status($offer_id) {
         if($this->check_permission(array()) == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->update_final_marketing_approval_status($offer_id);
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->update_final_marketing_approval_status($offer_id);
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -150,8 +150,8 @@ class Offer extends My_Controller {
     
     public function ajax_get_product_data() {
         if($this->check_permission(array()) == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->ajax_get_product_data();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_get_product_data();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -159,8 +159,8 @@ class Offer extends My_Controller {
 
     public function ajax_unique_offer_number_edit(){
         if($this->check_permission() == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->ajax_unique_offer_number_edit();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_unique_offer_number_edit();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -168,8 +168,8 @@ class Offer extends My_Controller {
 
     public function form_edit_offer(){
         if($this->check_permission(array()) == true) {
-            $this->load->model('offer_m');
-            $data = $this->offer_m->form_edit_offer();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->form_edit_offer();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -177,8 +177,8 @@ class Offer extends My_Controller {
     
     public function ajax_offer_details_table_data() {
         if($this->check_permission() == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->ajax_offer_details_table_data();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_offer_details_table_data();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -186,8 +186,8 @@ class Offer extends My_Controller {
 
     public function form_add_offer_details() {
         if($this->check_permission(array()) == true) {
-            $this->load->model('offer_m');
-            $data = $this->offer_m->form_add_offer_details();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->form_add_offer_details();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -195,8 +195,8 @@ class Offer extends My_Controller {
 
     public function ajax_fetch_offer_details_on_pk() {
         if($this->check_permission(array()) == true) {
-            $this->load->model('offer_m');
-            $data = $this->offer_m->ajax_fetch_offer_details_on_pk();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_fetch_offer_details_on_pk();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -204,8 +204,8 @@ class Offer extends My_Controller {
 
     public function form_edit_offer_details() {
         if($this->check_permission(array()) == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->form_edit_offer_details();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->form_edit_offer_details();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -213,8 +213,8 @@ class Offer extends My_Controller {
 
     public function form_export_offer_details() {
         if($this->check_permission(array()) == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->form_export_offer_details();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->form_export_offer_details();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -222,8 +222,8 @@ class Offer extends My_Controller {
 
     public function del_row_offer_details() {
         if($this->check_permission(array()) == true) {
-            $this->load->model('offer_m');
-            $data = $this->offer_m->del_row_offer_details();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->del_row_offer_details();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -231,8 +231,8 @@ class Offer extends My_Controller {
 
     public function fetch_offer_details_on_pk() {
         if($this->check_permission(array()) == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->fetch_offer_details_on_pk();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->fetch_offer_details_on_pk();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -241,8 +241,8 @@ class Offer extends My_Controller {
     public function ajax_fetch_assigned_templates($offer_id){
         
         if($this->check_permission(array()) == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->ajax_fetch_assigned_templates($offer_id);
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_fetch_assigned_templates($offer_id);
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }   
@@ -252,8 +252,8 @@ class Offer extends My_Controller {
     public function ajax_fetch_offer_status($offer_id){
         
         if($this->check_permission(array()) == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->ajax_fetch_offer_status($offer_id);
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_fetch_offer_status($offer_id);
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }   
@@ -264,8 +264,8 @@ class Offer extends My_Controller {
 
     public function ajax_offer_clone($offer_id) {
         if($this->check_permission(array()) == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->ajax_offer_clone($offer_id);
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_offer_clone($offer_id);
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -275,8 +275,8 @@ class Offer extends My_Controller {
 
     public function ajax_delete_offer() {
         if($this->check_permission(array()) == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->ajax_delete_offer();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_delete_offer();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -284,8 +284,8 @@ class Offer extends My_Controller {
     
     public function delete_offer_files() {
         if($this->check_permission(array()) == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->delete_offer_files();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->delete_offer_files();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -296,7 +296,7 @@ class Offer extends My_Controller {
     public function view_offer($offer_id,$com_id) {
 
 
-        $this->load->model('Offer_m');
+        $this->load->model('Projects_m');
 
         if($this->check_permission(array()) == true) {
 
@@ -340,7 +340,7 @@ class Offer extends My_Controller {
                 
                 // print_r($updateArray); die;
 
-                if($this->Offer_m->upgrade_selling_rate($updateArray, $sp_id) == true){
+                if($this->Projects_m->upgrade_selling_rate($updateArray, $sp_id) == true){
                     $data['upgrade_rate'] = true;
 
                     $this->session->set_flashdata('msg','Request send Successfully');
@@ -361,7 +361,7 @@ class Offer extends My_Controller {
                 
                 // print_r($updateArray); die;
 
-                if($this->Offer_m->upgrade_selling_rate($updateArray, $sp_id)){
+                if($this->Projects_m->upgrade_selling_rate($updateArray, $sp_id)){
                     $data['upgrade_rate'] = true;
                 }
 
@@ -380,7 +380,7 @@ class Offer extends My_Controller {
                 
                 // print_r($updateArray); die;
 
-                if($this->Offer_m->upgrade_selling_rate($updateArray, $sp_id)){
+                if($this->Projects_m->upgrade_selling_rate($updateArray, $sp_id)){
                     $data['upgrade_rate'] = true;
 
                 }
@@ -478,7 +478,7 @@ class Offer extends My_Controller {
                     );
                     $this->session->set_flashdata('msg','Oops! somthing went wrong. Mail not send');
                 }
-                $this->Offer_m->final_mail_status($insertArray);
+                $this->Projects_m->final_mail_status($insertArray);
 
 
 
@@ -488,7 +488,7 @@ class Offer extends My_Controller {
 
             }
 
-            $data['view_offer_data'] = $this->Offer_m->view_offer($offer_id,$com_id);
+            $data['view_offer_data'] = $this->Projects_m->view_offer($offer_id,$com_id);
             $this->load->view('offer/view_offer', $data);
 
         }
@@ -499,8 +499,8 @@ class Offer extends My_Controller {
 
     public function report()
     {
-        $this->load->model('Offer_m');
-        $data = $this->Offer_m->report();
+        $this->load->model('Projects_m');
+        $data = $this->Projects_m->report();
 
         $data['title'] = "Offer Report";
         
@@ -512,8 +512,8 @@ class Offer extends My_Controller {
 
     public function report_filter()
     {
-        $this->load->model('Offer_m');
-        $data = $this->Offer_m->report_filter();
+        $this->load->model('Projects_m');
+        $data = $this->Projects_m->report_filter();
 
         $data['title'] = "Filter Report";
         
@@ -525,8 +525,8 @@ class Offer extends My_Controller {
 
     public function report_filter_export()
     {
-        $this->load->model('Offer_m');
-        $data = $this->Offer_m->report_filter_export();
+        $this->load->model('Projects_m');
+        $data = $this->Projects_m->report_filter_export();
 
         $data['title'] = "Filter Report";
         
@@ -539,10 +539,10 @@ class Offer extends My_Controller {
 
     public function report_filter_form()
     {
-        $this->load->model('Offer_m');
+        $this->load->model('Projects_m');
         $data= array();
 
-        $data['offer_data'] = $this->Offer_m->report_filter_form();
+        $data['offer_data'] = $this->Projects_m->report_filter_form();
 
         // echo "<pre>"; print_r($data); die();
         $this->load->view('offer/report_filter_show_v', $data);
@@ -550,10 +550,10 @@ class Offer extends My_Controller {
 
     public function report_filter_export_form()
     {
-        $this->load->model('Offer_m');
+        $this->load->model('Projects_m');
         $data= array();
 
-        $data['offer_data'] = $this->Offer_m->report_filter_export_form();
+        $data['offer_data'] = $this->Projects_m->report_filter_export_form();
 
         // echo "<pre>"; print_r($data); die();
         $this->load->view('offer/report_filter_export_show_v', $data);
@@ -563,9 +563,9 @@ class Offer extends My_Controller {
     public function generate_offer_report()
     {
         $data = array();
-        $this->load->model('Offer_m');
+        $this->load->model('Projects_m');
             
-        $data['report_data'] = $this->Offer_m->generate_offer_report($this->input->post());
+        $data['report_data'] = $this->Projects_m->generate_offer_report($this->input->post());
 
         /*echo "<pre>"; print_r($data['report_data']); die();*/
         $this->load->view('offer/offer_report_generate_v', $data);
@@ -577,8 +577,8 @@ class Offer extends My_Controller {
 
     public function offers_marketing() {
         if($this->check_permission(array()) == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->offers_marketing();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->offers_marketing();
             $this->load->view($data['page'], $data['data']);
         }
     }
@@ -586,17 +586,17 @@ class Offer extends My_Controller {
     public function offer_temp()
     {
         if($this->check_permission() == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->offer_temp();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->offer_temp();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
     }
 
-    public function ajax_offer_marketing_table_data() {
+    public function ajax_Projects_marketing_table_data() {
         if($this->check_permission() == true) {
-            $this->load->model('Offer_m');
-            $data = $this->Offer_m->ajax_offer_marketing_table_data();
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_Projects_marketing_table_data();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }

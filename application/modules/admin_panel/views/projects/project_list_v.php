@@ -234,20 +234,12 @@
                     ?>
                     <section class="panel">
                         <div class="panel-body">
-                            <table id="offer_table" class="table data-table dataTable" style="width:100%;">
+                            <table id="Project_table" class="table data-table dataTable" style="width:100%;">
                                 <thead>
                                     <tr>
-                                        <th>Offer Name</th>
-                                        <th>Offer No.</th>
-                                        <th>Offer Date</th>
-                                        <th>Offer Age</th>
-                                        <th>Supplier Name</th>
-                                        <th>Country</th>
-                                        <th>Resource Developer</th>
-                                        <th>Remark 1</th>
-                                        <th>Inspection Clause</th>
-                                        <th>Work status (resource)</th>
-                                        <th>COI</th>
+                                        <th>Sl. No.</th>
+                                        <th>Project Name</th>
+                                        <th>Create Date</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -653,7 +645,7 @@
                 notification(returnData);
 
                 //refresh table
-                $("#offer_table").DataTable().ajax.reload();
+                $("#Project_table").DataTable().ajax.reload();
 
                  if(parseInt(returnData.insert_id) > 0){
 
@@ -685,7 +677,7 @@
     var table = '';
     $(document).ready(function() {
         $url_segment = $("#offer-type").text();
-       table =  $('#offer_table').DataTable( {
+       table =  $('#Project_table').DataTable( {
             "scrollX": true,
             "processing": true,
             "language": {
@@ -717,41 +709,33 @@
                 { "data": "offer_name" },
                 { "data": "offer_no" },
                 { "data": "offer_date" },
-                { "data": "offer_age" },
-                { "data": "supplier_name" },
-                { "data": "country" },
-                { "data": "resource_developer" },
-                { "data": "remark1" },
-                { "data": "inspection_clause" },
-                { "data": "wip" },
-                { "data": "coi" },
                 { "data": "action" }
             ],
             //column initialisation properties
-            "columnDefs": [{
-                "targets": [4,5,6,7,8,9,10,11], //disable 'Image','Actions' column sorting
-                "orderable": false,
-            },
-            {
-                "targets": [10],
-                "visible": false
-            },
-            { 
-                "className": "nowrap", 
-                "targets": [ 11 ] 
-            },
-            { 
-                "className": "ic", 
-                "targets": [ 8 ] 
-            },
-            ],
+            // "columnDefs": [{
+            //     "targets": [4,5,6,7,8,9,10,11], //disable 'Image','Actions' column sorting
+            //     "orderable": false,
+            // },
+            // {
+            //     "targets": [10],
+            //     "visible": false
+            // },
+            // { 
+            //     "className": "nowrap", 
+            //     "targets": [ 11 ] 
+            // },
+            // { 
+            //     "className": "ic", 
+            //     "targets": [ 8 ] 
+            // },
+            // ],
            
             "initComplete": function(settings, json) {
                 
                 var roi = $("#resolve_offer_id").text().trim();
                 // var roci = $("#resolve_oc_id").text().trim();
 
-                $("#offer_table tr").each(function() { 
+                $("#Project_table tr").each(function() { 
                     var pointer = $(this).find('td:last').children('button.all_comments');
                     var oid = $(this).find('td:last').children('button.all_comments').data('offer_id');
                     if(roi == oid){
@@ -765,7 +749,7 @@
 
      $('#dtblclr').on( 'click', function () {
 
-        $("#offer_table").DataTable().ajax.reload();
+        $("#Project_table").DataTable().ajax.reload();
 
      });
 
@@ -806,7 +790,7 @@
                     notification(returnData);
 
                     //refresh table
-                    $("#offer_table").DataTable().ajax.reload();
+                    $("#Project_table").DataTable().ajax.reload();
 
                 },
                 error: function (returnData) {
@@ -837,7 +821,7 @@
                     notification(returnData);
 
                     //refresh table
-                    $("#offer_table").DataTable().ajax.reload();
+                    $("#Project_table").DataTable().ajax.reload();
 
                 },
                 error: function (returnData) {
@@ -904,7 +888,7 @@
                     notification(obj);
                     $("#commentModal").modal('hide');
                     //refresh table
-                    $("#offer_table").DataTable().ajax.reload();
+                    $("#Project_table").DataTable().ajax.reload();
                 }
             });
 

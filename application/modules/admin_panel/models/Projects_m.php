@@ -1,9 +1,20 @@
 <?php
-class Offer_m extends CI_Model {
+class Projects_m extends CI_Model {
 
     public function __construct() {
         parent::__construct();
         
+    }
+
+    public function projects() {
+        $data["insert"] = '';   
+        $data['title'] = 'Project Lists';
+        $data['menu'] = 'Projects';
+        $data['mar_users'] = $this->db->get_where('users', array('usertype' => 3))->result();
+        $data['res_users'] = $this->db->get_where('users', array('usertype' => 2))->result();
+        //$data['view_templates'] = $this->db->get_where('view_templates', array('status' => 1))->result();
+        //$data['company_details'] = $this->db->get_where('company', array('status' => 'Active'))->result();
+        return array('page'=>'projects/project_list_v', 'data'=>$data);   
     }
 
     public function offer_comments() {
@@ -202,22 +213,6 @@ class Offer_m extends CI_Model {
             }*/
         }
         return $data;
-    }
-
-    public function offer() {
-
-        $data["insert"] = '';
-
-        //die(print_r($this->input->post()));
-        
-        
-        $data['title'] = 'Offer Lists';
-        $data['menu'] = 'Offers';
-        $data['mar_users'] = $this->db->get_where('users', array('usertype' => 3))->result();
-        $data['res_users'] = $this->db->get_where('users', array('usertype' => 2))->result();
-        $data['view_templates'] = $this->db->get_where('view_templates', array('status' => 1))->result();
-        $data['company_details'] = $this->db->get_where('company', array('status' => 'Active'))->result();
-        return array('page'=>'offer/offer_list_v', 'data'=>$data);   
     }
 
     public function ajax_offer_table_data($offer_type) {
