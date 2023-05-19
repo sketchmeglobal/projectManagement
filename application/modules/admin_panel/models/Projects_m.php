@@ -17,6 +17,90 @@ class Projects_m extends CI_Model {
         return array('page'=>'projects/project_list_v', 'data'=>$data);   
     }
 
+    public function add_project($project_id) {
+
+        $usertype = $this->session->usertype;
+        $user_id = $this->session->user_id;
+
+        $data['title'] = 'Edit Offer';
+        $data['menu'] = 'Offers';
+
+        /*This offer list for offer detail export section*/
+
+        if($usertype == 1){
+            $data['offers'] = array();//$this->db->get_where('offers', array('status' => 1))->result();
+        }else{
+            $data['offers'] = array();//$this->db->get_where('offers_resource', array('status' => 1, 'resource_id' => $user_id))->result();
+        }
+
+        /*This offer list for offer detail export section end*/
+        
+        $data['offer_files'] = array();//$this->db->get_where('offer_files', array('offer_id' => $offer_id))->result(); 
+
+        /*Common*/
+        $data['products'] = array();//$this->db->get_where('products', array('status' => 1))->result(); 
+
+        $data['freezing'] = array();//$this->db->get_where('freezing', array('status' => 1))->result(); 
+        $data['packing_types_p'] = array();//$this->db->get_where('packing_types', array('status' => 1, 'packing_category' => 'Primary packing'))->result(); 
+        $data['packing_types_s'] = array();//$this->db->get_where('packing_types', array('status' => 1, 'packing_category' => 'Secondary packing'))->result(); 
+        $data['packing_sizes'] = array();//$this->db->get_where('packing_sizes', array('status' => 1))->result(); 
+        $data['glazing'] = array();//$this->db->get_where('glazing', array('status' => 1))->result(); 
+        $data['blocks'] = array();//$this->db->get_where('blocks', array('status' => 1))->result(); 
+        $data['sizes'] = array();//$this->db->get_where('sizes', array('status' => 1))->result(); 
+        $data['units'] = array();//$this->db->get_where('units', array('status' => 1))->result();
+
+        $data['offer_status'] = array();//$this->db->select('offer_status_id, offer_status')->get_where('offer_status', array('status' => 1))->result();
+        $data['company'] = array();//$this->db->select('company_id, company_name')->get_where('company', array('status' => 'Active'))->result();
+
+        $data['suppliers'] = array();//$this->db->select('am_id, name, am_code')->get_where('acc_master', array('status' => 1, 'supplier_buyer' => 0))->result(); 
+
+
+        $data['permitted_suppliers'] = array();//$this->db->select('acc_masters')->get_where('users', array('users.user_id' => $this->session->user_id))->row(); 
+        
+        $data['currencies'] = array();//$this->db->select('c_id, currency, code, symbol')->get_where('currencies', array('status' => 1))->result(); 
+
+        $data['countries'] = array();//$this->db->select('country_id, iso, name')->get_where('countries', array('status' => 1))->result(); 
+
+        $data['ports'] = array();//$this->db->select('p_id, port_name')->get_where('ports', array('status' => 1))->result();
+
+        $data['remark1_offer_validity'] = array();//$this->db->get_where('remark1_offer_validity', array('status' => 1))->result();
+
+        $data['incoterms'] = array();//$this->db->select('it_id, incoterm, information')->get_where('incoterms', array('status' => 1))->result(); 
+
+        /*Common End*/
+
+
+        /*This for Offer header*/
+
+        if($usertype == 1){
+            # if admin
+            $data['resources'] = array();//$this->db->select('users.user_id, users.username, firstname, lastname')->join('user_details', 'users.user_id = user_details.user_id', 'left')->get_where('users', array('users.verified' => 1, 'users.blocked' => 0, 'users.usertype' => 2))->result(); 
+            $data['offer_details'] = array();//$this->db->select('offers.*,currencies.currency, currencies.symbol')->join('currencies', 'currencies.c_id = offers.c_id', 'left')->get_where('offers', array('offer_id' => $offer_id))->result();
+
+
+            //$data['currencies'] = $this->db->select('c_id, currency, code, symbol')->get_where('currencies', array('status' => 1))->result(); 
+
+            
+        }else{
+            # if others
+            $data['resources'] = array();//$this->db->select('users.user_id, users.username, firstname, lastname')->join('user_details', 'users.user_id = user_details.user_id', 'left')->get_where('users', array('users.verified' => 1, 'users.blocked' => 0, 'users.usertype' => 2, 'users.user_id' => $user_id))->result();
+            // $data['offer_details'] = $this->db->get_where('offers_resource', array('offer_id' => $offer_id))->result();
+            $data['offer_details'] = array();//$this->db->select('offers_resource.*,currencies.currency, currencies.symbol')->join('currencies', 'currencies.c_id = offers_resource.c_id', 'left')->get_where('offers_resource', array('offer_id' => $offer_id))->result();
+
+
+            //$data['currencies'] = $this->db->select('c_id, currency, code, symbol')->get_where('currencies', array('status' => 1))->result(); 
+
+            
+        }
+
+        
+        
+
+        /*This for Offer header End*/
+
+        return array('page'=>'projects/project_edit_v', 'data'=>$data);
+    }
+
     public function offer_comments() {
         $user_id = $this->session->user_id;
         try{
@@ -940,95 +1024,6 @@ class Projects_m extends CI_Model {
         return $final_array;
     }
 
-    public function edit_offer($offer_id) {
-
-        $usertype = $this->session->usertype;
-        $user_id = $this->session->user_id;
-
-        $data['title'] = 'Edit Offer';
-        $data['menu'] = 'Offers';
-
-        /*This offer list for offer detail export section*/
-
-        if($usertype == 1){
-            $data['offers'] = $this->db->get_where('offers', array('status' => 1))->result();
-        }else{
-            $data['offers'] = $this->db->get_where('offers_resource', array('status' => 1, 'resource_id' => $user_id))->result();
-        }
-
-        /*This offer list for offer detail export section end*/
-        
-        $data['offer_files'] = $this->db->get_where('offer_files', array('offer_id' => $offer_id))->result(); 
-
-        /*Common*/
-        $data['products'] = $this->db->get_where('products', array('status' => 1))->result(); 
-
-        $data['freezing'] = $this->db->get_where('freezing', array('status' => 1))->result(); 
-        $data['packing_types_p'] = $this->db->get_where('packing_types', array('status' => 1, 'packing_category' => 'Primary packing'))->result(); 
-        $data['packing_types_s'] = $this->db->get_where('packing_types', array('status' => 1, 'packing_category' => 'Secondary packing'))->result(); 
-        $data['packing_sizes'] = $this->db->get_where('packing_sizes', array('status' => 1))->result(); 
-        $data['glazing'] = $this->db->get_where('glazing', array('status' => 1))->result(); 
-        $data['blocks'] = $this->db->get_where('blocks', array('status' => 1))->result(); 
-        $data['sizes'] = $this->db->get_where('sizes', array('status' => 1))->result(); 
-        $data['units'] = $this->db->get_where('units', array('status' => 1))->result();
-
-        $data['offer_status'] = $this->db->select('offer_status_id, offer_status')->get_where('offer_status', array('status' => 1))->result();
-        $data['company'] = $this->db->select('company_id, company_name')->get_where('company', array('status' => 'Active'))->result();
-
-        $data['suppliers'] = $this->db->select('am_id, name, am_code')->get_where('acc_master', array('status' => 1, 'supplier_buyer' => 0))->result(); 
-
-
-        $data['permitted_suppliers'] = $this->db->select('acc_masters')->get_where('users', array('users.user_id' => $this->session->user_id))->row(); 
-        
-        $data['currencies'] = $this->db->select('c_id, currency, code, symbol')->get_where('currencies', array('status' => 1))->result(); 
-
-        $data['countries'] = $this->db->select('country_id, iso, name')->get_where('countries', array('status' => 1))->result(); 
-
-        $data['ports'] = $this->db->select('p_id, port_name')->get_where('ports', array('status' => 1))->result();
-
-        $data['remark1_offer_validity'] = $this->db->get_where('remark1_offer_validity', array('status' => 1))->result();
-
-        $data['incoterms'] = $this->db->select('it_id, incoterm, information')->get_where('incoterms', array('status' => 1))->result(); 
-
-        /*Common End*/
-
-
-        /*This for Offer header*/
-
-        if($usertype == 1){
-            # if admin
-            $data['resources'] = $this->db->select('users.user_id, users.username, firstname, lastname')->join('user_details', 'users.user_id = user_details.user_id', 'left')->get_where('users', array('users.verified' => 1, 'users.blocked' => 0, 'users.usertype' => 2))->result(); 
-            $data['offer_details'] =$this->db->select('offers.*,currencies.currency, currencies.symbol')->join('currencies', 'currencies.c_id = offers.c_id', 'left')->get_where('offers', array('offer_id' => $offer_id))->result();
-
-
-            //$data['currencies'] = $this->db->select('c_id, currency, code, symbol')->get_where('currencies', array('status' => 1))->result(); 
-
-            
-        }else{
-            # if others
-            $data['resources'] = $this->db->select('users.user_id, users.username, firstname, lastname')->join('user_details', 'users.user_id = user_details.user_id', 'left')->get_where('users', array('users.verified' => 1, 'users.blocked' => 0, 'users.usertype' => 2, 'users.user_id' => $user_id))->result();
-            // $data['offer_details'] = $this->db->get_where('offers_resource', array('offer_id' => $offer_id))->result();
-            $data['offer_details'] =$this->db->select('offers_resource.*,currencies.currency, currencies.symbol')->join('currencies', 'currencies.c_id = offers_resource.c_id', 'left')->get_where('offers_resource', array('offer_id' => $offer_id))->result();
-
-
-            //$data['currencies'] = $this->db->select('c_id, currency, code, symbol')->get_where('currencies', array('status' => 1))->result(); 
-
-            
-        }
-
-        if(@count($data['offer_details']) == 0){
-           
-            $this->session->set_flashdata('type', 'warning');
-
-            $this->session->set_flashdata('msg', 'Oops! somthing went wrong. Please try again.');
-            redirect(base_url('admin/offers'));
-        }
-
-        /*This for Offer header End*/
-
-        return array('page'=>'offer/offer_edit_v', 'data'=>$data);
-    }
-
     public function ajax_unique_offer_number_edit() {
         $offer_number = $this->input->post('offer_number');
         $offer_id = $this->input->post('offer_id');
@@ -1231,268 +1226,67 @@ class Projects_m extends CI_Model {
 
     }
 
-    public function ajax_offer_details_table_data() {
-
-
-        // echo $this->session->usertype; die();
-
-        if ($this->session->usertype == 1) {
-            // when user admin means trader
-            $offer_id = $this->input->post('offer_id');
-        //actual db table column names
-        $column_orderable = array(
-            0 => 'offer_details.product_id'
-        );
-        // Set searchable column fields
-        $column_search = array('product_name');
-        // $column_search = array('co_no');
-
-        $limit = $this->input->post('length');
-        $start = $this->input->post('start');
+    public function ajax_project_details_table_data() {
         
-        $order = $column_orderable[$this->input->post('order')[0]['column']];
-        $dir = $this->input->post('order')[0]['dir'];
-        $search = $this->input->post('search')['value'];
+        $nestedData['name'] = 'Data 1';
+        $nestedData['scientific_name'] = 'Data 1';
+        $nestedData['size_name'] = 'Data 1';
+        $nestedData['pieces'] = 'Data 1';
+        $nestedData['packing_size'] = 'Data 1';
+        $nestedData['quantity'] = 'Data 1';
+        $nestedData['price'] = 'Data 1';
+        $nestedData['total_price'] = 'Data 1';
+        $nestedData['action'] = 'Data 1';
 
-        $this->db->select('offer_details.od_id, offer_details.offer_id, offer_details.pieces, quantity_offered, product_price, product_name, packing_sizes.packing_size, scientific_name, sizes.size');
-        $this->db->join('products', 'products.pr_id = offer_details.product_id', 'left');
-        $this->db->join('sizes', 'offer_details.size_id = sizes.size_id', 'left');
-        $this->db->join('packing_sizes', 'offer_details.packing_size_id = packing_sizes.ps_id', 'left');
-        $rs = $this->db->get_where('offer_details', array('offer_id' => $offer_id))->result();
-        
-        $totalData = count((array)$rs);
-        $totalFiltered = $totalData;
-
-        //if not searching for anything
-        if(empty($search)) {
-            $this->db->limit($limit, $start);
-            $this->db->order_by($order, $dir);
-            
-            $this->db->select('offer_details.od_id, offer_details.offer_id, offer_details.pieces, quantity_offered, product_price, product_name, 
-                packing_sizes.packing_size, scientific_name, sizes.size');
-            $this->db->join('products', 'products.pr_id = offer_details.product_id', 'left');
-            $this->db->join('sizes', 'offer_details.size_id = sizes.size_id', 'left');
-            $this->db->join('packing_sizes', 'offer_details.packing_size_id = packing_sizes.ps_id', 'left');
-        $rs = $this->db->get_where('offer_details', array('offer_id' => $offer_id))->result();
-        }
-        //if searching for something
-        else {
-            $this->db->start_cache();
-            // loop searchable columns
-            $i = 0;
-            foreach($column_search as $item){
-                // first loop
-                if($i===0){
-                    $this->db->group_start(); //open bracket
-                    $this->db->like($item, $search);
-                }else{
-                    $this->db->or_like($item, $search);
-                }
-                // last loop
-                if(count((array)$column_search) - 1 == $i){
-                    $this->db->group_end(); //close bracket
-                }
-                $i++;
-            }
-            $this->db->stop_cache();
-
-            $this->db->select('offer_details.od_id, offer_details.offer_id, offer_details.pieces, quantity_offered, product_price, product_name, 
-                 packing_sizes.packing_size, scientific_name, sizes.size');
-            $this->db->join('products', 'products.pr_id = offer_details.product_id', 'left');
-            $this->db->join('sizes', 'offer_details.size_id = sizes.size_id', 'left');
-            $this->db->join('packing_sizes', 'offer_details.packing_size_id = packing_sizes.ps_id', 'left');
-            $rs = $this->db->get_where('offer_details', array('offer_id' => $offer_id))->result();      
-
-            $totalFiltered = count((array)$rs);
-
-            $this->db->limit($limit, $start);
-            $this->db->order_by($order, $dir);
-
-            $this->db->select('offer_details.od_id, offer_details.offer_id, offer_details.pieces, quantity_offered, product_price, product_name, 
-                packing_sizes.packing_size, scientific_name, sizes.size');
-            $this->db->join('products', 'products.pr_id = offer_details.product_id', 'left');
-            $this->db->join('sizes', 'offer_details.size_id = sizes.size_id', 'left');
-            $this->db->join('packing_sizes', 'offer_details.packing_size_id = packing_sizes.ps_id', 'left');
-            $rs = $this->db->get_where('offer_details', array('offer_id' => $offer_id))->result();
-
-            $this->db->flush_cache();
-        }
-
-        $data = array();
-        
-
-        foreach ($rs as $val) {
-            
-            $nestedData['name'] = $val->product_name;
-            $nestedData['scientific_name'] = $val->scientific_name;
-            $nestedData['size_name'] = $val->size;
-
-            $nestedData['pieces'] = $val->pieces;
-
-            $nestedData['packing_size'] = $val->packing_size;
-
-            
-            $nestedData['quantity'] = $val->quantity_offered;
-            $nestedData['price'] = $val->product_price;
-            $nestedData['total_price'] = $val->product_price * $val->quantity_offered;
-
-            if($this->session->usertype == 1){
-
-                $nestedData['action'] = '<a href="javascript:void(0)" data-od_id="'.$val->od_id.'" class="offer_details_edit_btn btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
-                <a title="Intra-Copy (Current Offer Details)" href="javascript:void(0)" data-od_id="'.$val->od_id.'" class="offer_details_clone_btn btn bg-beige"><i class="fa fa-clone"></i> Clone</a>
-                <a title="Inter-Copy (Other Offer Details)" href="javascript:void(0)" data-od_id="'.$val->od_id.'" class="offer_details_export_btn btn bg-yellow"><i class="fa fa-clone"></i> Export</a>
-                <a href="javascript:void(0)" data-offer_id="'.$val->offer_id.'" data-od_id="'.$val->od_id.'" class="offer_details_pricing_btn btn bg-green1"><i class="fa fa-clone"></i> Pricing</a>
-                <a data-tab="offer_details" data-pk="'.$val->od_id.'" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
-
-            }else{
-
-                $nestedData['action'] = '<a href="javascript:void(0)" data-od_id="'.$val->od_id.'" class="offer_details_edit_btn btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
-                <a title="Intra-Copy (Current Offer Details)" href="javascript:void(0)" data-od_id="'.$val->od_id.'" class="offer_details_clone_btn btn bg-beige"><i class="fa fa-clone"></i> Clone</a>
-                <a title="Inter-Copy (Other Offer Details)" href="javascript:void(0)" data-od_id="'.$val->od_id.'" class="offer_details_export_btn btn bg-yellow"><i class="fa fa-clone"></i> Export</a>';
-                /*<a data-tab="offer_details" data-pk="'.$val->od_id.'" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>*/
-
-            }
-            
-            $data[] = $nestedData;
-
-            // echo '<pre>', print_r($rs), '</pre>'; 
-        }
-
+        $data[] = $nestedData;
         $json_data = array(
-            "draw"            => intval($this->input->post('draw')),
-            "recordsTotal"    => intval($totalData),
-            "recordsFiltered" => intval($totalFiltered),
+            "draw"            => 1, //intval($this->input->post('draw')),
+            "recordsTotal"    => 1, //intval($totalData),
+            "recordsFiltered" => 1, //intval($totalFiltered),
             "data"            => $data
         );
-        }elseif ($this->session->usertype == 2) {
-            // when resource developer
-
-            $offer_id = $this->input->post('offer_id');
-        //actual db table column names
-        $column_orderable = array(
-            0 => 'offer_details_resource.product_id'
-        );
-        // Set searchable column fields
-        $column_search = array('product_name');
-        // $column_search = array('co_no');
-
-        $limit = $this->input->post('length');
-        $start = $this->input->post('start');
         
-        $order = $column_orderable[$this->input->post('order')[0]['column']];
-        $dir = $this->input->post('order')[0]['dir'];
-        $search = $this->input->post('search')['value'];
+        return $json_data;
+    }  
 
-        $this->db->select('offer_details_resource.odr_id, offer_details_resource.offer_id, quantity_offered, product_price, product_name, scientific_name, offer_details_resource.pieces, packing_sizes.packing_size, sizes.size');
-        $this->db->join('products', 'products.pr_id = offer_details_resource.product_id', 'left');
-        $this->db->join('sizes', 'offer_details_resource.size_id = sizes.size_id', 'left');
-        $this->db->join('packing_sizes', 'offer_details_resource.packing_size_id = packing_sizes.ps_id', 'left');
-        $rs = $this->db->get_where('offer_details_resource', array('offer_id' => $offer_id))->result();
-        
-        $totalData = count((array)$rs);
-        $totalFiltered = $totalData;
+    public function ajax_contact_details_table_data() {        
+        $nestedData['ContactPersonName'] = 'Mr. D.K Mehata';
+        $nestedData['OrganizationName'] = 'Organization Enterprise';
+        $nestedData['Email'] = 'contact@mail.com';
+        $nestedData['Phone1st'] = '9876543201';
+        $nestedData['Phone2nd'] = '0123654789';
+        $nestedData['Address'] = '110 SN Banerjee Road';
+        $nestedData['action'] = '<a href="javascript:void(0)" data-offer_id="0" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
+        <a href="" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
+        <a data-offer_id="0" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
-        //if not searching for anything
-        if(empty($search)) {
-            $this->db->limit($limit, $start);
-            $this->db->order_by($order, $dir);
-            
-            $this->db->select('offer_details_resource.odr_id, offer_details_resource.offer_id, quantity_offered, product_price, product_name, scientific_name, offer_details_resource.pieces, packing_sizes.packing_size, sizes.size');
-        $this->db->join('products', 'products.pr_id = offer_details_resource.product_id', 'left');
-        $this->db->join('sizes', 'offer_details_resource.size_id = sizes.size_id', 'left');
-        $this->db->join('packing_sizes', 'offer_details_resource.packing_size_id = packing_sizes.ps_id', 'left');
-        $rs = $this->db->get_where('offer_details_resource', array('offer_id' => $offer_id))->result();
-        }
-        //if searching for something
-        else {
-            $this->db->start_cache();
-            // loop searchable columns
-            $i = 0;
-            foreach($column_search as $item){
-                // first loop
-                if($i===0){
-                    $this->db->group_start(); //open bracket
-                    $this->db->like($item, $search);
-                }else{
-                    $this->db->or_like($item, $search);
-                }
-                // last loop
-                if(count((array)$column_search) - 1 == $i){
-                    $this->db->group_end(); //close bracket
-                }
-                $i++;
-            }
-            $this->db->stop_cache();
-
-            $this->db->select('offer_details_resource.odr_id, offer_details_resource.offer_id, quantity_offered, product_price, product_name, scientific_name, offer_details_resource.pieces, packing_sizes.packing_size, sizes.size');
-            $this->db->join('products', 'products.pr_id = offer_details_resource.product_id', 'left');
-            $this->db->join('sizes', 'offer_details_resource.size_id = sizes.size_id', 'left');
-        $this->db->join('packing_sizes', 'offer_details_resource.packing_size_id = packing_sizes.ps_id', 'left');
-            $rs = $this->db->get_where('offer_details_resource', array('offer_id' => $offer_id))->result();      
-
-            $totalFiltered = count((array)$rs);
-
-            $this->db->limit($limit, $start);
-            $this->db->order_by($order, $dir);
-
-            $this->db->select('offer_details_resource.odr_id, offer_details_resource.offer_id, quantity_offered, product_price, product_name, scientific_name, offer_details_resource.pieces, packing_sizes.packing_size, sizes.size');
-            $this->db->join('products', 'products.pr_id = offer_details_resource.product_id', 'left');
-            $this->db->join('sizes', 'offer_details_resource.size_id = sizes.size_id', 'left');
-            $this->db->join('packing_sizes', 'offer_details_resource.packing_size_id = packing_sizes.ps_id', 'left');
-            $rs = $this->db->get_where('offer_details_resource', array('offer_id' => $offer_id))->result();
-
-            $this->db->flush_cache();
-        }
-
-        $data = array();
-        
-
-        foreach ($rs as $val) {
-            
-            $nestedData['name'] = $val->product_name;
-            $nestedData['scientific_name'] = $val->scientific_name;
-             $nestedData['size_name'] = $val->size;
-
-            $nestedData['pieces'] = $val->pieces;
-
-            $nestedData['packing_size'] = $val->packing_size;
-
-            $nestedData['quantity'] = $val->quantity_offered;
-            $nestedData['price'] = $val->product_price;
-            $nestedData['total_price'] = $val->product_price * $val->quantity_offered;
-
-            if($this->session->usertype == 1){
-
-                $nestedData['action'] = '<a href="javascript:void(0)" data-od_id="'.$val->odr_id.'" class="offer_details_edit_btn btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
-                <a title="Intra-Copy (Current Offer Details)" href="javascript:void(0)" data-od_id="'.$val->odr_id.'" class="offer_details_clone_btn btn bg-beige"><i class="fa fa-clone"></i> Clone</a>
-                <a title="Inter-Copy (Other Offer Details)" href="javascript:void(0)" data-od_id="'.$val->odr_id.'" class="offer_details_export_btn btn bg-yellow"><i class="fa fa-clone"></i> Export</a>
-                <a href="javascript:void(0)" data-offer_id="'.$val->offer_id.'" data-od_id="'.$val->odr_id.'" class="offer_details_pricing_btn btn bg-green1"><i class="fa fa-clone"></i> Pricing</a>
-                <a data-tab="offer_details" data-pk="'.$val->odr_id.'" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
-
-            }else{
-
-                $nestedData['action'] = '<a href="javascript:void(0)" data-od_id="'.$val->odr_id.'" class="offer_details_edit_btn btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
-                <a title="Intra-Copy (Current Offer Details)" href="javascript:void(0)" data-od_id="'.$val->odr_id.'" class="offer_details_clone_btn btn bg-beige"><i class="fa fa-clone"></i> Clone</a>
-                <a title="Inter-Copy (Other Offer Details)" href="javascript:void(0)" data-od_id="'.$val->odr_id.'" class="offer_details_export_btn btn bg-yellow"><i class="fa fa-clone"></i> Export</a>';
-
-                /*<a data-tab="offer_details" data-pk="'.$val->odr_id.'" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>*/
-
-            }
-            
-            $data[] = $nestedData;
-
-            // echo '<pre>', print_r($rs), '</pre>'; 
-        }
-
+        $data[] = $nestedData;
         $json_data = array(
-            "draw"            => intval($this->input->post('draw')),
-            "recordsTotal"    => intval($totalData),
-            "recordsFiltered" => intval($totalFiltered),
+            "draw"            => 1, //intval($this->input->post('draw')),
+            "recordsTotal"    => 1, //intval($totalData),
+            "recordsFiltered" => 1, //intval($totalFiltered),
             "data"            => $data
         );
-        }
         
+        return $json_data;
+    }   
 
+    public function ajax_requirementgather_details_table_data() {        
+        $nestedData['Title'] = '1st Requirement';
+        $nestedData['Description'] = 'This is initial Requirement';
+        $nestedData['Attachment'] = '<a href="" download><i class="fa fa-download"></i></a>';
+        $nestedData['action'] = '<a href="javascript:void(0)" data-offer_id="0" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
+        <a href="" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
+        <a data-offer_id="0" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+
+        $data[] = $nestedData;
+        $json_data = array(
+            "draw"            => 1, //intval($this->input->post('draw')),
+            "recordsTotal"    => 1, //intval($totalData),
+            "recordsFiltered" => 1, //intval($totalFiltered),
+            "data"            => $data
+        );
+        
         return $json_data;
     }  
 

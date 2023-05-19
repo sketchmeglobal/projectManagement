@@ -35,6 +35,41 @@ class Projects extends My_Controller {
         }
     }
 
+    public function add_project($project_id) {
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->add_project($project_id);
+            $this->load->view($data['page'], $data['data']);
+        }
+    }
+    
+    public function ajax_project_details_table_data() {
+        if($this->check_permission() == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_project_details_table_data();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+    
+    public function ajax_contact_details_table_data() {
+        if($this->check_permission() == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_contact_details_table_data();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+    
+    public function ajax_requirementgather_details_table_data() {
+        if($this->check_permission() == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_requirementgather_details_table_data();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
     public function check_permission($auth_usertype = array()) {
         //if not logged-in
         if($this->user_type == null) {
@@ -131,14 +166,6 @@ class Projects extends My_Controller {
 
     // EDIT CUSTOMER ORDER 
 
-    public function edit_offer($offer_id) {
-        if($this->check_permission(array()) == true) {
-            $this->load->model('Projects_m');
-            $data = $this->Projects_m->edit_offer($offer_id);
-            $this->load->view($data['page'], $data['data']);
-        }
-    }
-
     public function update_final_marketing_approval_status($offer_id) {
         if($this->check_permission(array()) == true) {
             $this->load->model('Projects_m');
@@ -170,15 +197,6 @@ class Projects extends My_Controller {
         if($this->check_permission(array()) == true) {
             $this->load->model('Projects_m');
             $data = $this->Projects_m->form_edit_offer();
-            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
-            exit();
-        }
-    }
-    
-    public function ajax_offer_details_table_data() {
-        if($this->check_permission() == true) {
-            $this->load->model('Projects_m');
-            $data = $this->Projects_m->ajax_offer_details_table_data();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
