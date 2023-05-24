@@ -35,10 +35,10 @@ class Projects extends My_Controller {
         }
     }
 
-    public function add_project($project_id) {
+    public function project_detail($project_id) {
         if($this->check_permission(array()) == true) {
             $this->load->model('Projects_m');
-            $data = $this->Projects_m->add_project($project_id);
+            $data = $this->Projects_m->project_detail($project_id);
             $this->load->view($data['page'], $data['data']);
         }
     }
@@ -69,6 +69,15 @@ class Projects extends My_Controller {
             exit();
         }
     }
+    
+    public function ajax_quotation_details_table_data() {
+        if($this->check_permission() == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_quotation_details_table_data();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
 
     public function check_permission($auth_usertype = array()) {
         //if not logged-in
@@ -91,6 +100,17 @@ class Projects extends My_Controller {
             redirect(base_url('admin/dashboard'));
         }
     }
+
+    public function ajax_update_project_document(){        
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_update_project_document();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
+    ////////////////////////////////////////////////// Final Above function ////////////////////////////////////////////////////////
 
     public function offer_comments() {
         if($this->check_permission(array()) == true) {

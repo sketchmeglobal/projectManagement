@@ -17,89 +17,59 @@ class Projects_m extends CI_Model {
         return array('page'=>'projects/project_list_v', 'data'=>$data);   
     }
 
-    public function add_project($project_id) {
+    public function project_detail($project_id) {
 
         $usertype = $this->session->usertype;
         $user_id = $this->session->user_id;
 
         $data['title'] = 'Edit Offer';
         $data['menu'] = 'Offers';
-
-        /*This offer list for offer detail export section*/
-
-        if($usertype == 1){
-            $data['offers'] = array();//$this->db->get_where('offers', array('status' => 1))->result();
-        }else{
-            $data['offers'] = array();//$this->db->get_where('offers_resource', array('status' => 1, 'resource_id' => $user_id))->result();
-        }
-
-        /*This offer list for offer detail export section end*/
-        
-        $data['offer_files'] = array();//$this->db->get_where('offer_files', array('offer_id' => $offer_id))->result(); 
-
-        /*Common*/
-        $data['products'] = array();//$this->db->get_where('products', array('status' => 1))->result(); 
-
-        $data['freezing'] = array();//$this->db->get_where('freezing', array('status' => 1))->result(); 
-        $data['packing_types_p'] = array();//$this->db->get_where('packing_types', array('status' => 1, 'packing_category' => 'Primary packing'))->result(); 
-        $data['packing_types_s'] = array();//$this->db->get_where('packing_types', array('status' => 1, 'packing_category' => 'Secondary packing'))->result(); 
-        $data['packing_sizes'] = array();//$this->db->get_where('packing_sizes', array('status' => 1))->result(); 
-        $data['glazing'] = array();//$this->db->get_where('glazing', array('status' => 1))->result(); 
-        $data['blocks'] = array();//$this->db->get_where('blocks', array('status' => 1))->result(); 
-        $data['sizes'] = array();//$this->db->get_where('sizes', array('status' => 1))->result(); 
-        $data['units'] = array();//$this->db->get_where('units', array('status' => 1))->result();
-
-        $data['offer_status'] = array();//$this->db->select('offer_status_id, offer_status')->get_where('offer_status', array('status' => 1))->result();
-        $data['company'] = array();//$this->db->select('company_id, company_name')->get_where('company', array('status' => 'Active'))->result();
-
-        $data['suppliers'] = array();//$this->db->select('am_id, name, am_code')->get_where('acc_master', array('status' => 1, 'supplier_buyer' => 0))->result(); 
-
-
-        $data['permitted_suppliers'] = array();//$this->db->select('acc_masters')->get_where('users', array('users.user_id' => $this->session->user_id))->row(); 
-        
-        $data['currencies'] = array();//$this->db->select('c_id, currency, code, symbol')->get_where('currencies', array('status' => 1))->result(); 
-
-        $data['countries'] = array();//$this->db->select('country_id, iso, name')->get_where('countries', array('status' => 1))->result(); 
-
-        $data['ports'] = array();//$this->db->select('p_id, port_name')->get_where('ports', array('status' => 1))->result();
-
-        $data['remark1_offer_validity'] = array();//$this->db->get_where('remark1_offer_validity', array('status' => 1))->result();
-
-        $data['incoterms'] = array();//$this->db->select('it_id, incoterm, information')->get_where('incoterms', array('status' => 1))->result(); 
-
-        /*Common End*/
-
-
-        /*This for Offer header*/
-
-        if($usertype == 1){
-            # if admin
-            $data['resources'] = array();//$this->db->select('users.user_id, users.username, firstname, lastname')->join('user_details', 'users.user_id = user_details.user_id', 'left')->get_where('users', array('users.verified' => 1, 'users.blocked' => 0, 'users.usertype' => 2))->result(); 
-            $data['offer_details'] = array();//$this->db->select('offers.*,currencies.currency, currencies.symbol')->join('currencies', 'currencies.c_id = offers.c_id', 'left')->get_where('offers', array('offer_id' => $offer_id))->result();
-
-
-            //$data['currencies'] = $this->db->select('c_id, currency, code, symbol')->get_where('currencies', array('status' => 1))->result(); 
-
-            
-        }else{
-            # if others
-            $data['resources'] = array();//$this->db->select('users.user_id, users.username, firstname, lastname')->join('user_details', 'users.user_id = user_details.user_id', 'left')->get_where('users', array('users.verified' => 1, 'users.blocked' => 0, 'users.usertype' => 2, 'users.user_id' => $user_id))->result();
-            // $data['offer_details'] = $this->db->get_where('offers_resource', array('offer_id' => $offer_id))->result();
-            $data['offer_details'] = array();//$this->db->select('offers_resource.*,currencies.currency, currencies.symbol')->join('currencies', 'currencies.c_id = offers_resource.c_id', 'left')->get_where('offers_resource', array('offer_id' => $offer_id))->result();
-
-
-            //$data['currencies'] = $this->db->select('c_id, currency, code, symbol')->get_where('currencies', array('status' => 1))->result(); 
-
-            
-        }
+        $data['project_id'] = $project_id;     
 
         
         
 
         /*This for Offer header End*/
 
-        return array('page'=>'projects/project_edit_v', 'data'=>$data);
+        return array('page'=>'projects/project_detail_v', 'data'=>$data);
     }
+
+    public function ajax_update_project_document(){
+        $project_id = $this->input->post('project_id');
+        $project_description = $this->input->post('project_description');
+        $created_by = $this->session->user_id;
+
+        if($project_id == 0){
+            //insert sql
+            $insertArray = array(
+                'project_description' => $project_description
+            );
+            if($this->db->insert('project_detail', $insertArray)){
+                $project_id = $this->db->insert_id();
+                $data['type'] = 'success';
+            }
+        }else{
+            // update
+            $updateArray = array(
+                'project_description' => $project_description
+            );
+            if($this->db->update('project_detail', $updateArray, array('project_id' => $project_id))){
+                $data['type'] = 'success';
+            }
+        }//end if
+        
+
+        
+        $data['title'] = 'Project!';
+        $data['msg'] = 'Project document updated successfully'; 
+        $data['project_id'] = $project_id;
+
+        return $data;
+        
+    }//end fun
+
+
+    //////////////////////////////////////// final above function /////////////////////////////////////////
 
     public function offer_comments() {
         $user_id = $this->session->user_id;
@@ -1226,8 +1196,9 @@ class Projects_m extends CI_Model {
 
     }
 
+    //Project List
     public function ajax_project_details_table_data() {
-        
+
         $nestedData['name'] = 'Data 1';
         $nestedData['scientific_name'] = 'Data 1';
         $nestedData['size_name'] = 'Data 1';
@@ -1249,7 +1220,9 @@ class Projects_m extends CI_Model {
         return $json_data;
     }  
 
-    public function ajax_contact_details_table_data() {        
+    //Contact Details
+    public function ajax_contact_details_table_data() {     
+
         $nestedData['ContactPersonName'] = 'Mr. D.K Mehata';
         $nestedData['OrganizationName'] = 'Organization Enterprise';
         $nestedData['Email'] = 'contact@mail.com';
@@ -1271,7 +1244,32 @@ class Projects_m extends CI_Model {
         return $json_data;
     }   
 
-    public function ajax_requirementgather_details_table_data() {        
+    //Requirement Gathering Part
+    public function ajax_requirementgather_details_table_data() {  
+
+        $nestedData['Title'] = '1st Requirement';
+        $nestedData['Description'] = 'This is initial Requirement';
+        $nestedData['Employee'] = 'Mr. Paul';
+        $nestedData['Date'] = '22-05-2023';
+        $nestedData['Attachment'] = '<a href="" download><i class="fa fa-download"></i></a>';
+        $nestedData['action'] = '<a href="javascript:void(0)" data-offer_id="0" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
+        <a href="" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
+        <a data-offer_id="0" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+
+        $data[] = $nestedData;
+        $json_data = array(
+            "draw"            => 1, //intval($this->input->post('draw')),
+            "recordsTotal"    => 1, //intval($totalData),
+            "recordsFiltered" => 1, //intval($totalFiltered),
+            "data"            => $data
+        );
+        
+        return $json_data;
+    }  
+
+    //Quotation part
+    public function ajax_quotation_details_table_data() {    
+           
         $nestedData['Title'] = '1st Requirement';
         $nestedData['Description'] = 'This is initial Requirement';
         $nestedData['Attachment'] = '<a href="" download><i class="fa fa-download"></i></a>';
@@ -1289,6 +1287,7 @@ class Projects_m extends CI_Model {
         
         return $json_data;
     }  
+  
 
 
     public function ajax_fetch_assigned_templates($offer_id){

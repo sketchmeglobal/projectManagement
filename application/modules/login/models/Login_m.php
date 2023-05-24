@@ -88,10 +88,10 @@ class Login_m extends CI_Model {
         $this->session->set_userdata($session_data); //creating session
 
         if($row->usertype == 5){
-            $redirect_to = 'admin/my-documents/0';
+            $redirect_to = 'admin/dashboard';
         }else{
-            $redirect_to = 'admin/my-documents/0';
-            //$redirect_to = 'admin/dashboard';
+            //$redirect_to = 'admin/my-documents/0';
+            $redirect_to = 'admin/dashboard';
         }
         return array('type'=>'redirect', 'page'=>$redirect_to); //redirect to admin dashboard
 

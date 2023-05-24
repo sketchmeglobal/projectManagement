@@ -17,7 +17,7 @@ class Dashboard_m extends CI_Model {
         
         #request has been made by the resource developers
 
-        if($this->user_type == 1){
+        /*if($this->user_type == 1){
             # trader
             $data['admin_pending_permissions'] = $this->db
                 ->select('users.username, firstname,lastname, offers.offer_id, offer_name, offer_number, offer_comments.oc_id, offer_comments.comment')
@@ -66,7 +66,7 @@ class Dashboard_m extends CI_Model {
                 ->get_where('offers', array('resource_edit_status' => 0, 'final_marketing_approval_status' => 1))->result();
                 //echo $this->db->last_query();  die();
             // echo '<pre>', print_r($data), '</pre>';    
-        }
+        }*/
 
         return array('page' => 'dashboard_v', 'data' => $data);
     }
