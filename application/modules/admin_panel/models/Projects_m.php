@@ -50,6 +50,7 @@ class Projects_m extends CI_Model {
             }
         }else{
             // update
+
             $updateArray = array(
                 'project_description' => $project_description
             );
@@ -67,6 +68,133 @@ class Projects_m extends CI_Model {
         return $data;
         
     }//end fun
+    
+
+    public function form_gather_requirement(){  
+        $daya = array();
+        $status = true;
+
+        $gr_project_id = $this->input->post('gr_project_id');
+        $req_gather_title = $this->input->post('req_gather_title');
+        $req_gather_desc = $this->input->post('req_gather_desc');
+        $req_gather_by = $this->input->post('req_gather_by');
+        $req_gather_by_name = $this->input->post('req_gather_by_name');
+        $req_gather_date = $this->input->post('req_gather_date');
+        $requirementFile = $this->input->post('requirementFile');
+
+        $created_by = $this->session->user_id;
+        $doc_obj = rand(1000, 9999);
+        $files = array();
+
+        $requirementDetail_obj = new stdClass();
+        $requirementDetail_obj->doc_obj = $doc_obj;
+        $requirementDetail_obj->req_gather_title = $req_gather_title;
+        $requirementDetail_obj->req_gather_desc = $req_gather_desc;
+        $requirementDetail_obj->req_gather_by = $req_gather_by;
+        $requirementDetail_obj->req_gather_by_name = $req_gather_by_name;
+        $requirementDetail_obj->files = [];
+
+        //check existing data
+        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $gr_project_id))->result();
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1);            
+            $requirementDetail = $project_description->requirementDetail;
+        }
+        
+        if($gr_project_id > 0){
+            if (!empty($_FILES['requirementFile']['name'][0])) {
+                $return_data = array(); 
+
+                $upload_path = './upload/proj_doc/' ; 
+                $file_type = 'jpg|jpeg|png|bmp|mp4|csv|pdf|docx|txt|zip|xlsx';
+                $user_file_name = 'requirementFile';
+
+                $return_data = $this->_upload_files($_FILES['requirementFile'], $upload_path, $file_type, $user_file_name);
+
+                foreach ($return_data as $datam) {
+                    if ($datam['status'] != 'error') { 
+                        $file_id = rand(1000, 9999);
+                        $file = new stdClass();
+                        $file->doc_obj = $doc_obj;
+                        $file->file_id = $file_id;
+                        $file->file_name = $datam['filename'];
+                        $file->file_type = $datam['meta_data']['file_type'];
+                        $file->meta_data = $datam['meta_data'];
+                        
+                        array_push($files, $file);
+                    }//end if
+                }//end foreach 
+            }//end file upload
+            $requirementDetail_obj->files = $files;
+                
+            array_push($requirementDetail, $requirementDetail_obj);
+            $project_description->requirementDetail = $requirementDetail;
+
+            $updateArray = array(
+                'project_description' => json_encode($project_description)
+            );
+
+            $val = $this->db->update('project_detail', $updateArray, array('project_id' => $gr_project_id));
+            $data['file_updated'] = $val;
+        }//end        
+        
+        $data['type'] = 'success';
+        $data['msg'] = 'Requirement Updated Properly';
+        $data['title'] = 'Requirement';
+        return $data;
+
+    }
+
+    private function _upload_files($files, $upload_path, $file_type, $user_file_name){
+        // date_default_timezone_set("Asia/Kolkata");  
+        $uploadedFileData = array();
+        $key = 0;
+
+        $config = array(
+            'upload_path'   => $upload_path,
+            'allowed_types' => $file_type,
+            'overwrite'     => 1,                       
+        );
+
+        $this->load->library('upload', $config);
+
+        // print_r($_FILES[$user_file_name]);
+        $filesCount = count($_FILES[$user_file_name]['name']); 
+        for($i = 0; $i < $filesCount; $i++){ 
+            $_FILES['file']['name']       = $_FILES[$user_file_name]['name'][$i];
+            $_FILES['file']['type']       = $_FILES[$user_file_name]['type'][$i];
+            $_FILES['file']['tmp_name']   = $_FILES[$user_file_name]['tmp_name'][$i];
+            $_FILES['file']['error']      = $_FILES[$user_file_name]['error'][$i];
+            $_FILES['file']['size']       = $_FILES[$user_file_name]['size'][$i];
+
+            // $config['file_name'] = date('His') .'_'. $image;
+
+            $this->upload->initialize($config);
+
+            if ($this->upload->do_upload('file')) {                
+                $imageData = $this->upload->data();
+                //echo json_encode($imageData);
+                $new_array[] = array(
+                    'filename' => $imageData['file_name'], 
+                    'meta_data' => $imageData, 
+                    'status' => 'success',
+                    'msg' => 'OK'
+                );
+                $final_array = array_merge($uploadedFileData, $new_array);
+            } else {
+                $new_array[] = array(
+                    'filename' => null, 
+                    'status' => 'error',
+                    'msg' => 'Type or Size Mismatch' //$this->upload->display_errors() .
+                );
+                $final_array = array_merge($uploadedFileData, $new_array);
+            }
+        }//end for
+
+        return $final_array;
+    }//file upload end
+
 
 
     //////////////////////////////////////// final above function /////////////////////////////////////////
@@ -942,57 +1070,8 @@ class Projects_m extends CI_Model {
         return $data;
     }
 
-    private function _upload_files($files, $upload_path, $file_type, $user_file_name){
-
-        // date_default_timezone_set("Asia/Kolkata");  
-
-        $uploadedFileData = array();
-
-        $config = array(
-            'upload_path'   => $upload_path,
-            'allowed_types' => $file_type,
-            'overwrite'     => 1,                       
-        );
-
-        $this->load->library('upload', $config);
-
-        foreach ($files['name'] as $key => $image) {
-
-            $_FILES['file']['name']       = $_FILES[$user_file_name]['name'][$key];
-            $_FILES['file']['type']       = $_FILES[$user_file_name]['type'][$key];
-            $_FILES['file']['tmp_name']   = $_FILES[$user_file_name]['tmp_name'][$key];
-            $_FILES['file']['error']      = $_FILES[$user_file_name]['error'][$key];
-            $_FILES['file']['size']       = $_FILES[$user_file_name]['size'][$key];
-
-            // $config['file_name'] = date('His') .'_'. $image;
-
-            $this->upload->initialize($config);
-
-            if ($this->upload->do_upload('file')) {
-                
-                $imageData = $this->upload->data();
-
-                $new_array[] = array(
-                    'filename' => $imageData['file_name'], 
-                    'status' => 'success',
-                    'msg' => 'OK'
-                );
-
-                $final_array = array_merge($uploadedFileData, $new_array);
-
-            } else {
-                $new_array[] = array(
-                    'filename' => null, 
-                    'status' => 'error',
-                    'msg' => 'Type or Size Mismatch'
-                );
-
-                $final_array = array_merge($uploadedFileData, $new_array);
-            }
-        }
-
-        return $final_array;
-    }
+    
+    
 
     public function ajax_unique_offer_number_edit() {
         $offer_number = $this->input->post('offer_number');

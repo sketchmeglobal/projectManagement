@@ -172,7 +172,7 @@
                                                 <label for="contact_persn_address" class="control-label">Address</label>
                                                 <textarea name="contact_persn_address" id="contact_persn_address" class="form-control"></textarea>
                                             </div>  
-                                            <div class="col-lg-3">
+                                            <div class="col-lg-3" style="margin-top: 25px;">
                                                 <label for="product_line_po" class="control-label"></label>
                                                 <input type="submit" name="contact_details_submit" class="btn btn-success text-center" id="contact_details_submit" value="Add">
                                             </div>
@@ -208,7 +208,7 @@
                                                     <label for="e_contact_persn_address" class="control-label">Address</label>
                                                     <textarea name="e_contact_persn_address" id="e_contact_persn_address" class="form-control"></textarea>
                                                 </div>  
-                                                <div class="col-lg-3">
+                                                <div class="col-lg-3" style="margin-top: 25px;">
                                                     <label for="product_line_po" class="control-label"></label>
                                                     <input type="submit" name="e_contact_details_submit" class="btn btn-success text-center" id="e_contact_details_submit" value="Update">
                                                 </div>
@@ -264,8 +264,8 @@
 
                                 <div id="req_gather_add" class="tab-pane fade">
                                     <br/>
-                                    <div class="form">
-                                        
+                                    <div class="form">                                        
+                                    <form autocomplete="off" id="requirement_gather_form" method="post" action="<?=base_url('admin/form-gather-requirement')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
                                         <div class="form-group "> 
                                             <div class="col-lg-3">
                                                 <label for="req_gather_title" class="control-label">Title</label>
@@ -282,6 +282,7 @@
                                                     <option value="1" > Mr. Jana </option>
                                                     <option value="2" > Mr. Roy </option>
                                                 </select>
+                                                <input type="hidden" value="" name="req_gather_by_name" id="req_gather_by_name">
                                             </div>  
                                             <div class="col-lg-3">
                                                 <label for="req_gather_date" class="control-label">Date</label>
@@ -291,12 +292,13 @@
                                                 <label for="" class="control-label">Attachment</label>
                                                 <input type="file" name="requirementFile[]" id="requirementFile" accept=".jpg,.jpeg,.png,.bmp,.txt,.docx,.xlsx,.csv,.pdf,.zip" class="file" multiple>
                                             </div> 
-                                            <div class="col-lg-3">
+                                            <div class="col-lg-3" style="margin-top: 25px;">
                                                 <label for="product_line_po" class="control-label"></label>
-                                                <input type="submit" name="requirement_gather_submit" class="btn btn-success text-center" id="requirement_gather_submit" value="Add">
+                                                <input type="submit" name="requirement_gather_submit" class="btn btn-success text-center" id="requirement_gather_submit" value="Add"> 
+                                                <input type="hidden" value="<?=$project_id?>" name="gr_project_id" id="gr_project_id">
                                             </div>
                                         </div>
-                                        
+                                    </form>    
                                     </div>
                                 </div>
 
@@ -319,6 +321,7 @@
                                                     <option value="1" > Mr. Jana </option>
                                                     <option value="2" > Mr. Roy </option>
                                                 </select>
+                                                <input type="hidden" value="" name="e_req_gather_by_name" id="e_req_gather_by_name">
                                             </div>  
                                             <div class="col-lg-3">
                                                 <label for="e_req_gather_date" class="control-label">Date</label>
@@ -328,7 +331,7 @@
                                                 <label for="" class="control-label">Attachment</label>
                                                 <input type="file" name="e_requirementFile[]" id="e_requirementFile" accept=".jpg,.jpeg,.png,.bmp,.txt,.docx,.xlsx,.csv,.pdf,.zip" class="file" multiple>
                                             </div> 
-                                            <div class="col-lg-3">
+                                            <div class="col-lg-3" style="margin-top: 25px;">
                                                 <label for="product_line_po" class="control-label"></label>
                                                 <input type="submit" name="e_requirement_gather_submit" class="btn btn-success text-center" id="e_requirement_gather_submit" value="Update">
                                             </div>
@@ -361,16 +364,16 @@
                             </ul>
                             <!--Tab Content-->
                             <div class="tab-content">
-                            <img style="display:none; position: absolute;margin: auto;left: 0;right: 0;" src="<?=base_url('assets/img/ellipsis.gif')?>" id="loading_div"><span class="sr-only">Processing...</span>                            
+                                                           
                                 <div id="quotation_list" class="tab-pane fade in active">
                                     <table id="quotation_list_table" class="table data-table dataTable" style="width: 100%;">
                                         <thead>
-                                        <tr>
-                                            <th>Title</th>
-                                            <th>Description</th>
-                                            <th>Attachment</th>
-                                            <th>Actions</th>
-                                        </tr>
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>Description</th>
+                                                <th>Attachment</th>
+                                                <th>Actions</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
 
@@ -379,41 +382,41 @@
                                     </table>
                                 </div>
 
-                                <div id="quotation_add" class="tab-pane fade">
-                                    <br/>
+                                <div id="quotation_add" class="tab-pane fade">                                    
                                     <div class="form">
-                                        <form id="form_add_offer_details" method="post" action="<?=base_url('admin/form-add-offer-details')?>" class="cmxform form-horizontal tasi-form">
-                                        <div class="form-group "> 
+                                        <div class="form-group " style="float: left;"> 
                                             <h4 style="margin-left: 15px;">Basic Information</h4>
                                             <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">Select Party</label>
-                                                <select name="company_id" id="company_id" class="form-control select2">
-                                                    <option value="" >-- Select Party --</option>
+                                                <label for="bi_PartyId" class="control-label">Select Party</label>
+                                                <select name="bi_PartyId" id="bi_PartyId" class="form-control select2">
+                                                    <option value="0" >-- Select Party --</option>
+                                                    <option value="1" >-- Party 1--</option>
+                                                    <option value="2" >-- Party 2 --</option>
                                                 </select>
                                             </div>  
                                             <div class="col-lg-3">
-                                                <label for="product_line_po" class="control-label">Quotation No.</label>
-                                                <input value="" id="offer_number" name="offer_number" type="text" placeholder="Quotation No." class="form-control" />
+                                                <label for="bi_QuotationNo" class="control-label">Quotation No.</label>
+                                                <input id="bi_QuotationNo" name="bi_QuotationNo" type="text" placeholder="Quotation No." class="form-control" />
                                             </div>  
                                             <div class="col-lg-3">
-                                                <label for="product_line_po" class="control-label">Quotation Date</label>
-                                                <input value="" id="offer_number" name="offer_number" type="date" class="form-control" />
+                                                <label for="bi_QuotationDate" class="control-label">Quotation Date</label>
+                                                <input id="bi_QuotationDate" name="bi_QuotationDate" type="date" class="form-control" />
                                             </div> 
                                             <div class="col-lg-3">
-                                                <label for="product_line_po" class="control-label">Sub Party Name</label>
-                                                <input value="" id="offer_number" name="offer_number" type="text" placeholder="Sub Party Name" class="form-control" />
+                                                <label for="bi_SubPartyName" class="control-label">Sub Party Name</label>
+                                                <input id="bi_SubPartyName" name="bi_SubPartyName" type="text" placeholder="Sub Party Name" class="form-control" />
                                             </div> 
                                             <div class="col-lg-3">
-                                                <label for="product_line_po" class="control-label">Invoice Date</label>
-                                                <input value="" id="offer_number" name="offer_number" type="date" class="form-control" />
+                                                <label for="bi_InvoiceDate" class="control-label">Invoice Date</label>
+                                                <input id="bi_InvoiceDate" name="bi_InvoiceDate" type="date" class="form-control" />
                                             </div>  
                                             <div class="col-lg-3">
-                                                <label for="product_line_po" class="control-label">Notice No.</label>
-                                                <input value="" id="offer_number" name="offer_number" type="text" placeholder="Notice No." class="form-control" />
+                                                <label for="bi_NoticeNo" class="control-label">Notice No.</label>
+                                                <input id="bi_NoticeNo" name="bi_NoticeNo" type="text" placeholder="Notice No." class="form-control" />
                                             </div>
                                             <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">Payment Mode</label>
-                                                <select name="company_id" id="company_id" class="form-control select2">
+                                                <label for="bi_PaymentMode" class="control-label">Payment Mode</label>
+                                                <select name="bi_PaymentMode" id="bi_PaymentMode" class="form-control select2">
                                                     <option value="0" >-- Select Payment Mode --</option>
                                                     <option value="1" > Cash </option>
                                                     <option value="2" > Card </option>
@@ -423,27 +426,30 @@
                                                 </select>
                                             </div> 
                                             <div class="col-lg-3">
-                                                <label for="product_line_po" class="control-label">Instrument Number</label>
-                                                <textarea name="product_line_po" id="product_line_po" class="form-control"></textarea>
+                                                <label for="bi_InstrumentNumber" class="control-label">Instrument Number</label>
+                                                <textarea name="bi_InstrumentNumber" id="bi_InstrumentNumber" class="form-control"></textarea>
                                             </div> 
                                             <div class="col-lg-3">
-                                                <label for="product_line_po" class="control-label">Remarks</label>
-                                                <textarea name="product_line_po" id="product_line_po" class="form-control"></textarea>
+                                                <label for="bi_Remarks" class="control-label">Remarks</label>
+                                                <textarea name="bi_Remarks" id="bi_Remarks" class="form-control"></textarea>
                                             </div>
                                             <div class="col-lg-3">
-                                                <label for="product_line_po" class="control-label">Other Client Information</label>
-                                                <textarea name="product_line_po" id="product_line_po" class="form-control"></textarea>
+                                                <label for="bi_OtherClientInfo" class="control-label">Other Client Information</label>
+                                                <textarea name="bi_OtherClientInfo" id="bi_OtherClientInfo" class="form-control"></textarea>
                                             </div>
                                             <div class="col-lg-3">
-                                                <label for="product_line_po" class="control-label">Important Notes</label>
-                                                <textarea name="product_line_po" id="product_line_po" class="form-control"></textarea>
+                                                <label for="bi_ImportantNotes" class="control-label">Important Notes</label>
+                                                <textarea name="bi_ImportantNotes" id="bi_ImportantNotes" class="form-control"></textarea>
                                             </div>
+                                            <div class="col-lg-3" style="margin-top: 25px;">
+                                                <label for="basic_info_submit" class="control-label"></label>
+                                                <input type="submit" name="basic_info_submit" class="btn btn-success text-center" id="basic_info_submit" value="Add Basic Info.">
+                                            </div> 
                                         </div>
-
-                                        <div class="form-group "> 
+                                        
+                                        <div class="form-group " style="float: left;"> 
                                             <h4 style="margin-left: 15px;">Particulars</h4>
-                                            <!-- Particular Table -->
-                                            <div id="" class="tab-pane fade in active">
+                                            <div id="quotation_list" class="tab-pane fade in active">
                                                 <table id="" class="table data-table dataTable">
                                                     <thead>
                                                         <tr>
@@ -470,11 +476,9 @@
                                                         </tr>
                                                     </tbody>                                                    
                                                 </table>
-                                            </div>
-                                            </br>
-                                            <!-- Particular Table -->
+                                            </div>  
                                             
-                                            <div class="col-lg-3">
+                                             <div class="col-lg-3">
                                                 <label for="product_description" class="control-label">Task Type</label>
                                                 <select name="company_id" id="company_id" class="form-control select2">
                                                     <option value="0" >-- Select Task Type --</option>
@@ -507,13 +511,13 @@
                                                     <option value="2" > NO </option>
                                                 </select>
                                             </div> 
-                                            <div class="col-lg-3">
+                                            <div class="col-lg-3" style="margin-top: 25px;">
                                                 <label for="product_line_po" class="control-label"></label>
                                                 <input type="submit" name="offer_details_submit" class="btn btn-success text-center" id="offer_details_submit" value="Add Particular">
-                                            </div>
-                                        </div>
+                                            </div> 
+                                        </div> 
                                         
-                                        <div class="form-group "> 
+                                        <div class="form-group " style="float: left;"> 
                                             <h4 style="margin-left: 15px;">TAX Calculation</h4>
                                             <div class="col-lg-3">
                                                 <label for="product_description" class="control-label">Gross Amount</label>
@@ -531,7 +535,7 @@
                                                 <label for="product_description" class="control-label">Taxable Amount</label>
                                                 <input value="0" id="offer_number" name="offer_number" type="text" placeholder="Taxable Amount" class="form-control" />
                                             </div> 
-                                            <!-- Below part will be affected from Select party -->
+                                            
                                             <div class="col-lg-3">
                                                 <label for="product_description" class="control-label">SGST (in %)</label>
                                                 <input value="0" id="offer_number" name="offer_number" type="text" placeholder="SGST(in %)" class="form-control" />
@@ -556,7 +560,7 @@
                                                 <label for="product_description" class="control-label">IGST Amount</label>
                                                 <input value="0" id="offer_number" name="offer_number" type="text" placeholder="IGST Amount" class="form-control" />
                                             </div>
-                                            <!-- Upper part will be affected from Select party -->
+                                            
                                             <div class="col-lg-3">
                                                 <label for="product_description" class="control-label">Net Amount</label>
                                                 <input value="0" id="offer_number" name="offer_number" type="text" placeholder="Net Amount" class="form-control" />
@@ -582,7 +586,7 @@
                                             </div> 
                                         </div>
 
-                                        <div class="form-group "> 
+                                        <div class="form-group " style="float: left;"> 
                                             <h4 style="margin-left: 15px;">Project Commission</h4>
                                               
                                             <div class="col-lg-3">
@@ -604,18 +608,16 @@
                                                 <label for="product_description" class="control-label">Amount</label>
                                                 <input value="0" id="offer_number" name="offer_number" type="text" placeholder="Amount" class="form-control" />
                                             </div>
-                                            <div class="col-lg-3">
+                                            <div class="col-lg-3" style="margin-top: 25px;">
                                                 <label for="product_line_po" class="control-label"></label>
                                                 <input type="submit" name="offer_details_submit" class="btn btn-success text-center" id="offer_details_submit" value="Add Commission">
                                             </div>
                                         </div>
-                                           
-                                        </form>
                                     </div>
                                 </div>
 
                                 <div id="quotation_edit" class="tab-pane">
-                                    <br/>
+                                    
                                     <div class="form">
                                         <form id="form_edit_contact_details" method="post" action="<?=base_url('admin/form-edit-offer-details')?>" class="cmxform form-horizontal tasi-form">
                                             <div class="form-group "> 
@@ -639,6 +641,7 @@
                                         </form>
                                     </div>
                                 </div> 
+
                             </div>
                         </div>
                     </section>
@@ -868,7 +871,7 @@
     })//end fun
 
     //Requirement Gathering Part
-    $('#requirement_gather_submit').click(function(){
+    /*$('#requirement_gather_submit').click(function(){
         $req_gather_title = $('#req_gather_title').val();
         $req_gather_desc = $('#req_gather_desc').val();
         $req_gather_by = $('#req_gather_by').val();
@@ -900,7 +903,49 @@
             updateProjectDescription()
             $('#myLoading').hide();
         }
-    })//end fun
+    })*/
+    //end fun
+
+    
+    $("#req_gather_by").change(function(){
+        $req_gather_by_name = $("#req_gather_by :selected").text();
+        $('#req_gather_by_name').val($req_gather_by_name);
+    });
+
+    
+    //add-item-form validation and submit
+    $("#requirement_gather_form").validate({        
+        rules: {
+            req_gather_title: {
+                required: true
+            },
+            requirementFile: {
+                required: true
+            }   
+        },
+        messages: {
+
+        }
+    });
+    $('#requirement_gather_form').ajaxForm({
+        beforeSubmit: function () {
+            return $("#requirement_gather_form").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            //console.log(returnData);
+            obj = JSON.parse(returnData);
+            notification(obj);
+			if(parseInt(obj.update_id) > 0){
+                console.log(JSON.stringify(obj));
+                if(obj.type == 'error'){
+                    console.log('Error from API')
+                }else{
+                    console.log('Document save success')
+                }            	
+			}
+		}
+    });
+    //end requirement gather
 
     function updateProjectDescription(){
         $project_id = $('#project_id').val();
@@ -919,6 +964,7 @@
                 if(returnData.type == 'success'){
                     console.log('project_id: '+returnData.project_id);
                     $('#project_id').val(returnData.project_id);
+                    $('#gr_project_id').val(returnData.project_id);
                 }
 
             },
