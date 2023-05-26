@@ -530,6 +530,7 @@
                                                         <option value="1" > YES </option>
                                                         <option value="2" > NO </option>
                                                     </select>
+                                                    <input type="hidden" name="par_TaxableName" id="par_TaxableName" value="">
                                                 </div> 
                                                 <div class="col-lg-3" style="margin-top: 25px;">
                                                     <label for="product_line_po" class="control-label"></label>
@@ -540,72 +541,81 @@
                                         </div> 
                                         
                                         <div class="form-group " style="float: left;"> 
-                                            <h4 style="margin-left: 15px;">TAX Calculation</h4>
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">Gross Amount</label>
-                                                <input value="0" id="offer_number" name="offer_number" type="text" placeholder="Gross Amount" class="form-control" />
-                                            </div> 
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">Discount Percentage</label>
-                                                <input value="0" id="offer_number" name="offer_number" type="text" placeholder="Discount Percentage" class="form-control" />
-                                            </div> 
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">Discount Amount</label>
-                                                <input value="0" id="offer_number" name="offer_number" type="text" placeholder="Discount Amount" class="form-control" />
-                                            </div> 
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">Taxable Amount</label>
-                                                <input value="0" id="offer_number" name="offer_number" type="text" placeholder="Taxable Amount" class="form-control" />
-                                            </div> 
-                                            
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">SGST (in %)</label>
-                                                <input value="0" id="offer_number" name="offer_number" type="text" placeholder="SGST(in %)" class="form-control" />
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">SGST Amount</label>
-                                                <input value="0" id="offer_number" name="offer_number" type="text" placeholder="SGST Amount" class="form-control" />
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">CGST (in %)</label>
-                                                <input value="0" id="offer_number" name="offer_number" type="text" placeholder="CGST (in %)" class="form-control" />
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">CGST Amount</label>
-                                                <input value="0" id="offer_number" name="offer_number" type="text" placeholder="CGST Amount" class="form-control" />
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">IGST (in %)</label>
-                                                <input value="0" id="offer_number" name="offer_number" type="text" placeholder="IGST (in %)" class="form-control" />
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">IGST Amount</label>
-                                                <input value="0" id="offer_number" name="offer_number" type="text" placeholder="IGST Amount" class="form-control" />
-                                            </div>
-                                            
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">Net Amount</label>
-                                                <input value="0" id="offer_number" name="offer_number" type="text" placeholder="Net Amount" class="form-control" />
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">Total Tax.</label>
-                                                <input value="0" id="offer_number" name="offer_number" type="text" placeholder="Total Tax." class="form-control" />
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">Bank</label>
-                                                <select name="company_id" id="company_id" class="form-control select2">
-                                                    <option value="0" >-- Select Bank --</option>
-                                                    <option value="1" > HDFC </option>
-                                                    <option value="2" > SBI </option>
-                                                </select>
-                                            </div> 
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">Show Stamp</label>
-                                                <select name="company_id" id="company_id" class="form-control select2">
-                                                    <option value="1" > YES </option>
-                                                    <option value="2" > NO </option>
-                                                </select>
-                                            </div> 
+                                            <form autocomplete="off" id="form_tax_add" method="post" action="<?=base_url('admin/form-tax-add')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
+                                                <h4 style="margin-left: 15px;">TAX Calculation</h4>
+                                                <div class="col-lg-3">
+                                                    <label for="tax_GrossAmount" class="control-label">Gross Amount</label>
+                                                    <input value="0" id="tax_GrossAmount" name="tax_GrossAmount" type="text" placeholder="Gross Amount" class="form-control" />
+                                                </div> 
+                                                <div class="col-lg-3">
+                                                    <label for="tax_DiscountPercentage" class="control-label">Discount Percentage</label>
+                                                    <input value="0" id="tax_DiscountPercentage" name="tax_DiscountPercentage" type="text" placeholder="Discount Percentage" class="form-control" />
+                                                </div> 
+                                                <div class="col-lg-3">
+                                                    <label for="tax_DiscountAmount" class="control-label">Discount Amount</label>
+                                                    <input value="0" id="tax_DiscountAmount" name="tax_DiscountAmount" type="text" placeholder="Discount Amount" class="form-control" />
+                                                </div> 
+                                                <div class="col-lg-3">
+                                                    <label for="tax_TaxableAmount" class="control-label">Taxable Amount</label>
+                                                    <input value="0" id="tax_TaxableAmount" name="tax_TaxableAmount" type="text" placeholder="Taxable Amount" class="form-control" />
+                                                </div> 
+                                                
+                                                <div class="col-lg-3">
+                                                    <label for="tax_SGST_Rate" class="control-label">SGST (in %)</label>
+                                                    <input value="0" id="tax_SGST_Rate" name="tax_SGST_Rate" type="text" placeholder="SGST(in %)" class="form-control" />
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label for="tax_SGST_Amount" class="control-label">SGST Amount</label>
+                                                    <input value="0" id="tax_SGST_Amount" name="tax_SGST_Amount" type="text" placeholder="SGST Amount" class="form-control" />
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label for="tax_CGST_Rate" class="control-label">CGST (in %)</label>
+                                                    <input value="0" id="tax_CGST_Rate" name="tax_CGST_Rate" type="text" placeholder="CGST (in %)" class="form-control" />
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label for="tax_CGST_Amount" class="control-label">CGST Amount</label>
+                                                    <input value="0" id="tax_CGST_Amount" name="tax_CGST_Amount" type="text" placeholder="CGST Amount" class="form-control" />
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label for="tax_IGST_Rate" class="control-label">IGST (in %)</label>
+                                                    <input value="0" id="tax_IGST_Rate" name="tax_IGST_Rate" type="text" placeholder="IGST (in %)" class="form-control" />
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label for="tax_IGST_Amount" class="control-label">IGST Amount</label>
+                                                    <input value="0" id="tax_IGST_Amount" name="tax_IGST_Amount" type="text" placeholder="IGST Amount" class="form-control" />
+                                                </div>
+                                                
+                                                <div class="col-lg-3">
+                                                    <label for="tax_NetAmount" class="control-label">Net Amount</label>
+                                                    <input value="0" id="tax_NetAmount" name="tax_NetAmount" type="text" placeholder="Net Amount" class="form-control" />
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label for="tax_TotalTax" class="control-label">Total Tax.</label>
+                                                    <input value="0" id="tax_TotalTax" name="tax_TotalTax" type="text" placeholder="Total Tax." class="form-control" />
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label for="tax_Bank" class="control-label">Bank</label>
+                                                    <select name="tax_Bank" id="tax_Bank" class="form-control select2">
+                                                        <option value="0" >-- Select Bank --</option>
+                                                        <option value="1" > HDFC </option>
+                                                        <option value="2" > SBI </option>
+                                                    </select>
+                                                    <input type="hidden" name="tax_BankName" id="tax_BankName" value="">
+                                                </div> 
+                                                <div class="col-lg-3">
+                                                    <label for="tax_ShowStamp" class="control-label">Show Stamp</label>
+                                                    <select name="tax_ShowStamp" id="tax_ShowStamp" class="form-control select2">
+                                                        <option value="1" > YES </option>
+                                                        <option value="2" > NO </option>
+                                                    </select>
+                                                    <input type="hidden" name="tax_ShowStampName" id="tax_ShowStampName" value="">
+                                                </div> 
+                                                <div class="col-lg-3" style="margin-top: 25px;">
+                                                    <label for="tax_details_submit" class="control-label"></label>
+                                                    <input type="submit" name="tax_details_submit" class="btn btn-success text-center" id="tax_details_submit" value="Update Tax">
+                                                    <input type="hidden" name="tax_project_id" id="tax_project_id" value="">
+                                                </div> 
+                                            </form>
                                         </div>
 
                                         <div class="form-group " style="float: left;"> 
@@ -677,7 +687,7 @@
         <!--body wrapper end-->
 
         <!--footer section start-->
-        <?php $this->load->view('components/footer'); ?>
+        <?php // $this->load->view('components/footer'); ?>
         <!--footer section end-->
 
     </div>
@@ -935,10 +945,58 @@
     });
     //end requirement gather
 
+    //QUOTATION Basic Info    
+    $("#bi_PartyId").change(function(){
+        $bi_PartyId_name = $("#bi_PartyId :selected").text();
+        $('#bi_PartyId_name').val($bi_PartyId_name);
+    });
+    $("#bi_PaymentMode").change(function(){
+        $bi_PaymentModeName = $("#bi_PaymentMode :selected").text();
+        $('#bi_PaymentModeName').val($bi_PaymentModeName);
+    });
+    $("#form_particular_basic_info_add").validate({        
+        rules: {
+            bi_PartyId: {
+                required: true
+            },
+            bi_QuotationDate: {
+                required: true
+            },
+            bi_InvoiceDate: {
+                required: true
+            }  
+        },
+        messages: {
+
+        }
+    });
+    $('#form_particular_basic_info_add').ajaxForm({
+        beforeSubmit: function () {
+            return $("#form_particular_basic_info_add").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            obj = JSON.parse(returnData);
+            notification(obj);
+			if(parseInt(obj.update_id) > 0){
+                console.log(JSON.stringify(obj));
+                if(obj.type == 'error'){
+                    console.log('Error from API')
+                }else{
+                    console.log('Document save success')
+                }            	
+			}
+		}
+    });
+    //end QUOTATION basic info
+
     //Add particular
     $("#par_TaskType").change(function(){
         $par_TaskType_name = $("#par_TaskType :selected").text();
         $('#par_TaskType_name').val($par_TaskType_name);
+    });
+    $("#par_Taxable").change(function(){
+        $par_TaxableName = $("#par_Taxable :selected").text();
+        $('#par_TaxableName').val($par_TaxableName);
     });
     $("#form_particular_add").validate({        
         rules: {
@@ -981,6 +1039,50 @@
     });
     //end particulars
 
+    //Add TAX calculation
+    $("#tax_Bank").change(function(){
+        $tax_BankName = $("#tax_Bank :selected").text();
+        $('#tax_BankName').val($tax_BankName);
+    });
+    $("#tax_ShowStamp").change(function(){
+        $tax_ShowStampName = $("#tax_ShowStamp :selected").text();
+        $('#tax_ShowStampName').val($tax_ShowStampName);
+    });
+    $("#form_tax_add").validate({        
+        rules: {
+            tax_GrossAmount: {
+                required: true
+            },
+            tax_NetAmount: {
+                required: true
+            },
+            tax_Bank: {
+                required: true
+            }  
+        },
+        messages: {
+
+        }
+    });
+    $('#form_tax_add').ajaxForm({
+        beforeSubmit: function () {
+            return $("#form_tax_add").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            obj = JSON.parse(returnData);
+            notification(obj);
+			if(parseInt(obj.update_id) > 0){
+                console.log(JSON.stringify(obj));
+                if(obj.type == 'error'){
+                    console.log('Error from API')
+                }else{
+                    console.log('Document save success')
+                }            	
+			}
+		}
+    });
+    //end TAX Part
+
 
 
     function updateProjectDescription(){
@@ -1003,6 +1105,7 @@
                     $('#gr_project_id').val(returnData.project_id);
                     $('#parti_project_id').val(returnData.project_id);
                     $('#parti_bi_project_id').val(returnData.project_id);
+                    $('#tax_project_id').val(returnData.project_id);
                 }
 
             },

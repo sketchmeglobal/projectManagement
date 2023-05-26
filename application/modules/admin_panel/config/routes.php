@@ -91,6 +91,7 @@
 	$route['admin/form-gather-requirement'] = 'admin_panel/Projects/form_gather_requirement';
 	$route['admin/form-parti-basic-info-add'] = 'admin_panel/Projects/form_particular_basic_info_add';
 	$route['admin/form-particular-add'] = 'admin_panel/Projects/form_particular_add';
+	$route['admin/form-tax-add'] = 'admin_panel/Projects/form_tax_add';
 
 		//delete
 	/*$route['admin/ajax-delete-user'] = 'admin_panel/User/ajax_delete_user';	

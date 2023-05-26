@@ -147,7 +147,7 @@ class Projects_m extends CI_Model {
 
     }//end
     
-    //Particular Basic Info
+    //quotation Basic Info
     public function form_particular_basic_info_add(){  
         $daya = array();
         $status = true;
@@ -168,31 +168,30 @@ class Projects_m extends CI_Model {
         $bi_OtherClientInfo = $this->input->post('bi_OtherClientInfo'); 
         $bi_ImportantNotes = $this->input->post('bi_ImportantNotes'); 
 
-        $particular_bi = new ctdClass();
-        $particular_bi->parti_bi_obj = $parti_bi_obj;
-        $particular_bi->bi_PartyId = $bi_PartyId;
-        $particular_bi->bi_PartyId_name = $bi_PartyId_name;
-        $particular_bi->bi_QuotationNo = $bi_QuotationNo;
-        $particular_bi->bi_QuotationDate = $bi_QuotationDate;
-        $particular_bi->bi_SubPartyName = $bi_SubPartyName;
-        $particular_bi->bi_InvoiceDate = $bi_InvoiceDate;
-        $particular_bi->bi_NoticeNo = $bi_NoticeNo;
-        $particular_bi->bi_PaymentMode = $bi_PaymentMode;
-        $particular_bi->bi_PaymentModeName = $bi_PaymentModeName;
-        $particular_bi->bi_InstrumentNumber = $bi_InstrumentNumber;
-        $particular_bi->bi_Remarks = $bi_Remarks;
-        $particular_bi->bi_OtherClientInfo = $bi_OtherClientInfo;
-        $particular_bi->bi_ImportantNotes = $bi_ImportantNotes;
+        $quotation_bi = new stdClass();
+        $quotation_bi->parti_bi_obj = $parti_bi_obj;
+        $quotation_bi->bi_PartyId = $bi_PartyId;
+        $quotation_bi->bi_PartyId_name = $bi_PartyId_name;
+        $quotation_bi->bi_QuotationNo = $bi_QuotationNo;
+        $quotation_bi->bi_QuotationDate = $bi_QuotationDate;
+        $quotation_bi->bi_SubPartyName = $bi_SubPartyName;
+        $quotation_bi->bi_InvoiceDate = $bi_InvoiceDate;
+        $quotation_bi->bi_NoticeNo = $bi_NoticeNo;
+        $quotation_bi->bi_PaymentMode = $bi_PaymentMode;
+        $quotation_bi->bi_PaymentModeName = $bi_PaymentModeName;
+        $quotation_bi->bi_InstrumentNumber = $bi_InstrumentNumber;
+        $quotation_bi->bi_Remarks = $bi_Remarks;
+        $quotation_bi->bi_OtherClientInfo = $bi_OtherClientInfo;
+        $quotation_bi->bi_ImportantNotes = $bi_ImportantNotes;
 
         //check existing data
         $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $parti_bi_project_id))->result();
         if(count($result) > 0){
             $project_description1 = $result[0]->project_description;
-            $project_description = json_decode($project_description1);            
-            //$particular_bi = $project_description->particular_bi;
+            $project_description = json_decode($project_description1);   
         }
-
-        $project_description->particular_bi = $particular_bi;
+        //$project_description->quotationDetail[0]->quotation_bi = 
+        $project_description->quotationDetail[0]->quotation_bi = $quotation_bi;
 
         $updateArray = array(
             'project_description' => json_encode($project_description)
@@ -202,8 +201,8 @@ class Projects_m extends CI_Model {
         $data['db_updated'] = $val;
         
         $data['type'] = 'success';
-        $data['msg'] = 'Particulars Basic Info. Updated Properly';
-        $data['title'] = 'Particulars';
+        $data['msg'] = 'Basic Info. Updated Properly';
+        $data['title'] = 'Quotation';
         return $data;
 
     }
@@ -225,7 +224,8 @@ class Projects_m extends CI_Model {
         $par_Taxable = $this->input->post('par_Taxable'); 
         $parti_obj = rand(1000, 9999);
 
-        $particular = new ctdClass();
+        
+        $particular = new stdClass();
         $particular->parti_obj = $parti_obj;
         $particular->par_TaskType = $par_TaskType;
         $particular->par_TaskType_name = $par_TaskType_name;
@@ -240,11 +240,16 @@ class Projects_m extends CI_Model {
         if(count($result) > 0){
             $project_description1 = $result[0]->project_description;
             $project_description = json_decode($project_description1);            
-            $particulars = $project_description->particulars;
+            if(sizeof($project_description->quotationDetail[0]->particulars) > 0){
+                $particulars = $project_description->quotationDetail[0]->particulars;
+            }else{
+                $particulars = array();
+            }
         }
+        //$project_description->quotationDetail[0]->particulars = array();
 
         array_push($particulars, $particular);
-        $project_description->particulars = $particulars;
+        $project_description->quotationDetail[0]->particulars = $particulars;
 
         $updateArray = array(
             'project_description' => json_encode($project_description)
@@ -260,6 +265,77 @@ class Projects_m extends CI_Model {
 
     }
     //end particular add
+
+    
+    //TAX Add portion
+    public function form_tax_add(){  
+        $daya = array();
+        $status = true;
+
+        $tax_project_id = $this->input->post('tax_project_id'); 
+        $tax_GrossAmount = $this->input->post('tax_GrossAmount'); 
+        $tax_DiscountPercentage = $this->input->post('tax_DiscountPercentage'); 
+        $tax_DiscountAmount = $this->input->post('tax_DiscountAmount');      
+        $tax_TaxableAmount = $this->input->post('tax_TaxableAmount'); 
+        $tax_SGST_Rate = $this->input->post('tax_SGST_Rate'); 
+        $tax_SGST_Amount = $this->input->post('tax_SGST_Amount'); 
+        $tax_CGST_Rate = $this->input->post('tax_CGST_Rate'); 
+        $tax_CGST_Amount = $this->input->post('tax_CGST_Amount'); 
+        $tax_IGST_Rate = $this->input->post('tax_IGST_Rate'); 
+        $tax_IGST_Amount = $this->input->post('tax_IGST_Amount'); 
+        $tax_NetAmount = $this->input->post('tax_NetAmount'); 
+        $tax_TotalTax = $this->input->post('tax_TotalTax'); 
+        $tax_Bank = $this->input->post('tax_Bank'); 
+        $tax_BankName = $this->input->post('tax_BankName'); 
+        $tax_ShowStamp = $this->input->post('tax_ShowStamp'); 
+        $tax_ShowStampName = $this->input->post('tax_ShowStampName'); 
+        
+        $tax_obj = rand(1000, 9999);
+
+        
+        $taxCalculation = new stdClass();
+        $taxCalculation->tax_obj = $tax_obj;
+        $taxCalculation->tax_GrossAmount = $tax_GrossAmount;
+        $taxCalculation->tax_DiscountPercentage = $tax_DiscountPercentage;
+        $taxCalculation->tax_DiscountAmount = $tax_DiscountAmount;
+        $taxCalculation->tax_TaxableAmount = $tax_TaxableAmount;
+        $taxCalculation->tax_SGST_Rate = $tax_SGST_Rate;
+        $taxCalculation->tax_SGST_Amount = $tax_SGST_Amount;
+        $taxCalculation->tax_CGST_Rate = $tax_CGST_Rate;
+        $taxCalculation->tax_CGST_Amount = $tax_CGST_Amount;
+        $taxCalculation->tax_IGST_Rate = $tax_IGST_Rate;
+        $taxCalculation->tax_IGST_Amount = $tax_IGST_Amount;
+        $taxCalculation->tax_NetAmount = $tax_NetAmount;
+        $taxCalculation->tax_TotalTax = $tax_TotalTax;
+        $taxCalculation->tax_Bank = $tax_Bank;
+        $taxCalculation->tax_BankName = $tax_BankName;
+        $taxCalculation->tax_ShowStamp = $tax_ShowStamp;
+        $taxCalculation->tax_ShowStampName = $tax_ShowStampName;
+        
+
+        //check existing data
+        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $tax_project_id))->result();
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1);            
+            
+        }
+        $project_description->quotationDetail[0]->taxCalculation = $taxCalculation;
+
+        $updateArray = array(
+            'project_description' => json_encode($project_description)
+        );
+
+        $val = $this->db->update('project_detail', $updateArray, array('project_id' => $tax_project_id));
+        $data['db_updated'] = $val;
+        
+        $data['type'] = 'success';
+        $data['msg'] = 'TAX Updated Properly';
+        $data['title'] = 'TAX Calculation';
+        return $data;
+
+    }
+    //end Tax add
     
 
     private function _upload_files($files, $upload_path, $file_type, $user_file_name){
