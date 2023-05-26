@@ -384,68 +384,73 @@
 
                                 <div id="quotation_add" class="tab-pane fade">                                    
                                     <div class="form">
-                                        <div class="form-group " style="float: left;"> 
-                                            <h4 style="margin-left: 15px;">Basic Information</h4>
-                                            <div class="col-lg-3">
-                                                <label for="bi_PartyId" class="control-label">Select Party</label>
-                                                <select name="bi_PartyId" id="bi_PartyId" class="form-control select2">
-                                                    <option value="0" >-- Select Party --</option>
-                                                    <option value="1" >-- Party 1--</option>
-                                                    <option value="2" >-- Party 2 --</option>
-                                                </select>
-                                            </div>  
-                                            <div class="col-lg-3">
-                                                <label for="bi_QuotationNo" class="control-label">Quotation No.</label>
-                                                <input id="bi_QuotationNo" name="bi_QuotationNo" type="text" placeholder="Quotation No." class="form-control" />
-                                            </div>  
-                                            <div class="col-lg-3">
-                                                <label for="bi_QuotationDate" class="control-label">Quotation Date</label>
-                                                <input id="bi_QuotationDate" name="bi_QuotationDate" type="date" class="form-control" />
-                                            </div> 
-                                            <div class="col-lg-3">
-                                                <label for="bi_SubPartyName" class="control-label">Sub Party Name</label>
-                                                <input id="bi_SubPartyName" name="bi_SubPartyName" type="text" placeholder="Sub Party Name" class="form-control" />
-                                            </div> 
-                                            <div class="col-lg-3">
-                                                <label for="bi_InvoiceDate" class="control-label">Invoice Date</label>
-                                                <input id="bi_InvoiceDate" name="bi_InvoiceDate" type="date" class="form-control" />
-                                            </div>  
-                                            <div class="col-lg-3">
-                                                <label for="bi_NoticeNo" class="control-label">Notice No.</label>
-                                                <input id="bi_NoticeNo" name="bi_NoticeNo" type="text" placeholder="Notice No." class="form-control" />
+                                        <form autocomplete="off" id="form_particular_basic_info_add" method="post" action="<?=base_url('admin/form-parti-basic-info-add')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
+                                            <div class="form-group " style="float: left;"> 
+                                                <h4 style="margin-left: 15px;">Basic Information</h4>
+                                                <div class="col-lg-3">
+                                                    <label for="bi_PartyId" class="control-label">Select Party</label>
+                                                    <select name="bi_PartyId" id="bi_PartyId" class="form-control select2">
+                                                        <option value="0" >-- Select Party --</option>
+                                                        <option value="1" >-- Party 1--</option>
+                                                        <option value="2" >-- Party 2 --</option>
+                                                    </select>
+                                                    <input type="hidden" value="" name="bi_PartyId_name" id="bi_PartyId_name">
+                                                </div>  
+                                                <div class="col-lg-3">
+                                                    <label for="bi_QuotationNo" class="control-label">Quotation No.</label>
+                                                    <input id="bi_QuotationNo" name="bi_QuotationNo" type="text" placeholder="Quotation No." class="form-control" />
+                                                </div>  
+                                                <div class="col-lg-3">
+                                                    <label for="bi_QuotationDate" class="control-label">Quotation Date</label>
+                                                    <input id="bi_QuotationDate" name="bi_QuotationDate" type="date" class="form-control" />
+                                                </div> 
+                                                <div class="col-lg-3">
+                                                    <label for="bi_SubPartyName" class="control-label">Sub Party Name</label>
+                                                    <input id="bi_SubPartyName" name="bi_SubPartyName" type="text" placeholder="Sub Party Name" class="form-control" />
+                                                </div> 
+                                                <div class="col-lg-3">
+                                                    <label for="bi_InvoiceDate" class="control-label">Invoice Date</label>
+                                                    <input id="bi_InvoiceDate" name="bi_InvoiceDate" type="date" class="form-control" />
+                                                </div>  
+                                                <div class="col-lg-3">
+                                                    <label for="bi_NoticeNo" class="control-label">Notice No.</label>
+                                                    <input id="bi_NoticeNo" name="bi_NoticeNo" type="text" placeholder="Notice No." class="form-control" />
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label for="bi_PaymentMode" class="control-label">Payment Mode</label>
+                                                    <select name="bi_PaymentMode" id="bi_PaymentMode" class="form-control select2">
+                                                        <option value="0" >-- Select Payment Mode --</option>
+                                                        <option value="1" > Cash </option>
+                                                        <option value="2" > Card </option>
+                                                        <option value="3" > Cheque </option>
+                                                        <option value="3" > UPI </option>
+                                                        <option value="4" > Bank Transfer </option>
+                                                    </select>
+                                                    <input type="hidden" name="bi_PaymentModeName" id="bi_PaymentModeName" value="">
+                                                </div> 
+                                                <div class="col-lg-3">
+                                                    <label for="bi_InstrumentNumber" class="control-label">Instrument Number</label>
+                                                    <textarea name="bi_InstrumentNumber" id="bi_InstrumentNumber" class="form-control"></textarea>
+                                                </div> 
+                                                <div class="col-lg-3">
+                                                    <label for="bi_Remarks" class="control-label">Remarks</label>
+                                                    <textarea name="bi_Remarks" id="bi_Remarks" class="form-control"></textarea>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label for="bi_OtherClientInfo" class="control-label">Other Client Information</label>
+                                                    <textarea name="bi_OtherClientInfo" id="bi_OtherClientInfo" class="form-control"></textarea>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label for="bi_ImportantNotes" class="control-label">Important Notes</label>
+                                                    <textarea name="bi_ImportantNotes" id="bi_ImportantNotes" class="form-control"></textarea>
+                                                </div>
+                                                <div class="col-lg-3" style="margin-top: 25px;">
+                                                    <label for="basic_info_submit" class="control-label"></label>
+                                                    <input type="submit" name="basic_info_submit" class="btn btn-success text-center" id="basic_info_submit" value="Add Basic Info.">
+                                                    <input type="hidden" name="parti_bi_project_id" id="parti_bi_project_id" value="">
+                                                </div> 
                                             </div>
-                                            <div class="col-lg-3">
-                                                <label for="bi_PaymentMode" class="control-label">Payment Mode</label>
-                                                <select name="bi_PaymentMode" id="bi_PaymentMode" class="form-control select2">
-                                                    <option value="0" >-- Select Payment Mode --</option>
-                                                    <option value="1" > Cash </option>
-                                                    <option value="2" > Card </option>
-                                                    <option value="3" > Cheque </option>
-                                                    <option value="3" > UPI </option>
-                                                    <option value="4" > Bank Transfer </option>
-                                                </select>
-                                            </div> 
-                                            <div class="col-lg-3">
-                                                <label for="bi_InstrumentNumber" class="control-label">Instrument Number</label>
-                                                <textarea name="bi_InstrumentNumber" id="bi_InstrumentNumber" class="form-control"></textarea>
-                                            </div> 
-                                            <div class="col-lg-3">
-                                                <label for="bi_Remarks" class="control-label">Remarks</label>
-                                                <textarea name="bi_Remarks" id="bi_Remarks" class="form-control"></textarea>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <label for="bi_OtherClientInfo" class="control-label">Other Client Information</label>
-                                                <textarea name="bi_OtherClientInfo" id="bi_OtherClientInfo" class="form-control"></textarea>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <label for="bi_ImportantNotes" class="control-label">Important Notes</label>
-                                                <textarea name="bi_ImportantNotes" id="bi_ImportantNotes" class="form-control"></textarea>
-                                            </div>
-                                            <div class="col-lg-3" style="margin-top: 25px;">
-                                                <label for="basic_info_submit" class="control-label"></label>
-                                                <input type="submit" name="basic_info_submit" class="btn btn-success text-center" id="basic_info_submit" value="Add Basic Info.">
-                                            </div> 
-                                        </div>
+                                        </form>
                                         
                                         <div class="form-group " style="float: left;"> 
                                             <h4 style="margin-left: 15px;">Particulars</h4>
@@ -474,47 +479,64 @@
                                                             <td>Yes</td>
                                                             <td>Edit | Delete</td>
                                                         </tr>
-                                                    </tbody>                                                    
+                                                    </tbody> 
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th>Sl#</th>
+                                                            <th>Task Type</th>
+                                                            <th>HSN Code</th>
+                                                            <th>Duration</th>
+                                                            <th>Start Date</th>                                            
+                                                            <th>Amount</th>                                           
+                                                            <th>Taxable</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </tfoot>                                                   
                                                 </table>
                                             </div>  
                                             
-                                             <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">Task Type</label>
-                                                <select name="company_id" id="company_id" class="form-control select2">
-                                                    <option value="0" >-- Select Task Type --</option>
-                                                    <option value="1" > Web Design </option>
-                                                    <option value="2" > Web Development </option>
-                                                    <option value="3" > SSL </option>
-                                                    <option value="3" > Domain with Privacy settings FOR 2 YEARS </option>
-                                                </select>
-                                            </div> 
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">HSN Code</label>
-                                                <input value="0" id="offer_number" name="offer_number" type="text" placeholder="HSN Code" class="form-control" />
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">Duration</label>
-                                                <input value="0" id="offer_number" name="offer_number" type="text" placeholder="Duration" class="form-control" />
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">Start Date</label>
-                                                <input value="0" id="offer_number" name="offer_number" type="date"  class="form-control" />
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">Amount</label>
-                                                <input value="0" id="offer_number" name="offer_number" type="text" placeholder="Amount" class="form-control" />
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">Taxable</label>
-                                                <select name="company_id" id="company_id" class="form-control select2">
-                                                    <option value="1" > YES </option>
-                                                    <option value="2" > NO </option>
-                                                </select>
-                                            </div> 
-                                            <div class="col-lg-3" style="margin-top: 25px;">
-                                                <label for="product_line_po" class="control-label"></label>
-                                                <input type="submit" name="offer_details_submit" class="btn btn-success text-center" id="offer_details_submit" value="Add Particular">
-                                            </div> 
+                                                                                   
+                                            <form autocomplete="off" id="form_particular_add" method="post" action="<?=base_url('admin/form-particular-add')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
+                                                <div class="col-lg-3">
+                                                    <label for="par_TaskType" class="control-label">Task Type</label>
+                                                    <select name="par_TaskType" id="par_TaskType" class="form-control select2">
+                                                        <option value="0" >-- Select Task Type --</option>
+                                                        <option value="1" > Web Design </option>
+                                                        <option value="2" > Web Development </option>
+                                                        <option value="3" > SSL </option>
+                                                        <option value="3" > Domain with Privacy settings FOR 2 YEARS </option>
+                                                    </select>
+                                                    <input type="hidden" value="" name="par_TaskType_name" id="par_TaskType_name">
+                                                </div> 
+                                                <div class="col-lg-3">
+                                                    <label for="par_HSNCode" class="control-label">HSN Code</label>
+                                                    <input value="" id="par_HSNCode" name="par_HSNCode" type="text" placeholder="HSN Code" class="form-control" />
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label for="par_Duration" class="control-label">Duration</label>
+                                                    <input value="" id="par_Duration" name="par_Duration" type="text" placeholder="Duration" class="form-control" />
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label for="par_StartDate" class="control-label">Start Date</label>
+                                                    <input value="" id="par_StartDate" name="par_StartDate" type="date"  class="form-control" />
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label for="par_Amount" class="control-label">Amount</label>
+                                                    <input value="" id="par_Amount" name="par_Amount" type="text" placeholder="Amount" class="form-control" />
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label for="par_Taxable" class="control-label">Taxable</label>
+                                                    <select name="par_Taxable" id="par_Taxable" class="form-control select2">
+                                                        <option value="1" > YES </option>
+                                                        <option value="2" > NO </option>
+                                                    </select>
+                                                </div> 
+                                                <div class="col-lg-3" style="margin-top: 25px;">
+                                                    <label for="product_line_po" class="control-label"></label>
+                                                    <input type="submit" name="particular_details_submit" class="btn btn-success text-center" id="particular_details_submit" value="Add Particular">
+                                                    <input type="hidden" name="parti_project_id" id="parti_project_id" value="">
+                                                </div> 
+                                            </form>
                                         </div> 
                                         
                                         <div class="form-group " style="float: left;"> 
@@ -806,7 +828,8 @@
             projectDetail: {},
             contactDetail: [],
             requirementDetail: [],
-            quotationDetail: []
+            quotationDetail: [
+            ]
         }
     }//end project description
 
@@ -869,42 +892,7 @@
             $('#myLoading').hide();
         }
     })//end fun
-
-    //Requirement Gathering Part
-    /*$('#requirement_gather_submit').click(function(){
-        $req_gather_title = $('#req_gather_title').val();
-        $req_gather_desc = $('#req_gather_desc').val();
-        $req_gather_by = $('#req_gather_by').val();
-        $req_gather_date = $('#req_gather_date').val();
-        $req_gather_by_name = $("#req_gather_by :selected").text();
-
-        $('#myLoading').show();
-
-        if($req_gather_title == ''){
-            alert('Please Title');
-            $('#req_gather_title').focus();
-            $('#myLoading').hide();
-        }else if($req_gather_by == ''){
-            alert('Please choose employee name');
-            $('#req_gather_by').focus();
-            $('#myLoading').hide();
-        }else{        
-            $req_obj = getTransactionId();
-            $requirementDetail = {
-                req_obj: $req_obj,
-                req_gather_title: $req_gather_title,
-                req_gather_desc: $req_gather_desc,
-                req_gather_by: $req_gather_by,
-                req_gather_by_name: $req_gather_by_name,
-                req_gather_date: $req_gather_date
-            }
-
-            $project_description.requirementDetail.push($requirementDetail)
-            updateProjectDescription()
-            $('#myLoading').hide();
-        }
-    })*/
-    //end fun
+    
 
     
     $("#req_gather_by").change(function(){
@@ -913,7 +901,7 @@
     });
 
     
-    //add-item-form validation and submit
+    //Requirement Gathering
     $("#requirement_gather_form").validate({        
         rules: {
             req_gather_title: {
@@ -947,6 +935,54 @@
     });
     //end requirement gather
 
+    //Add particular
+    $("#par_TaskType").change(function(){
+        $par_TaskType_name = $("#par_TaskType :selected").text();
+        $('#par_TaskType_name').val($par_TaskType_name);
+    });
+    $("#form_particular_add").validate({        
+        rules: {
+            par_TaskType: {
+                required: true
+            },
+            par_HSNCode: {
+                required: true
+            },
+            par_Duration: {
+                required: true
+            },
+            par_StartDate: {
+                required: true
+            },
+            par_Amount: {
+                required: true
+            }   
+        },
+        messages: {
+
+        }
+    });
+    $('#form_particular_add').ajaxForm({
+        beforeSubmit: function () {
+            return $("#form_particular_add").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            obj = JSON.parse(returnData);
+            notification(obj);
+			if(parseInt(obj.update_id) > 0){
+                console.log(JSON.stringify(obj));
+                if(obj.type == 'error'){
+                    console.log('Error from API')
+                }else{
+                    console.log('Document save success')
+                }            	
+			}
+		}
+    });
+    //end particulars
+
+
+
     function updateProjectDescription(){
         $project_id = $('#project_id').val();
         console.log(JSON.stringify($project_description))
@@ -965,6 +1001,8 @@
                     console.log('project_id: '+returnData.project_id);
                     $('#project_id').val(returnData.project_id);
                     $('#gr_project_id').val(returnData.project_id);
+                    $('#parti_project_id').val(returnData.project_id);
+                    $('#parti_bi_project_id').val(returnData.project_id);
                 }
 
             },
@@ -976,48 +1014,48 @@
     }//end fun
 
     function getTransactionId(){
-    const d = new Date().toLocaleString();
-    const date = new Date();
+        const d = new Date().toLocaleString();
+        const date = new Date();
 
-    var m1 = date.getMonth();
-    var m2 = 0;    
-    var m2 = m1 + 1;
-    if(parseInt(m2) < 10){
-        m2 = '0'+m2;
-    }
+        var m1 = date.getMonth();
+        var m2 = 0;    
+        var m2 = m1 + 1;
+        if(parseInt(m2) < 10){
+            m2 = '0'+m2;
+        }
 
 
-    var dt1 = date.getDate();
-    var dt2 = 0;
-    if(parseInt(dt1) == 0){
-        var dt2 = dt1 + 1;
-    }else{
-        var dt2 = dt1;
-    }
-    if(parseInt(dt2) < 10){
-        dt2 = '0'+dt2;
-    }
+        var dt1 = date.getDate();
+        var dt2 = 0;
+        if(parseInt(dt1) == 0){
+            var dt2 = dt1 + 1;
+        }else{
+            var dt2 = dt1;
+        }
+        if(parseInt(dt2) < 10){
+            dt2 = '0'+dt2;
+        }
 
-    var hr = date.getHours();
-    if(parseInt(hr) < 10){
-        hr = '0'+hr;
-    }
-    
-    var mt = date.getMinutes();
-    if(parseInt(mt) < 10){
-        mt = '0'+mt;
-    }
-    
-    var sc = date.getSeconds();
-    if(parseInt(sc) < 10){
-        sc = '0'+sc;
-    }
+        var hr = date.getHours();
+        if(parseInt(hr) < 10){
+            hr = '0'+hr;
+        }
+        
+        var mt = date.getMinutes();
+        if(parseInt(mt) < 10){
+            mt = '0'+mt;
+        }
+        
+        var sc = date.getSeconds();
+        if(parseInt(sc) < 10){
+            sc = '0'+sc;
+        }
 
-    const transId1 = dt2+'_'+m2+'_'+date.getFullYear()+'_'+hr+'_'+mt+'_'+sc;        
-    //const created_at1 = date.getFullYear()+'-'+m2+'-'+dt2+' '+hr+':'+mt+':'+sc;
+        const transId1 = dt2+'_'+m2+'_'+date.getFullYear()+'_'+hr+'_'+mt+'_'+sc;        
+        //const created_at1 = date.getFullYear()+'-'+m2+'-'+dt2+' '+hr+':'+mt+':'+sc;
 
-    return transId1;
-}//end fun
+        return transId1;
+    }//end fun
     
     // Clone area
     

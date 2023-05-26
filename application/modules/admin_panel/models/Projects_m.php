@@ -70,6 +70,7 @@ class Projects_m extends CI_Model {
     }//end fun
     
 
+    //Requirement gathering part
     public function form_gather_requirement(){  
         $daya = array();
         $status = true;
@@ -144,7 +145,122 @@ class Projects_m extends CI_Model {
         $data['title'] = 'Requirement';
         return $data;
 
+    }//end
+    
+    //Particular Basic Info
+    public function form_particular_basic_info_add(){  
+        $daya = array();
+        $status = true;
+
+        $parti_bi_obj = rand(1000, 9999);
+        $parti_bi_project_id = $this->input->post('parti_bi_project_id'); 
+        $bi_PartyId = $this->input->post('bi_PartyId'); 
+        $bi_PartyId_name = $this->input->post('bi_PartyId_name'); 
+        $bi_QuotationNo = $this->input->post('bi_QuotationNo');      
+        $bi_QuotationDate = $this->input->post('bi_QuotationDate'); 
+        $bi_SubPartyName = $this->input->post('bi_SubPartyName'); 
+        $bi_InvoiceDate = $this->input->post('bi_InvoiceDate'); 
+        $bi_NoticeNo = $this->input->post('bi_NoticeNo'); 
+        $bi_PaymentMode = $this->input->post('bi_PaymentMode'); 
+        $bi_PaymentModeName = $this->input->post('bi_PaymentModeName'); 
+        $bi_InstrumentNumber = $this->input->post('bi_InstrumentNumber'); 
+        $bi_Remarks = $this->input->post('bi_Remarks'); 
+        $bi_OtherClientInfo = $this->input->post('bi_OtherClientInfo'); 
+        $bi_ImportantNotes = $this->input->post('bi_ImportantNotes'); 
+
+        $particular_bi = new ctdClass();
+        $particular_bi->parti_bi_obj = $parti_bi_obj;
+        $particular_bi->bi_PartyId = $bi_PartyId;
+        $particular_bi->bi_PartyId_name = $bi_PartyId_name;
+        $particular_bi->bi_QuotationNo = $bi_QuotationNo;
+        $particular_bi->bi_QuotationDate = $bi_QuotationDate;
+        $particular_bi->bi_SubPartyName = $bi_SubPartyName;
+        $particular_bi->bi_InvoiceDate = $bi_InvoiceDate;
+        $particular_bi->bi_NoticeNo = $bi_NoticeNo;
+        $particular_bi->bi_PaymentMode = $bi_PaymentMode;
+        $particular_bi->bi_PaymentModeName = $bi_PaymentModeName;
+        $particular_bi->bi_InstrumentNumber = $bi_InstrumentNumber;
+        $particular_bi->bi_Remarks = $bi_Remarks;
+        $particular_bi->bi_OtherClientInfo = $bi_OtherClientInfo;
+        $particular_bi->bi_ImportantNotes = $bi_ImportantNotes;
+
+        //check existing data
+        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $parti_bi_project_id))->result();
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1);            
+            //$particular_bi = $project_description->particular_bi;
+        }
+
+        $project_description->particular_bi = $particular_bi;
+
+        $updateArray = array(
+            'project_description' => json_encode($project_description)
+        );
+
+        $val = $this->db->update('project_detail', $updateArray, array('project_id' => $parti_bi_project_id));
+        $data['db_updated'] = $val;
+        
+        $data['type'] = 'success';
+        $data['msg'] = 'Particulars Basic Info. Updated Properly';
+        $data['title'] = 'Particulars';
+        return $data;
+
     }
+    //end particular add
+
+    
+    //Particular Add portion
+    public function form_particular_add(){  
+        $daya = array();
+        $status = true;
+
+        $parti_project_id = $this->input->post('parti_project_id'); 
+        $par_TaskType = $this->input->post('par_TaskType'); 
+        $par_TaskType_name = $this->input->post('par_TaskType_name'); 
+        $par_HSNCode = $this->input->post('par_HSNCode');      
+        $par_Duration = $this->input->post('par_Duration'); 
+        $par_StartDate = $this->input->post('par_StartDate'); 
+        $par_Amount = $this->input->post('par_Amount'); 
+        $par_Taxable = $this->input->post('par_Taxable'); 
+        $parti_obj = rand(1000, 9999);
+
+        $particular = new ctdClass();
+        $particular->parti_obj = $parti_obj;
+        $particular->par_TaskType = $par_TaskType;
+        $particular->par_TaskType_name = $par_TaskType_name;
+        $particular->par_HSNCode = $par_HSNCode;
+        $particular->par_Duration = $par_Duration;
+        $particular->par_StartDate = $par_StartDate;
+        $particular->par_Amount = $par_Amount;
+        $particular->par_Taxable = $par_Taxable;
+
+        //check existing data
+        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $parti_project_id))->result();
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1);            
+            $particulars = $project_description->particulars;
+        }
+
+        array_push($particulars, $particular);
+        $project_description->particulars = $particulars;
+
+        $updateArray = array(
+            'project_description' => json_encode($project_description)
+        );
+
+        $val = $this->db->update('project_detail', $updateArray, array('project_id' => $parti_project_id));
+        $data['db_updated'] = $val;
+        
+        $data['type'] = 'success';
+        $data['msg'] = 'Particulars Updated Properly';
+        $data['title'] = 'Particulars';
+        return $data;
+
+    }
+    //end particular add
+    
 
     private function _upload_files($files, $upload_path, $file_type, $user_file_name){
         // date_default_timezone_set("Asia/Kolkata");  
@@ -559,7 +675,9 @@ class Projects_m extends CI_Model {
         $nestedData['sl_no'] = '1';
         $nestedData['project_name'] = 'Sea Food';
         $nestedData['create_dt'] = date("d-m-Y");
-        $nestedData['action'] = '';//$this->_offer_common_actions(0, 0, 0, 0, '', 0);
+        $nestedData['action'] = '<a href="javascript:void(0)" data-offer_id="0" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
+        <a href="" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
+        <a data-offer_id="0" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';//$this->_offer_common_actions(0, 0, 0, 0, '', 0);
         $data[] = $nestedData;
         $totalData = sizeof($nestedData);
         $totalFiltered = sizeof($nestedData);

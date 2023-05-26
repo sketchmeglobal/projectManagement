@@ -49,7 +49,7 @@ $user_type = $this->session->usertype;
 
             <li><h3 class="navigation-title">Menu</h3></li>
             <li class="<?=(($class_name == 'Dashboard')) ? 'active' : ''; ?>">
-                <a href="javascript: void(0)"><i class="fa fa-tachometer"></i> <span>Dashboard</span></a>
+                <a href="<?=base_url();?>admin/dashboard"><i class="fa fa-tachometer"></i> <span>Dashboard</span></a>
             </li>
 
             <li class="<?= (($class_name == 'Profile') && ($method_name == 'profile')) ? 'active' : ''; ?>">
