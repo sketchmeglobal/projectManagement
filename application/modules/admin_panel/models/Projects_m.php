@@ -151,6 +151,7 @@ class Projects_m extends CI_Model {
     public function form_particular_basic_info_add(){  
         $daya = array();
         $status = true;
+        //$old_quote_obj_id = '10000';
 
         $parti_bi_obj = rand(1000, 9999);
         $parti_bi_project_id = $this->input->post('parti_bi_project_id'); 
@@ -190,8 +191,16 @@ class Projects_m extends CI_Model {
             $project_description1 = $result[0]->project_description;
             $project_description = json_decode($project_description1);   
         }
-        //$project_description->quotationDetail[0]->quotation_bi = 
-        $project_description->quotationDetail[0]->quotation_bi = $quotation_bi;
+
+        $singleQuotation = new stdClass();
+        $singleQuotation->quotation_bi = $quotation_bi;
+        $quote_obj_id = rand(10000, 99999);
+        $singleQuotation->quote_obj_id = $quote_obj_id;
+        if(sizeof($project_description->quotationDetail) > 0){
+
+        }else{
+            array_push($project_description->quotationDetail, $singleQuotation);
+        }
 
         $updateArray = array(
             'project_description' => json_encode($project_description)
@@ -203,11 +212,11 @@ class Projects_m extends CI_Model {
         $data['type'] = 'success';
         $data['msg'] = 'Basic Info. Updated Properly';
         $data['title'] = 'Quotation';
+        $data['quote_obj_id'] = $quote_obj_id;
         return $data;
 
     }
     //end particular add
-
     
     //Particular Add portion
     public function form_particular_add(){  
@@ -239,14 +248,18 @@ class Projects_m extends CI_Model {
         $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $parti_project_id))->result();
         if(count($result) > 0){
             $project_description1 = $result[0]->project_description;
-            $project_description = json_decode($project_description1);            
-            if(sizeof($project_description->quotationDetail[0]->particulars) > 0){
-                $particulars = $project_description->quotationDetail[0]->particulars;
+            $project_description = json_decode($project_description1); 
+            
+            //Below part will be dynamic in respect of quote_obj_id
+            if(isset($project_description->quotationDetail[0]->particulars)){
+                if(sizeof($project_description->quotationDetail[0]->particulars) > 0){
+                    $particulars = $project_description->quotationDetail[0]->particulars;
+                }
             }else{
+                $project_description->quotationDetail[0]->particulars = array();
                 $particulars = array();
             }
         }
-        //$project_description->quotationDetail[0]->particulars = array();
 
         array_push($particulars, $particular);
         $project_description->quotationDetail[0]->particulars = $particulars;
@@ -265,7 +278,6 @@ class Projects_m extends CI_Model {
 
     }
     //end particular add
-
     
     //TAX Add portion
     public function form_tax_add(){  
@@ -336,6 +348,63 @@ class Projects_m extends CI_Model {
 
     }
     //end Tax add
+    
+    //Commission Add portion
+    public function form_commission_add(){  
+        $daya = array();
+        $status = true;
+
+        $commi_project_id = $this->input->post('commi_project_id'); 
+        $comi_emp_id = $this->input->post('comi_emp_id'); 
+        $comi_emp_name = $this->input->post('comi_emp_name'); 
+        $comi_rate_type = $this->input->post('comi_rate_type');      
+        $comi_rate_type_name = $this->input->post('comi_rate_type_name'); 
+        $comi_amount = $this->input->post('comi_amount'); 
+        $comi_obj = rand(1000, 9999);
+
+        
+        $commission = new stdClass();
+        $commission->comi_obj = $comi_obj;
+        $commission->comi_emp_id = $comi_emp_id;
+        $commission->comi_emp_name = $comi_emp_name;
+        $commission->comi_rate_type = $comi_rate_type;
+        $commission->comi_rate_type_name = $comi_rate_type_name;
+        $commission->comi_amount = $comi_amount;
+
+        //check existing data
+        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $commi_project_id))->result();
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1); 
+            
+            //Below part will be dynamic in respect of quote_obj_id
+            if(isset($project_description->quotationDetail[0]->commissions)){
+                if(sizeof($project_description->quotationDetail[0]->commissions) > 0){
+                    $commissions = $project_description->quotationDetail[0]->commissions;
+                }
+            }else{
+                $project_description->quotationDetail[0]->commissions = array();
+                $commissions = array();
+            }
+        }
+
+        array_push($commissions, $commission);
+        $project_description->quotationDetail[0]->commissions = $commissions;
+
+        $updateArray = array(
+            'project_description' => json_encode($project_description)
+        );
+
+        $val = $this->db->update('project_detail', $updateArray, array('project_id' => $commi_project_id));
+        $data['db_updated'] = $val;
+        
+        $data['type'] = 'success';
+        $data['msg'] = 'Commission Updated Properly';
+        $data['title'] = 'Commission';
+        return $data;
+
+    }
+    //end commission add
     
 
     private function _upload_files($files, $upload_path, $file_type, $user_file_name){

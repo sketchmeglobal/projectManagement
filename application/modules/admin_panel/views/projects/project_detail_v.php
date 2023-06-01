@@ -477,7 +477,10 @@
                                                             <td>22-05-2023</td>                                            
                                                             <td>1000</td>                                           
                                                             <td>Yes</td>
-                                                            <td>Edit | Delete</td>
+                                                            <td>
+                                                                <a href="javascript:void(0)" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
+                                                                <a data-offer_id="0" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>
+                                                            </td>
                                                         </tr>
                                                     </tbody> 
                                                     <tfoot>
@@ -620,30 +623,69 @@
 
                                         <div class="form-group " style="float: left;"> 
                                             <h4 style="margin-left: 15px;">Project Commission</h4>
-                                              
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">Employee</label>
-                                                <select name="company_id" id="company_id" class="form-control select2">
-                                                    <option value="0" >-- Select Employee --</option>
-                                                    <option value="1" > Mr. Jana </option>
-                                                    <option value="2" > Mr. Roy </option>
-                                                </select>
-                                            </div> 
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">Rate Type</label>
-                                                <select name="company_id" id="company_id" class="form-control select2">
-                                                    <option value="1" > Flate Rate </option>
-                                                    <option value="2" > Percentage </option>
-                                                </select>
-                                            </div> 
-                                            <div class="col-lg-3">
-                                                <label for="product_description" class="control-label">Amount</label>
-                                                <input value="0" id="offer_number" name="offer_number" type="text" placeholder="Amount" class="form-control" />
+                                            <div id="p_commission_list" class="tab-pane fade in active">
+                                                <table id="p_commission_list" class="table data-table dataTable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Sl#</th>
+                                                            <th>Employee</th>
+                                                            <th>Rate Type</th>
+                                                            <th>Amount</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Sukumar Roy</td>
+                                                            <td>Fixed</td>
+                                                            <td>99.00</td>
+                                                            <td>                                                                
+                                                                <a href="javascript:void(0)" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
+                                                                <a data-offer_id="0" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody> 
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th>Sl#</th>
+                                                            <th>Employee</th>
+                                                            <th>Rate Type</th>
+                                                            <th>Amount</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </tfoot>                                                   
+                                                </table>
                                             </div>
-                                            <div class="col-lg-3" style="margin-top: 25px;">
-                                                <label for="product_line_po" class="control-label"></label>
-                                                <input type="submit" name="offer_details_submit" class="btn btn-success text-center" id="offer_details_submit" value="Add Commission">
-                                            </div>
+                                            
+                                            <form autocomplete="off" id="form_commission_add" method="post" action="<?=base_url('admin/form-commission-add')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">  
+                                                <div class="col-lg-3">
+                                                    <label for="comi_emp_id" class="control-label">Employee</label>
+                                                    <select name="comi_emp_id" id="comi_emp_id" class="form-control select2">
+                                                        <option value="0" >-- Select Employee --</option>
+                                                        <option value="1" >Mr. Jana</option>
+                                                        <option value="2" >Mr. Roy</option>
+                                                    </select>
+                                                    <input type="hidden" name="comi_emp_name" id="comi_emp_name" value="">
+                                                </div> 
+                                                <div class="col-lg-3">
+                                                    <label for="comi_rate_type" class="control-label">Rate Type</label>
+                                                    <select name="comi_rate_type" id="comi_rate_type" class="form-control select2">
+                                                        <option value="1" > Flate Rate </option>
+                                                        <option value="2" > Percentage </option>
+                                                    </select>
+                                                    <input type="hidden" name="comi_rate_type_name" id="comi_rate_type_name" value="">
+                                                </div> 
+                                                <div class="col-lg-3">
+                                                    <label for="comi_amount" class="control-label">Amount</label>
+                                                    <input value="0" id="comi_amount" name="comi_amount" type="text" placeholder="Amount" class="form-control" />
+                                                </div>
+                                                <div class="col-lg-3" style="margin-top: 25px;">
+                                                    <label for="product_line_po" class="control-label"></label>
+                                                    <input type="submit" name="add_commi" class="btn btn-success text-center" id="add_commi" value="Add Commission">
+                                                    <input type="hidden" name="commi_project_id" id="commi_project_id" value="">
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -1083,6 +1125,50 @@
     });
     //end TAX Part
 
+    //Add commission details
+    $("#comi_emp_id").change(function(){
+        $comi_emp_name = $("#comi_emp_id :selected").text();
+        $('#comi_emp_name').val($comi_emp_name);
+    });
+    $("#comi_rate_type").change(function(){
+        $comi_rate_type_name = $("#comi_rate_type :selected").text();
+        $('#comi_rate_type_name').val($comi_rate_type_name);
+    });
+    $("#form_commission_add").validate({        
+        rules: {
+            comi_emp_name: {
+                required: true
+            },
+            comi_rate_type: {
+                required: true
+            },
+            comi_amount: {
+                required: true
+            }  
+        },
+        messages: {
+
+        }
+    });
+    $('#form_commission_add').ajaxForm({
+        beforeSubmit: function () {
+            return $("#form_commission_add").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            obj = JSON.parse(returnData);
+            notification(obj);
+			if(parseInt(obj.update_id) > 0){
+                console.log(JSON.stringify(obj));
+                if(obj.type == 'error'){
+                    console.log('Error from API')
+                }else{
+                    console.log('Document save success')
+                }            	
+			}
+		}
+    });
+    //end commission Part
+
 
 
     function updateProjectDescription(){
@@ -1106,6 +1192,7 @@
                     $('#parti_project_id').val(returnData.project_id);
                     $('#parti_bi_project_id').val(returnData.project_id);
                     $('#tax_project_id').val(returnData.project_id);
+                    $('#commi_project_id').val(returnData.project_id);
                 }
 
             },
