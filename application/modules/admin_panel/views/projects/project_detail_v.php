@@ -306,7 +306,7 @@
                                             </div> 
                                             <div class="col-lg-3" style="margin-top: 25px;">
                                                 <label for="product_line_po" class="control-label"></label>
-                                                <input type="submit" name="requirement_gather_submit" class="btn btn-success text-center" id="requirement_gather_submit" value="<?=$btn_txt?>"> 
+                                                <input type="submit" name="requirement_gather_submit" class="btn btn-success text-center" id="requirement_gather_submit" value="Add"> 
                                                 <input type="hidden" value="<?=$project_id?>" name="gr_project_id" id="gr_project_id">
                                             </div>
                                         </div>
@@ -550,7 +550,8 @@
                                                 <div class="col-lg-3" style="margin-top: 25px;">
                                                     <label for="product_line_po" class="control-label"></label>
                                                     <input type="submit" name="particular_details_submit" class="btn btn-success text-center" id="particular_details_submit" value="Add Particular">
-                                                    <input type="hidden" name="parti_project_id" id="parti_project_id"value="<?=$project_id?>">
+                                                    <input type="hidden" name="parti_project_id" id="parti_project_id" value="<?=$project_id?>">
+                                                    <input type="hidden" name="bi_obj" id="bi_obj" value="">
                                                 </div> 
                                             </form>
                                         </div> 
@@ -793,6 +794,8 @@
     
     //Quotation
     function initQuotationListTable(){
+        $('#quotation_list_table').dataTable().fnClearTable();
+        $('#quotation_list_table').dataTable().fnDestroy();
         $('#quotation_list_table').DataTable( {
             "processing": true,
             "language": {
@@ -826,6 +829,8 @@
 
     //Requirement Gather
     function initGatherRequirementTable(){
+        $('#req_gather_details_table').dataTable().fnClearTable();
+        $('#req_gather_details_table').dataTable().fnDestroy();
         $('#req_gather_details_table').DataTable( {
             "processing": true,
             "language": {
@@ -1005,6 +1010,11 @@
             obj = JSON.parse(returnData);
             notification(obj);
 			if(parseInt(obj.update_id) > 0){
+                $('#req_gather_title').val('');
+                $('#req_gather_desc').val('');
+                $('#req_gather_by_name').val('');
+
+                initGatherRequirementTable()
                 console.log(JSON.stringify(obj));
                 if(obj.type == 'error'){
                     console.log('Error from API')
@@ -1049,6 +1059,23 @@
             obj = JSON.parse(returnData);
             notification(obj);
 			if(parseInt(obj.update_id) > 0){
+                $('#bi_PartyId').val('0');
+                $('#bi_PartyId_name').val('');
+                $('#bi_QuotationNo').val('');
+                $('#bi_QuotationDate').val('');
+                $('#bi_SubPartyName').val('');
+                $('#bi_InvoiceDate').val('');
+                $('#bi_NoticeNo').val('');
+                $('#bi_PaymentMode').val('0');
+                $('#bi_PaymentModeName').val('');
+                $('#bi_InstrumentNumber').val('');
+                $('#bi_Remarks').val('');
+                $('#bi_OtherClientInfo').val('');
+                $('#bi_ImportantNotes').val('');
+
+                initQuotationListTable()
+                $('#bi_obj').val(obj.bi_obj);
+
                 console.log(JSON.stringify(obj));
                 if(obj.type == 'error'){
                     console.log('Error from API')
@@ -1098,8 +1125,19 @@
         success: function (returnData) {
             obj = JSON.parse(returnData);
             notification(obj);
-			if(parseInt(obj.update_id) > 0){
+			if(parseInt(obj.parti_obj) > 0){
                 console.log(JSON.stringify(obj));
+
+                $('#par_TaskType').val('0');
+                $('#par_TaskType_name').val('');
+                $('#par_HSNCode').val('');
+                $('#par_Duration').val('');
+                $('#par_StartDate').val('');
+                $('#par_Amount').val('');
+                $('#par_Taxable').val('0');
+
+                //Populate particular table after this part
+                
                 if(obj.type == 'error'){
                     console.log('Error from API')
                 }else{

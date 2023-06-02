@@ -206,6 +206,8 @@ class Projects_m extends CI_Model {
             $project_description1 = $result[0]->project_description;
             $project_description = json_decode($project_description1);            
             $requirementDetail = $project_description->requirementDetail;
+        }else{
+            $requirementDetail = array();
         }
         
         if($gr_project_id > 0){
@@ -248,6 +250,8 @@ class Projects_m extends CI_Model {
         $data['type'] = 'success';
         $data['msg'] = 'Requirement Updated Properly';
         $data['title'] = 'Requirement';
+        $data['update_id'] = $gr_project_id;
+
         return $data;
 
     }//end
@@ -258,7 +262,7 @@ class Projects_m extends CI_Model {
         $status = true;
         //$old_quote_obj_id = '10000';
 
-        $parti_bi_obj = rand(1000, 9999);
+        $bi_obj = rand(1000, 9999);
         $parti_bi_project_id = $this->input->post('parti_bi_project_id'); 
         $bi_PartyId = $this->input->post('bi_PartyId'); 
         $bi_PartyId_name = $this->input->post('bi_PartyId_name'); 
@@ -275,7 +279,7 @@ class Projects_m extends CI_Model {
         $bi_ImportantNotes = $this->input->post('bi_ImportantNotes'); 
 
         $quotation_bi = new stdClass();
-        $quotation_bi->parti_bi_obj = $parti_bi_obj;
+        $quotation_bi->bi_obj = $bi_obj;
         $quotation_bi->bi_PartyId = $bi_PartyId;
         $quotation_bi->bi_PartyId_name = $bi_PartyId_name;
         $quotation_bi->bi_QuotationNo = $bi_QuotationNo;
@@ -294,19 +298,14 @@ class Projects_m extends CI_Model {
         $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $parti_bi_project_id))->result();
         if(count($result) > 0){
             $project_description1 = $result[0]->project_description;
-            $project_description = json_decode($project_description1);   
-        }
-
-        $singleQuotation = new stdClass();
-        $singleQuotation->quotation_bi = $quotation_bi;
-        $quote_obj_id = rand(10000, 99999);
-        $singleQuotation->quote_obj_id = $quote_obj_id;
-        if(sizeof($project_description->quotationDetail) > 0){
-
+            $project_description = json_decode($project_description1); 
+            $quotationDetail = $project_description->quotationDetail;  
         }else{
-            array_push($project_description->quotationDetail, $singleQuotation);
+            $quotationDetail = array();
         }
 
+        array_push($quotationDetail, $quotation_bi);
+        $project_description->quotationDetail = $quotationDetail; 
         $updateArray = array(
             'project_description' => json_encode($project_description)
         );
@@ -317,7 +316,8 @@ class Projects_m extends CI_Model {
         $data['type'] = 'success';
         $data['msg'] = 'Basic Info. Updated Properly';
         $data['title'] = 'Quotation';
-        $data['quote_obj_id'] = $quote_obj_id;
+        $data['bi_obj'] = $bi_obj;
+        $data['update_id'] = $parti_bi_project_id;
         return $data;
 
     }
@@ -329,6 +329,7 @@ class Projects_m extends CI_Model {
         $status = true;
 
         $parti_project_id = $this->input->post('parti_project_id'); 
+        $bi_obj = $this->input->post('bi_obj'); 
         $par_TaskType = $this->input->post('par_TaskType'); 
         $par_TaskType_name = $this->input->post('par_TaskType_name'); 
         $par_HSNCode = $this->input->post('par_HSNCode');      
@@ -354,20 +355,25 @@ class Projects_m extends CI_Model {
         if(count($result) > 0){
             $project_description1 = $result[0]->project_description;
             $project_description = json_decode($project_description1); 
-            
-            //Below part will be dynamic in respect of quote_obj_id
-            if(isset($project_description->quotationDetail[0]->particulars)){
-                if(sizeof($project_description->quotationDetail[0]->particulars) > 0){
-                    $particulars = $project_description->quotationDetail[0]->particulars;
-                }
-            }else{
-                $project_description->quotationDetail[0]->particulars = array();
-                $particulars = array();
-            }
-        }
+            $quotationDetail = $project_description->quotationDetail;
 
-        array_push($particulars, $particular);
-        $project_description->quotationDetail[0]->particulars = $particulars;
+            for($i = 0; $i < sizeof($quotationDetail); $i++){
+                if($quotationDetail[$i]->bi_obj == $bi_obj){
+                    if(isset($quotationDetail[$i]->particulars)){
+                        $particulars = $quotationDetail[$i]->particulars;
+                    }else{
+                        $quotationDetail[$i]->particulars = array();
+                        $particulars = array();
+                    }//end if
+                    array_push($particulars, $particular);
+
+                    $quotationDetail[$i]->particulars = $particulars;
+
+                }//end if
+            }//end for
+        }
+        
+        $project_description->quotationDetail = $quotationDetail;
 
         $updateArray = array(
             'project_description' => json_encode($project_description)
@@ -379,6 +385,7 @@ class Projects_m extends CI_Model {
         $data['type'] = 'success';
         $data['msg'] = 'Particulars Updated Properly';
         $data['title'] = 'Particulars';
+        $data['parti_obj'] = $parti_obj;
         return $data;
 
     }
@@ -1581,15 +1588,15 @@ class Projects_m extends CI_Model {
 
         if(sizeof($quotationDetail) > 0){
             foreach($quotationDetail as $key => $value){
-                $PartyName = $value->quotation_bi->bi_PartyId_name;
-                $QuotationNo = $value->quotation_bi->bi_QuotationNo;
-                $QuotationDate = $value->quotation_bi->bi_QuotationDate;
+                $PartyName = $value->bi_PartyId_name;
+                $QuotationNo = $value->bi_QuotationNo;
+                $QuotationDate = $value->bi_QuotationDate;
 
                 $nestedData['PartyName'] = $PartyName;
                 $nestedData['QuotationNo'] = $QuotationNo;
                 $nestedData['QuotationDate'] = date("d-m-Y", strtotime($QuotationDate));
                 $nestedData['action'] = '<a href="javascript:void(0)" data-offer_id="0" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
-                <a href="'.$value->quote_obj_id.'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
+                <a href="'.$value->bi_obj.'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
                 <a data-offer_id="0" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
                 array_push($data, $nestedData);
