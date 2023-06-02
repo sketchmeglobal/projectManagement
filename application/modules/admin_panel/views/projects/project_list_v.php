@@ -229,7 +229,7 @@
                     if($this->session->usertype != 3){
                     ?>
                         <a href="<?= base_url('admin/project-detail/0') ?>" class="btn btn-success  mx-auto"><i class="fa fa-plus"></i> Add <?=$menu?></a>
-                        <a href="<?= base_url('admin/offers?show=closed') ?>" class="btn btn-default mx-auto"><i class="fa fa-eye"></i> Closed <?=$menu?></a>
+                        <!-- <a href="<?= base_url('admin/offers?show=closed') ?>" class="btn btn-default mx-auto"><i class="fa fa-eye"></i> Closed <?=$menu?></a> -->
                     <?php
                     }
                     ?>

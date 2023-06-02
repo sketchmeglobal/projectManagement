@@ -69,7 +69,9 @@
 
             <!-- Start project details part -->
             <div class="row">
-
+<?php
+    //echo json_encode($project_description);
+?>
                 <div class="col-md-12">
                     <section class="panel">
                         <header class="panel-heading ">
@@ -83,16 +85,23 @@
                                 <div class="form-group "> 
                                     <div class="col-lg-3">
                                         <label for="project_title" class="control-label">Title</label>
-                                        <input type="text" name="project_title" id="project_title" class="form-control">
+                                        <input type="text" name="project_title" id="project_title" class="form-control" value="<?=$project_description->projectDetail->title?>">
                                     </div>
 
                                     <div class="col-lg-3">
                                         <label for="project_description" class="control-label">Description</label>
-                                        <textarea name="project_description" id="project_description" class="form-control"></textarea>
+                                        <textarea name="project_description" id="project_description" class="form-control"><?=$project_description->projectDetail->description?></textarea>
                                     </div> 
 
                                     <div class="col-lg-3">
-                                        <input type="submit" name="project_details_submit" class="btn btn-success text-center" id="project_details_submit" value="Add">
+                                        <?php
+                                        if($project_id > 0){
+                                            $btn_txt = 'Update';
+                                        }else{
+                                            $btn_txt = 'Add';
+                                        }
+                                        ?>
+                                        <input type="submit" name="project_details_submit" class="btn btn-success text-center" id="project_details_submit" value="<?=$btn_txt?>">
                                         <input type="hidden" value="<?=$project_id?>" name="project_id" id="project_id">
                                     </div>
                                 </div>  
@@ -146,7 +155,8 @@
 
                                 <div id="contact_details_add" class="tab-pane fade">
                                     <br/>
-                                    <div class="form">
+                                    <div class="form">                                       
+                                    <form autocomplete="off" id="add_contact_form" method="post" action="<?=base_url('admin/form-add-contact')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
                                         <div class="form-group "> 
                                             <div class="col-lg-3">
                                                 <label for="cont_person_name" class="control-label">Contact Person Name</label>
@@ -174,9 +184,11 @@
                                             </div>  
                                             <div class="col-lg-3" style="margin-top: 25px;">
                                                 <label for="product_line_po" class="control-label"></label>
-                                                <input type="submit" name="contact_details_submit" class="btn btn-success text-center" id="contact_details_submit" value="Add">
+                                                <input type="submit" name="contact_details_submit" class="btn btn-success text-center" id="contact_details_submit" value="Add"> 
+                                                <input type="hidden" value="<?=$project_id?>" name="cont_project_id" id="cont_project_id">
                                             </div>
                                         </div>
+                                    </form>
                                     </div>
                                 </div>
 
@@ -294,7 +306,7 @@
                                             </div> 
                                             <div class="col-lg-3" style="margin-top: 25px;">
                                                 <label for="product_line_po" class="control-label"></label>
-                                                <input type="submit" name="requirement_gather_submit" class="btn btn-success text-center" id="requirement_gather_submit" value="Add"> 
+                                                <input type="submit" name="requirement_gather_submit" class="btn btn-success text-center" id="requirement_gather_submit" value="<?=$btn_txt?>"> 
                                                 <input type="hidden" value="<?=$project_id?>" name="gr_project_id" id="gr_project_id">
                                             </div>
                                         </div>
@@ -369,9 +381,9 @@
                                     <table id="quotation_list_table" class="table data-table dataTable" style="width: 100%;">
                                         <thead>
                                             <tr>
-                                                <th>Title</th>
-                                                <th>Description</th>
-                                                <th>Attachment</th>
+                                                <th>Party Name</th>
+                                                <th>Quotation No</th>
+                                                <th>Quotation Date</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -447,7 +459,7 @@
                                                 <div class="col-lg-3" style="margin-top: 25px;">
                                                     <label for="basic_info_submit" class="control-label"></label>
                                                     <input type="submit" name="basic_info_submit" class="btn btn-success text-center" id="basic_info_submit" value="Add Basic Info.">
-                                                    <input type="hidden" name="parti_bi_project_id" id="parti_bi_project_id" value="">
+                                                    <input type="hidden" name="parti_bi_project_id" id="parti_bi_project_id" value="<?=$project_id?>">
                                                 </div> 
                                             </div>
                                         </form>
@@ -538,7 +550,7 @@
                                                 <div class="col-lg-3" style="margin-top: 25px;">
                                                     <label for="product_line_po" class="control-label"></label>
                                                     <input type="submit" name="particular_details_submit" class="btn btn-success text-center" id="particular_details_submit" value="Add Particular">
-                                                    <input type="hidden" name="parti_project_id" id="parti_project_id" value="">
+                                                    <input type="hidden" name="parti_project_id" id="parti_project_id"value="<?=$project_id?>">
                                                 </div> 
                                             </form>
                                         </div> 
@@ -616,7 +628,7 @@
                                                 <div class="col-lg-3" style="margin-top: 25px;">
                                                     <label for="tax_details_submit" class="control-label"></label>
                                                     <input type="submit" name="tax_details_submit" class="btn btn-success text-center" id="tax_details_submit" value="Update Tax">
-                                                    <input type="hidden" name="tax_project_id" id="tax_project_id" value="">
+                                                    <input type="hidden" name="tax_project_id" id="tax_project_id" value="<?=$project_id?>">
                                                 </div> 
                                             </form>
                                         </div>
@@ -683,7 +695,7 @@
                                                 <div class="col-lg-3" style="margin-top: 25px;">
                                                     <label for="product_line_po" class="control-label"></label>
                                                     <input type="submit" name="add_commi" class="btn btn-success text-center" id="add_commi" value="Add Commission">
-                                                    <input type="hidden" name="commi_project_id" id="commi_project_id" value="">
+                                                    <input type="hidden" name="commi_project_id" id="commi_project_id" value="<?=$project_id?>">
                                                 </div>
                                             </form>
                                         </div>
@@ -774,8 +786,84 @@
     
     $(document).ready(function() {
         initProjectDescription()
+        initContactTable()
+        initGatherRequirementTable()
+        initQuotationListTable()
+    } );
+    
+    //Quotation
+    function initQuotationListTable(){
+        $('#quotation_list_table').DataTable( {
+            "processing": true,
+            "language": {
+                processing: '<img src="<?=base_url('assets/img/ellipsis.gif')?>"><span class="sr-only">Processing...</span>',
+            },
+            "serverSide": true,
+            "ajax": {
+                "url": "<?=base_url('admin/ajax-quotation-details-table-data')?>",
+                "type": "POST",
+                "dataType": "json",
+                data: {
+                    project_id: function () {
+                        return $("#project_id").val();
+                    },
+                },
+            },
+            //will get these values from JSON 'data' variable
+            "columns": [
+                { "data": "PartyName" },
+                { "data": "QuotationNo" },
+                { "data": "QuotationDate" },
+                { "data": "action" },
+            ],
+            //column initialisation properties
+            "columnDefs": [{
+                "targets": [0,1,2,3],
+                "orderable": false,
+            }]
+        });
+    }//end fun
 
-        //Contact Detail Table
+    //Requirement Gather
+    function initGatherRequirementTable(){
+        $('#req_gather_details_table').DataTable( {
+            "processing": true,
+            "language": {
+                processing: '<img src="<?=base_url('assets/img/ellipsis.gif')?>"><span class="sr-only">Processing...</span>',
+            },
+            "serverSide": true,
+            "ajax": {
+                "url": "<?=base_url('admin/ajax-requirementgather-details-table-data')?>",
+                "type": "POST",
+                "dataType": "json",
+                data: {
+                    project_id: function () {
+                        return $("#project_id").val();
+                    },
+                },
+            },
+            //will get these values from JSON 'data' variable
+            "columns": [
+                { "data": "Title" },
+                { "data": "Description" },
+                { "data": "Employee" },
+                { "data": "Date" },
+                { "data": "Attachment" },
+                { "data": "action" },
+            ],
+            //column initialisation properties
+            "columnDefs": [{
+                "targets": [0,1,2,3],
+                "orderable": false,
+            }]
+        });
+    }//end fun
+
+    //Contact Detail Table
+    function initContactTable(){
+        $('#contact_details_table').dataTable().fnClearTable();
+        $('#contact_details_table').dataTable().fnDestroy();
+        
         $('#contact_details_table').DataTable( {
             "processing": true,
             "language": {
@@ -787,8 +875,8 @@
                 "type": "POST",
                 "dataType": "json",
                 data: {
-                    offer_id: function () {
-                        return $("#offer_id").val();
+                    project_id: function () {
+                        return $("#project_id").val();
                     },
                 },
             },
@@ -808,71 +896,7 @@
                 "orderable": false,
             }]
         });
-
-        //Requirement Gather
-        $('#req_gather_details_table').DataTable( {
-            "processing": true,
-            "language": {
-                processing: '<img src="<?=base_url('assets/img/ellipsis.gif')?>"><span class="sr-only">Processing...</span>',
-            },
-            "serverSide": true,
-            "ajax": {
-                "url": "<?=base_url('admin/ajax-requirementgather-details-table-data')?>",
-                "type": "POST",
-                "dataType": "json",
-                data: {
-                    offer_id: function () {
-                        return $("#offer_id").val();
-                    },
-                },
-            },
-            //will get these values from JSON 'data' variable
-            "columns": [
-                { "data": "Title" },
-                { "data": "Description" },
-                { "data": "Employee" },
-                { "data": "Date" },
-                { "data": "Attachment" },
-                { "data": "action" },
-            ],
-            //column initialisation properties
-            "columnDefs": [{
-                "targets": [0,1,2,3],
-                "orderable": false,
-            }]
-        });
-
-        //Quotation
-        $('#quotation_list_table').DataTable( {
-            "processing": true,
-            "language": {
-                processing: '<img src="<?=base_url('assets/img/ellipsis.gif')?>"><span class="sr-only">Processing...</span>',
-            },
-            "serverSide": true,
-            "ajax": {
-                "url": "<?=base_url('admin/ajax-quotation-details-table-data')?>",
-                "type": "POST",
-                "dataType": "json",
-                data: {
-                    offer_id: function () {
-                        return $("#offer_id").val();
-                    },
-                },
-            },
-            //will get these values from JSON 'data' variable
-            "columns": [
-                { "data": "Title" },
-                { "data": "Description" },
-                { "data": "Attachment" },
-                { "data": "action" },
-            ],
-            //column initialisation properties
-            "columnDefs": [{
-                "targets": [0,1,2,3],
-                "orderable": false,
-            }]
-        });
-    } );
+    }//end fun
 
     //Initiate Project Description 
     function initProjectDescription(){
@@ -909,42 +933,47 @@
     })//end fun
 
     //Contact Details Part
-    $('#contact_details_submit').click(function(){
-        $cont_person_name = $('#cont_person_name').val();
-        $org_name = $('#org_name').val();
-        $contact_email = $('#contact_email').val();
-        $contact_first_ph = $('#contact_first_ph').val();
-        $contact_second_ph = $('#contact_second_ph').val();
-        $contact_persn_address = $('#contact_persn_address').val();
+    $("#add_contact_form").validate({        
+        rules: {
+            req_gather_title: {
+                required: true
+            },
+            requirementFile: {
+                required: true
+            }   
+        },
+        messages: {
 
-        $('#myLoading').show();
-
-        if($cont_person_name == ''){
-            alert('Please enter cont person name');
-            $('#cont_person_name').focus();
-            $('#myLoading').hide();
-        }else if($contact_first_ph == ''){
-            alert('Please enter 1st phone number');
-            $('#contact_first_ph').focus();
-            $('#myLoading').hide();
-        }else{        
-            $contact_obj = getTransactionId();
-            $contactDetail = {
-                contact_obj: $contact_obj,
-                cont_person_name: $cont_person_name,
-                org_name: $org_name,
-                contact_email: $contact_email,
-                contact_first_ph: $contact_first_ph,
-                contact_second_ph: $contact_second_ph,
-                contact_persn_address: $contact_persn_address
-            }
-
-            $project_description.contactDetail.push($contactDetail)
-            updateProjectDescription()
-            $('#myLoading').hide();
         }
-    })//end fun
-    
+    });
+    $('#add_contact_form').ajaxForm({
+        beforeSubmit: function () {
+            return $("#add_contact_form").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            //console.log(returnData);
+            obj = JSON.parse(returnData);
+            notification(obj);
+			if(parseInt(obj.update_id) > 0){
+                $('#cont_person_name').val('');
+                $('#org_name').val('');
+                $('#contact_email').val('');
+                $('#contact_first_ph').val('');
+                $('#contact_second_ph').val('');
+                $('#contact_persn_address').val('');
+                
+                initContactTable()
+
+                console.log(JSON.stringify(obj));
+                if(obj.type == 'error'){
+                    console.log('Error from API')
+                }else{
+                    console.log('Document save success')
+                }            	
+			}
+		}
+    });
+    //Contact Details Part end
 
     
     $("#req_gather_by").change(function(){
@@ -1188,6 +1217,7 @@
                 if(returnData.type == 'success'){
                     console.log('project_id: '+returnData.project_id);
                     $('#project_id').val(returnData.project_id);
+                    $('#cont_project_id').val(returnData.project_id);
                     $('#gr_project_id').val(returnData.project_id);
                     $('#parti_project_id').val(returnData.project_id);
                     $('#parti_bi_project_id').val(returnData.project_id);

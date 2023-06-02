@@ -17,19 +17,57 @@ class Projects_m extends CI_Model {
         return array('page'=>'projects/project_list_v', 'data'=>$data);   
     }
 
-    public function project_detail($project_id) {
+    public function ajax_project_table_data($offer_type) {
+        $usertype = $this->session->usertype;
+        $user_id = $this->session->user_id;
+        $data = array();
 
+        $p_data = $this->db->get('project_detail')->result();
+        foreach($p_data as $index => $val){
+            $project_id = $val->project_id;
+            $created_at = $val->created_at;
+            $project_description = json_decode($val->project_description);
+            $project_name = $project_description->projectDetail->title;        
+
+            $nestedData['sl_no'] = $project_id;
+            $nestedData['project_name'] = $project_name;
+            $nestedData['create_dt'] = date("d-m-Y", strtotime($created_at));
+            $nestedData['action'] = '<a href="javascript:void(0)" data-offer_id="0" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
+            <a href="'. base_url('admin/project-detail/'.$project_id).'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
+            <a data-offer_id="0" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+                        
+            array_push($data, $nestedData);
+        }//end foreach
+
+        $totalData = sizeof($nestedData);
+        $totalFiltered = sizeof($nestedData);
+
+        $json_data = array(
+            "recordsTotal"    => sizeof($data),
+            "recordsFiltered" => sizeof($data),
+            "data"            => $data
+        );
+
+        return $json_data;
+    } 
+
+    public function project_detail($project_id) {
         $usertype = $this->session->usertype;
         $user_id = $this->session->user_id;
 
+        $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
+        //print_r($result);
+
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1);
+        }
+        //echo json_encode($project_description);
+        //die; 
         $data['title'] = 'Edit Offer';
         $data['menu'] = 'Offers';
-        $data['project_id'] = $project_id;     
-
-        
-        
-
-        /*This for Offer header End*/
+        $data['project_id'] = $project_id;  
+        $data['project_description'] = $project_description; 
 
         return array('page'=>'projects/project_detail_v', 'data'=>$data);
     }
@@ -37,6 +75,7 @@ class Projects_m extends CI_Model {
     public function ajax_update_project_document(){
         $project_id = $this->input->post('project_id');
         $project_description = $this->input->post('project_description');
+        $project_description_form = json_decode($project_description);
         $created_by = $this->session->user_id;
 
         if($project_id == 0){
@@ -50,9 +89,18 @@ class Projects_m extends CI_Model {
             }
         }else{
             // update
+            $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description_new = json_decode($project_description1);            
+                $projectDetail = $project_description_new->projectDetail;
+                $projectDetail->title = $project_description_form->projectDetail->title;
+                $projectDetail->description = $project_description_form->projectDetail->description;
+                $project_description_new->projectDetail = $projectDetail;
+            }
 
             $updateArray = array(
-                'project_description' => $project_description
+                'project_description' => json_encode($project_description_new)
             );
             if($this->db->update('project_detail', $updateArray, array('project_id' => $project_id))){
                 $data['type'] = 'success';
@@ -68,6 +116,62 @@ class Projects_m extends CI_Model {
         return $data;
         
     }//end fun
+    
+
+    //Contact details part
+    public function form_add_contact(){  
+        $daya = array();
+        $status = true;
+
+        $cont_project_id = $this->input->post('cont_project_id');
+        $cont_person_name = $this->input->post('cont_person_name');
+        $org_name = $this->input->post('org_name');
+        $contact_email = $this->input->post('contact_email');
+        $contact_first_ph = $this->input->post('contact_first_ph');
+        $contact_second_ph = $this->input->post('contact_second_ph');
+        $contact_persn_address = $this->input->post('contact_persn_address');
+
+        $created_by = $this->session->user_id;
+        $contact_obj = rand(1000, 9999);
+        $files = array();
+
+        $contact_list_obj = new stdClass();
+        $contact_list_obj->contact_obj = $contact_obj;
+        $contact_list_obj->cont_person_name = $cont_person_name;
+        $contact_list_obj->org_name = $org_name;
+        $contact_list_obj->contact_email = $contact_email;
+        $contact_list_obj->contact_first_ph = $contact_first_ph;
+        $contact_list_obj->contact_second_ph = $contact_second_ph;
+        $contact_list_obj->contact_persn_address = $contact_persn_address;
+
+        //check existing data
+        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $cont_project_id))->result();
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1);            
+            $contactDetail = $project_description->contactDetail;
+        }else{
+            $contactDetail = array();
+        }
+                
+        array_push($contactDetail, $contact_list_obj);
+        $project_description->contactDetail = $contactDetail;
+
+        $updateArray = array(
+            'project_description' => json_encode($project_description)
+        );
+
+        $val = $this->db->update('project_detail', $updateArray, array('project_id' => $cont_project_id));
+        $data['file_updated'] = $val;      
+        
+        $data['type'] = 'success';
+        $data['msg'] = 'Contact added Properly';
+        $data['title'] = 'Contact';
+        $data['update_id'] = $cont_project_id;
+        return $data;
+
+    }//end contacts
+
     
 
     //Requirement gathering part
@@ -93,6 +197,7 @@ class Projects_m extends CI_Model {
         $requirementDetail_obj->req_gather_desc = $req_gather_desc;
         $requirementDetail_obj->req_gather_by = $req_gather_by;
         $requirementDetail_obj->req_gather_by_name = $req_gather_by_name;
+        $requirementDetail_obj->req_gather_date = $req_gather_date;
         $requirementDetail_obj->files = [];
 
         //check existing data
@@ -657,185 +762,6 @@ class Projects_m extends CI_Model {
         }
         return $data;
     }
-
-    public function ajax_project_table_data($offer_type) {
-
-        $usertype = $this->session->usertype;
-        $user_id = $this->session->user_id;
-        //actual db table column names
-        
-        /****
-        if($usertype == 2){
-             $column_orderable = array(
-            0 => 'offer_name',
-            1 => 'offer_number',
-            2 => 'offer_date',
-            3 => 'offer_date',
-            4 => 'offers_resource.resource_id'
-        );
-        }else{
-            $column_orderable = array(
-            0 => 'offer_name',
-            1 => 'offer_number',
-            2 => 'offer_date',
-            3 => 'offer_date',
-            4 => 'offers.resource_id'
-        );
-        }
-        
-        // Set searchable column fields
-        $column_search = array('offer_name','offer_number','acc_master.name');
-        // $column_search = array('co_no');
-
-        $limit = $this->input->post('length');
-        $start = $this->input->post('start');
-        
-        
-        $order = $column_orderable[$this->input->post('order')[0]['column']];
-        $dir = $this->input->post('order')[0]['dir'];
-        $search = trim($this->input->post('search')['value']);
-
-        $rs = $this->_offer_common_query($offer_type,$usertype, $user_id);
-
-        $totalData = count((array)$rs);
-        $totalFiltered = $totalData;
-        // date wise filter
-        $searchByFromdate =  $this->input->post('searchByFromdate');
-        $searchByTodate =  $this->input->post('searchByTodate');
-
-        //if not searching for anything
-        if(empty($search)) {
-            if(empty($searchByFromdate) && empty($searchByTodate)){
-                $this->db->limit($limit, $start);
-                $this->db->order_by($order, $dir);
-                $rs = $this->_offer_common_query($offer_type,$usertype, $user_id);
-            }
-
-            if (!empty($searchByFromdate) && !empty($searchByTodate)) {
-                $this->db->start_cache();
-                $this->db->where('offer_date BETWEEN "'. date('Y-m-d', strtotime($searchByFromdate)). '" and "'. date('Y-m-d', strtotime($searchByTodate)).'"');
-                $this->db->stop_cache();
-
-                
-
-                $rs = $this->_offer_common_query($offer_type,$usertype, $user_id);
-
-                $this->db->limit($limit, $start);
-                $this->db->order_by($order, $dir);
-                //$totalData = count((array)$rs);
-                $totalFiltered = count((array)$rs);
-
-                $rs = $this->_offer_common_query($offer_type,$usertype, $user_id);
-                //echo $this->db->last_query();
-                //die();
-            }
-
-            //echo $this->db->last_query();
-            //die();
-            
-        }else {
-
-            //if searching for something
-
-            $this->db->start_cache();
-            // loop searchable columns
-            $i = 0;
-            foreach($column_search as $item){
-                // first loop
-                if($i===0){
-                    $this->db->group_start(); //open bracket
-                    $this->db->like($item, $search);
-                }else{
-                    $this->db->or_like($item, $search);
-                }
-                // last loop
-                if(count((array)$column_search) - 1 == $i){
-                    $this->db->group_end(); //close bracket
-                }
-                $i++;
-            }
-
-            if (!empty($searchByFromdate) && !empty($searchByTodate)) {
-                $this->db->where('offer_date BETWEEN "'. date('Y-m-d', strtotime($searchByFromdate)). '" and "'. date('Y-m-d', strtotime($searchByTodate)).'"');
-                //echo $this->db->last_query();
-                //die();
-            }
-            
-            $this->db->stop_cache();
-
-            $rs = $this->_offer_common_query($offer_type,$usertype, $user_id);
-            $this->db->limit($limit, $start);
-            $this->db->order_by($order, $dir);
-            $totalFiltered = count((array)$rs);
-
-            $rs = $this->_offer_common_query($offer_type,$usertype, $user_id);
-
-            $this->db->flush_cache();
-
-           //echo $this->db->last_query();
-            //die();
-        }
-        
-        //echo $this->db->last_query();
-        //die();
-
-        $data = array();
-
-        foreach ($rs as $val) {
-
-            // if($val->img){$img='<img src="'.base_url('assets/admin_panel/img/article_img/'.$val->img).'" width="50">';} else{$img='';}
-            if( $val->status == '1' ){ $status ='Enable'; } else{ $status='Disable'; }
-            $wip = ($val->resource_edit_status == 1) ? 'Not finalised' : 'Finalised';
-            $today = date('d-m-Y');
-            $date1 = new DateTime($val->offer_date);
-            $date2 = new DateTime($today);
-            $diff = $date1->diff($date2);
-            if($diff->y == 0 and $diff->m != 0){
-                $age = $diff->m . ' months and ' . $diff->d . ' days';
-            }else if($diff->y == 0 and $diff->m == 0){
-                $age = $diff->d . ' days';
-            }else{
-                $age = $diff->y . ' year ' . $diff->m . ' months and ' . $diff->d . ' days';
-            }
-            // print_r($diff->d);die;
-
-            $nestedData['offer_name'] = $val->offer_name;
-            $nestedData['offer_no'] = $val->offer_number;
-            $nestedData['offer_date'] = date("d-m-Y", strtotime($val->offer_date));
-            $nestedData['offer_age'] = $age;
-            $nestedData['supplier_name'] = $val->supplier_name . ' ['.$val->supplier_code.']';
-            $nestedData['country'] = $val->name . ' ['.$val->iso.']';
-            $nestedData['currency'] = $val->currency . ' ['.$val->currency_code.']';
-            $nestedData['resource_developer'] = $val->username . ' ('. $val->firstname . ' ' . $val->lastname .')';
-            $nestedData['remark1'] = $val->remark;
-            $nestedData['inspection_clause'] = '<label>'.substr($val->inspection_clause, 0, 10) . '</label><span class="full hidden">'.$val->inspection_clause.'</span>';
-            $nestedData['wip'] = $wip;
-            $nestedData['coi'] = $val->cloned_offer_id;
-
-            $nestedData['action'] = $this->_offer_common_actions($usertype, $val->resource_edit_status, $val->at_id, $val->offer_id, $val->offer_name, $val->offer_number);
-            // echo '<pre>', print_r($rs), '</pre>'; 
-        }
-        **********/
-
-        $nestedData['sl_no'] = '1';
-        $nestedData['project_name'] = 'Sea Food';
-        $nestedData['create_dt'] = date("d-m-Y");
-        $nestedData['action'] = '<a href="javascript:void(0)" data-offer_id="0" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
-        <a href="" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
-        <a data-offer_id="0" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';//$this->_offer_common_actions(0, 0, 0, 0, '', 0);
-        $data[] = $nestedData;
-        $totalData = sizeof($nestedData);
-        $totalFiltered = sizeof($nestedData);
-
-        $json_data = array(
-            "draw"            => intval($this->input->post('draw')),
-            "recordsTotal"    => intval($totalData),
-            "recordsFiltered" => intval($totalFiltered),
-            "data"            => $data
-        );
-
-        return $json_data;
-    } 
 
 
     private function _offer_common_query($offer_type,$usertype, $user_id){
@@ -1564,22 +1490,37 @@ class Projects_m extends CI_Model {
 
     //Contact Details
     public function ajax_contact_details_table_data() {     
+        $project_id = $this->input->post('project_id');
+        $data = array();
 
-        $nestedData['ContactPersonName'] = 'Mr. D.K Mehata';
-        $nestedData['OrganizationName'] = 'Organization Enterprise';
-        $nestedData['Email'] = 'contact@mail.com';
-        $nestedData['Phone1st'] = '9876543201';
-        $nestedData['Phone2nd'] = '0123654789';
-        $nestedData['Address'] = '110 SN Banerjee Road';
-        $nestedData['action'] = '<a href="javascript:void(0)" data-offer_id="0" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
-        <a href="" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
-        <a data-offer_id="0" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+        $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
+        //print_r($result);
 
-        $data[] = $nestedData;
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1);
+            $contactDetail = $project_description->contactDetail;
+        }
+
+        if(sizeof($contactDetail) > 0){
+            foreach($contactDetail as $key => $value){
+                $nestedData['ContactPersonName'] = $value->cont_person_name;
+                $nestedData['OrganizationName'] = $value->org_name;
+                $nestedData['Email'] = $value->contact_email;
+                $nestedData['Phone1st'] = $value->contact_first_ph;
+                $nestedData['Phone2nd'] = $value->contact_second_ph;
+                $nestedData['Address'] = $value->contact_persn_address;
+                $nestedData['action'] = '<a href="javascript:void(0)" data-offer_id="0" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
+                <a href="'.$value->contact_obj.'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
+                <a data-offer_id="0" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+
+                array_push($data, $nestedData);
+            }//end foreach
+        }//end if
+
         $json_data = array(
-            "draw"            => 1, //intval($this->input->post('draw')),
-            "recordsTotal"    => 1, //intval($totalData),
-            "recordsFiltered" => 1, //intval($totalFiltered),
+            "recordsTotal"    => sizeof($data),
+            "recordsFiltered" => sizeof($data),
             "data"            => $data
         );
         
@@ -1587,22 +1528,37 @@ class Projects_m extends CI_Model {
     }   
 
     //Requirement Gathering Part
-    public function ajax_requirementgather_details_table_data() {  
+    public function ajax_requirementgather_details_table_data() {     
+        $project_id = $this->input->post('project_id');
+        $data = array();
 
-        $nestedData['Title'] = '1st Requirement';
-        $nestedData['Description'] = 'This is initial Requirement';
-        $nestedData['Employee'] = 'Mr. Paul';
-        $nestedData['Date'] = '22-05-2023';
-        $nestedData['Attachment'] = '<a href="" download><i class="fa fa-download"></i></a>';
-        $nestedData['action'] = '<a href="javascript:void(0)" data-offer_id="0" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
-        <a href="" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
-        <a data-offer_id="0" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+        $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
+        //print_r($result);
 
-        $data[] = $nestedData;
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1);
+            $requirementDetail = $project_description->requirementDetail;
+        }
+
+        if(sizeof($requirementDetail) > 0){
+            foreach($requirementDetail as $key => $value){
+                $nestedData['Title'] = $value->req_gather_title;
+                $nestedData['Description'] = $value->req_gather_desc;
+                $nestedData['Employee'] = $value->req_gather_by_name;
+                $nestedData['Date'] = date("d-m-Y", strtotime($value->req_gather_date));
+                $nestedData['Attachment'] = '';
+                $nestedData['action'] = '<a href="javascript:void(0)" data-offer_id="0" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
+                <a href="'.$value->doc_obj.'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
+                <a data-offer_id="0" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+
+                array_push($data, $nestedData);
+            }//end foreach
+        }//end if
+
         $json_data = array(
-            "draw"            => 1, //intval($this->input->post('draw')),
-            "recordsTotal"    => 1, //intval($totalData),
-            "recordsFiltered" => 1, //intval($totalFiltered),
+            "recordsTotal"    => sizeof($data),
+            "recordsFiltered" => sizeof($data),
             "data"            => $data
         );
         
@@ -1610,22 +1566,41 @@ class Projects_m extends CI_Model {
     }  
 
     //Quotation part
-    public function ajax_quotation_details_table_data() {    
-           
-        $nestedData['Title'] = '1st Requirement';
-        $nestedData['Description'] = 'This is initial Requirement';
-        $nestedData['Attachment'] = '<a href="" download><i class="fa fa-download"></i></a>';
-        $nestedData['action'] = '<a href="javascript:void(0)" data-offer_id="0" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
-        <a href="" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
-        <a data-offer_id="0" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+    public function ajax_quotation_details_table_data() {       
+        $project_id = $this->input->post('project_id');
+        $data = array();
 
-        $data[] = $nestedData;
+        $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
+        //print_r($result);
+
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1);
+            $quotationDetail = $project_description->quotationDetail;
+        }
+
+        if(sizeof($quotationDetail) > 0){
+            foreach($quotationDetail as $key => $value){
+                $PartyName = $value->quotation_bi->bi_PartyId_name;
+                $QuotationNo = $value->quotation_bi->bi_QuotationNo;
+                $QuotationDate = $value->quotation_bi->bi_QuotationDate;
+
+                $nestedData['PartyName'] = $PartyName;
+                $nestedData['QuotationNo'] = $QuotationNo;
+                $nestedData['QuotationDate'] = date("d-m-Y", strtotime($QuotationDate));
+                $nestedData['action'] = '<a href="javascript:void(0)" data-offer_id="0" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
+                <a href="'.$value->quote_obj_id.'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
+                <a data-offer_id="0" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+
+                array_push($data, $nestedData);
+            }//end foreach
+        }//end if
+
         $json_data = array(
-            "draw"            => 1, //intval($this->input->post('draw')),
-            "recordsTotal"    => 1, //intval($totalData),
-            "recordsFiltered" => 1, //intval($totalFiltered),
+            "recordsTotal"    => sizeof($data),
+            "recordsFiltered" => sizeof($data),
             "data"            => $data
-        );
+        );       
         
         return $json_data;
     }  
