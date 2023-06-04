@@ -568,7 +568,28 @@ class Projects_m extends CI_Model {
         return $final_array;
     }//file upload end
 
+    //Contact detail edit tata fetch
+    public function fetch_contact_details_on_pk(){        
+        $project_id = $this->input->post('project_id');      
+        $contact_obj = $this->input->post('contact_obj');
 
+        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1); 
+            $contactDetail = $project_description->contactDetail;
+
+            $returnObj = new stdClass();
+            for($i = 0; $i < sizeof($contactDetail); $i++){
+                if($contactDetail[$i]->contact_obj == $contact_obj){
+                    $returnObj = $contactDetail[$i];
+                    break;
+                }//end if
+            }//end for
+        }
+
+        return $returnObj;
+    }
 
     //////////////////////////////////////// final above function /////////////////////////////////////////
 
@@ -1517,9 +1538,8 @@ class Projects_m extends CI_Model {
                 $nestedData['Phone1st'] = $value->contact_first_ph;
                 $nestedData['Phone2nd'] = $value->contact_second_ph;
                 $nestedData['Address'] = $value->contact_persn_address;
-                $nestedData['action'] = '<a href="javascript:void(0)" data-offer_id="0" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
-                <a href="'.$value->contact_obj.'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
-                <a data-offer_id="0" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+                $nestedData['action'] = '<a href="javascript:void(0)" data-contact_obj="'.$value->contact_obj.'" class="btn btn-info edit_contact_obj"><i class="fa fa-pencil"></i> Edit</a>
+                <a contact_obj="'.$value->contact_obj.'" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
                 array_push($data, $nestedData);
             }//end foreach
@@ -1841,7 +1861,6 @@ class Projects_m extends CI_Model {
     }
     
     public function fetch_offer_details_on_pk(){
-
         if ($this->session->usertype == 1) {
             $od_id = $this->input->post('pk');
             $rs = $this->db->get_where('offer_details', array('od_id' => $od_id))->result();
@@ -1849,10 +1868,7 @@ class Projects_m extends CI_Model {
             $odr_id = $this->input->post('pk');
             $rs = $this->db->get_where('offer_details_resource', array('odr_id' => $odr_id))->result();
         }
-
         return $rs;
-        
-        
     }
 
     public function form_edit_offer_details(){

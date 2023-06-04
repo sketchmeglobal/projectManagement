@@ -128,7 +128,7 @@
                             <ul id="contact_tabs" class="nav nav-tabs nav-justified">
                                 <li class="active"><a href="#contact_details_list" data-toggle="tab">List</a></li>
                                 <li  id="contact_details_add_tab"><a href="#contact_details_add" data-toggle="tab">Add</a></li>
-                                <li id="contact_details_edit_tab" class="disabled"><a href="#contact_details_edit" data-toggle="tab">Edit</a></li>
+                                <li id="contact_details_edit_tab" class="disabled" ><a href="#contact_details_edit" data-toggle="tab">Edit</a></li>
                             </ul>
                             <!--Tab Content-->
                             <div class="tab-content">
@@ -140,8 +140,8 @@
                                             <th>Contact Person Name</th>
                                             <th>Organization Name</th>
                                             <th>Email</th>
-                                            <th>Phone 1st</th>
-                                            <th>Phone 2nd</th>                                            
+                                            <th>Phone (Primary)</th>
+                                            <th>Phone (Alternative)</th>                                            
                                             <th>Address</th>
                                             <th>Actions</th>
                                         </tr>
@@ -171,11 +171,11 @@
                                                 <input type="text" name="contact_email" id="contact_email" class="form-control">
                                             </div>  
                                             <div class="col-lg-3">
-                                                <label for="contact_first_ph" class="control-label">Phone 1st</label>
+                                                <label for="contact_first_ph" class="control-label">Phone (Primary)</label>
                                                 <input type="text" name="contact_first_ph" id="contact_first_ph" class="form-control">
                                             </div>    
                                             <div class="col-lg-3">
-                                                <label for="contact_second_ph" class="control-label">Phone 2nd</label>
+                                                <label for="contact_second_ph" class="control-label">Phone (Alternative)</label>
                                                 <input type="text" name="contact_second_ph" id="contact_second_ph" class="form-control">
                                             </div>  
                                             <div class="col-lg-3">
@@ -194,7 +194,8 @@
 
                                 <div id="contact_details_edit" class="tab-pane">
                                     <br/>
-                                    <div class="form">                                        
+                                    <div class="form">    
+                                        <form autocomplete="off" id="edit_contact_form" method="post" action="<?=base_url('admin/form-edit-contact')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">                                    
                                             <div class="form-group "> 
                                                 <div class="col-lg-3">
                                                     <label for="e_cont_person_name" class="control-label">Contact Person Name</label>
@@ -209,11 +210,11 @@
                                                     <input type="text" name="e_contact_email" id="e_contact_email" class="form-control">
                                                 </div>  
                                                 <div class="col-lg-3">
-                                                    <label for="e_contact_first_ph" class="control-label">Phone 1st</label>
+                                                    <label for="e_contact_first_ph" class="control-label">Phone (Primary)</label>
                                                     <input type="text" name="e_contact_first_ph" id="e_contact_first_ph" class="form-control">
                                                 </div>    
                                                 <div class="col-lg-3">
-                                                    <label for="e_contact_second_ph" class="control-label">Phone 2nd</label>
+                                                    <label for="e_contact_second_ph" class="control-label">Phone (Alternative)</label>
                                                     <input type="text" name="e_contact_second_ph" id="e_contact_second_ph" class="form-control">
                                                 </div>  
                                                 <div class="col-lg-3">
@@ -903,6 +904,40 @@
         });
     }//end fun
 
+    //Edit contact details
+    $('#contact_details_table').on('click', '.edit_contact_obj', function(){
+        $contact_obj = $(this).data('contact_obj');
+        $project_id = $('#project_id').val();
+        console.log('contact_obj: ' + $contact_obj);
+
+        $.ajax({
+            url: "<?= base_url('admin/fetch-contact-details-on-pk/') ?>",
+            dataType: 'json',
+            type: 'POST',
+            data: {contact_obj: $contact_obj, project_id: $project_id},
+            success: function (returnData) {
+                console.log(returnData);                
+                //data = returnData[0];
+
+                $("#e_cont_person_name").val(returnData.cont_person_name);
+                $("#e_org_name").val(returnData.org_name);
+                $("#e_contact_email").val(returnData.contact_email);
+                $("#e_contact_first_ph").val(returnData.contact_first_ph);
+                $("#e_contact_second_ph").val(returnData.contact_second_ph);
+                $("#e_contact_persn_address").val(returnData.contact_persn_address);
+
+                $('a[href="#contact_details_edit"]').tab('show');
+
+            },
+            error: function (returnData) {
+                obj = JSON.parse(returnData);
+                notification(obj);
+            }
+        });
+
+    })
+
+
     //Initiate Project Description 
     function initProjectDescription(){
         $project_description = {
@@ -979,6 +1014,49 @@
 		}
     });
     //Contact Details Part end
+
+    //Contact Details Edit start
+    $("#edit_contact_form").validate({        
+        rules: {
+            req_gather_title: {
+                required: true
+            },
+            requirementFile: {
+                required: true
+            }   
+        },
+        messages: {
+
+        }
+    });
+    $('#edit_contact_form').ajaxForm({
+        beforeSubmit: function () {
+            return $("#edit_contact_form").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            //console.log(returnData);
+            obj = JSON.parse(returnData);
+            notification(obj);
+			if(parseInt(obj.update_id) > 0){
+                $('#cont_person_name').val('');
+                $('#org_name').val('');
+                $('#contact_email').val('');
+                $('#contact_first_ph').val('');
+                $('#contact_second_ph').val('');
+                $('#contact_persn_address').val('');
+                
+                initContactTable()
+
+                console.log(JSON.stringify(obj));
+                if(obj.type == 'error'){
+                    console.log('Error from API')
+                }else{
+                    console.log('Document save success')
+                }            	
+			}
+		}
+    });
+    //Contact Details Edit end
 
     
     $("#req_gather_by").change(function(){
