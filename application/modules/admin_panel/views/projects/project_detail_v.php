@@ -224,6 +224,8 @@
                                                 <div class="col-lg-3" style="margin-top: 25px;">
                                                     <label for="product_line_po" class="control-label"></label>
                                                     <input type="submit" name="e_contact_details_submit" class="btn btn-success text-center" id="e_contact_details_submit" value="Update">
+                                                    <input type="hidden" value="<?=$project_id?>" name="e_cont_project_id" id="e_cont_project_id">
+                                                    <input type="hidden" value="" name="contact_obj" id="contact_obj">
                                                 </div>
                                             </div>
                                         </form>
@@ -908,6 +910,7 @@
     $('#contact_details_table').on('click', '.edit_contact_obj', function(){
         $contact_obj = $(this).data('contact_obj');
         $project_id = $('#project_id').val();
+        $('#contact_obj').val($contact_obj);
         console.log('contact_obj: ' + $contact_obj);
 
         $.ajax({
@@ -1038,12 +1041,15 @@
             obj = JSON.parse(returnData);
             notification(obj);
 			if(parseInt(obj.update_id) > 0){
-                $('#cont_person_name').val('');
-                $('#org_name').val('');
-                $('#contact_email').val('');
-                $('#contact_first_ph').val('');
-                $('#contact_second_ph').val('');
-                $('#contact_persn_address').val('');
+                $('#e_cont_person_name').val('');
+                $('#e_org_name').val('');
+                $('#e_contact_email').val('');
+                $('#e_contact_first_ph').val('');
+                $('#e_contact_second_ph').val('');
+                $('#e_contact_persn_address').val('');
+
+                //$('a[href="#contact_details_edit"]').tab('hide');
+                $('a[href="#contact_details_list"]').tab('show');
                 
                 initContactTable()
 

@@ -171,6 +171,59 @@ class Projects_m extends CI_Model {
         return $data;
 
     }//end contacts
+    
+
+    //Contact details edit
+    public function form_edit_contact(){  
+        $daya = array();
+        $status = true;
+
+        $cont_project_id = $this->input->post('e_cont_project_id');
+        $contact_obj = $this->input->post('contact_obj');
+        $cont_person_name = $this->input->post('e_cont_person_name');
+        $org_name = $this->input->post('e_org_name');
+        $contact_email = $this->input->post('e_contact_email');
+        $contact_first_ph = $this->input->post('e_contact_first_ph');
+        $contact_second_ph = $this->input->post('e_contact_second_ph');
+        $contact_persn_address = $this->input->post('e_contact_persn_address');
+
+        $created_by = $this->session->user_id;
+
+        //check existing data
+        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $cont_project_id))->result();
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1);            
+            $contactDetail = $project_description->contactDetail;
+
+            for($i = 0; $i < sizeof($contactDetail); $i++){
+                if($contactDetail[$i]->contact_obj == $contact_obj){
+                    $contactDetail[$i]->cont_person_name = $cont_person_name;
+                    $contactDetail[$i]->org_name = $org_name;
+                    $contactDetail[$i]->contact_email = $contact_email;
+                    $contactDetail[$i]->contact_first_ph = $contact_first_ph;
+                    $contactDetail[$i]->contact_second_ph = $contact_second_ph;
+                    $contactDetail[$i]->contact_persn_address = $contact_persn_address;
+                }
+            }//end for
+        }//end if
+        
+        $project_description->contactDetail = $contactDetail;
+
+        $updateArray = array(
+            'project_description' => json_encode($project_description)
+        );
+
+        $val = $this->db->update('project_detail', $updateArray, array('project_id' => $cont_project_id));
+        $data['file_updated'] = $val;      
+        
+        $data['type'] = 'success';
+        $data['msg'] = 'Contact updated successfully';
+        $data['title'] = 'Contact';
+        $data['update_id'] = $cont_project_id;
+        return $data;
+
+    }//end contacts edit
 
     
 
