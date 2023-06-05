@@ -137,6 +137,15 @@ class Projects extends My_Controller {
         }
     }
 
+    public function requirement_gather_edit_form(){        
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->requirement_gather_edit_form();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
     public function form_particular_basic_info_add(){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Projects_m');

@@ -98,6 +98,7 @@
 	$route['admin/form-edit-contact'] = 'admin_panel/Projects/form_edit_contact';
 	$route['admin/del-row-contact-details'] = 'admin_panel/Projects/del_row_contact_details';
 	$route['admin/fetch-requirement-details-on-pk'] = 'admin_panel/Projects/fetch_requirement_details_on_pk';
+	$route['admin/form-edit-gather-requirement'] = 'admin_panel/Projects/requirement_gather_edit_form';
 
 		//delete
 	/*$route['admin/ajax-delete-user'] = 'admin_panel/User/ajax_delete_user';	

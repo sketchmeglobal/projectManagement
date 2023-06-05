@@ -226,6 +226,60 @@ class Projects_m extends CI_Model {
         return $data;
 
     }//end contacts edit    
+    
+
+    //Requirement edit
+    public function requirement_gather_edit_form(){  
+        $daya = array();
+        $status = true;
+
+        $project_id = $this->input->post('e_gr_project_id');
+        $doc_obj = $this->input->post('doc_obj');
+        $e_req_gather_title = $this->input->post('e_req_gather_title');
+        $e_req_gather_desc = $this->input->post('e_req_gather_desc');
+        $e_req_gather_by = $this->input->post('e_req_gather_by');
+        $e_req_gather_by_name = $this->input->post('e_req_gather_by_name');
+        $e_req_gather_date = $this->input->post('e_req_gather_date');
+        $contact_persn_address = $this->input->post('e_contact_persn_address');
+
+        $created_by = $this->session->user_id;
+
+        if($doc_obj > 0){
+            //check existing data
+            $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1);            
+                $requirementDetail = $project_description->requirementDetail;
+
+                for($i = 0; $i < sizeof($requirementDetail); $i++){
+                    if($requirementDetail[$i]->doc_obj == $doc_obj){
+                        $requirementDetail[$i]->req_gather_title = $e_req_gather_title;
+                        $requirementDetail[$i]->req_gather_desc = $e_req_gather_desc;
+                        $requirementDetail[$i]->req_gather_by = $e_req_gather_by;
+                        $requirementDetail[$i]->req_gather_by_name = $e_req_gather_by_name;
+                        $requirementDetail[$i]->req_gather_date = $e_req_gather_date;
+                    }
+                }//end for
+            }//end if
+            
+            $project_description->requirementDetail = $requirementDetail;
+
+            $updateArray = array(
+                'project_description' => json_encode($project_description)
+            );
+
+            $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+            $data['file_updated'] = $val;   
+        }   
+        
+        $data['type'] = 'success';
+        $data['msg'] = 'Requirement updated successfully';
+        $data['title'] = 'Requirement';
+        $data['update_id'] = $project_id;
+        return $data;
+
+    }//end contacts edit  
 
 
     public function del_row_contact_details(){

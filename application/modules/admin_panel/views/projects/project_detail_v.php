@@ -1149,6 +1149,57 @@
     });
     //end requirement gather
 
+    
+    //Requirement Gathering Edit start    
+    $("#e_req_gather_by").change(function(){
+        $e_req_gather_by_name = $("#e_req_gather_by :selected").text();
+        $('#e_req_gather_by_name').val($e_req_gather_by_name);
+    });
+
+    $("#requirement_gather_edit_form").validate({        
+        rules: {
+            e_req_gather_title: {
+                required: true
+            },
+            e_req_gather_date: {
+                required: true
+            }   
+        },
+        messages: {
+
+        }
+    });
+    $('#requirement_gather_edit_form').ajaxForm({
+        beforeSubmit: function () {
+            return $("#requirement_gather_edit_form").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            //console.log(returnData);
+            obj = JSON.parse(returnData);
+            notification(obj);
+			if(parseInt(obj.update_id) > 0){
+                $('#e_req_gather_title').val('');
+                $('#e_req_gather_desc').val('');
+                $('#e_req_gather_by').val('0').trigger('change');
+                $('#e_req_gather_by_name').val('');
+                $('#e_req_gather_date').val('');
+                $('#contact_persn_address').val('');
+
+                initGatherRequirementTable()
+                $('a[href="#req_gather_list"]').tab('show');
+
+                console.log(JSON.stringify(obj));
+                if(obj.type == 'error'){
+                    console.log('Error from API')
+                }else{
+                    console.log('Document save success')
+                }            	
+			}
+		}
+    });
+    //end requirement gather edit
+
+
     //QUOTATION Basic Info    
     $("#bi_PartyId").change(function(){
         $bi_PartyId_name = $("#bi_PartyId :selected").text();
