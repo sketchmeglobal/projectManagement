@@ -180,7 +180,25 @@ class Projects extends My_Controller {
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
+    }    
+
+    public function del_row_contact_details() {
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->del_row_contact_details();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
     }
+
+    public function fetch_requirement_details_on_pk() {
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->fetch_requirement_details_on_pk();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    } 
 
     ////////////////////////////////////////////////// Final Above function ////////////////////////////////////////////////////////
 

@@ -189,33 +189,35 @@ class Projects_m extends CI_Model {
 
         $created_by = $this->session->user_id;
 
-        //check existing data
-        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $cont_project_id))->result();
-        if(count($result) > 0){
-            $project_description1 = $result[0]->project_description;
-            $project_description = json_decode($project_description1);            
-            $contactDetail = $project_description->contactDetail;
+        if($contact_obj > 0){
+            //check existing data
+            $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $cont_project_id))->result();
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1);            
+                $contactDetail = $project_description->contactDetail;
 
-            for($i = 0; $i < sizeof($contactDetail); $i++){
-                if($contactDetail[$i]->contact_obj == $contact_obj){
-                    $contactDetail[$i]->cont_person_name = $cont_person_name;
-                    $contactDetail[$i]->org_name = $org_name;
-                    $contactDetail[$i]->contact_email = $contact_email;
-                    $contactDetail[$i]->contact_first_ph = $contact_first_ph;
-                    $contactDetail[$i]->contact_second_ph = $contact_second_ph;
-                    $contactDetail[$i]->contact_persn_address = $contact_persn_address;
-                }
-            }//end for
-        }//end if
-        
-        $project_description->contactDetail = $contactDetail;
+                for($i = 0; $i < sizeof($contactDetail); $i++){
+                    if($contactDetail[$i]->contact_obj == $contact_obj){
+                        $contactDetail[$i]->cont_person_name = $cont_person_name;
+                        $contactDetail[$i]->org_name = $org_name;
+                        $contactDetail[$i]->contact_email = $contact_email;
+                        $contactDetail[$i]->contact_first_ph = $contact_first_ph;
+                        $contactDetail[$i]->contact_second_ph = $contact_second_ph;
+                        $contactDetail[$i]->contact_persn_address = $contact_persn_address;
+                    }
+                }//end for
+            }//end if
+            
+            $project_description->contactDetail = $contactDetail;
 
-        $updateArray = array(
-            'project_description' => json_encode($project_description)
-        );
+            $updateArray = array(
+                'project_description' => json_encode($project_description)
+            );
 
-        $val = $this->db->update('project_detail', $updateArray, array('project_id' => $cont_project_id));
-        $data['file_updated'] = $val;      
+            $val = $this->db->update('project_detail', $updateArray, array('project_id' => $cont_project_id));
+            $data['file_updated'] = $val;   
+        }   
         
         $data['type'] = 'success';
         $data['msg'] = 'Contact updated successfully';
@@ -223,7 +225,47 @@ class Projects_m extends CI_Model {
         $data['update_id'] = $cont_project_id;
         return $data;
 
-    }//end contacts edit
+    }//end contacts edit    
+
+
+    public function del_row_contact_details(){
+        $project_id = $this->input->post('project_id');
+        $contact_obj = $this->input->post('contact_obj');
+        $status = true;
+        
+        if($contact_obj > 0){
+            //check existing data
+            $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1);            
+                $contactDetail = $project_description->contactDetail;
+                $newContactDetail = array();
+
+                for($i = 0; $i < sizeof($contactDetail); $i++){
+                    if($contactDetail[$i]->contact_obj != $contact_obj){
+                        array_push($newContactDetail, $contactDetail[$i]);
+                    }
+                }//end for
+            }//end if
+            
+            $project_description->contactDetail = $newContactDetail;
+
+            $updateArray = array(
+                'project_description' => json_encode($project_description)
+            );
+
+            $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+            $data['file_updated'] = $val;   
+        }   
+
+        if ($status == true) {
+            $data['title'] = 'Deleted!';
+            $data['type'] = 'success';
+            $data['msg'] = 'Contact Deleted Successfully';
+        }
+        return $data;        
+    }//end fun
 
     
 
@@ -1592,7 +1634,7 @@ class Projects_m extends CI_Model {
                 $nestedData['Phone2nd'] = $value->contact_second_ph;
                 $nestedData['Address'] = $value->contact_persn_address;
                 $nestedData['action'] = '<a href="javascript:void(0)" data-contact_obj="'.$value->contact_obj.'" class="btn btn-info edit_contact_obj"><i class="fa fa-pencil"></i> Edit</a>
-                <a contact_obj="'.$value->contact_obj.'" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+                <a data-contact_obj="'.$value->contact_obj.'" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
                 array_push($data, $nestedData);
             }//end foreach
@@ -1628,9 +1670,8 @@ class Projects_m extends CI_Model {
                 $nestedData['Employee'] = $value->req_gather_by_name;
                 $nestedData['Date'] = date("d-m-Y", strtotime($value->req_gather_date));
                 $nestedData['Attachment'] = '';
-                $nestedData['action'] = '<a href="javascript:void(0)" data-offer_id="0" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
-                <a href="'.$value->doc_obj.'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
-                <a data-offer_id="0" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+                $nestedData['action'] = '<a href="javascript:void(0)" data-doc_obj="'.$value->doc_obj.'" class="btn btn-info edit_doc_obj"><i class="fa fa-pencil "></i> Edit</a>
+                <a data-doc_obj="'.$value->doc_obj.'" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
                 array_push($data, $nestedData);
             }//end foreach
@@ -1644,6 +1685,31 @@ class Projects_m extends CI_Model {
         
         return $json_data;
     }  
+    
+
+    //Requirement edit tata fetch
+    public function fetch_requirement_details_on_pk(){        
+        $project_id = $this->input->post('project_id');      
+        $doc_obj = $this->input->post('doc_obj');
+
+        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1); 
+            $requirementDetail = $project_description->requirementDetail;
+
+            $returnObj = new stdClass();
+            for($i = 0; $i < sizeof($requirementDetail); $i++){
+                if($requirementDetail[$i]->doc_obj == $doc_obj){
+                    $returnObj = $requirementDetail[$i];
+                    break;
+                }//end if
+            }//end for
+        }
+
+        return $returnObj;
+    }
+
 
     //Quotation part
     public function ajax_quotation_details_table_data() {       

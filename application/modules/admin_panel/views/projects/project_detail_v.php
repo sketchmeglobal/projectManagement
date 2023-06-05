@@ -319,38 +319,42 @@
 
                                 <div id="req_gather_edit" class="tab-pane">
                                     <br/>
-                                    <div class="form">                                        
-                                        <div class="form-group "> 
-                                            <div class="col-lg-3">
-                                                <label for="e_req_gather_title" class="control-label">Title</label>
-                                                <input type="text" name="e_req_gather_title" id="e_req_gather_title" class="form-control">
-                                            </div>  
-                                            <div class="col-lg-3">
-                                                <label for="e_req_gather_desc" class="control-label">Description</label>
-                                                <textarea name="e_req_gather_desc" id="e_req_gather_desc" class="form-control"></textarea>
+                                    <div class="form">                                             
+                                        <form autocomplete="off" id="requirement_gather_edit_form" method="post" action="<?=base_url('admin/form-edit-gather-requirement')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">                                   
+                                            <div class="form-group "> 
+                                                <div class="col-lg-3">
+                                                    <label for="e_req_gather_title" class="control-label">Title</label>
+                                                    <input type="text" name="e_req_gather_title" id="e_req_gather_title" class="form-control">
+                                                </div>  
+                                                <div class="col-lg-3">
+                                                    <label for="e_req_gather_desc" class="control-label">Description</label>
+                                                    <textarea name="e_req_gather_desc" id="e_req_gather_desc" class="form-control"></textarea>
+                                                </div>     
+                                                <div class="col-lg-3">
+                                                    <label for="e_req_gather_by" class="control-label">Employee</label>
+                                                    <select name="e_req_gather_by" id="e_req_gather_by" class="form-control select2">
+                                                        <option value="0" >-- Select Employee --</option>
+                                                        <option value="1" > Mr. Jana </option>
+                                                        <option value="2" > Mr. Roy </option>
+                                                    </select>
+                                                    <input type="hidden" value="" name="e_req_gather_by_name" id="e_req_gather_by_name">
+                                                </div>  
+                                                <div class="col-lg-3">
+                                                    <label for="e_req_gather_date" class="control-label">Date</label>
+                                                    <input type="date" name="e_req_gather_date" id="e_req_gather_date" class="form-control">
+                                                </div>  
+                                                <div class="col-lg-3">
+                                                    <label for="" class="control-label">Attachment</label>
+                                                    <input type="file" name="e_requirementFile[]" id="e_requirementFile" accept=".jpg,.jpeg,.png,.bmp,.txt,.docx,.xlsx,.csv,.pdf,.zip" class="file" multiple>
+                                                </div> 
+                                                <div class="col-lg-3" style="margin-top: 25px;">
+                                                    <label for="product_line_po" class="control-label"></label>
+                                                    <input type="submit" name="e_requirement_gather_submit" class="btn btn-success text-center" id="e_requirement_gather_submit" value="Update">
+                                                    <input type="hidden" value="<?=$project_id?>" name="e_gr_project_id" id="e_gr_project_id">
+                                                    <input type="hidden" value="" name="doc_obj" id="doc_obj">
+                                                </div>
                                             </div>     
-                                            <div class="col-lg-3">
-                                                <label for="e_req_gather_by" class="control-label">Employee</label>
-                                                <select name="e_req_gather_by" id="e_req_gather_by" class="form-control select2">
-                                                    <option value="0" >-- Select Employee --</option>
-                                                    <option value="1" > Mr. Jana </option>
-                                                    <option value="2" > Mr. Roy </option>
-                                                </select>
-                                                <input type="hidden" value="" name="e_req_gather_by_name" id="e_req_gather_by_name">
-                                            </div>  
-                                            <div class="col-lg-3">
-                                                <label for="e_req_gather_date" class="control-label">Date</label>
-                                                <input type="date" name="e_req_gather_date" id="e_req_gather_date" class="form-control">
-                                            </div>  
-                                            <div class="col-lg-3">
-                                                <label for="" class="control-label">Attachment</label>
-                                                <input type="file" name="e_requirementFile[]" id="e_requirementFile" accept=".jpg,.jpeg,.png,.bmp,.txt,.docx,.xlsx,.csv,.pdf,.zip" class="file" multiple>
-                                            </div> 
-                                            <div class="col-lg-3" style="margin-top: 25px;">
-                                                <label for="product_line_po" class="control-label"></label>
-                                                <input type="submit" name="e_requirement_gather_submit" class="btn btn-success text-center" id="e_requirement_gather_submit" value="Update">
-                                            </div>
-                                        </div>                                            
+                                        </form>                                       
                                     </div>
                                 </div> 
                             </div>
@@ -866,6 +870,41 @@
             }]
         });
     }//end fun
+    
+
+    //Edit Requirement Gathering
+    $('#req_gather_details_table').on('click', '.edit_doc_obj', function(){
+        $doc_obj = $(this).data('doc_obj');
+        $project_id = $('#project_id').val();
+        $('#doc_obj').val($doc_obj);
+        
+
+        $.ajax({
+            url: "<?= base_url('admin/fetch-requirement-details-on-pk/') ?>",
+            dataType: 'json',
+            type: 'POST',
+            data: {doc_obj: $doc_obj, project_id: $project_id},
+            success: function (returnData) {
+                console.log(returnData);                
+                //data = returnData[0];
+
+                $("#e_req_gather_title").val(returnData.req_gather_title);
+                $("#e_req_gather_desc").val(returnData.req_gather_desc);
+                $("#e_req_gather_by").val(returnData.req_gather_by).trigger('change');
+                //$("#size_after_glaze_edit").val(data.size_after_glaze).trigger('change');
+                $("#e_req_gather_by_name").val(returnData.req_gather_by_name);
+                $("#e_req_gather_date").val(returnData.req_gather_date);
+
+                $('a[href="#req_gather_edit"]').tab('show');
+
+            },
+            error: function (returnData) {
+                obj = JSON.parse(returnData);
+                notification(obj);
+            }
+        });
+    })//end fun
+
 
     //Contact Detail Table
     function initContactTable(){
@@ -937,7 +976,6 @@
                 notification(obj);
             }
         });
-
     })
 
 
@@ -1049,6 +1087,7 @@
                 $('#e_contact_persn_address').val('');
 
                 //$('a[href="#contact_details_edit"]').tab('hide');
+                $('#contact_obj').val('');
                 $('a[href="#contact_details_list"]').tab('show');
                 
                 initContactTable()
@@ -1354,6 +1393,36 @@
             }
         });
     }//end fun
+
+
+    //DELETE CONTACT INFO
+    $('#contact_details_table').on('click', '.delete', function(){
+        $contact_obj = $(this).data('contact_obj');
+        $project_id = $('#project_id').val();
+
+        if(confirm("Are You Sure? This Process Can\'t be Undone.")){
+            $pk = $(this).attr('data-pk');
+            
+            $.ajax({
+                url: "<?= base_url('admin/del-row-contact-details/') ?>",
+                dataType: 'json',
+                type: 'POST',
+                data: {project_id: $project_id, contact_obj: $contact_obj},
+                success: function (returnData) {
+                    console.log(returnData);
+                    $('#contact_details_table').closest('tr').remove();
+                    notification(returnData);
+                    //refresh table
+                    initContactTable()
+
+                },
+                error: function (returnData) {
+                    obj = JSON.parse(returnData);
+                    notification(obj);
+                }
+            });
+        }        
+    });
 
     function getTransactionId(){
         const d = new Date().toLocaleString();
