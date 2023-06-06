@@ -159,7 +159,7 @@
                                 <span><?=$files[$j]->file_name?></span>
                                 </br>
                                 <span>
-                                    <a href="<?= base_url('upload/documents//'.$files[$j]->file_name.'') ?>" download>
+                                    <a href="<?= base_url('upload/documents/'.$files[$j]->file_name.'') ?>" download>
                                         <i class='fa fa-download'></i>
                                     </a>
                                     <a href="javascript:void(0)" id="fileDelete" file_id="<?=$files[$j]->file_id?>" parentFolderId="<?=$parentFolderId?>">

@@ -282,6 +282,7 @@ class Projects_m extends CI_Model {
     }//end contacts edit  
 
 
+    //Contact list delete
     public function del_row_contact_details(){
         $project_id = $this->input->post('project_id');
         $contact_obj = $this->input->post('contact_obj');
@@ -304,6 +305,57 @@ class Projects_m extends CI_Model {
             }//end if
             
             $project_description->contactDetail = $newContactDetail;
+
+            $updateArray = array(
+                'project_description' => json_encode($project_description)
+            );
+
+            $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+            $data['file_updated'] = $val;   
+        }   
+
+        if ($status == true) {
+            $data['title'] = 'Deleted!';
+            $data['type'] = 'success';
+            $data['msg'] = 'Contact Deleted Successfully';
+        }
+        return $data;        
+    }//end fun 
+
+
+    //Requirement list delete
+    public function del_row_requirement_details(){
+        $project_id = $this->input->post('project_id');
+        $doc_obj = $this->input->post('doc_obj');
+        $status = true;
+        
+        if($doc_obj > 0){
+            //check existing data
+            $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1);            
+                $requirementDetail = $project_description->requirementDetail;
+                $newRequirementDetail = array();
+
+                for($i = 0; $i < sizeof($requirementDetail); $i++){                        
+                    if($requirementDetail[$i]->doc_obj == $doc_obj){ 
+                        $files = $requirementDetail[$i]->files;  
+                        for($j = 0; $j < sizeof($files); $j++){
+                            $path = './upload/proj_doc/' . $files[$j]->file_name;
+                            if(file_exists($path)){
+                                unlink($path);
+                            }
+                        }//end for
+                    }//end if
+
+                    if($requirementDetail[$i]->doc_obj != $doc_obj){
+                        array_push($newRequirementDetail, $requirementDetail[$i]);
+                    }
+                }//end for
+            }//end if
+            
+            $project_description->requirementDetail = $newRequirementDetail;
 
             $updateArray = array(
                 'project_description' => json_encode($project_description)
@@ -363,7 +415,7 @@ class Projects_m extends CI_Model {
             if (!empty($_FILES['requirementFile']['name'][0])) {
                 $return_data = array(); 
 
-                $upload_path = './upload/proj_doc/' ; 
+                $upload_path = './upload/proj_doc/'; 
                 $file_type = 'jpg|jpeg|png|bmp|mp4|csv|pdf|docx|txt|zip|xlsx';
                 $user_file_name = 'requirementFile';
 
@@ -470,7 +522,74 @@ class Projects_m extends CI_Model {
         return $data;
 
     }
-    //end particular add
+    //end basic info add
+    
+    //Basic Info Edit start
+    public function form_particular_basic_info_edit(){  
+        $daya = array();
+        $status = true;
+        
+        $bi_project_id_e = $this->input->post('bi_project_id_e'); 
+        $bi_obj_e = $this->input->post('bi_obj_e'); 
+
+        $bi_PartyId = $this->input->post('bi_PartyId_e'); 
+        $bi_PartyId_name = $this->input->post('bi_PartyId_name_e'); 
+        $bi_QuotationNo = $this->input->post('bi_QuotationNo_e');      
+        $bi_QuotationDate = $this->input->post('bi_QuotationDate_e'); 
+        $bi_SubPartyName = $this->input->post('bi_SubPartyName_e'); 
+        $bi_InvoiceDate = $this->input->post('bi_InvoiceDate_e'); 
+        $bi_NoticeNo = $this->input->post('bi_NoticeNo_e'); 
+        $bi_PaymentMode = $this->input->post('bi_PaymentMode_e'); 
+        $bi_PaymentModeName = $this->input->post('bi_PaymentModeName_e'); 
+        $bi_InstrumentNumber = $this->input->post('bi_InstrumentNumber_e'); 
+        $bi_Remarks = $this->input->post('bi_Remarks_e'); 
+        $bi_OtherClientInfo = $this->input->post('bi_OtherClientInfo_e'); 
+        $bi_ImportantNotes = $this->input->post('bi_ImportantNotes_e'); 
+
+        //check existing data
+        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $bi_project_id_e))->result();
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1); 
+            $quotationDetail = $project_description->quotationDetail;  
+        }//end if
+
+        for($i = 0; $i < sizeof($quotationDetail); $i++){
+            if($quotationDetail[$i]->bi_obj == $bi_obj_e){
+                $quotationDetail[$i]->bi_PartyId = $bi_PartyId;
+                $quotationDetail[$i]->bi_PartyId_name = $bi_PartyId_name;
+                $quotationDetail[$i]->bi_QuotationNo = $bi_QuotationNo;
+                $quotationDetail[$i]->bi_QuotationDate = $bi_QuotationDate;
+                $quotationDetail[$i]->bi_SubPartyName = $bi_SubPartyName;
+                $quotationDetail[$i]->bi_InvoiceDate = $bi_InvoiceDate;
+                $quotationDetail[$i]->bi_NoticeNo = $bi_NoticeNo;
+                $quotationDetail[$i]->bi_PaymentMode = $bi_PaymentMode;
+                $quotationDetail[$i]->bi_PaymentModeName = $bi_PaymentModeName;
+                $quotationDetail[$i]->bi_InstrumentNumber = $bi_InstrumentNumber;
+                $quotationDetail[$i]->bi_Remarks = $bi_Remarks;
+                $quotationDetail[$i]->bi_OtherClientInfo = $bi_OtherClientInfo;
+                $quotationDetail[$i]->bi_ImportantNotes = $bi_ImportantNotes;
+            }
+        }//end for
+
+        $project_description->quotationDetail = $quotationDetail; 
+
+        $updateArray = array(
+            'project_description' => json_encode($project_description)
+        );
+
+        $val = $this->db->update('project_detail', $updateArray, array('project_id' => $bi_project_id_e));
+        $data['db_updated'] = $val;
+        
+        $data['type'] = 'success';
+        $data['msg'] = 'Basic Info. Updated Properly';
+        $data['title'] = 'Quotation';
+        $data['bi_obj'] = $bi_obj_e;
+        $data['update_id'] = $bi_project_id_e;
+        return $data;
+
+    }
+    //end basic info edit
     
     //Particular Add portion
     public function form_particular_add(){  
@@ -732,6 +851,29 @@ class Projects_m extends CI_Model {
             for($i = 0; $i < sizeof($contactDetail); $i++){
                 if($contactDetail[$i]->contact_obj == $contact_obj){
                     $returnObj = $contactDetail[$i];
+                    break;
+                }//end if
+            }//end for
+        }
+
+        return $returnObj;
+    }
+
+    //Quotation detail edit tata fetch
+    public function fetch_quotation_details_on_pk(){        
+        $project_id = $this->input->post('project_id');      
+        $bi_obj = $this->input->post('bi_obj');
+
+        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1); 
+            $quotationDetail = $project_description->quotationDetail;
+
+            $returnObj = new stdClass();
+            for($i = 0; $i < sizeof($quotationDetail); $i++){
+                if($quotationDetail[$i]->bi_obj == $bi_obj){
+                    $returnObj = $quotationDetail[$i];
                     break;
                 }//end if
             }//end for
@@ -1788,9 +1930,9 @@ class Projects_m extends CI_Model {
                 $nestedData['PartyName'] = $PartyName;
                 $nestedData['QuotationNo'] = $QuotationNo;
                 $nestedData['QuotationDate'] = date("d-m-Y", strtotime($QuotationDate));
-                $nestedData['action'] = '<a href="javascript:void(0)" data-offer_id="0" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
-                <a href="'.$value->bi_obj.'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
-                <a data-offer_id="0" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+                $nestedData['action'] = '<a href="javascript:void(0)" data-bi_obj="'.$value->bi_obj.'" class="btn bg-yellow view_bi_obj"><i class="fa fa-eye"></i> View</a>
+                <a href="javascript:void(0)" data-bi_obj="'.$value->bi_obj.'" class="btn btn-info edit_bi_obj"><i class="fa fa-pencil"></i> Edit</a>
+                <a href="javascript:void(0)" data-bi_obj="'.$value->bi_obj.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
                 array_push($data, $nestedData);
             }//end foreach
