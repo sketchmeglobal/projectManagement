@@ -659,6 +659,76 @@ class Projects_m extends CI_Model {
     }
     //end particular add
     
+    //Particular Add during Edit
+    public function form_particular_edit(){  
+        $daya = array();
+        $status = true;
+
+        $parti_project_id = $this->input->post('parti_project_id_e'); 
+        $bi_obj = $this->input->post('parti_bi_obj_e'); 
+        $par_TaskType = $this->input->post('par_TaskType_e'); 
+        $par_TaskType_name = $this->input->post('par_TaskType_name_e'); 
+        $par_HSNCode = $this->input->post('par_HSNCode_e');      
+        $par_Duration = $this->input->post('par_Duration_e'); 
+        $par_StartDate = $this->input->post('par_StartDate_e'); 
+        $par_Amount = $this->input->post('par_Amount_e'); 
+        $par_Taxable = $this->input->post('par_Taxable_e'); 
+        $parti_obj = rand(1000, 9999);
+
+        
+        $particular = new stdClass();
+        $particular->parti_obj = $parti_obj;
+        $particular->par_TaskType = $par_TaskType;
+        $particular->par_TaskType_name = $par_TaskType_name;
+        $particular->par_HSNCode = $par_HSNCode;
+        $particular->par_Duration = $par_Duration;
+        $particular->par_StartDate = $par_StartDate;
+        $particular->par_Amount = $par_Amount;
+        $particular->par_Taxable = $par_Taxable;
+
+        //check existing data
+        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $parti_project_id))->result();
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1); 
+            $quotationDetail = $project_description->quotationDetail;
+
+            for($i = 0; $i < sizeof($quotationDetail); $i++){
+                if($quotationDetail[$i]->bi_obj == $bi_obj){
+                    if(isset($quotationDetail[$i]->particulars)){
+                        $particulars = $quotationDetail[$i]->particulars;
+                    }else{
+                        $quotationDetail[$i]->particulars = array();
+                        $particulars = array();
+                    }//end if
+                    array_push($particulars, $particular);
+
+                    $quotationDetail[$i]->particulars = $particulars;
+
+                }//end if
+            }//end for
+        }
+        
+        $project_description->quotationDetail = $quotationDetail;
+
+        $updateArray = array(
+            'project_description' => json_encode($project_description)
+        );
+
+        $val = $this->db->update('project_detail', $updateArray, array('project_id' => $parti_project_id));
+        $data['db_updated'] = $val;
+        
+        $data['type'] = 'success';
+        $data['msg'] = 'Particulars Updated Properly';
+        $data['title'] = 'Particulars';
+        $data['project_id'] = $parti_project_id;
+        $data['bi_obj'] = $bi_obj;
+        $data['parti_obj'] = $parti_obj;
+        return $data;
+
+    }
+    //end particular add during edit
+    
     //TAX Add portion
     public function form_tax_add(){  
         $daya = array();
@@ -1946,6 +2016,75 @@ class Projects_m extends CI_Model {
         
         return $json_data;
     }  
+
+
+    //Particular table data
+    public function ajax_particular_details_table_data() {       
+        $project_id = $this->input->post('project_id');      
+        $bi_obj = $this->input->post('bi_obj');
+        $data = array();
+        $particulars = array();
+        $quotationDetail = array();
+
+        $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
+        //print_r($result);
+
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1);
+            $quotationDetail = $project_description->quotationDetail;
+        }
+
+        if(sizeof($quotationDetail) > 0){
+            $bi_obj_new = 0;
+            foreach($quotationDetail as $key => $value){
+                $bi_obj_new = $value->bi_obj;
+
+                if($bi_obj == $bi_obj_new){
+                    if(isset($value->particulars)){
+                        $particulars = $value->particulars;
+                    }
+                    break;
+                }//end if
+            }//end foreach
+        }//end if
+
+        if(sizeof($particulars) > 0){
+            $counter = 1;
+            foreach($particulars as $key => $value){
+                $parti_obj = $value->parti_obj;
+                $par_TaskType = $value->par_TaskType;
+                $par_TaskType_name = $value->par_TaskType_name;
+                $par_HSNCode = $value->par_HSNCode;
+                $par_Duration = $value->par_Duration;
+                $par_StartDate = $value->par_StartDate;
+                $par_Amount = $value->par_Amount;
+                $par_Taxable = $value->par_Taxable;
+
+                $nestedData['slNo'] = $counter;
+                $nestedData['taskType'] = $par_TaskType_name;
+                $nestedData['hsnCode'] = $par_HSNCode;
+                $nestedData['Duration'] = $par_Duration;
+                $nestedData['startDate'] = $par_StartDate;
+                $nestedData['amount'] = $par_Amount;
+                $nestedData['taxable'] = ($par_Taxable == 1) ? 'Yes' : 'No';
+                $nestedData['action'] = '<a href="javascript:void(0)" data-bi_obj="'.$bi_obj.'" data-parti_obj="'.$parti_obj.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+
+                $counter++;
+                array_push($data, $nestedData);
+            }//end foreach
+        }//end if
+
+
+
+        $json_data = array(
+            "recordsTotal"    => sizeof($data),
+            "recordsFiltered" => sizeof($data),
+            "data"            => $data
+        );       
+        
+        return $json_data;
+    } 
   
 
 

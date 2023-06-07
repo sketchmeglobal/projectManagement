@@ -709,8 +709,7 @@
                                     </div>
                                 </div>
 
-                                <div id="quotation_edit" class="tab-pane">
-                                    
+                                <div id="quotation_edit" class="tab-pane">                                    
                                     <div class="form">
                                         <form autocomplete="off" id="form_particular_basic_info_edit" method="post" action="<?=base_url('admin/form-parti-basic-info-edit')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
                                             <div class="form-group " style="float: left;"> 
@@ -781,6 +780,87 @@
                                             </div>
                                         </form>
                                     </div>
+                                        
+                                    <div class="form-group " style="float: left;"> 
+                                        <h4 style="margin-left: 15px;">Particulars</h4>
+                                        <div id="particular_edit_list" class="tab-pane fade in active">
+                                            <table id="tableParticularsEdit" class="table data-table dataTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Sl#</th>
+                                                        <th>Task Type</th>
+                                                        <th>HSN Code</th>
+                                                        <th>Duration</th>
+                                                        <th>Start Date</th>                                            
+                                                        <th>Amount</th>                                           
+                                                        <th>Taxable</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody> 
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>Sl#</th>
+                                                        <th>Task Type</th>
+                                                        <th>HSN Code</th>
+                                                        <th>Duration</th>
+                                                        <th>Start Date</th>                                            
+                                                        <th>Amount</th>                                           
+                                                        <th>Taxable</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </tfoot>                                                   
+                                            </table>
+                                        </div>  
+                                        
+                                                                                
+                                        <form autocomplete="off" id="form_particular_edit" method="post" action="<?=base_url('admin/form-particular-edit')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
+                                            <div class="col-lg-3">
+                                                <label for="par_TaskType_e" class="control-label">Task Type</label>
+                                                <select name="par_TaskType_e" id="par_TaskType_e" class="form-control select2">
+                                                    <option value="0" >-- Select Task Type --</option>
+                                                    <option value="1" >Web Design</option>
+                                                    <option value="2" >Web Development</option>
+                                                    <option value="3" >SSL</option>
+                                                    <option value="4" >Domain with Privacy settings FOR 2 YEARS</option>
+                                                </select>
+                                                <input type="hidden" value="" name="par_TaskType_name_e" id="par_TaskType_name_e">
+                                            </div> 
+                                            <div class="col-lg-3">
+                                                <label for="par_HSNCode_e" class="control-label">HSN Code</label>
+                                                <input value="" id="par_HSNCode_e" name="par_HSNCode_e" type="text" placeholder="HSN Code" class="form-control" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="par_Duration_e" class="control-label">Duration</label>
+                                                <input value="" id="par_Duration_e" name="par_Duration_e" type="text" placeholder="Duration" class="form-control" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="par_StartDate_e" class="control-label">Start Date</label>
+                                                <input value="" id="par_StartDate_e" name="par_StartDate_e" type="date"  class="form-control" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="par_Amount_e" class="control-label">Amount</label>
+                                                <input value="" id="par_Amount_e" name="par_Amount_e" type="text" placeholder="Amount" class="form-control" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="par_Taxable_e" class="control-label">Taxable</label>
+                                                <select name="par_Taxable_e" id="par_Taxable_e" class="form-control select2">
+                                                    <option value="1" >YES</option>
+                                                    <option value="2" >NO</option>
+                                                </select>
+                                                <input type="hidden" name="par_TaxableName_e" id="par_TaxableName_e" value="">
+                                            </div> 
+                                            <div class="col-lg-3" style="margin-top: 25px;">
+                                                <label for="product_line_po_e" class="control-label"></label>
+                                                <input type="submit" name="particular_details_submit_e" class="btn btn-success text-center" id="particular_details_submit_e" value="Add Particular">
+                                                <input type="hidden" name="parti_project_id_e" id="parti_project_id_e" value="<?=$project_id?>">
+                                                <input type="hidden" name="parti_bi_obj_e" id="parti_bi_obj_e" value="">
+                                            </div> 
+                                        </form>
+                                    </div> 
+                                    
                                 </div> 
 
                             </div>
@@ -985,6 +1065,10 @@
                 $("#bi_OtherClientInfo_e").val(returnData.bi_OtherClientInfo);
                 $("#bi_ImportantNotes_e").val(returnData.bi_ImportantNotes);
 
+                //Particular Part
+                initTableParticularsEdit($project_id, $bi_obj);
+                $('#parti_bi_obj_e').val($bi_obj);
+
                 $('a[href="#quotation_edit"]').tab('show');
 
             },
@@ -994,9 +1078,6 @@
             }
         });
     })//end fun
-
-
-
 
     //Contact Detail Table
     function initContactTable(){
@@ -1068,7 +1149,50 @@
                 notification(obj);
             }
         });
-    })
+    })//end fun
+
+    //Populate Particular table    
+    function initTableParticularsEdit($project_id, $bi_obj){
+        $('#tableParticularsEdit').dataTable().fnClearTable();
+        $('#tableParticularsEdit').dataTable().fnDestroy();
+        
+        $('#tableParticularsEdit').DataTable( {
+            "processing": true,
+            "language": {
+                processing: '<img src="<?=base_url('assets/img/ellipsis.gif')?>"><span class="sr-only">Processing...</span>',
+            },
+            "serverSide": true,
+            "ajax": {
+                "url": "<?=base_url('admin/ajax-particular-details-table-data')?>",
+                "type": "POST",
+                "dataType": "json",
+                data: {
+                    project_id: function () {
+                        return $project_id;
+                    },
+                    bi_obj: function () {
+                        return $bi_obj;
+                    }
+                },
+            },
+            //will get these values from JSON 'data' variable
+            "columns": [
+                { "data": "slNo" },
+                { "data": "taskType" },
+                { "data": "hsnCode" },
+                { "data": "Duration" },
+                { "data": "startDate" },
+                { "data": "amount" },
+                { "data": "taxable" },
+                { "data": "action" },
+            ],
+            //column initialisation properties
+            "columnDefs": [{
+                "targets": [0, 1, 2, 3, 4, 5, 6, 7],
+                "orderable": false,
+            }]
+        });
+    }//end fun
 
 
     //Initiate Project Description 
@@ -1457,13 +1581,13 @@
 			if(parseInt(obj.parti_obj) > 0){
                 console.log(JSON.stringify(obj));
 
-                $('#par_TaskType').val('0');
+                $('#par_TaskType').val('0').trigger('change');
                 $('#par_TaskType_name').val('');
                 $('#par_HSNCode').val('');
                 $('#par_Duration').val('');
                 $('#par_StartDate').val('');
                 $('#par_Amount').val('');
-                $('#par_Taxable').val('0');
+                $('#par_Taxable').val('0').trigger('change');
 
                 //Populate particular table after this part
                 
@@ -1476,6 +1600,79 @@
 		}
     });
     //end particulars
+
+    //Add particular during edit
+    $("#par_TaskType_e").change(function(){
+        $par_TaskType_name_e = $("#par_TaskType_e :selected").text();
+        $('#par_TaskType_name_e').val($par_TaskType_name_e);
+    });
+    $("#par_Taxable_e").change(function(){
+        $par_TaxableName_e = $("#par_Taxable_e :selected").text();
+        $('#par_TaxableName_e').val($par_TaxableName_e);
+    });
+    $("#form_particular_edit").validate({        
+        rules: {
+            par_TaskType_e: {
+                required: true
+            },
+            par_HSNCode_e: {
+                required: true
+            },
+            par_Duration_e: {
+                required: true
+            },
+            par_StartDate_e: {
+                required: true
+            },
+            par_Amount_e: {
+                required: true
+            }   
+        },
+        messages: {
+
+        }
+    });
+    $('#form_particular_edit').ajaxForm({
+        beforeSubmit: function () {
+            return $("#form_particular_edit").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            obj = JSON.parse(returnData);
+            notification(obj);
+			if(parseInt(obj.parti_obj) > 0){
+                console.log(JSON.stringify(obj));
+
+                $('#par_TaskType_e').val('0').trigger('change');
+                $('#par_TaskType_name_e').val('');
+                $('#par_HSNCode_e').val('');
+                $('#par_Duration_e').val('');
+                $('#par_StartDate_e').val('');
+                $('#par_Amount_e').val('');
+                $('#par_Taxable_e').val('0').trigger('change');
+                
+                if(obj.type == 'error'){
+                    console.log('Error from API')
+                }else{
+                    console.log('Document save success')
+
+                    //Populate particular table after this part 
+                    $project_id = obj.parti_obj;              
+                    $bi_obj = obj.parti_obj;
+                    //initTableParticularsEdit($project_id, $bi_obj);
+                }            	
+			}
+		}
+    });
+    //end particulars add from Edit part
+
+
+
+
+
+
+
+
+
 
     //Add TAX calculation
     $("#tax_Bank").change(function(){
