@@ -474,7 +474,7 @@
                                         <div class="form-group " style="float: left;"> 
                                             <h4 style="margin-left: 15px;">Particulars</h4>
                                             <div id="quotation_list" class="tab-pane fade in active">
-                                                <table id="" class="table data-table dataTable">
+                                                <table id="tableParticularsAdd" class="table data-table dataTable">
                                                     <thead>
                                                         <tr>
                                                             <th>Sl#</th>
@@ -488,18 +488,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>Domain with Privacy settings FOR 2 YEARS</td>
-                                                            <td>998314</td>
-                                                            <td>1 Year</td>
-                                                            <td>22-05-2023</td>                                            
-                                                            <td>1000</td>                                           
-                                                            <td>Yes</td>
-                                                            <td>
-                                                                <a data-offer_id="0" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>
-                                                            </td>
-                                                        </tr>
+
                                                     </tbody> 
                                                     <tfoot>
                                                         <tr>
@@ -636,6 +625,7 @@
                                                     <label for="tax_details_submit" class="control-label"></label>
                                                     <input type="submit" name="tax_details_submit" class="btn btn-success text-center" id="tax_details_submit" value="Update Tax">
                                                     <input type="hidden" name="tax_project_id" id="tax_project_id" value="<?=$project_id?>">
+                                                    <input type="hidden" name="tax_bi_obj" id="tax_bi_obj" value="">
                                                 </div> 
                                             </form>
                                         </div>
@@ -643,7 +633,7 @@
                                         <div class="form-group " style="float: left;"> 
                                             <h4 style="margin-left: 15px;">Project Commission</h4>
                                             <div id="p_commission_list" class="tab-pane fade in active">
-                                                <table id="p_commission_list" class="table data-table dataTable">
+                                                <table id="p_commissionListAdd" class="table data-table dataTable">
                                                     <thead>
                                                         <tr>
                                                             <th>Sl#</th>
@@ -654,16 +644,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>Sukumar Roy</td>
-                                                            <td>Fixed</td>
-                                                            <td>99.00</td>
-                                                            <td>                                                                
-                                                                <a href="javascript:void(0)" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
-                                                                <a data-offer_id="0" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>
-                                                            </td>
-                                                        </tr>
+                                                        
                                                     </tbody> 
                                                     <tfoot>
                                                         <tr>
@@ -703,6 +684,7 @@
                                                     <label for="product_line_po" class="control-label"></label>
                                                     <input type="submit" name="add_commi" class="btn btn-success text-center" id="add_commi" value="Add Commission">
                                                     <input type="hidden" name="commi_project_id" id="commi_project_id" value="<?=$project_id?>">
+                                                    <input type="hidden" name="commi_bi_obj" id="commi_bi_obj" value="">
                                                 </div>
                                             </form>
                                         </div>
@@ -860,6 +842,85 @@
                                             </div> 
                                         </form>
                                     </div> 
+                                        
+                                    <div class="form-group " style="float: left;"> 
+                                        <form autocomplete="off" id="form_tax_edit" method="post" action="<?=base_url('admin/form-tax-edit')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
+                                            <h4 style="margin-left: 15px;">TAX Calculation</h4>
+                                            <div class="col-lg-3">
+                                                <label for="tax_GrossAmount_e" class="control-label">Gross Amount</label>
+                                                <input value="0" id="tax_GrossAmount_e" name="tax_GrossAmount_e" type="text" placeholder="Gross Amount" class="form-control" />
+                                            </div> 
+                                            <div class="col-lg-3">
+                                                <label for="tax_DiscountPercentage_e" class="control-label">Discount Percentage</label>
+                                                <input value="0" id="tax_DiscountPercentage_e" name="tax_DiscountPercentage_e" type="text" placeholder="Discount Percentage" class="form-control" />
+                                            </div> 
+                                            <div class="col-lg-3">
+                                                <label for="tax_DiscountAmount_e" class="control-label">Discount Amount</label>
+                                                <input value="0" id="tax_DiscountAmount_e" name="tax_DiscountAmount_e" type="text" placeholder="Discount Amount" class="form-control" />
+                                            </div> 
+                                            <div class="col-lg-3">
+                                                <label for="tax_TaxableAmount_e" class="control-label">Taxable Amount</label>
+                                                <input value="0" id="tax_TaxableAmount_e" name="tax_TaxableAmount_e" type="text" placeholder="Taxable Amount" class="form-control" />
+                                            </div> 
+                                            
+                                            <div class="col-lg-3">
+                                                <label for="tax_SGST_Rate_e" class="control-label">SGST (in %)</label>
+                                                <input value="0" id="tax_SGST_Rate_e" name="tax_SGST_Rate_e" type="text" placeholder="SGST(in %)" class="form-control" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="tax_SGST_Amount_e" class="control-label">SGST Amount</label>
+                                                <input value="0" id="tax_SGST_Amount_e" name="tax_SGST_Amount_e" type="text" placeholder="SGST Amount" class="form-control" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="tax_CGST_Rate_e" class="control-label">CGST (in %)</label>
+                                                <input value="0" id="tax_CGST_Rate_e" name="tax_CGST_Rate_e" type="text" placeholder="CGST (in %)" class="form-control" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="tax_CGST_Amount_e" class="control-label">CGST Amount</label>
+                                                <input value="0" id="tax_CGST_Amount_e" name="tax_CGST_Amount_e" type="text" placeholder="CGST Amount" class="form-control" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="tax_IGST_Rate_e" class="control-label">IGST (in %)</label>
+                                                <input value="0" id="tax_IGST_Rate_e" name="tax_IGST_Rate_e" type="text" placeholder="IGST (in %)" class="form-control" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="tax_IGST_Amount_e" class="control-label">IGST Amount</label>
+                                                <input value="0" id="tax_IGST_Amount_e" name="tax_IGST_Amount_e" type="text" placeholder="IGST Amount" class="form-control" />
+                                            </div>
+                                            
+                                            <div class="col-lg-3">
+                                                <label for="tax_NetAmount_e" class="control-label">Net Amount</label>
+                                                <input value="0" id="tax_NetAmount_e" name="tax_NetAmount_e" type="text" placeholder="Net Amount" class="form-control" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="tax_TotalTax_e" class="control-label">Total Tax.</label>
+                                                <input value="0" id="tax_TotalTax_e" name="tax_TotalTax_e" type="text" placeholder="Total Tax." class="form-control" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="tax_Bank_e" class="control-label">Bank</label>
+                                                <select name="tax_Bank_e" id="tax_Bank_e" class="form-control select2">
+                                                    <option value="0" >-- Select Bank --</option>
+                                                    <option value="1" >HDFC</option>
+                                                    <option value="2" >SBI</option>
+                                                </select>
+                                                <input type="hidden" name="tax_BankName_e" id="tax_BankName_e" value="">
+                                            </div> 
+                                            <div class="col-lg-3">
+                                                <label for="tax_ShowStamp_e" class="control-label">Show Stamp</label>
+                                                <select name="tax_ShowStamp_e" id="tax_ShowStamp_e" class="form-control select2">
+                                                    <option value="1" >YES</option>
+                                                    <option value="2" >NO</option>
+                                                </select>
+                                                <input type="hidden" name="tax_ShowStampName_e" id="tax_ShowStampName_e" value="">
+                                            </div> 
+                                            <div class="col-lg-3" style="margin-top: 25px;">
+                                                <label for="tax_details_submit_e" class="control-label"></label>
+                                                <input type="submit" name="tax_details_submit_e" class="btn btn-success text-center" id="tax_details_submit_e" value="Update Tax">
+                                                <input type="hidden" name="tax_project_id_e" id="tax_project_id_e" value="<?=$project_id?>">
+                                                <input type="hidden" name="tax_bi_obj_e" id="tax_bi_obj_e" value="">
+                                            </div> 
+                                        </form>
+                                    </div>
                                     
                                 </div> 
 
@@ -1066,8 +1127,27 @@
                 $("#bi_ImportantNotes_e").val(returnData.bi_ImportantNotes);
 
                 //Particular Part
-                initTableParticularsEdit($project_id, $bi_obj);
+                initTableParticulars($project_id, $bi_obj, 'tableParticularsEdit');
                 $('#parti_bi_obj_e').val($bi_obj);
+
+                //Tax Calculation
+                $("#tax_GrossAmount_e").val(returnData.tax_GrossAmount);
+                $("#tax_DiscountPercentage_e").val(returnData.tax_DiscountPercentage);
+                $("#tax_DiscountAmount_e").val(returnData.tax_DiscountAmount);
+                $("#tax_TaxableAmount_e").val(returnData.tax_TaxableAmount);
+                $("#tax_SGST_Rate_e").val(returnData.tax_SGST_Rate);
+                $("#tax_SGST_Amount_e").val(returnData.tax_SGST_Amount);
+                $("#tax_CGST_Rate_e").val(returnData.tax_CGST_Rate);
+                $("#tax_CGST_Amount_e").val(returnData.tax_CGST_Amount);
+                $("#tax_IGST_Rate_e").val(returnData.tax_IGST_Rate);
+                $("#tax_IGST_Amount_e").val(returnData.tax_IGST_Amount);
+                $("#tax_NetAmount_e").val(returnData.tax_NetAmount);
+                $("#tax_TotalTax_e").val(returnData.tax_TotalTax);
+                $("#tax_Bank_e").val(returnData.tax_Bank).trigger('change');
+                $("#tax_BankName_e").val(returnData.tax_BankName);
+                $("#tax_ShowStamp_e").val(returnData.tax_ShowStamp).trigger('change');
+                $("#tax_ShowStampName_e").val(returnData.tax_ShowStampName);
+                $("#tax_bi_obj_e").val($bi_obj);
 
                 $('a[href="#quotation_edit"]').tab('show');
 
@@ -1152,11 +1232,13 @@
     })//end fun
 
     //Populate Particular table    
-    function initTableParticularsEdit($project_id, $bi_obj){
-        $('#tableParticularsEdit').dataTable().fnClearTable();
-        $('#tableParticularsEdit').dataTable().fnDestroy();
+    function initTableParticulars($project_id, $bi_obj, $tableId){
+        //$('#tableParticularsEdit').dataTable().fnClearTable();
+        //$('#tableParticularsEdit').dataTable().fnDestroy();
+        $('#'+$tableId).dataTable().fnClearTable();
+        $('#'+$tableId).dataTable().fnDestroy();
         
-        $('#tableParticularsEdit').DataTable( {
+        $('#'+$tableId).DataTable( {
             "processing": true,
             "language": {
                 processing: '<img src="<?=base_url('assets/img/ellipsis.gif')?>"><span class="sr-only">Processing...</span>',
@@ -1465,6 +1547,8 @@
 
                 initQuotationListTable()
                 $('#bi_obj').val(obj.bi_obj);
+                $('#tax_bi_obj').val(obj.bi_obj);
+                $('#commi_bi_obj').val(obj.bi_obj);
 
                 console.log(JSON.stringify(obj));
                 if(obj.type == 'error'){
@@ -1587,9 +1671,10 @@
                 $('#par_Duration').val('');
                 $('#par_StartDate').val('');
                 $('#par_Amount').val('');
-                $('#par_Taxable').val('0').trigger('change');
+                $('#par_Taxable').val('1').trigger('change');
 
-                //Populate particular table after this part
+                //Populate particular table after this part                
+                initTableParticulars(obj.project_id, obj.bi_obj, 'tableParticularsAdd');
                 
                 if(obj.type == 'error'){
                     console.log('Error from API')
@@ -1648,7 +1733,7 @@
                 $('#par_Duration_e').val('');
                 $('#par_StartDate_e').val('');
                 $('#par_Amount_e').val('');
-                $('#par_Taxable_e').val('0').trigger('change');
+                $('#par_Taxable_e').val('1').trigger('change');
                 
                 if(obj.type == 'error'){
                     console.log('Error from API')
@@ -1658,7 +1743,7 @@
                     //Populate particular table after this part 
                     $project_id = obj.parti_obj;              
                     $bi_obj = obj.parti_obj;
-                    //initTableParticularsEdit($project_id, $bi_obj);
+                    //initTableParticulars($project_id, $bi_obj, 'tableParticularsEdit');
                 }            	
 			}
 		}
@@ -1718,6 +1803,50 @@
     });
     //end TAX Part
 
+    //Edit TAX calculation start
+    $("#tax_Bank_e").change(function(){
+        $tax_BankName_e = $("#tax_Bank_e :selected").text();
+        $('#tax_BankName_e').val($tax_BankName_e);
+    });
+    $("#tax_ShowStamp_e").change(function(){
+        $tax_ShowStampName_e = $("#tax_ShowStamp_e :selected").text();
+        $('#tax_ShowStampName_e').val($tax_ShowStampName_e);
+    });
+    $("#form_tax_edit").validate({        
+        rules: {
+            tax_GrossAmount_e: {
+                required: true
+            },
+            tax_NetAmount_e: {
+                required: true
+            },
+            tax_Bank_e: {
+                required: true
+            }  
+        },
+        messages: {
+
+        }
+    });
+    $('#form_tax_edit').ajaxForm({
+        beforeSubmit: function () {
+            return $("#form_tax_edit").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            obj = JSON.parse(returnData);
+            notification(obj);
+			if(parseInt(obj.update_id) > 0){
+                console.log(JSON.stringify(obj));
+                if(obj.type == 'error'){
+                    console.log('Error from API')
+                }else{
+                    console.log('Document save success')
+                }            	
+			}
+		}
+    });
+    //end TAX edit Part
+
     //Add commission details
     $("#comi_emp_id").change(function(){
         $comi_emp_name = $("#comi_emp_id :selected").text();
@@ -1756,6 +1885,9 @@
                     console.log('Error from API')
                 }else{
                     console.log('Document save success')
+                    //populate commission table from here
+
+
                 }            	
 			}
 		}

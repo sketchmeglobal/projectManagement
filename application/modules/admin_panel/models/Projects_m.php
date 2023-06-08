@@ -653,6 +653,8 @@ class Projects_m extends CI_Model {
         $data['type'] = 'success';
         $data['msg'] = 'Particulars Updated Properly';
         $data['title'] = 'Particulars';
+        $data['project_id'] = $parti_project_id;
+        $data['bi_obj'] = $bi_obj;
         $data['parti_obj'] = $parti_obj;
         return $data;
 
@@ -734,7 +736,8 @@ class Projects_m extends CI_Model {
         $daya = array();
         $status = true;
 
-        $tax_project_id = $this->input->post('tax_project_id'); 
+        $project_id = $this->input->post('tax_project_id'); 
+        $bi_obj = $this->input->post('tax_bi_obj'); 
         $tax_GrossAmount = $this->input->post('tax_GrossAmount'); 
         $tax_DiscountPercentage = $this->input->post('tax_DiscountPercentage'); 
         $tax_DiscountAmount = $this->input->post('tax_DiscountAmount');      
@@ -752,43 +755,44 @@ class Projects_m extends CI_Model {
         $tax_ShowStamp = $this->input->post('tax_ShowStamp'); 
         $tax_ShowStampName = $this->input->post('tax_ShowStampName'); 
         
-        $tax_obj = rand(1000, 9999);
-
-        
-        $taxCalculation = new stdClass();
-        $taxCalculation->tax_obj = $tax_obj;
-        $taxCalculation->tax_GrossAmount = $tax_GrossAmount;
-        $taxCalculation->tax_DiscountPercentage = $tax_DiscountPercentage;
-        $taxCalculation->tax_DiscountAmount = $tax_DiscountAmount;
-        $taxCalculation->tax_TaxableAmount = $tax_TaxableAmount;
-        $taxCalculation->tax_SGST_Rate = $tax_SGST_Rate;
-        $taxCalculation->tax_SGST_Amount = $tax_SGST_Amount;
-        $taxCalculation->tax_CGST_Rate = $tax_CGST_Rate;
-        $taxCalculation->tax_CGST_Amount = $tax_CGST_Amount;
-        $taxCalculation->tax_IGST_Rate = $tax_IGST_Rate;
-        $taxCalculation->tax_IGST_Amount = $tax_IGST_Amount;
-        $taxCalculation->tax_NetAmount = $tax_NetAmount;
-        $taxCalculation->tax_TotalTax = $tax_TotalTax;
-        $taxCalculation->tax_Bank = $tax_Bank;
-        $taxCalculation->tax_BankName = $tax_BankName;
-        $taxCalculation->tax_ShowStamp = $tax_ShowStamp;
-        $taxCalculation->tax_ShowStampName = $tax_ShowStampName;
-        
 
         //check existing data
-        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $tax_project_id))->result();
+        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
         if(count($result) > 0){
             $project_description1 = $result[0]->project_description;
-            $project_description = json_decode($project_description1);            
+            $project_description = json_decode($project_description1); 
+            $quotationDetail = $project_description->quotationDetail;          
             
         }
-        $project_description->quotationDetail[0]->taxCalculation = $taxCalculation;
+
+        for($i = 0; $i < sizeof($quotationDetail); $i++){
+            if($quotationDetail[$i]->bi_obj == $bi_obj){
+                $quotationDetail[$i]->tax_GrossAmount = $tax_GrossAmount;
+                $quotationDetail[$i]->tax_DiscountPercentage = $tax_DiscountPercentage;
+                $quotationDetail[$i]->tax_DiscountAmount = $tax_DiscountAmount;
+                $quotationDetail[$i]->tax_TaxableAmount = $tax_TaxableAmount;
+                $quotationDetail[$i]->tax_SGST_Rate = $tax_SGST_Rate;
+                $quotationDetail[$i]->tax_SGST_Amount = $tax_SGST_Amount;
+                $quotationDetail[$i]->tax_CGST_Rate = $tax_CGST_Rate;
+                $quotationDetail[$i]->tax_CGST_Amount = $tax_CGST_Amount;
+                $quotationDetail[$i]->tax_IGST_Rate = $tax_IGST_Rate;
+                $quotationDetail[$i]->tax_IGST_Amount = $tax_IGST_Amount;
+                $quotationDetail[$i]->tax_NetAmount = $tax_NetAmount;
+                $quotationDetail[$i]->tax_TotalTax = $tax_TotalTax;
+                $quotationDetail[$i]->tax_Bank = $tax_Bank;
+                $quotationDetail[$i]->tax_BankName = $tax_BankName;
+                $quotationDetail[$i]->tax_ShowStamp = $tax_ShowStamp;
+                $quotationDetail[$i]->tax_ShowStampName = $tax_ShowStampName;
+            }
+        }//end for
+
+        $project_description->quotationDetail = $quotationDetail;    
 
         $updateArray = array(
             'project_description' => json_encode($project_description)
         );
 
-        $val = $this->db->update('project_detail', $updateArray, array('project_id' => $tax_project_id));
+        $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
         $data['db_updated'] = $val;
         
         $data['type'] = 'success';
@@ -799,12 +803,86 @@ class Projects_m extends CI_Model {
     }
     //end Tax add
     
-    //Commission Add portion
-    public function form_commission_add(){  
+    //TAX Edit portion astrt
+    public function form_tax_edit(){  
         $daya = array();
         $status = true;
 
-        $commi_project_id = $this->input->post('commi_project_id'); 
+        $project_id = $this->input->post('tax_project_id_e'); 
+        $bi_obj = $this->input->post('tax_bi_obj_e'); 
+        $tax_GrossAmount = $this->input->post('tax_GrossAmount_e'); 
+        $tax_DiscountPercentage = $this->input->post('tax_DiscountPercentage_e'); 
+        $tax_DiscountAmount = $this->input->post('tax_DiscountAmount_e');      
+        $tax_TaxableAmount = $this->input->post('tax_TaxableAmount_e'); 
+        $tax_SGST_Rate = $this->input->post('tax_SGST_Rate_e'); 
+        $tax_SGST_Amount = $this->input->post('tax_SGST_Amount_e'); 
+        $tax_CGST_Rate = $this->input->post('tax_CGST_Rate_e'); 
+        $tax_CGST_Amount = $this->input->post('tax_CGST_Amount_e'); 
+        $tax_IGST_Rate = $this->input->post('tax_IGST_Rate_e'); 
+        $tax_IGST_Amount = $this->input->post('tax_IGST_Amount_e'); 
+        $tax_NetAmount = $this->input->post('tax_NetAmount_e'); 
+        $tax_TotalTax = $this->input->post('tax_TotalTax_e'); 
+        $tax_Bank = $this->input->post('tax_Bank_e'); 
+        $tax_BankName = $this->input->post('tax_BankName_e'); 
+        $tax_ShowStamp = $this->input->post('tax_ShowStamp_e'); 
+        $tax_ShowStampName = $this->input->post('tax_ShowStampName_e'); 
+        
+
+        //check existing data
+        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1); 
+            $quotationDetail = $project_description->quotationDetail;          
+            
+        }
+
+        for($i = 0; $i < sizeof($quotationDetail); $i++){
+            if($quotationDetail[$i]->bi_obj == $bi_obj){
+                $quotationDetail[$i]->tax_GrossAmount = $tax_GrossAmount;
+                $quotationDetail[$i]->tax_DiscountPercentage = $tax_DiscountPercentage;
+                $quotationDetail[$i]->tax_DiscountAmount = $tax_DiscountAmount;
+                $quotationDetail[$i]->tax_TaxableAmount = $tax_TaxableAmount;
+                $quotationDetail[$i]->tax_SGST_Rate = $tax_SGST_Rate;
+                $quotationDetail[$i]->tax_SGST_Amount = $tax_SGST_Amount;
+                $quotationDetail[$i]->tax_CGST_Rate = $tax_CGST_Rate;
+                $quotationDetail[$i]->tax_CGST_Amount = $tax_CGST_Amount;
+                $quotationDetail[$i]->tax_IGST_Rate = $tax_IGST_Rate;
+                $quotationDetail[$i]->tax_IGST_Amount = $tax_IGST_Amount;
+                $quotationDetail[$i]->tax_NetAmount = $tax_NetAmount;
+                $quotationDetail[$i]->tax_TotalTax = $tax_TotalTax;
+                $quotationDetail[$i]->tax_Bank = $tax_Bank;
+                $quotationDetail[$i]->tax_BankName = $tax_BankName;
+                $quotationDetail[$i]->tax_ShowStamp = $tax_ShowStamp;
+                $quotationDetail[$i]->tax_ShowStampName = $tax_ShowStampName;
+            }
+        }//end for
+
+        $project_description->quotationDetail = $quotationDetail;    
+
+        $updateArray = array(
+            'project_description' => json_encode($project_description)
+        );
+
+        $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+        $data['db_updated'] = $val;
+        
+        $data['type'] = 'success';
+        $data['msg'] = 'TAX Updated Properly';
+        $data['title'] = 'TAX Calculation';
+        return $data;
+
+    }
+    //end Tax edit
+    
+    //Commission Add portion
+    public function form_commission_add(){  
+        $daya = array();
+        $commissions = array();
+        $status = true;
+
+        $project_id = $this->input->post('commi_project_id'); 
+        $bi_obj = $this->input->post('commi_bi_obj'); 
         $comi_emp_id = $this->input->post('comi_emp_id'); 
         $comi_emp_name = $this->input->post('comi_emp_name'); 
         $comi_rate_type = $this->input->post('comi_rate_type');      
@@ -822,35 +900,42 @@ class Projects_m extends CI_Model {
         $commission->comi_amount = $comi_amount;
 
         //check existing data
-        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $commi_project_id))->result();
+        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
         if(count($result) > 0){
             $project_description1 = $result[0]->project_description;
             $project_description = json_decode($project_description1); 
-            
-            //Below part will be dynamic in respect of quote_obj_id
-            if(isset($project_description->quotationDetail[0]->commissions)){
-                if(sizeof($project_description->quotationDetail[0]->commissions) > 0){
-                    $commissions = $project_description->quotationDetail[0]->commissions;
-                }
-            }else{
-                $project_description->quotationDetail[0]->commissions = array();
-                $commissions = array();
-            }
+            $quotationDetail = $project_description->quotationDetail;
         }
 
-        array_push($commissions, $commission);
-        $project_description->quotationDetail[0]->commissions = $commissions;
+        if(sizeof($quotationDetail) > 0){
+            for($i = 0; $i < sizeof($quotationDetail); $i++){
+                if($quotationDetail[$i]->bi_obj == $bi_obj){
+                    $comi_size = sizeof($quotationDetail[$i]->commissions);
+                    if(isset($quotationDetail[$i]->commissions)){
+                        $commissions = $quotationDetail[$i]->commissions;
+                        array_push($commissions, $commission);
+                        $quotationDetail[$i]->commissions = $commissions;
+                    }else{
+                        array_push($commissions, $commission);
+                        $quotationDetail[$i]->commissions = $commissions;
+                    }
+                }//end if
+            }//end for
+        }//end if
+        
+        $project_description->quotationDetail = $quotationDetail;
 
         $updateArray = array(
             'project_description' => json_encode($project_description)
         );
 
-        $val = $this->db->update('project_detail', $updateArray, array('project_id' => $commi_project_id));
+        $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
         $data['db_updated'] = $val;
         
         $data['type'] = 'success';
         $data['msg'] = 'Commission Updated Properly';
         $data['title'] = 'Commission';
+        $data['comi_size'] = $comi_size;
         return $data;
 
     }

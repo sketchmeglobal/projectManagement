@@ -96,6 +96,7 @@
 	$route['admin/form-particular-add'] = 'admin_panel/Projects/form_particular_add';
 	$route['admin/form-particular-edit'] = 'admin_panel/Projects/form_particular_edit';
 	$route['admin/form-tax-add'] = 'admin_panel/Projects/form_tax_add';
+	$route['admin/form-tax-edit'] = 'admin_panel/Projects/form_tax_edit';
 	$route['admin/form-commission-add'] = 'admin_panel/Projects/form_commission_add';
 	$route['admin/fetch-contact-details-on-pk'] = 'admin_panel/Projects/fetch_contact_details_on_pk';
 	$route['admin/form-edit-contact'] = 'admin_panel/Projects/form_edit_contact';

@@ -200,6 +200,15 @@ class Projects extends My_Controller {
         }
     }
 
+    public function form_tax_edit(){        
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->form_tax_edit();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
     public function form_commission_add(){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Projects_m');
