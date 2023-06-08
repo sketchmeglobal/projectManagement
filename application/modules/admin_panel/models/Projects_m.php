@@ -910,7 +910,6 @@ class Projects_m extends CI_Model {
         if(sizeof($quotationDetail) > 0){
             for($i = 0; $i < sizeof($quotationDetail); $i++){
                 if($quotationDetail[$i]->bi_obj == $bi_obj){
-                    $comi_size = sizeof($quotationDetail[$i]->commissions);
                     if(isset($quotationDetail[$i]->commissions)){
                         $commissions = $quotationDetail[$i]->commissions;
                         array_push($commissions, $commission);
@@ -935,11 +934,78 @@ class Projects_m extends CI_Model {
         $data['type'] = 'success';
         $data['msg'] = 'Commission Updated Properly';
         $data['title'] = 'Commission';
-        $data['comi_size'] = $comi_size;
+        $data['project_id'] = $project_id;
+        $data['bi_obj'] = $bi_obj;
         return $data;
 
     }
     //end commission add
+    
+    //Commission Edit portion
+    public function form_commission_edit(){  
+        $daya = array();
+        $commissions = array();
+        $status = true;
+
+        $project_id = $this->input->post('commi_project_id_e'); 
+        $bi_obj = $this->input->post('commi_bi_obj_e'); 
+        $comi_emp_id = $this->input->post('comi_emp_id_e'); 
+        $comi_emp_name = $this->input->post('comi_emp_name_e'); 
+        $comi_rate_type = $this->input->post('comi_rate_type_e');      
+        $comi_rate_type_name = $this->input->post('comi_rate_type_name_e'); 
+        $comi_amount = $this->input->post('comi_amount_e'); 
+        $comi_obj = rand(1000, 9999);
+
+        
+        $commission = new stdClass();
+        $commission->comi_obj = $comi_obj;
+        $commission->comi_emp_id = $comi_emp_id;
+        $commission->comi_emp_name = $comi_emp_name;
+        $commission->comi_rate_type = $comi_rate_type;
+        $commission->comi_rate_type_name = $comi_rate_type_name;
+        $commission->comi_amount = $comi_amount;
+
+        //check existing data
+        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1); 
+            $quotationDetail = $project_description->quotationDetail;
+        }
+
+        if(sizeof($quotationDetail) > 0){
+            for($i = 0; $i < sizeof($quotationDetail); $i++){
+                if($quotationDetail[$i]->bi_obj == $bi_obj){
+                    if(isset($quotationDetail[$i]->commissions)){
+                        $commissions = $quotationDetail[$i]->commissions;
+                        array_push($commissions, $commission);
+                        $quotationDetail[$i]->commissions = $commissions;
+                    }else{
+                        array_push($commissions, $commission);
+                        $quotationDetail[$i]->commissions = $commissions;
+                    }
+                }//end if
+            }//end for
+        }//end if
+        
+        $project_description->quotationDetail = $quotationDetail;
+
+        $updateArray = array(
+            'project_description' => json_encode($project_description)
+        );
+
+        $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+        $data['db_updated'] = $val;
+        
+        $data['type'] = 'success';
+        $data['msg'] = 'Commission Updated Properly';
+        $data['title'] = 'Commission';
+        $data['project_id'] = $project_id;
+        $data['bi_obj'] = $bi_obj;
+        return $data;
+
+    }
+    //end commission edit
     
 
     private function _upload_files($files, $upload_path, $file_type, $user_file_name){
@@ -2100,8 +2166,7 @@ class Projects_m extends CI_Model {
         );       
         
         return $json_data;
-    }  
-
+    } 
 
     //Particular table data
     public function ajax_particular_details_table_data() {       
@@ -2170,6 +2235,69 @@ class Projects_m extends CI_Model {
         
         return $json_data;
     } 
+
+    //commission table data
+    public function ajax_commission_details_table_data() {       
+        $project_id = $this->input->post('project_id');      
+        $bi_obj = $this->input->post('bi_obj');
+        $data = array();
+        $commissions = array();
+        $quotationDetail = array();
+
+        $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
+        //print_r($result);
+
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1);
+            $quotationDetail = $project_description->quotationDetail;
+        }
+
+        if(sizeof($quotationDetail) > 0){
+            $bi_obj_new = 0;
+            foreach($quotationDetail as $key => $value){
+                $bi_obj_new = $value->bi_obj;
+
+                if($bi_obj == $bi_obj_new){
+                    if(isset($value->commissions)){
+                        $commissions = $value->commissions;
+                    }
+                    break;
+                }//end if
+            }//end foreach
+        }//end if
+
+        if(sizeof($commissions) > 0){
+            $counter = 1;
+            foreach($commissions as $key => $value){
+                $comi_obj = $value->comi_obj;
+                $comi_emp_id = $value->comi_emp_id;
+                $comi_emp_name = $value->comi_emp_name;
+                $comi_rate_type = $value->comi_rate_type;
+                $comi_rate_type_name = $value->comi_rate_type_name;
+                $comi_amount = $value->comi_amount;
+
+                $nestedData['slNo'] = $counter;
+                $nestedData['Employee'] = $comi_emp_name;
+                $nestedData['RateType'] = $comi_rate_type_name;
+                $nestedData['Amount'] = $comi_amount;
+                $nestedData['action'] = '<a href="javascript:void(0)" data-bi_obj="'.$bi_obj.'" data-comi_obj="'.$comi_obj.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+
+                $counter++;
+                array_push($data, $nestedData);
+            }//end foreach
+        }//end if
+
+
+
+        $json_data = array(
+            "recordsTotal"    => sizeof($data),
+            "recordsFiltered" => sizeof($data),
+            "data"            => $data
+        );       
+        
+        return $json_data;
+    }  
   
 
 

@@ -87,6 +87,15 @@ class Projects extends My_Controller {
             exit();
         }
     }
+    
+    public function ajax_commission_details_table_data() {
+        if($this->check_permission() == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_commission_details_table_data();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
 
     public function check_permission($auth_usertype = array()) {
         //if not logged-in
@@ -213,6 +222,15 @@ class Projects extends My_Controller {
         if($this->check_permission(array()) == true) {
             $this->load->model('Projects_m');
             $data = $this->Projects_m->form_commission_add();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
+    public function form_commission_edit(){        
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->form_commission_edit();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }

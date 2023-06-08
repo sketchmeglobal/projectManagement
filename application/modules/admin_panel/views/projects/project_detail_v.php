@@ -921,6 +921,67 @@
                                             </div> 
                                         </form>
                                     </div>
+
+                                    <!-- Start project commission edit -->
+                                    <div class="form-group " style="float: left;"> 
+                                        <h4 style="margin-left: 15px;">Project Commission</h4>
+                                        <div id="p_commission_list_e" class="tab-pane fade in active">
+                                            <table id="p_commissionListEdit" class="table data-table dataTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Sl#</th>
+                                                        <th>Employee</th>
+                                                        <th>Rate Type</th>
+                                                        <th>Amount</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    
+                                                </tbody> 
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>Sl#</th>
+                                                        <th>Employee</th>
+                                                        <th>Rate Type</th>
+                                                        <th>Amount</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </tfoot>                                                   
+                                            </table>
+                                        </div>
+                                        
+                                        <form autocomplete="off" id="form_commission_edit" method="post" action="<?=base_url('admin/form-commission-edit')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">  
+                                            <div class="col-lg-3">
+                                                <label for="comi_emp_id" class="control-label">Employee</label>
+                                                <select name="comi_emp_id_e" id="comi_emp_id_e" class="form-control select2">
+                                                    <option value="0" >-- Select Employee --</option>
+                                                    <option value="1" >Mr. Jana</option>
+                                                    <option value="2" >Mr. Roy</option>
+                                                </select>
+                                                <input type="hidden" name="comi_emp_name_e" id="comi_emp_name_e" value="">
+                                            </div> 
+                                            <div class="col-lg-3">
+                                                <label for="comi_rate_type_e" class="control-label">Rate Type</label>
+                                                <select name="comi_rate_type_e" id="comi_rate_type_e" class="form-control select2">
+                                                    <option value="1" >Flate Rate</option>
+                                                    <option value="2" >Percentage</option>
+                                                </select>
+                                                <input type="hidden" name="comi_rate_type_name_e" id="comi_rate_type_name_e" value="">
+                                            </div> 
+                                            <div class="col-lg-3">
+                                                <label for="comi_amount_e" class="control-label">Amount</label>
+                                                <input value="0" id="comi_amount_e" name="comi_amount_e" type="text" placeholder="Amount" class="form-control" />
+                                            </div>
+                                            <div class="col-lg-3" style="margin-top: 25px;">
+                                                <label for="product_line_po_e" class="control-label"></label>
+                                                <input type="submit" name="add_commi_e" class="btn btn-success text-center" id="add_commi_e" value="Add Commission">
+                                                <input type="hidden" name="commi_project_id_e" id="commi_project_id_e" value="<?=$project_id?>">
+                                                <input type="hidden" name="commi_bi_obj_e" id="commi_bi_obj_e" value="">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- End project commission edit-->
                                     
                                 </div> 
 
@@ -1148,6 +1209,10 @@
                 $("#tax_ShowStamp_e").val(returnData.tax_ShowStamp).trigger('change');
                 $("#tax_ShowStampName_e").val(returnData.tax_ShowStampName);
                 $("#tax_bi_obj_e").val($bi_obj);
+                
+                //Commission Part
+                initTableCommission($project_id, $bi_obj, 'p_commissionListEdit');
+                $('#commi_bi_obj_e').val($bi_obj);
 
                 $('a[href="#quotation_edit"]').tab('show');
 
@@ -1271,6 +1336,46 @@
             //column initialisation properties
             "columnDefs": [{
                 "targets": [0, 1, 2, 3, 4, 5, 6, 7],
+                "orderable": false,
+            }]
+        });
+    }//end fun
+
+    //Populate Commission table    
+    function initTableCommission($project_id, $bi_obj, $tableId){
+        $('#'+$tableId).dataTable().fnClearTable();
+        $('#'+$tableId).dataTable().fnDestroy();
+        
+        $('#'+$tableId).DataTable( {
+            "processing": true,
+            "language": {
+                processing: '<img src="<?=base_url('assets/img/ellipsis.gif')?>"><span class="sr-only">Processing...</span>',
+            },
+            "serverSide": true,
+            "ajax": {
+                "url": "<?=base_url('admin/ajax-commission-details-table-data')?>",
+                "type": "POST",
+                "dataType": "json",
+                data: {
+                    project_id: function () {
+                        return $project_id;
+                    },
+                    bi_obj: function () {
+                        return $bi_obj;
+                    }
+                },
+            },
+            //will get these values from JSON 'data' variable
+            "columns": [
+                { "data": "slNo" },
+                { "data": "Employee" },
+                { "data": "RateType" },
+                { "data": "Amount" },
+                { "data": "action" },
+            ],
+            //column initialisation properties
+            "columnDefs": [{
+                "targets": [0, 1, 2, 3, 4],
                 "orderable": false,
             }]
         });
@@ -1879,20 +1984,75 @@
         success: function (returnData) {
             obj = JSON.parse(returnData);
             notification(obj);
-			if(parseInt(obj.update_id) > 0){
+			if(parseInt(obj.project_id) > 0){
                 console.log(JSON.stringify(obj));
                 if(obj.type == 'error'){
                     console.log('Error from API')
                 }else{
-                    console.log('Document save success')
+                    console.log('commission save success')
+                    $('#comi_emp_name').val('0').trigger('change');
+                    $('#comi_rate_type_').val('0').trigger('change');
+                    $('#comi_amount').val('0');
                     //populate commission table from here
-
+                    initTableCommission(obj.project_id, obj.bi_obj, 'p_commissionListAdd');
 
                 }            	
 			}
 		}
     });
     //end commission Part
+
+    
+
+    //Edit commission details
+    $("#comi_emp_id_e").change(function(){
+        $comi_emp_name_e = $("#comi_emp_id_e :selected").text();
+        $('#comi_emp_name_e').val($comi_emp_name_e);
+    });
+    $("#comi_rate_type_e").change(function(){
+        $comi_rate_type_name_e = $("#comi_rate_type_e :selected").text();
+        $('#comi_rate_type_name_e').val($comi_rate_type_name_e);
+    });
+    $("#form_commission_edit").validate({        
+        rules: {
+            comi_emp_name_e: {
+                required: true
+            },
+            comi_rate_type_e: {
+                required: true
+            },
+            comi_amount_e: {
+                required: true
+            }  
+        },
+        messages: {
+
+        }
+    });
+    $('#form_commission_edit').ajaxForm({
+        beforeSubmit: function () {
+            return $("#form_commission_edit").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            obj = JSON.parse(returnData);
+            notification(obj);
+            if(parseInt(obj.project_id) > 0){
+                console.log(JSON.stringify(obj));
+                if(obj.type == 'error'){
+                    console.log('Error from API')
+                }else{
+                    console.log('commission save success')
+                    $('#comi_emp_name_e').val('0').trigger('change');
+                    $('#comi_rate_type_e').val('0').trigger('change');
+                    $('#comi_amount_e').val('0');
+                    //populate commission table from here
+                    initTableCommission(obj.project_id, obj.bi_obj, 'p_commissionListEdit');
+
+                }            	
+            }
+        }
+    });
+    //end commission Part edit
 
 
 
