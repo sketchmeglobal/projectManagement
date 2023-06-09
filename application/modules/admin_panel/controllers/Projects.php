@@ -29,7 +29,7 @@ class Projects extends My_Controller {
     public function ajax_project_table_data() {
         if($this->check_permission() == true) {
             $this->load->model('Projects_m');
-            $data = $this->Projects_m->ajax_project_table_data($_GET['show']);
+            $data = $this->Projects_m->ajax_project_table_data();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -267,6 +267,42 @@ class Projects extends My_Controller {
         if($this->check_permission(array()) == true) {
             $this->load->model('Projects_m');
             $data = $this->Projects_m->del_row_requirement_details();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    } 
+
+    public function del_row_project_details() {
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->del_row_project_details();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
+    public function del_row_quotation_details() {
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->del_row_quotation_details();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
+    public function del_row_particular_details() {
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->del_row_particular_details();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
+    public function del_row_commission_details() {
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->del_row_commission_details();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }

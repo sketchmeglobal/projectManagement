@@ -71,6 +71,14 @@
             <div class="row">
 <?php
     //echo json_encode($project_description);
+
+    if(sizeof($project_description) > 0){
+        $title = $project_description->projectDetail->title;
+        $description = $project_description->projectDetail->description;
+    }else{
+        $title = '';
+        $description = '';
+    }
 ?>
                 <div class="col-md-12">
                     <section class="panel">
@@ -85,12 +93,12 @@
                                 <div class="form-group "> 
                                     <div class="col-lg-3">
                                         <label for="project_title" class="control-label">Title</label>
-                                        <input type="text" name="project_title" id="project_title" class="form-control" value="<?=$project_description->projectDetail->title?>">
+                                        <input type="text" name="project_title" id="project_title" class="form-control" value="<?=$title?>">
                                     </div>
 
                                     <div class="col-lg-3">
                                         <label for="project_description" class="control-label">Description</label>
-                                        <textarea name="project_description" id="project_description" class="form-control"><?=$project_description->projectDetail->description?></textarea>
+                                        <textarea name="project_description" id="project_description" class="form-control"><?=$description?></textarea>
                                     </div> 
 
                                     <div class="col-lg-3">
@@ -388,6 +396,7 @@
                                     <table id="quotation_list_table" class="table data-table dataTable" style="width: 100%;">
                                         <thead>
                                             <tr>
+                                                <th>SlNo</th>
                                                 <th>Party Name</th>
                                                 <th>Quotation No</th>
                                                 <th>Quotation Date</th>
@@ -998,7 +1007,7 @@
         <!--body wrapper end-->
 
         <!--footer section start-->
-        <?php // $this->load->view('components/footer'); ?>
+        <?php //$this->load->view('components/footer'); ?>
         <!--footer section end-->
 
     </div>
@@ -1070,6 +1079,7 @@
             },
             //will get these values from JSON 'data' variable
             "columns": [
+                { "data": "SlNo" },
                 { "data": "PartyName" },
                 { "data": "QuotationNo" },
                 { "data": "QuotationDate" },
@@ -1077,7 +1087,7 @@
             ],
             //column initialisation properties
             "columnDefs": [{
-                "targets": [0,1,2,3],
+                "targets": [0,1,2,3,4],
                 "orderable": false,
             }]
         });
@@ -1265,8 +1275,9 @@
 
     //Edit contact details
     $('#contact_details_table').on('click', '.edit_contact_obj', function(){
+        $project_id = $(this).data('project_id');
         $contact_obj = $(this).data('contact_obj');
-        $project_id = $('#project_id').val();
+        
         $('#contact_obj').val($contact_obj);
         console.log('contact_obj: ' + $contact_obj);
 
@@ -1285,6 +1296,7 @@
                 $("#e_contact_first_ph").val(returnData.contact_first_ph);
                 $("#e_contact_second_ph").val(returnData.contact_second_ph);
                 $("#e_contact_persn_address").val(returnData.contact_persn_address);
+                $("#e_cont_project_id").val($project_id);
 
                 $('a[href="#contact_details_edit"]').tab('show');
 
@@ -1539,6 +1551,8 @@
                 $('#req_gather_title').val('');
                 $('#req_gather_desc').val('');
                 $('#req_gather_by_name').val('');
+                $('#req_gather_by').val('0').trigger('change');
+                $('#req_gather_date').val('');
 
                 initGatherRequirementTable()
                 console.log(JSON.stringify(obj));
@@ -1636,7 +1650,7 @@
             obj = JSON.parse(returnData);
             notification(obj);
 			if(parseInt(obj.update_id) > 0){
-                $('#bi_PartyId').val('0').trigger('change');
+                /*$('#bi_PartyId').val('0').trigger('change');
                 $('#bi_PartyId_name').val('');
                 $('#bi_QuotationNo').val('');
                 $('#bi_QuotationDate').val('');
@@ -1648,7 +1662,7 @@
                 $('#bi_InstrumentNumber').val('');
                 $('#bi_Remarks').val('');
                 $('#bi_OtherClientInfo').val('');
-                $('#bi_ImportantNotes').val('');
+                $('#bi_ImportantNotes').val('');*/
 
                 initQuotationListTable()
                 $('#bi_obj').val(obj.bi_obj);
@@ -2139,6 +2153,92 @@
                     //refresh table
                     initGatherRequirementTable()
 
+                },
+                error: function (returnData) {
+                    obj = JSON.parse(returnData);
+                    notification(obj);
+                }
+            });
+        }        
+    });
+
+    //Delete Quotation     
+    $('#quotation_list_table').on('click', '.delete', function(){
+        $project_id = $(this).data('project_id');
+        $bi_obj = $(this).data('bi_obj');
+
+        if(confirm("Are You Sure? This Process Can\'t be Undone.")){
+            $pk = $(this).attr('data-pk');
+            
+            $.ajax({
+                url: "<?= base_url('admin/del-row-quotation-details/') ?>",
+                dataType: 'json',
+                type: 'POST',
+                data: {project_id: $project_id, bi_obj: $bi_obj},
+                success: function (returnData) {
+                    console.log(returnData);
+                    $('#quotation_list_table').closest('tr').remove();
+                    notification(returnData);
+                    //refresh table
+                    initQuotationListTable()
+                },
+                error: function (returnData) {
+                    obj = JSON.parse(returnData);
+                    notification(obj);
+                }
+            });
+        }        
+    });
+
+    //Delete Particulars     
+    $('#tableParticularsEdit').on('click', '.delete', function(){
+        $project_id = $(this).data('project_id');
+        $bi_obj = $(this).data('bi_obj');
+        $parti_obj = $(this).data('parti_obj');
+
+        if(confirm("Are You Sure? This Process Can\'t be Undone.")){
+            $pk = $(this).attr('data-pk');
+            
+            $.ajax({
+                url: "<?= base_url('admin/del-row-particular-details/') ?>",
+                dataType: 'json',
+                type: 'POST',
+                data: { project_id: $project_id, bi_obj: $bi_obj, parti_obj: $parti_obj },
+                success: function (returnData) {
+                    console.log(returnData);
+                    $('#tableParticularsEdit').closest('tr').remove();
+                    notification(returnData);
+                    //refresh table
+                    initTableParticulars($project_id, $bi_obj, 'tableParticularsEdit');
+                },
+                error: function (returnData) {
+                    obj = JSON.parse(returnData);
+                    notification(obj);
+                }
+            });
+        }        
+    });
+
+    //Delete Commission     
+    $('#p_commissionListEdit').on('click', '.delete', function(){
+        $project_id = $(this).data('project_id');
+        $bi_obj = $(this).data('bi_obj');
+        $comi_obj = $(this).data('comi_obj');
+
+        if(confirm("Are You Sure? This Process Can\'t be Undone.")){
+            $pk = $(this).attr('data-pk');
+            
+            $.ajax({
+                url: "<?= base_url('admin/del-row-commission-details/') ?>",
+                dataType: 'json',
+                type: 'POST',
+                data: { project_id: $project_id, bi_obj: $bi_obj, comi_obj: $comi_obj },
+                success: function (returnData) {
+                    console.log(returnData);
+                    $('#p_commissionListEdit').closest('tr').remove();
+                    notification(returnData);
+                    //refresh table
+                    initTableCommission($project_id, $bi_obj, 'p_commissionListEdit');
                 },
                 error: function (returnData) {
                     obj = JSON.parse(returnData);

@@ -17,27 +17,31 @@ class Projects_m extends CI_Model {
         return array('page'=>'projects/project_list_v', 'data'=>$data);   
     }
 
-    public function ajax_project_table_data($offer_type) {
+    public function ajax_project_table_data() {
         $usertype = $this->session->usertype;
         $user_id = $this->session->user_id;
         $data = array();
+        $nestedData = array();
 
         $p_data = $this->db->get('project_detail')->result();
-        foreach($p_data as $index => $val){
-            $project_id = $val->project_id;
-            $created_at = $val->created_at;
-            $project_description = json_decode($val->project_description);
-            $project_name = $project_description->projectDetail->title;        
 
-            $nestedData['sl_no'] = $project_id;
-            $nestedData['project_name'] = $project_name;
-            $nestedData['create_dt'] = date("d-m-Y", strtotime($created_at));
-            $nestedData['action'] = '<a href="javascript:void(0)" data-offer_id="0" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
-            <a href="'. base_url('admin/project-detail/'.$project_id).'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
-            <a data-offer_id="0" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
-                        
-            array_push($data, $nestedData);
-        }//end foreach
+        if(sizeof($p_data) > 0){
+            foreach($p_data as $index => $val){
+                $project_id = $val->project_id;
+                $created_at = $val->created_at;
+                $project_description = json_decode($val->project_description);
+                $project_name = $project_description->projectDetail->title;        
+
+                $nestedData['sl_no'] = $project_id;
+                $nestedData['project_name'] = $project_name;
+                $nestedData['create_dt'] = date("d-m-Y", strtotime($created_at));
+                $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
+                <a href="'. base_url('admin/project-detail/'.$project_id).'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
+                <a href="javascript:void(0)" data-project_id="'.$project_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+                            
+                array_push($data, $nestedData);
+            }//end foreach
+        }
 
         $totalData = sizeof($nestedData);
         $totalFiltered = sizeof($nestedData);
@@ -54,16 +58,18 @@ class Projects_m extends CI_Model {
     public function project_detail($project_id) {
         $usertype = $this->session->usertype;
         $user_id = $this->session->user_id;
+        $project_description = array();
 
-        $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
-        //print_r($result);
+        if($project_id > 0){
+            $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
+            //print_r($result);
 
-        if(count($result) > 0){
-            $project_description1 = $result[0]->project_description;
-            $project_description = json_decode($project_description1);
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1);
+            }
         }
-        //echo json_encode($project_description);
-        //die; 
+        
         $data['title'] = 'Edit Offer';
         $data['menu'] = 'Offers';
         $data['project_id'] = $project_id;  
@@ -176,6 +182,8 @@ class Projects_m extends CI_Model {
     //Contact details edit
     public function form_edit_contact(){  
         $daya = array();
+        $contactDetail = array();
+        $project_description = array();
         $status = true;
 
         $cont_project_id = $this->input->post('e_cont_project_id');
@@ -207,9 +215,8 @@ class Projects_m extends CI_Model {
                         $contactDetail[$i]->contact_persn_address = $contact_persn_address;
                     }
                 }//end for
+                $project_description->contactDetail = $contactDetail;
             }//end if
-            
-            $project_description->contactDetail = $contactDetail;
 
             $updateArray = array(
                 'project_description' => json_encode($project_description)
@@ -369,6 +376,171 @@ class Projects_m extends CI_Model {
             $data['title'] = 'Deleted!';
             $data['type'] = 'success';
             $data['msg'] = 'Contact Deleted Successfully';
+        }
+        return $data;        
+    }//end fun
+
+
+    //Project list delete
+    public function del_row_project_details(){
+        $project_id = $this->input->post('project_id');
+        
+        $status = true;
+        $this->db->where('project_id', $project_id)->delete('project_detail');
+
+        if ($status == true) {
+            $data['title'] = 'Deleted!';
+            $data['type'] = 'success';
+            $data['msg'] = 'Project Deleted Successfully';
+        }
+        return $data;        
+    }//end fun
+
+
+    //Quotation list delete
+    public function del_row_quotation_details(){
+        $project_id = $this->input->post('project_id');
+        $bi_obj = $this->input->post('bi_obj');
+        $status = true;
+        
+        if($bi_obj > 0){
+            //check existing data
+            $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1);            
+                $quotationDetail = $project_description->quotationDetail;
+                $newQuotationDetail = array();
+
+                for($i = 0; $i < sizeof($quotationDetail); $i++){ 
+                    if($quotationDetail[$i]->bi_obj != $bi_obj){
+                        array_push($newQuotationDetail, $quotationDetail[$i]);
+                    }
+                }//end for
+            }//end if
+            
+            $project_description->quotationDetail = $newQuotationDetail;
+
+            $updateArray = array(
+                'project_description' => json_encode($project_description)
+            );
+
+            $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+            $data['file_updated'] = $val;   
+        }   
+
+        if ($status == true) {
+            $data['title'] = 'Deleted!';
+            $data['type'] = 'success';
+            $data['msg'] = 'Quotatiom Deleted Successfully';
+        }
+        return $data;        
+    }//end fun
+
+
+    //Particular list delete
+    public function del_row_particular_details(){
+        $project_id = $this->input->post('project_id');
+        $bi_obj = $this->input->post('bi_obj');
+        $parti_obj = $this->input->post('parti_obj');
+
+        $status = true;
+        $particularsNew = array();
+        
+        if($bi_obj > 0){   
+            //check existing data
+            $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1); 
+                $quotationDetail = $project_description->quotationDetail;
+
+                for($i = 0; $i < sizeof($quotationDetail); $i++){
+                    if($quotationDetail[$i]->bi_obj == $bi_obj){
+                        if(isset($quotationDetail[$i]->particulars)){
+                            $particulars = $quotationDetail[$i]->particulars;
+                        }
+
+                        for($j = 0; $j < sizeof($particulars); $j++){
+                            if($particulars[$j]->parti_obj != $parti_obj){                        
+                                array_push($particularsNew, $particulars[$j]);
+                            }
+                        }
+
+                        $quotationDetail[$i]->particulars = $particularsNew;
+
+                    }//end if
+                }//end for
+            }
+            
+            $project_description->quotationDetail = $quotationDetail;
+
+            $updateArray = array(
+                'project_description' => json_encode($project_description)
+            );
+
+            $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+            $data['file_updated'] = $val;   
+        }   
+
+        if ($status == true) {
+            $data['title'] = 'Deleted!';
+            $data['type'] = 'success';
+            $data['msg'] = 'Particular Deleted Successfully';
+        }
+        return $data;        
+    }//end fun
+
+
+    //Commission list delete
+    public function del_row_commission_details(){
+        $project_id = $this->input->post('project_id');
+        $bi_obj = $this->input->post('bi_obj');
+        $comi_obj = $this->input->post('comi_obj');
+
+        $status = true;
+        $commissionsNew = array();
+        
+        if($bi_obj > 0){   
+            //check existing data
+            $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1); 
+                $quotationDetail = $project_description->quotationDetail;
+
+                for($i = 0; $i < sizeof($quotationDetail); $i++){
+                    if($quotationDetail[$i]->bi_obj == $bi_obj){
+                        if(isset($quotationDetail[$i]->commissions)){
+                            $commissions = $quotationDetail[$i]->commissions;
+                        }
+
+                        for($j = 0; $j < sizeof($commissions); $j++){
+                            if($commissions[$j]->comi_obj != $comi_obj){                        
+                                array_push($commissionsNew, $commissions[$j]);
+                            }
+                        }
+
+                        $quotationDetail[$i]->commissions = $commissionsNew;
+
+                    }//end if
+                }//end for
+            }
+            
+            $project_description->quotationDetail = $quotationDetail;
+
+            $updateArray = array(
+                'project_description' => json_encode($project_description)
+            );
+
+            $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+            $data['file_updated'] = $val;   
+        }   
+
+        if ($status == true) {
+            $data['title'] = 'Deleted!';
+            $data['type'] = 'success';
+            $data['msg'] = 'Commission Deleted Successfully';
         }
         return $data;        
     }//end fun
@@ -2032,6 +2204,7 @@ class Projects_m extends CI_Model {
     public function ajax_contact_details_table_data() {     
         $project_id = $this->input->post('project_id');
         $data = array();
+        $contactDetail = array();
 
         $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
         //print_r($result);
@@ -2050,8 +2223,8 @@ class Projects_m extends CI_Model {
                 $nestedData['Phone1st'] = $value->contact_first_ph;
                 $nestedData['Phone2nd'] = $value->contact_second_ph;
                 $nestedData['Address'] = $value->contact_persn_address;
-                $nestedData['action'] = '<a href="javascript:void(0)" data-contact_obj="'.$value->contact_obj.'" class="btn btn-info edit_contact_obj"><i class="fa fa-pencil"></i> Edit</a>
-                <a data-contact_obj="'.$value->contact_obj.'" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+                $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" data-contact_obj="'.$value->contact_obj.'" class="btn btn-info edit_contact_obj"><i class="fa fa-pencil"></i> Edit</a>
+                <a href="javascript:void(0)" data-project_id="'.$project_id.'" data-contact_obj="'.$value->contact_obj.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
                 array_push($data, $nestedData);
             }//end foreach
@@ -2070,6 +2243,7 @@ class Projects_m extends CI_Model {
     public function ajax_requirementgather_details_table_data() {     
         $project_id = $this->input->post('project_id');
         $data = array();
+        $requirementDetail = array();
 
         $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
         //print_r($result);
@@ -2132,6 +2306,7 @@ class Projects_m extends CI_Model {
     public function ajax_quotation_details_table_data() {       
         $project_id = $this->input->post('project_id');
         $data = array();
+        $quotationDetail = array();
 
         $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
         //print_r($result);
@@ -2143,19 +2318,22 @@ class Projects_m extends CI_Model {
         }
 
         if(sizeof($quotationDetail) > 0){
+            $slno = 1;
             foreach($quotationDetail as $key => $value){
                 $PartyName = $value->bi_PartyId_name;
                 $QuotationNo = $value->bi_QuotationNo;
                 $QuotationDate = $value->bi_QuotationDate;
 
+                $nestedData['SlNo'] = $slno;
                 $nestedData['PartyName'] = $PartyName;
                 $nestedData['QuotationNo'] = $QuotationNo;
                 $nestedData['QuotationDate'] = date("d-m-Y", strtotime($QuotationDate));
-                $nestedData['action'] = '<a href="javascript:void(0)" data-bi_obj="'.$value->bi_obj.'" class="btn bg-yellow view_bi_obj"><i class="fa fa-eye"></i> View</a>
-                <a href="javascript:void(0)" data-bi_obj="'.$value->bi_obj.'" class="btn btn-info edit_bi_obj"><i class="fa fa-pencil"></i> Edit</a>
-                <a href="javascript:void(0)" data-bi_obj="'.$value->bi_obj.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+                $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" data-bi_obj="'.$value->bi_obj.'" class="btn bg-yellow view_bi_obj"><i class="fa fa-eye"></i> View</a>
+                <a href="javascript:void(0)" data-project_id="'.$project_id.'" data-bi_obj="'.$value->bi_obj.'" class="btn btn-info edit_bi_obj"><i class="fa fa-pencil"></i> Edit</a>
+                <a href="javascript:void(0)" data-project_id="'.$project_id.'" data-bi_obj="'.$value->bi_obj.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
                 array_push($data, $nestedData);
+                $slno++;
             }//end foreach
         }//end if
 
@@ -2218,7 +2396,7 @@ class Projects_m extends CI_Model {
                 $nestedData['startDate'] = $par_StartDate;
                 $nestedData['amount'] = $par_Amount;
                 $nestedData['taxable'] = ($par_Taxable == 1) ? 'Yes' : 'No';
-                $nestedData['action'] = '<a href="javascript:void(0)" data-bi_obj="'.$bi_obj.'" data-parti_obj="'.$parti_obj.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+                $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" data-bi_obj="'.$bi_obj.'" data-parti_obj="'.$parti_obj.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
                 $counter++;
                 array_push($data, $nestedData);
@@ -2281,7 +2459,7 @@ class Projects_m extends CI_Model {
                 $nestedData['Employee'] = $comi_emp_name;
                 $nestedData['RateType'] = $comi_rate_type_name;
                 $nestedData['Amount'] = $comi_amount;
-                $nestedData['action'] = '<a href="javascript:void(0)" data-bi_obj="'.$bi_obj.'" data-comi_obj="'.$comi_obj.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+                $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'"  data-bi_obj="'.$bi_obj.'" data-comi_obj="'.$comi_obj.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
                 $counter++;
                 array_push($data, $nestedData);

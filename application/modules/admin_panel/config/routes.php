@@ -106,7 +106,14 @@
 	$route['admin/fetch-requirement-details-on-pk'] = 'admin_panel/Projects/fetch_requirement_details_on_pk';
 	$route['admin/form-edit-gather-requirement'] = 'admin_panel/Projects/requirement_gather_edit_form';
 	$route['admin/del-row-requirement-details'] = 'admin_panel/Projects/del_row_requirement_details';
+	$route['admin/del-row-project-details'] = 'admin_panel/Projects/del_row_project_details';
+	$route['admin/del-row-quotation-details'] = 'admin_panel/Projects/del_row_quotation_details';
+	$route['admin/del-row-particular-details'] = 'admin_panel/Projects/del_row_particular_details';
+	$route['admin/del-row-commission-details'] = 'admin_panel/Projects/del_row_commission_details';
 	$route['admin/fetch-quotation-details-on-pk'] = 'admin_panel/Projects/fetch_quotation_details_on_pk';
+	//print
+	//$route['admin/print-quotation/(:num)'] = 'admin_panel/Projects/print_quotation_details/$1';
+	//'Admin_dashboard/Admin_print/cbill';
 
 		//delete
 	/*$route['admin/ajax-delete-user'] = 'admin_panel/User/ajax_delete_user';	
