@@ -169,21 +169,60 @@ class Projects_m extends CI_Model {
 
         array_push($cbill_header_details, $cbill_header_detail);
 
-        //Company Details 
+        //Company Details start
+        $company_name = '';
+        $address1 =  '';
+        $GST =  '';
+        $phone =  '';
+        $email =  '';
+        $website =  '';
+        $PAN =  '';
+        $contact_person =  '';
+        $mobile1 =  '';
+        $mobile2 =  '';
+        $alternate_email =  '';
+        $company_subtitle =  '';
+        $company_detail =  '';
+
+        $result_u = $this->db->get_where('user_details', array('user_id' => $user_id))->result();
+        //print_r($result_u);
+
+        if(count($result_u) > 0){
+            $company_details1 = $result_u[0]->company_details;
+            $company_details = json_decode($company_details1);
+
+            $bank_details1 = $result_u[0]->bank_details;
+            $bank_details = json_decode($bank_details1);
+
+            $company_name = $company_details->company_name;
+            $address1 = $company_details->address1;
+            $GST = $company_details->GST;
+            $phone = $company_details->phone;
+            $email = $company_details->email;
+            $website = $company_details->website;
+            $PAN = $company_details->PAN;
+            $contact_person = $company_details->contact_person;
+            $mobile1 = $company_details->mobile1;
+            $mobile2 = $company_details->mobile2;
+            $alternate_email = $company_details->alternate_email;
+            $company_subtitle = $company_details->company_subtitle;
+            $company_detail = $company_details->company_detail;
+        }
+
         $company_details = array();        
         $company_detail = new stdClass();
         
-        $company_detail->company_name = "Sketchme Global";
-        $company_detail->address1 = "Kolkata - 700303";
-        $company_detail->GST = "0123456789";
-        $company_detail->phone = "9766325874";
-        $company_detail->email = "info@mail.com";
-        $company_detail->website = "https://sketchmeglobal.com/";
-        $company_detail->PAN = "BCCPJ02114";
-        $company_detail->contact_person = "Mr. Das";
-        $company_detail->mobile1 = "9685201324";
-        $company_detail->mobile2 = "9836521401";
-        $company_detail->alternate_email = "contact@mail.com";
+        $company_detail->company_name = $company_name;
+        $company_detail->address1 = $address1;
+        $company_detail->GST = $GST;
+        $company_detail->phone = $phone;
+        $company_detail->email = $email;
+        $company_detail->website = $website;
+        $company_detail->PAN = $PAN;
+        $company_detail->contact_person = $contact_person;
+        $company_detail->mobile1 = $mobile1;
+        $company_detail->mobile2 = $mobile2;
+        $company_detail->alternate_email = $alternate_email;
         $company_detail->company_subtitle = "[Think - Design - Develop - Maintain]";
         $company_detail->company_detail = "[Website Designing - Website Development - Software Development - Android Apps - System Maintenance - Domain Name - Server Space]";
         
@@ -192,12 +231,12 @@ class Projects_m extends CI_Model {
         //Banking Details
         $banking_details = array();
         $banking_detail = new stdClass();
-        $banking_detail->bank_name = 'HDFC';
-        $banking_detail->bank_address = 'No 43/3, Feeder Road, Belghoria, North 24 Parganas-700056';
-        $banking_detail->bank_account_no = '50200049710035';
-        $banking_detail->bank_ifs_code = 'HDFC0001925 (5th character is zero)';
-        $banking_detail->bank_micr_code = '700240059';
-        $banking_detail->bank_branch_code = '1925';
+        $banking_detail->bank_name = $bank_details->bank_name;
+        $banking_detail->bank_address = $bank_details->bank_address;
+        $banking_detail->bank_account_no = $bank_details->bank_account_no;
+        $banking_detail->bank_ifs_code = $bank_details->bank_ifs_code;
+        $banking_detail->bank_micr_code = $bank_details->bank_micr_code;
+        $banking_detail->bank_branch_code = $bank_details->bank_branch_code;
 
         array_push($banking_details, $banking_detail);
 
