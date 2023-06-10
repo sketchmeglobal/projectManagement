@@ -78,6 +78,111 @@ class Projects_m extends CI_Model {
         return array('page'=>'projects/project_detail_v', 'data'=>$data);
     }
 
+    //Print quotation
+    public function print_quotation_details($project_id, $bi_obj) {
+        $usertype = $this->session->usertype;
+        $user_id = $this->session->user_id;
+        $project_description = array();
+        $quotationDetail = array();
+        $particulars = array();
+        $quotation = '';
+
+        if($project_id > 0){
+            $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
+            //print_r($result);
+
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1);
+                $quotationDetail = $project_description->quotationDetail;
+            }
+        }
+
+        if(sizeof($quotationDetail) > 0){
+            for($i = 0; $i < sizeof($quotationDetail); $i++){
+                if($quotationDetail[$i]->bi_obj == $bi_obj){
+                    $quotation = $quotationDetail[$i];
+                    $particulars = $quotation->particulars;
+                }
+            }
+        }
+
+        //Company Details 
+        $company_details = array();        
+        $company_detail = new stdClass();
+        
+        $company_detail->company_name = "Sketchme Global";
+        $company_detail->address1 = "Kolkata - 700303";
+        $company_detail->GST = "0123456789";
+        $company_detail->phone = "9766325874";
+        $company_detail->email = "info@mail.com";
+        $company_detail->website = "https://sketchmeglobal.com/";
+        $company_detail->PAN = "BCCPJ02114";
+        $company_detail->contact_person = "Mr. Das";
+        $company_detail->mobile1 = "9685201324";
+        $company_detail->mobile2 = "9836521401";
+        $company_detail->alternate_email = "contact@mail.com";
+        $company_detail->company_subtitle = "[Think - Design - Develop - Maintain]";
+        $company_detail->company_detail = "[Website Designing - Website Development - Software Development - Android Apps - System Maintenance - Domain Name - Server Space]";
+        
+        array_push($company_details, $company_detail);
+
+        //Header details
+        $cbill_header_details = array();
+        $cbill_header_detail = new stdClass();
+        $cbill_header_detail->account_name = 'G.B. Pant National Institute';
+        $cbill_header_detail->account_address1 = 'G.B. Pant National Institute of Himalayan Environment & Sustainable Development';
+        $cbill_header_detail->account_address2 = 'Kosi-katarmal, Almora-263 643, Uttarakhand.';
+        $cbill_header_detail->account_gst_no = '';
+        $cbill_header_detail->account_telephone = '';
+        $cbill_header_detail->cbill_payment_mode = '';
+        $cbill_header_detail->important_note = '';
+        $cbill_header_detail->other_client_details = '';
+
+        array_push($cbill_header_details, $cbill_header_detail);
+        
+        //Banking Details
+        $banking_details = array();
+        $banking_detail = new stdClass();
+        $banking_detail->bank_name = 'HDFC';
+        $banking_detail->bank_address = 'No 43/3, Feeder Road, Belghoria, North 24 Parganas-700056';
+        $banking_detail->bank_account_no = '50200049710035';
+        $banking_detail->bank_ifs_code = 'HDFC0001925 (5th character is zero)';
+        $banking_detail->bank_micr_code = '700240059';
+        $banking_detail->bank_branch_code = '1925';
+
+        array_push($banking_details, $banking_detail);
+
+        //Tax Calculation
+        $taxes = array();
+        $tax = new stdClass();
+        $tax->tax_GrossAmount = $quotation->tax_GrossAmount;
+        $tax->tax_DiscountPercentage = $quotation->tax_DiscountPercentage;
+        $tax->tax_DiscountAmount = $quotation->tax_DiscountAmount;
+        $tax->tax_CGST_Rate = $quotation->tax_CGST_Rate;
+        $tax->tax_CGST_Amount = $quotation->tax_CGST_Amount;
+        $tax->tax_SGST_Rate = $quotation->tax_SGST_Rate;
+        $tax->tax_SGST_Amount = $quotation->tax_SGST_Amount;
+        $tax->tax_IGST_Rate = $quotation->tax_IGST_Rate;
+        $tax->tax_IGST_Amount = $quotation->tax_IGST_Amount;
+
+        array_push($taxes, $tax);
+
+
+
+        $data['title'] = 'Print Quotation';
+        $data['menu'] = 'Offers';
+        $data['project_id'] = $project_id;   
+        $data['company_details'] = $company_details; 
+        $data['cbill_header_details'] = $cbill_header_details; 
+        $data['banking_details'] = $banking_details;
+        $data['quotation'] = $quotation;
+        $data['particulars'] = $particulars;
+        $data['taxes'] = $taxes;
+
+        return array('page' => 'projects/quotation_print', 'data' => $data);
+    }
+
     public function ajax_update_project_document(){
         $project_id = $this->input->post('project_id');
         $project_description = $this->input->post('project_description');
@@ -2328,7 +2433,7 @@ class Projects_m extends CI_Model {
                 $nestedData['PartyName'] = $PartyName;
                 $nestedData['QuotationNo'] = $QuotationNo;
                 $nestedData['QuotationDate'] = date("d-m-Y", strtotime($QuotationDate));
-                $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" data-bi_obj="'.$value->bi_obj.'" class="btn bg-yellow view_bi_obj"><i class="fa fa-eye"></i> View</a>
+                $nestedData['action'] = '<a href="'. base_url('admin/print-quotation/'.$project_id.'/'.$value->bi_obj).'" target="_blank" data-project_id="'.$project_id.'" class="btn bg-yellow print_quotation"><i class="fa fa-eye"></i> View</a>
                 <a href="javascript:void(0)" data-project_id="'.$project_id.'" data-bi_obj="'.$value->bi_obj.'" class="btn btn-info edit_bi_obj"><i class="fa fa-pencil"></i> Edit</a>
                 <a href="javascript:void(0)" data-project_id="'.$project_id.'" data-bi_obj="'.$value->bi_obj.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 

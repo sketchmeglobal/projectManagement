@@ -112,7 +112,7 @@
 	$route['admin/del-row-commission-details'] = 'admin_panel/Projects/del_row_commission_details';
 	$route['admin/fetch-quotation-details-on-pk'] = 'admin_panel/Projects/fetch_quotation_details_on_pk';
 	//print
-	//$route['admin/print-quotation/(:num)'] = 'admin_panel/Projects/print_quotation_details/$1';
+	$route['admin/print-quotation/(:num)/(:num)'] = 'admin_panel/Projects/print_quotation_details/$1/$2';
 	//'Admin_dashboard/Admin_print/cbill';
 
 		//delete

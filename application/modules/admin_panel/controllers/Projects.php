@@ -42,6 +42,14 @@ class Projects extends My_Controller {
             $this->load->view($data['page'], $data['data']);
         }
     }
+
+    public function print_quotation_details($project_id, $bi_obj) {
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->print_quotation_details($project_id,  $bi_obj);
+            $this->load->view($data['page'], $data['data']);
+        }
+    }
     
     public function ajax_project_details_table_data() {
         if($this->check_permission() == true) {
