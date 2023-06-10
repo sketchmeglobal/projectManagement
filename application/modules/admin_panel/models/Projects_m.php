@@ -60,6 +60,15 @@ class Projects_m extends CI_Model {
         $user_id = $this->session->user_id;
         $project_description = array();
 
+        $account_name = '';
+        $account_address1 = '';
+        $account_address2 = '';
+        $account_gst_no = '';
+        $account_telephone = '';
+        $cbill_payment_mode = '';
+        $important_note = '';
+        $other_client_details = '';
+
         if($project_id > 0){
             $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
             //print_r($result);
@@ -67,6 +76,16 @@ class Projects_m extends CI_Model {
             if(count($result) > 0){
                 $project_description1 = $result[0]->project_description;
                 $project_description = json_decode($project_description1);
+        
+                $client = $project_description->client;
+                $account_name = $client->account_name;
+                $account_address1 = $client->account_address1;
+                $account_address2 = $client->account_address2;
+                $account_gst_no = $client->account_gst_no;
+                $account_telephone = $client->account_telephone;
+                $cbill_payment_mode = $client->cbill_payment_mode;
+                $important_note = $client->important_note;
+                $other_client_details = $client->other_client_details;
             }
         }
         
@@ -74,6 +93,14 @@ class Projects_m extends CI_Model {
         $data['menu'] = 'Offers';
         $data['project_id'] = $project_id;  
         $data['project_description'] = $project_description; 
+        $data['account_name'] = $account_name;
+        $data['account_address1'] = $account_address1;
+        $data['account_address2'] = $account_address2;
+        $data['account_gst_no'] = $account_gst_no;
+        $data['account_telephone'] = $account_telephone;
+        $data['cbill_payment_mode'] = $cbill_payment_mode;
+        $data['important_note'] = $important_note;
+        $data['other_client_details'] = $other_client_details;
 
         return array('page'=>'projects/project_detail_v', 'data'=>$data);
     }
@@ -107,6 +134,41 @@ class Projects_m extends CI_Model {
             }
         }
 
+        //Header details/Client Details
+        if(isset($project_description->client)){
+            $client = $project_description->client;
+            $account_name = $client->account_name;
+            $account_address1 = $client->account_address1;
+            $account_address2 = $client->account_address2;
+            $account_gst_no = $client->account_gst_no;
+            $account_telephone = $client->account_telephone;
+            $cbill_payment_mode = $client->cbill_payment_mode;
+            $important_note = $client->important_note;
+            $other_client_details = $client->other_client_details;
+        }else{
+            $account_name = '';
+            $account_address1 = '';
+            $account_address2 = '';
+            $account_gst_no = '';
+            $account_telephone = '';
+            $cbill_payment_mode = '';
+            $important_note = '';
+            $other_client_details = '';
+        }
+
+        $cbill_header_details = array();
+        $cbill_header_detail = new stdClass();
+        $cbill_header_detail->account_name = $account_name;
+        $cbill_header_detail->account_address1 = $account_address1;
+        $cbill_header_detail->account_address2 = $account_address2;
+        $cbill_header_detail->account_gst_no = $account_gst_no;
+        $cbill_header_detail->account_telephone = $account_telephone;
+        $cbill_header_detail->cbill_payment_mode = $cbill_payment_mode;
+        $cbill_header_detail->important_note = $important_note;
+        $cbill_header_detail->other_client_details =  $other_client_details;
+
+        array_push($cbill_header_details, $cbill_header_detail);
+
         //Company Details 
         $company_details = array();        
         $company_detail = new stdClass();
@@ -126,20 +188,6 @@ class Projects_m extends CI_Model {
         $company_detail->company_detail = "[Website Designing - Website Development - Software Development - Android Apps - System Maintenance - Domain Name - Server Space]";
         
         array_push($company_details, $company_detail);
-
-        //Header details
-        $cbill_header_details = array();
-        $cbill_header_detail = new stdClass();
-        $cbill_header_detail->account_name = 'G.B. Pant National Institute';
-        $cbill_header_detail->account_address1 = 'G.B. Pant National Institute of Himalayan Environment & Sustainable Development';
-        $cbill_header_detail->account_address2 = 'Kosi-katarmal, Almora-263 643, Uttarakhand.';
-        $cbill_header_detail->account_gst_no = '';
-        $cbill_header_detail->account_telephone = '';
-        $cbill_header_detail->cbill_payment_mode = '';
-        $cbill_header_detail->important_note = '';
-        $cbill_header_detail->other_client_details = '';
-
-        array_push($cbill_header_details, $cbill_header_detail);
         
         //Banking Details
         $banking_details = array();
@@ -227,6 +275,61 @@ class Projects_m extends CI_Model {
         return $data;
         
     }//end fun
+    
+
+    //Contact details part
+    public function form_add_client_details(){  
+        $daya = array();
+        $status = true;
+
+        $project_id = $this->input->post('cli_project_id');
+        $account_name = $this->input->post('account_name');
+        $account_address1 = $this->input->post('account_address1');
+        $account_address2 = $this->input->post('account_address2');
+        $account_gst_no = $this->input->post('account_gst_no');
+        $account_telephone = $this->input->post('account_telephone');
+        $cbill_payment_mode = $this->input->post('cbill_payment_mode');
+        $important_note = $this->input->post('important_note');
+        $other_client_details = $this->input->post('other_client_details');
+
+        $created_by = $this->session->user_id;
+        $client_obj = rand(1000, 9999);
+        $files = array();
+
+        $client_list_obj = new stdClass();
+        $client_list_obj->client_obj = $client_obj;
+        $client_list_obj->account_name = $account_name;
+        $client_list_obj->account_address1 = $account_address1;
+        $client_list_obj->account_address2 = $account_address2;
+        $client_list_obj->account_gst_no = $account_gst_no;
+        $client_list_obj->account_telephone = $account_telephone;
+        $client_list_obj->cbill_payment_mode = $cbill_payment_mode;
+        $client_list_obj->important_note = $important_note;
+        $client_list_obj->other_client_details = $other_client_details;
+
+        //check existing data
+        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1); 
+        }
+        
+        $project_description->client = $client_list_obj;
+
+        $updateArray = array(
+            'project_description' => json_encode($project_description)
+        );
+
+        $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+        $data['file_updated'] = $val;      
+        
+        $data['type'] = 'success';
+        $data['msg'] = 'Client data updated Properly';
+        $data['title'] = 'Client';
+        $data['update_id'] = $project_id;
+        return $data;
+
+    }//end client details
     
 
     //Contact details part

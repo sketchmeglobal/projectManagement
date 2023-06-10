@@ -44,6 +44,17 @@
     </style>
 </head>
 
+<?php
+    //echo json_encode($project_description);
+    if(sizeof($project_description) > 0){
+        $title = $project_description->projectDetail->title;
+        $description = $project_description->projectDetail->description;
+    }else{
+        $title = '';
+        $description = '';
+    }
+?>
+
 <body class="sticky-header">
 
 <section>
@@ -66,20 +77,8 @@
             <!-- <div class="row text-enter">
                  <span class="badge badge-right">This is Cloned</span> 
             </div> -->
-
             <!-- Start project details part -->
             <div class="row">
-<?php
-    //echo json_encode($project_description);
-
-    if(sizeof($project_description) > 0){
-        $title = $project_description->projectDetail->title;
-        $description = $project_description->projectDetail->description;
-    }else{
-        $title = '';
-        $description = '';
-    }
-?>
                 <div class="col-md-12">
                     <section class="panel">
                         <header class="panel-heading ">
@@ -91,12 +90,12 @@
                         <div class="panel-body collapse">
                             <!-- <form id="form_add_offer_details" method="post" action="<?=base_url('admin/form-add-offer-details')?>" class="cmxform form-horizontal tasi-form"> -->
                                 <div class="form-group "> 
-                                    <div class="col-lg-3">
+                                    <div class="col-lg-4">
                                         <label for="project_title" class="control-label">Title</label>
                                         <input type="text" name="project_title" id="project_title" class="form-control" value="<?=$title?>">
                                     </div>
 
-                                    <div class="col-lg-3">
+                                    <div class="col-lg-4">
                                         <label for="project_description" class="control-label">Description</label>
                                         <textarea name="project_description" id="project_description" class="form-control"><?=$description?></textarea>
                                     </div> 
@@ -120,6 +119,79 @@
                 </div>
             </div>
             <!-- End project details part -->
+
+            <!-- Start client details part -->
+            <div class="row">
+                <div class="col-md-12">
+                    <section class="panel">
+                        <header class="panel-heading ">
+                            Client Details:
+                            <span class="tools pull-right">
+                                <a class="t-collapse fa fa-chevron-down" href="javascript:;"></a>
+                            </span>
+                        </header>
+                        <div class="panel-body collapse">
+                            <form id="form_add_client_details" method="post" action="<?=base_url('admin/form-add-client-details')?>" class="cmxform form-horizontal tasi-form">
+                                <div class="form-group "> 
+                                    <div class="col-lg-3">
+                                        <label for="account_name" class="control-label">Organization Name</label>
+                                        <input type="text" name="account_name" id="account_name" class="form-control" value="<?=$account_name?>">
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="account_address1" class="control-label">Address 1</label>
+                                        <textarea name="account_address1" id="account_address1" class="form-control"><?=$account_address1?></textarea>
+                                    </div> 
+
+                                    <div class="col-lg-3">
+                                        <label for="account_address2" class="control-label">Address 2</label>
+                                        <textarea name="account_address2" id="account_address2" class="form-control"><?=$account_address2?></textarea>
+                                    </div> 
+
+                                    <div class="col-lg-3">
+                                        <label for="account_gst_no" class="control-label">GST No</label>
+                                        <input type="text" name="account_gst_no" id="account_gst_no" class="form-control" value="<?=$account_gst_no?>">
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="account_telephone" class="control-label">Phone No</label>
+                                        <input type="text" name="account_telephone" id="account_telephone" class="form-control" value="<?=$account_telephone?>">
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="cbill_payment_mode" class="control-label">Payment Mode</label>
+                                        <input type="text" name="cbill_payment_mode" id="cbill_payment_mode" class="form-control" value="<?=$cbill_payment_mode?>">
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="important_note" class="control-label">Note</label>
+                                        <textarea name="important_note" id="important_note" class="form-control"><?=$important_note?></textarea>
+                                    </div> 
+
+                                    <div class="col-lg-3">
+                                        <label for="other_client_details" class="control-label">Others</label>
+                                        <textarea name="other_client_details" id="other_client_details" class="form-control"><?=$other_client_details?></textarea>
+                                    </div> 
+
+                                    <div class="col-lg-3 mt-3">
+                                        <?php
+                                        if($project_id > 0){
+                                            $btn_txt = 'Update';
+                                        }else{
+                                            $btn_txt = 'Add';
+                                        }
+                                        ?>
+                                        <input type="submit" name="client_details_submit" class="btn btn-success text-center" id="client_details_submit" value="<?=$btn_txt?>">
+                                        <input type="hidden" value="<?=$project_id?>" name="cli_project_id" id="cli_project_id">
+                                    </div>
+                                </div>  
+                            <!-- </form> -->
+
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <!-- End client details part -->
 
             <!-- Start Contact part -->
             <div class="row"> 
@@ -1428,6 +1500,43 @@
         }
     })//end fun
 
+    //Client Details Part
+    $("#form_add_client_details").validate({        
+        rules: {
+            account_name: {
+                required: true
+            },
+            account_address1: {
+                required: true
+            },
+            account_telephone: {
+                required: true
+            }    
+        },
+        messages: {
+
+        }
+    });
+    $('#form_add_client_details').ajaxForm({
+        beforeSubmit: function () {
+            return $("#form_add_client_details").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            //console.log(returnData);
+            obj = JSON.parse(returnData);
+            notification(obj);
+            if(parseInt(obj.update_id) > 0){                
+                console.log(JSON.stringify(obj));
+                if(obj.type == 'error'){
+                    console.log('Error from API')
+                }else{
+                    console.log('Cliennt save success')
+                }            	
+            }
+        }
+    });
+    //Client Details Part end
+
     //Contact Details Part
     $("#add_contact_form").validate({        
         rules: {
@@ -2087,6 +2196,7 @@
                 if(returnData.type == 'success'){
                     console.log('project_id: '+returnData.project_id);
                     $('#project_id').val(returnData.project_id);
+                    $('#cli_project_id').val(returnData.project_id);
                     $('#cont_project_id').val(returnData.project_id);
                     $('#gr_project_id').val(returnData.project_id);
                     $('#parti_project_id').val(returnData.project_id);
