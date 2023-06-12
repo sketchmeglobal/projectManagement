@@ -1892,15 +1892,6 @@
             notification(obj);
 			if(parseInt(obj.parti_obj) > 0){
                 console.log(JSON.stringify(obj));
-
-                $('#par_TaskType').val('0').trigger('change');
-                $('#par_TaskType_name').val('');
-                $('#par_HSNCode').val('');
-                $('#par_Duration').val('');
-                $('#par_StartDate').val('');
-                $('#par_Amount').val('');
-                $('#par_Taxable').val('1').trigger('change');
-
                 //Populate particular table after this part                
                 initTableParticulars(obj.project_id, obj.bi_obj, 'tableParticularsAdd');
                 
@@ -1908,6 +1899,21 @@
                     console.log('Error from API')
                 }else{
                     console.log('Document save success')
+
+                    //Calculate the tax here
+                    $par_Amount = $('#par_Amount').val();
+                    $tax_GrossAmount = $('#tax_GrossAmount').val();
+                    $tax_GrossAmount = parseFloat($tax_GrossAmount) + parseFloat($par_Amount);
+                    $('#tax_GrossAmount').val($tax_GrossAmount);
+
+                    $('#par_TaskType').val('0').trigger('change');
+                    $('#par_TaskType_name').val('');
+                    $('#par_HSNCode').val('');
+                    $('#par_Duration').val('');
+                    $('#par_StartDate').val('');
+                    $('#par_Amount').val('');
+                    $('#par_Taxable').val('1').trigger('change');
+
                 }            	
 			}
 		}
@@ -1954,14 +1960,6 @@
             notification(obj);
 			if(parseInt(obj.parti_obj) > 0){
                 console.log(JSON.stringify(obj));
-
-                $('#par_TaskType_e').val('0').trigger('change');
-                $('#par_TaskType_name_e').val('');
-                $('#par_HSNCode_e').val('');
-                $('#par_Duration_e').val('');
-                $('#par_StartDate_e').val('');
-                $('#par_Amount_e').val('');
-                $('#par_Taxable_e').val('1').trigger('change');
                 
                 if(obj.type == 'error'){
                     console.log('Error from API')
@@ -1972,6 +1970,21 @@
                     $project_id = obj.parti_obj;              
                     $bi_obj = obj.parti_obj;
                     //initTableParticulars($project_id, $bi_obj, 'tableParticularsEdit');
+
+                    //Calculate the tax here
+                    $par_Amount = $('#par_Amount_e').val();
+                    $tax_GrossAmount = $('#tax_GrossAmount_e').val();
+                    $tax_GrossAmount = parseFloat($tax_GrossAmount) + parseFloat($par_Amount);
+                    $('#tax_GrossAmount_e').val($tax_GrossAmount);
+
+                    $('#par_TaskType_e').val('0').trigger('change');
+                    $('#par_TaskType_name_e').val('');
+                    $('#par_HSNCode_e').val('');
+                    $('#par_Duration_e').val('');
+                    $('#par_StartDate_e').val('');
+                    $('#par_Amount_e').val('');
+                    $('#par_Taxable_e').val('1').trigger('change');
+
                 }            	
 			}
 		}
@@ -1979,15 +1992,37 @@
     //end particulars add from Edit part
 
 
-
-
-
-
-
-
-
-
     //Add TAX calculation
+    $('#tax_DiscountPercentage_e').blur(function(){
+        $tax_GrossAmount_e = $('#tax_GrossAmount_e').val();
+        $tax_DiscountPercentage_e = $('#tax_DiscountPercentage_e').val();
+
+        $tax_DiscountAmount_e = parseFloat($tax_GrossAmount_e) * parseFloat($tax_DiscountPercentage_e) * 0.01;
+        $('#tax_DiscountAmount_e').val($tax_DiscountAmount_e);
+
+        $tax_TaxableAmount_e = parseFloat($tax_GrossAmount_e) - parseFloat($tax_DiscountAmount_e);
+        $('#tax_TaxableAmount_e').val($tax_TaxableAmount_e);
+
+        $tax_SGST_Rate_e = $('#tax_SGST_Rate_e').val();
+        $tax_CGST_Rate_e = $('#tax_CGST_Rate_e').val();
+        $tax_IGST_Rate_e = $('#tax_IGST_Rate_e').val();
+
+        $tax_SGST_Amount_e = parseFloat($tax_TaxableAmount_e) * parseFloat($tax_SGST_Rate_e) * 0.01;
+        $tax_CGST_Amount_e = parseFloat($tax_TaxableAmount_e) * parseFloat($tax_CGST_Rate_e) * 0.01;
+        $tax_IGST_Amount_e = parseFloat($tax_TaxableAmount_e) * parseFloat($tax_IGST_Rate_e) * 0.01;
+
+        $('#tax_SGST_Amount_e').val($tax_SGST_Amount_e);
+        $('#tax_CGST_Amount_e').val($tax_CGST_Amount_e);
+        $('#tax_IGST_Amount_e').val($tax_IGST_Amount_e);
+
+        $tax_TotalTax_e = parseFloat($tax_SGST_Amount_e) + parseFloat($tax_CGST_Amount_e) + parseFloat($tax_IGST_Amount_e);
+        $('#tax_TotalTax_e').val($tax_TotalTax_e);
+
+        $tax_NetAmount_e = parseFloat($tax_TaxableAmount_e) + parseFloat($tax_TotalTax_e);
+        $('#tax_NetAmount_e').val($tax_NetAmount_e);
+
+    });//end 
+
     $("#tax_Bank").change(function(){
         $tax_BankName = $("#tax_Bank :selected").text();
         $('#tax_BankName').val($tax_BankName);
