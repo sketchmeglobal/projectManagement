@@ -637,7 +637,7 @@
                                                 <h4 style="margin-left: 15px;">TAX Calculation</h4>
                                                 <div class="col-lg-3">
                                                     <label for="tax_GrossAmount" class="control-label">Gross Amount</label>
-                                                    <input value="0" id="tax_GrossAmount" name="tax_GrossAmount" type="text" placeholder="Gross Amount" class="form-control" />
+                                                    <input value="0" id="tax_GrossAmount" name="tax_GrossAmount" type="text" placeholder="Gross Amount" class="form-control" readonly="readonly" />
                                                 </div> 
                                                 <div class="col-lg-3">
                                                     <label for="tax_DiscountPercentage" class="control-label">Discount Percentage</label>
@@ -645,45 +645,45 @@
                                                 </div> 
                                                 <div class="col-lg-3">
                                                     <label for="tax_DiscountAmount" class="control-label">Discount Amount</label>
-                                                    <input value="0" id="tax_DiscountAmount" name="tax_DiscountAmount" type="text" placeholder="Discount Amount" class="form-control" />
+                                                    <input value="0" id="tax_DiscountAmount" name="tax_DiscountAmount" type="text" placeholder="Discount Amount" class="form-control" readonly="readonly" />
                                                 </div> 
                                                 <div class="col-lg-3">
                                                     <label for="tax_TaxableAmount" class="control-label">Taxable Amount</label>
-                                                    <input value="0" id="tax_TaxableAmount" name="tax_TaxableAmount" type="text" placeholder="Taxable Amount" class="form-control" />
+                                                    <input value="0" id="tax_TaxableAmount" name="tax_TaxableAmount" type="text" placeholder="Taxable Amount" class="form-control" readonly="readonly" />
                                                 </div> 
                                                 
                                                 <div class="col-lg-3">
                                                     <label for="tax_SGST_Rate" class="control-label">SGST (in %)</label>
-                                                    <input value="0" id="tax_SGST_Rate" name="tax_SGST_Rate" type="text" placeholder="SGST(in %)" class="form-control" />
+                                                    <input value="0" id="tax_SGST_Rate" name="tax_SGST_Rate" type="text" placeholder="SGST(in %)" class="form-control" readonly="readonly" />
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <label for="tax_SGST_Amount" class="control-label">SGST Amount</label>
-                                                    <input value="0" id="tax_SGST_Amount" name="tax_SGST_Amount" type="text" placeholder="SGST Amount" class="form-control" />
+                                                    <input value="0" id="tax_SGST_Amount" name="tax_SGST_Amount" type="text" placeholder="SGST Amount" class="form-control" readonly="readonly" />
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <label for="tax_CGST_Rate" class="control-label">CGST (in %)</label>
-                                                    <input value="0" id="tax_CGST_Rate" name="tax_CGST_Rate" type="text" placeholder="CGST (in %)" class="form-control" />
+                                                    <input value="0" id="tax_CGST_Rate" name="tax_CGST_Rate" type="text" placeholder="CGST (in %)" class="form-control" readonly="readonly" />
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <label for="tax_CGST_Amount" class="control-label">CGST Amount</label>
-                                                    <input value="0" id="tax_CGST_Amount" name="tax_CGST_Amount" type="text" placeholder="CGST Amount" class="form-control" />
+                                                    <input value="0" id="tax_CGST_Amount" name="tax_CGST_Amount" type="text" placeholder="CGST Amount" class="form-control" readonly="readonly" />
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <label for="tax_IGST_Rate" class="control-label">IGST (in %)</label>
-                                                    <input value="0" id="tax_IGST_Rate" name="tax_IGST_Rate" type="text" placeholder="IGST (in %)" class="form-control" />
+                                                    <input value="0" id="tax_IGST_Rate" name="tax_IGST_Rate" type="text" placeholder="IGST (in %)" class="form-control" readonly="readonly" />
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <label for="tax_IGST_Amount" class="control-label">IGST Amount</label>
-                                                    <input value="0" id="tax_IGST_Amount" name="tax_IGST_Amount" type="text" placeholder="IGST Amount" class="form-control" />
+                                                    <input value="0" id="tax_IGST_Amount" name="tax_IGST_Amount" type="text" placeholder="IGST Amount" class="form-control" readonly="readonly" />
                                                 </div>
                                                 
                                                 <div class="col-lg-3">
                                                     <label for="tax_NetAmount" class="control-label">Net Amount</label>
-                                                    <input value="0" id="tax_NetAmount" name="tax_NetAmount" type="text" placeholder="Net Amount" class="form-control" />
+                                                    <input value="0" id="tax_NetAmount" name="tax_NetAmount" type="text" placeholder="Net Amount" class="form-control" readonly="readonly" />
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <label for="tax_TotalTax" class="control-label">Total Tax.</label>
-                                                    <input value="0" id="tax_TotalTax" name="tax_TotalTax" type="text" placeholder="Total Tax." class="form-control" />
+                                                    <input value="0" id="tax_TotalTax" name="tax_TotalTax" type="text" placeholder="Total Tax." class="form-control" readonly="readonly" />
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <label for="tax_Bank" class="control-label">Bank</label>
@@ -929,7 +929,7 @@
                                             <h4 style="margin-left: 15px;">TAX Calculation</h4>
                                             <div class="col-lg-3">
                                                 <label for="tax_GrossAmount_e" class="control-label">Gross Amount</label>
-                                                <input value="0" id="tax_GrossAmount_e" name="tax_GrossAmount_e" type="text" placeholder="Gross Amount" class="form-control" />
+                                                <input value="0" id="tax_GrossAmount_e" name="tax_GrossAmount_e" type="text" placeholder="Gross Amount" class="form-control" readonly="readonly" />
                                             </div> 
                                             <div class="col-lg-3">
                                                 <label for="tax_DiscountPercentage_e" class="control-label">Discount Percentage</label>
@@ -937,45 +937,45 @@
                                             </div> 
                                             <div class="col-lg-3">
                                                 <label for="tax_DiscountAmount_e" class="control-label">Discount Amount</label>
-                                                <input value="0" id="tax_DiscountAmount_e" name="tax_DiscountAmount_e" type="text" placeholder="Discount Amount" class="form-control" />
+                                                <input value="0" id="tax_DiscountAmount_e" name="tax_DiscountAmount_e" type="text" placeholder="Discount Amount" class="form-control" readonly="readonly" />
                                             </div> 
                                             <div class="col-lg-3">
                                                 <label for="tax_TaxableAmount_e" class="control-label">Taxable Amount</label>
-                                                <input value="0" id="tax_TaxableAmount_e" name="tax_TaxableAmount_e" type="text" placeholder="Taxable Amount" class="form-control" />
+                                                <input value="0" id="tax_TaxableAmount_e" name="tax_TaxableAmount_e" type="text" placeholder="Taxable Amount" class="form-control" readonly="readonly" />
                                             </div> 
                                             
                                             <div class="col-lg-3">
                                                 <label for="tax_SGST_Rate_e" class="control-label">SGST (in %)</label>
-                                                <input value="0" id="tax_SGST_Rate_e" name="tax_SGST_Rate_e" type="text" placeholder="SGST(in %)" class="form-control" />
+                                                <input value="0" id="tax_SGST_Rate_e" name="tax_SGST_Rate_e" type="text" placeholder="SGST(in %)" class="form-control" readonly="readonly" />
                                             </div>
                                             <div class="col-lg-3">
                                                 <label for="tax_SGST_Amount_e" class="control-label">SGST Amount</label>
-                                                <input value="0" id="tax_SGST_Amount_e" name="tax_SGST_Amount_e" type="text" placeholder="SGST Amount" class="form-control" />
+                                                <input value="0" id="tax_SGST_Amount_e" name="tax_SGST_Amount_e" type="text" placeholder="SGST Amount" class="form-control" readonly="readonly" />
                                             </div>
                                             <div class="col-lg-3">
                                                 <label for="tax_CGST_Rate_e" class="control-label">CGST (in %)</label>
-                                                <input value="0" id="tax_CGST_Rate_e" name="tax_CGST_Rate_e" type="text" placeholder="CGST (in %)" class="form-control" />
+                                                <input value="0" id="tax_CGST_Rate_e" name="tax_CGST_Rate_e" type="text" placeholder="CGST (in %)" class="form-control" readonly="readonly" />
                                             </div>
                                             <div class="col-lg-3">
                                                 <label for="tax_CGST_Amount_e" class="control-label">CGST Amount</label>
-                                                <input value="0" id="tax_CGST_Amount_e" name="tax_CGST_Amount_e" type="text" placeholder="CGST Amount" class="form-control" />
+                                                <input value="0" id="tax_CGST_Amount_e" name="tax_CGST_Amount_e" type="text" placeholder="CGST Amount" class="form-control" readonly="readonly" />
                                             </div>
                                             <div class="col-lg-3">
                                                 <label for="tax_IGST_Rate_e" class="control-label">IGST (in %)</label>
-                                                <input value="0" id="tax_IGST_Rate_e" name="tax_IGST_Rate_e" type="text" placeholder="IGST (in %)" class="form-control" />
+                                                <input value="0" id="tax_IGST_Rate_e" name="tax_IGST_Rate_e" type="text" placeholder="IGST (in %)" class="form-control" readonly="readonly" />
                                             </div>
                                             <div class="col-lg-3">
                                                 <label for="tax_IGST_Amount_e" class="control-label">IGST Amount</label>
-                                                <input value="0" id="tax_IGST_Amount_e" name="tax_IGST_Amount_e" type="text" placeholder="IGST Amount" class="form-control" />
+                                                <input value="0" id="tax_IGST_Amount_e" name="tax_IGST_Amount_e" type="text" placeholder="IGST Amount" class="form-control" readonly="readonly" />
                                             </div>
                                             
                                             <div class="col-lg-3">
                                                 <label for="tax_NetAmount_e" class="control-label">Net Amount</label>
-                                                <input value="0" id="tax_NetAmount_e" name="tax_NetAmount_e" type="text" placeholder="Net Amount" class="form-control" />
+                                                <input value="0" id="tax_NetAmount_e" name="tax_NetAmount_e" type="text" placeholder="Net Amount" class="form-control" readonly="readonly" />
                                             </div>
                                             <div class="col-lg-3">
                                                 <label for="tax_TotalTax_e" class="control-label">Total Tax.</label>
-                                                <input value="0" id="tax_TotalTax_e" name="tax_TotalTax_e" type="text" placeholder="Total Tax." class="form-control" />
+                                                <input value="0" id="tax_TotalTax_e" name="tax_TotalTax_e" type="text" placeholder="Total Tax." class="form-control" readonly="readonly" />
                                             </div>
                                             <div class="col-lg-3">
                                                 <label for="tax_Bank_e" class="control-label">Bank</label>
@@ -1789,7 +1789,7 @@
     });
     //end QUOTATION basic info
 
-
+    
     //QUOTATION Basic Info Edit   
     $("#bi_PartyId_e").change(function(){
         $bi_PartyId_name_e = $("#bi_PartyId_e :selected").text();
@@ -1899,13 +1899,7 @@
                     console.log('Error from API')
                 }else{
                     console.log('Document save success')
-
-                    //Calculate the tax here
-                    $par_Amount = $('#par_Amount').val();
-                    $tax_GrossAmount = $('#tax_GrossAmount').val();
-                    $tax_GrossAmount = parseFloat($tax_GrossAmount) + parseFloat($par_Amount);
-                    $('#tax_GrossAmount').val($tax_GrossAmount);
-
+                    
                     $('#par_TaskType').val('0').trigger('change');
                     $('#par_TaskType_name').val('');
                     $('#par_HSNCode').val('');
@@ -1913,6 +1907,8 @@
                     $('#par_StartDate').val('');
                     $('#par_Amount').val('');
                     $('#par_Taxable').val('1').trigger('change');
+
+                    calculateTax('add', obj.project_id, obj.bi_obj)
 
                 }            	
 			}
@@ -1969,13 +1965,6 @@
                     //Populate particular table after this part 
                     $project_id = obj.parti_obj;              
                     $bi_obj = obj.parti_obj;
-                    //initTableParticulars($project_id, $bi_obj, 'tableParticularsEdit');
-
-                    //Calculate the tax here
-                    $par_Amount = $('#par_Amount_e').val();
-                    $tax_GrossAmount = $('#tax_GrossAmount_e').val();
-                    $tax_GrossAmount = parseFloat($tax_GrossAmount) + parseFloat($par_Amount);
-                    $('#tax_GrossAmount_e').val($tax_GrossAmount);
 
                     $('#par_TaskType_e').val('0').trigger('change');
                     $('#par_TaskType_name_e').val('');
@@ -1985,43 +1974,14 @@
                     $('#par_Amount_e').val('');
                     $('#par_Taxable_e').val('1').trigger('change');
 
+                    initTableParticulars($project_id, $bi_obj, 'tableParticularsEdit');
+                    calculateTax('edit', obj.project_id, obj.bi_obj)
+
                 }            	
 			}
 		}
     });
     //end particulars add from Edit part
-
-
-    //Add TAX calculation
-    $('#tax_DiscountPercentage_e').blur(function(){
-        $tax_GrossAmount_e = $('#tax_GrossAmount_e').val();
-        $tax_DiscountPercentage_e = $('#tax_DiscountPercentage_e').val();
-
-        $tax_DiscountAmount_e = parseFloat($tax_GrossAmount_e) * parseFloat($tax_DiscountPercentage_e) * 0.01;
-        $('#tax_DiscountAmount_e').val($tax_DiscountAmount_e);
-
-        $tax_TaxableAmount_e = parseFloat($tax_GrossAmount_e) - parseFloat($tax_DiscountAmount_e);
-        $('#tax_TaxableAmount_e').val($tax_TaxableAmount_e);
-
-        $tax_SGST_Rate_e = $('#tax_SGST_Rate_e').val();
-        $tax_CGST_Rate_e = $('#tax_CGST_Rate_e').val();
-        $tax_IGST_Rate_e = $('#tax_IGST_Rate_e').val();
-
-        $tax_SGST_Amount_e = parseFloat($tax_TaxableAmount_e) * parseFloat($tax_SGST_Rate_e) * 0.01;
-        $tax_CGST_Amount_e = parseFloat($tax_TaxableAmount_e) * parseFloat($tax_CGST_Rate_e) * 0.01;
-        $tax_IGST_Amount_e = parseFloat($tax_TaxableAmount_e) * parseFloat($tax_IGST_Rate_e) * 0.01;
-
-        $('#tax_SGST_Amount_e').val($tax_SGST_Amount_e);
-        $('#tax_CGST_Amount_e').val($tax_CGST_Amount_e);
-        $('#tax_IGST_Amount_e').val($tax_IGST_Amount_e);
-
-        $tax_TotalTax_e = parseFloat($tax_SGST_Amount_e) + parseFloat($tax_CGST_Amount_e) + parseFloat($tax_IGST_Amount_e);
-        $('#tax_TotalTax_e').val($tax_TotalTax_e);
-
-        $tax_NetAmount_e = parseFloat($tax_TaxableAmount_e) + parseFloat($tax_TotalTax_e);
-        $('#tax_NetAmount_e').val($tax_NetAmount_e);
-
-    });//end 
 
     $("#tax_Bank").change(function(){
         $tax_BankName = $("#tax_Bank :selected").text();
@@ -2393,6 +2353,56 @@
         }        
     });
 
+
+    //Tax calculation
+    function calculateTax($add_edit, $project_id, $bi_obj){
+        $.ajax({
+            url: "<?= base_url('admin/calculate-tax/') ?>",
+            dataType: 'json',
+            type: 'POST',
+            data: { project_id: $project_id, bi_obj: $bi_obj },
+            success: function (returnData) {
+                notification(returnData);
+                $tax_obj = returnData.tax_obj;
+                
+                console.log(JSON.stringify(returnData.tax_obj))
+                console.log('tax_GrossAmount: '+returnData.tax_obj.tax_GrossAmount)
+
+                if($add_edit == 'add'){
+                    $('#tax_GrossAmount').val($tax_obj.tax_GrossAmount);
+                    $('#tax_DiscountPercentage').val($tax_obj.tax_DiscountPercentage);
+                    $('#tax_DiscountAmount').val($tax_obj.tax_DiscountAmount);
+                    $('#tax_TaxableAmount').val($tax_obj.tax_TaxableAmount);
+                    $('#tax_SGST_Rate').val($tax_obj.tax_SGST_Rate);
+                    $('#tax_SGST_Amount').val($tax_obj.tax_SGST_Amount);
+                    $('#tax_CGST_Rate').val($tax_obj.tax_CGST_Rate);
+                    $('#tax_CGST_Amount').val($tax_obj.tax_CGST_Amount);
+                    $('#tax_IGST_Rate').val($tax_obj.tax_IGST_Rate);
+                    $('#tax_IGST_Amount').val($tax_obj.tax_IGST_Amount);
+                    $('#tax_NetAmount').val($tax_obj.tax_NetAmount);
+                    $('#tax_TotalTax').val($tax_obj.tax_TotalTax);
+                }else{
+                    $('#tax_GrossAmount_e').val($tax_obj.tax_GrossAmount);
+                    $('#tax_DiscountPercentage_e').val($tax_obj.tax_DiscountPercentage);
+                    $('#tax_DiscountAmount_e').val($tax_obj.tax_DiscountAmount);
+                    $('#tax_TaxableAmount_e').val($tax_obj.tax_TaxableAmount);
+                    $('#tax_SGST_Rate_e').val($tax_obj.tax_SGST_Rate);
+                    $('#tax_SGST_Amount_e').val($tax_obj.tax_SGST_Amount);
+                    $('#tax_CGST_Rate_e').val($tax_obj.tax_CGST_Rate);
+                    $('#tax_CGST_Amount_e').val($tax_obj.tax_CGST_Amount);
+                    $('#tax_IGST_Rate_e').val($tax_obj.tax_IGST_Rate);
+                    $('#tax_IGST_Amount_e').val($tax_obj.tax_IGST_Amount);
+                    $('#tax_NetAmount_e').val($tax_obj.tax_NetAmount);
+                    $('#tax_TotalTax_e').val($tax_obj.tax_TotalTax);                    
+                }//end if
+
+            },
+            error: function (returnData) {
+                obj = JSON.parse(returnData);
+                notification(obj);
+            }
+        });
+    }//end
 
     function getTransactionId(){
         const d = new Date().toLocaleString();

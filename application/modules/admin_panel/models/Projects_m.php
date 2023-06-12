@@ -938,6 +938,7 @@ class Projects_m extends CI_Model {
         $data['title'] = 'Quotation';
         $data['bi_obj'] = $bi_obj;
         $data['update_id'] = $parti_bi_project_id;
+        $data['project_id'] = $parti_bi_project_id;
         return $data;
 
     }
@@ -1522,6 +1523,111 @@ class Projects_m extends CI_Model {
         return $returnObj;
     }
 
+
+    //Tax Calculation
+    public function calculate_tax(){
+        $project_id = $this->input->post('project_id');
+        $bi_obj = $this->input->post('bi_obj');
+        $account_gst_no = '';
+
+        $status = true;
+        $commissionsNew = array();
+
+        $tax_GrossAmount = 0;
+        $tax_DiscountPercentage = 0;
+        $tax_DiscountAmount = 0;
+        $tax_TaxableAmount = 0;
+        $tax_SGST_Rate = 0;
+        $tax_SGST_Amount = 0;
+        $tax_CGST_Rate = 0;
+        $tax_CGST_Amount = 0;
+        $tax_IGST_Rate = 0;
+        $tax_IGST_Amount = 0;
+        $tax_NetAmount = 0;
+        $tax_TotalTax = 0;
+        
+        if($bi_obj > 0){   
+            //check existing data
+            $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1); 
+                $quotationDetail = $project_description->quotationDetail;
+
+                for($i = 0; $i < sizeof($quotationDetail); $i++){
+                    if($quotationDetail[$i]->bi_obj == $bi_obj){
+                        if(isset($quotationDetail[$i]->particulars)){
+                            $particulars = $quotationDetail[$i]->particulars;
+                        }
+
+                    }//end if
+                }//end for
+
+                if(isset($project_description->client->account_gst_no)){
+                    $account_gst_no = $project_description->client->account_gst_no;
+                    $first_two = substr($account_gst_no, 0, 2);
+
+                    if($first_two == "19"){
+                        $tax_CGST_Rate = 9;
+                        $tax_IGST_Rate = 0;
+                        $tax_SGST_Rate = 9;
+                    }else{
+                        $tax_CGST_Rate = 0;
+                        $tax_IGST_Rate = 18;
+                        $tax_SGST_Rate = 0;
+                    }//end
+                }
+
+                for($j = 0; $j < sizeof($particulars); $j++){                      
+                    $tax_GrossAmount = $tax_GrossAmount + $particulars[$j]->par_Amount; 
+                    if($particulars[$j]->par_Taxable == "1"){  
+                        $tempTotalTax = 0;    
+                        $tempAmount = 0;
+
+                        $tax_TaxableAmount = $tax_TaxableAmount + $particulars[$j]->par_Amount;
+                        $tempAmount = $particulars[$j]->par_Amount;
+
+                        $tempCGST_Amount = $tempAmount * $tax_CGST_Rate * 0.01;
+                        $tempIGST_Amount = $tempAmount * $tax_IGST_Rate * 0.01;
+                        $tempSGST_Amount = $tempAmount * $tax_SGST_Rate * 0.01;
+
+                        $tax_CGST_Amount = $tax_CGST_Amount + $tempCGST_Amount;
+                        $tax_IGST_Amount = $tax_IGST_Amount + $tempIGST_Amount;
+                        $tax_SGST_Amount = $tax_SGST_Amount + $tempSGST_Amount;
+                    }//end if
+                }//end for
+                
+                $tax_TotalTax = $tax_CGST_Amount + $tax_IGST_Amount + $tax_SGST_Amount;
+                
+                $tax_NetAmount = $tax_GrossAmount + $tax_TotalTax;
+
+                $tax_obj = new stdClass();
+                $tax_obj->tax_GrossAmount = $tax_GrossAmount;
+                $tax_obj->tax_DiscountPercentage = $tax_DiscountPercentage;
+                $tax_obj->tax_DiscountAmount = $tax_DiscountAmount;
+                $tax_obj->tax_TaxableAmount = $tax_TaxableAmount;
+                $tax_obj->tax_SGST_Rate = $tax_SGST_Rate;
+                $tax_obj->tax_SGST_Amount = $tax_SGST_Amount;
+                $tax_obj->tax_CGST_Rate = $tax_CGST_Rate;
+                $tax_obj->tax_CGST_Amount = $tax_CGST_Amount;
+                $tax_obj->tax_IGST_Rate = $tax_IGST_Rate;
+                $tax_obj->tax_IGST_Amount = $tax_IGST_Amount;
+                $tax_obj->tax_NetAmount = $tax_NetAmount;
+                $tax_obj->tax_TotalTax = $tax_TotalTax;
+
+
+            }//end if
+             
+        }//edn if   
+
+        if ($status == true) {
+            $data['title'] = 'Calculated!';
+            $data['type'] = 'success';
+            $data['msg'] = 'Tax Calculated';
+            $data['tax_obj'] = $tax_obj;
+        }
+        return $data;        
+    }//end fun
     //////////////////////////////////////// final above function /////////////////////////////////////////
 
     public function offer_comments() {
