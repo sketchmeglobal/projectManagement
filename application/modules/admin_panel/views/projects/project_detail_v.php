@@ -1072,6 +1072,98 @@
                 </div>
             </div>
             <!-- End Quotation Part -->
+
+            <!-- Start Login Info part -->
+            <div class="row"> 
+                <div class="col-md-12">
+                    <section class="panel">
+                        <header class="panel-heading">
+                           Login Info
+                            <span class="tools pull-right">
+                                <a class="t-collapse fa fa-chevron-down" href="javascript:;"></a>
+                            </span>
+                        </header>
+                        <div class="panel-body collapse">
+                            <!--Tabs-->
+                            <ul id="logininfo_tabs" class="nav nav-tabs nav-justified">
+                                <li class="active"><a href="#login_info_list" data-toggle="tab">List</a></li>
+                                <li  id="login_info_details_add_tab"><a href="#login_info_details_add" data-toggle="tab">Add</a></li>
+                                <!-- <li id="contact_details_edit_tab" class="disabled" ><a href="#contact_details_edit" data-toggle="tab">Edit</a></li> -->
+                            </ul>
+                            <!--Tab Content-->
+                            <div class="tab-content">
+                            <img style="display:none; position: absolute;margin: auto;left: 0;right: 0;" src="<?=base_url('assets/img/ellipsis.gif')?>" id="loading_div"><span class="sr-only">Processing...</span>                            
+                                <div id="login_info_list" class="tab-pane fade in active">
+                                    <table id="logininfo_details_table" class="table data-table dataTable" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th>SL.No</th>
+                                                <th>Cayegory</th>
+                                                <th>User Name</th>
+                                                <th>Password</th>
+                                                <th>URL</th>                                            
+                                                <th>Note</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>SL.No</th>
+                                                <th>Cayegory</th>
+                                                <th>User Name</th>
+                                                <th>Password</th>
+                                                <th>URL</th>                                            
+                                                <th>Note</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </tfoot>  
+                                        
+                                    </table>
+                                </div>
+
+                                <div id="login_info_details_add" class="tab-pane fade">
+                                    <br/>
+                                    <div class="form">                                       
+                                    <form autocomplete="off" id="add_login_info_form" method="post" action="<?=base_url('admin/form-add-login-info')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
+                                        <div class="form-group "> 
+                                            <div class="col-lg-3">
+                                                <label for="li_category" class="control-label">Category</label>
+                                                <input type="text" name="li_category" id="li_category" class="form-control">
+                                            </div>   
+                                            <div class="col-lg-3">
+                                                <label for="li_username" class="control-label">User Name</label>
+                                                <input type="text" name="li_username" id="li_username" class="form-control">
+                                            </div>   
+                                            <div class="col-lg-3">
+                                                <label for="li_password" class="control-label">Password</label>
+                                                <input type="text" name="li_password" id="li_password" class="form-control">
+                                            </div>  
+                                            <div class="col-lg-3">
+                                                <label for="li_url" class="control-label">URL</label>
+                                                <input type="text" name="li_url" id="li_url" class="form-control">
+                                            </div>    
+                                            <div class="col-lg-3">
+                                                <label for="li_note" class="control-label">Note</label>
+                                                <input type="text" name="li_note" id="li_note" class="form-control">
+                                            </div> 
+                                            <div class="col-lg-3" style="margin-top: 25px;">
+                                                <label for="" class="control-label"></label>
+                                                <input type="submit" name="login_info_submit" class="btn btn-success text-center" id="login_info_submit" value="Add"> 
+                                                <input type="hidden" value="<?=$project_id?>" name="li_project_id" id="li_project_id">
+                                            </div>
+                                        </div>
+                                    </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <!-- End Login Info part -->
             
         </div>
 
@@ -1127,6 +1219,7 @@
         initContactTable()
         initGatherRequirementTable()
         initQuotationListTable()
+        initLoginInfoTable()
     } );
     
     //Quotation
@@ -1335,6 +1428,45 @@
                 { "data": "Phone1st" },
                 { "data": "Phone2nd" },
                 { "data": "Address" },
+                { "data": "action" },
+            ],
+            //column initialisation properties
+            "columnDefs": [{
+                "targets": [0,1,2,3,4,5,6],
+                "orderable": false,
+            }]
+        });
+    }//end fun
+
+    //Login Info Table
+    function initLoginInfoTable(){
+        $('#logininfo_details_table').dataTable().fnClearTable();
+        $('#logininfo_details_table').dataTable().fnDestroy();
+        
+        $('#logininfo_details_table').DataTable( {
+            "processing": true,
+            "language": {
+                processing: '<img src="<?=base_url('assets/img/ellipsis.gif')?>"><span class="sr-only">Processing...</span>',
+            },
+            "serverSide": true,
+            "ajax": {
+                "url": "<?=base_url('admin/ajax-logininfo-details-table-data')?>",
+                "type": "POST",
+                "dataType": "json",
+                data: {
+                    project_id: function () {
+                        return $("#project_id").val();
+                    },
+                },
+            },
+            //will get these values from JSON 'data' variable
+            "columns": [
+                { "data": "sl_no" },
+                { "data": "category" },
+                { "data": "user_name" },
+                { "data": "password" },
+                { "data": "login_url" },
+                { "data": "note" },
                 { "data": "action" },
             ],
             //column initialisation properties
@@ -2171,7 +2303,52 @@
         }
     });
     //end commission Part edit
+    
 
+    //Login Info Add Part
+    $("#add_login_info_form").validate({        
+        rules: {
+            li_username: {
+                required: true
+            },
+            li_password: {
+                required: true
+            },
+            li_url: {
+                required: true
+            }    
+        },
+        messages: {
+
+        }
+    });
+    $('#add_login_info_form').ajaxForm({
+        beforeSubmit: function () {
+            return $("#add_login_info_form").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            //console.log(returnData);
+            obj = JSON.parse(returnData);
+            notification(obj);
+			if(parseInt(obj.update_id) > 0){
+                $('#li_category').val('');
+                $('#li_username').val('');
+                $('#li_password').val('');
+                $('#li_url').val('');
+                $('#li_note').val('');
+                
+                initLoginInfoTable()
+
+                console.log(JSON.stringify(obj));
+                if(obj.type == 'error'){
+                    console.log('Error from API')
+                }else{
+                    console.log('Login Info save success')
+                }            	
+			}
+		}
+    });
+    //Login Info Part end
 
 
     function updateProjectDescription(){
@@ -2198,6 +2375,7 @@
                     $('#parti_bi_project_id').val(returnData.project_id);
                     $('#tax_project_id').val(returnData.project_id);
                     $('#commi_project_id').val(returnData.project_id);
+                    $('#li_project_id').val(returnData.project_id);
                 }
 
             },
@@ -2237,6 +2415,35 @@
             });
         }        
     });
+
+    //Delete Login Info
+    $('#logininfo_details_table').on('click', '.delete', function(){
+        $login_obj_id = $(this).data('login_obj_id');
+        $project_id = $('#project_id').val();
+
+        if(confirm("Are You Sure? This Process Can\'t be Undone.")){
+            $pk = $(this).attr('data-pk');
+            
+            $.ajax({
+                url: "<?= base_url('admin/del-row-logininfo-details/') ?>",
+                dataType: 'json',
+                type: 'POST',
+                data: {project_id: $project_id, login_obj_id: $login_obj_id},
+                success: function (returnData) {
+                    console.log(returnData);
+                    $('#logininfo_details_table').closest('tr').remove();
+                    notification(returnData);
+                    //refresh table
+                    initLoginInfoTable()
+
+                },
+                error: function (returnData) {
+                    obj = JSON.parse(returnData);
+                    notification(obj);
+                }
+            });
+        }        
+    });//end
 
     //Delete Requirement  
     $('#req_gather_details_table').on('click', '.delete', function(){
@@ -2434,6 +2641,39 @@
             }
         });
     }//end
+
+    //TAX calculation for Dicount
+    $('#tax_DiscountPercentage_e').blur(function(){
+        $tax_GrossAmount_e = $('#tax_GrossAmount_e').val();
+        $tax_DiscountPercentage_e = $('#tax_DiscountPercentage_e').val();
+
+       $tax_DiscountAmount_e = parseFloat($tax_GrossAmount_e) * parseFloat($tax_DiscountPercentage_e) * 0.01;
+        $('#tax_DiscountAmount_e').val($tax_DiscountAmount_e);
+
+         /*$tax_TaxableAmount_e = parseFloat($tax_GrossAmount_e) - parseFloat($tax_DiscountAmount_e);
+        $('#tax_TaxableAmount_e').val($tax_TaxableAmount_e);
+
+        $tax_SGST_Rate_e = $('#tax_SGST_Rate_e').val();
+        $tax_CGST_Rate_e = $('#tax_CGST_Rate_e').val();
+        $tax_IGST_Rate_e = $('#tax_IGST_Rate_e').val();
+
+        $tax_SGST_Amount_e = parseFloat($tax_TaxableAmount_e) * parseFloat($tax_SGST_Rate_e) * 0.01;
+        $tax_CGST_Amount_e = parseFloat($tax_TaxableAmount_e) * parseFloat($tax_CGST_Rate_e) * 0.01;
+        $tax_IGST_Amount_e = parseFloat($tax_TaxableAmount_e) * parseFloat($tax_IGST_Rate_e) * 0.01;
+
+        $('#tax_SGST_Amount_e').val($tax_SGST_Amount_e);
+        $('#tax_CGST_Amount_e').val($tax_CGST_Amount_e);
+        $('#tax_IGST_Amount_e').val($tax_IGST_Amount_e);
+
+        $tax_TotalTax_e = parseFloat($tax_SGST_Amount_e) + parseFloat($tax_CGST_Amount_e) + parseFloat($tax_IGST_Amount_e);
+        $('#tax_TotalTax_e').val($tax_TotalTax_e);
+
+        $tax_NetAmount_e = parseFloat($tax_TaxableAmount_e) + parseFloat($tax_TotalTax_e);
+        $('#tax_NetAmount_e').val($tax_NetAmount_e);*/
+
+    });//end 
+
+    
 
     function getTransactionId(){
         const d = new Date().toLocaleString();

@@ -460,6 +460,62 @@ class Projects_m extends CI_Model {
     }//end contacts
     
 
+    //Login Info part
+    public function form_add_login_info(){  
+        $daya = array();
+        $status = true;
+
+        $project_id = $this->input->post('li_project_id');
+
+        if($project_id > 0){
+            $li_category = $this->input->post('li_category');
+            $li_username = $this->input->post('li_username');
+            $li_password = $this->input->post('li_password');
+            $li_url = $this->input->post('li_url');
+            $li_note = $this->input->post('li_note');
+
+            $created_by = $this->session->user_id;
+            $login_obj_id = rand(1000, 9999);
+            $logins = array();
+
+            $login_obj = new stdClass();
+            $login_obj->login_obj_id = $login_obj_id;
+            $login_obj->li_category = $li_category;
+            $login_obj->li_username = $li_username;
+            $login_obj->li_password = $li_password;
+            $login_obj->li_url = $li_url;
+            $login_obj->li_note = $li_note;
+
+            //check existing data
+            $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1); 
+                if(isset($project_description->logins)){
+                    $logins = $project_description->logins;
+                }
+            }
+                    
+            array_push($logins, $login_obj);
+            $project_description->logins = $logins;
+
+            $updateArray = array(
+                'project_description' => json_encode($project_description)
+            );
+
+            $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+            $data['file_updated'] = $val;  
+        }    
+        
+        $data['type'] = 'success';
+        $data['msg'] = 'Login Info added Properly';
+        $data['title'] = 'Login Info';
+        $data['update_id'] = $project_id;
+        return $data;
+
+    }//end login info
+    
+
     //Contact details edit
     public function form_edit_contact(){  
         $daya = array();
@@ -606,6 +662,47 @@ class Projects_m extends CI_Model {
             $data['title'] = 'Deleted!';
             $data['type'] = 'success';
             $data['msg'] = 'Contact Deleted Successfully';
+        }
+        return $data;        
+    }//end fun  
+
+
+    //Login info list delete
+    public function del_row_logininfo_details(){
+        $project_id = $this->input->post('project_id');
+        $login_obj_id = $this->input->post('login_obj_id');
+        $status = true;
+        
+        if($login_obj_id > 0){
+            //check existing data
+            $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1);            
+                $logins = $project_description->logins;
+                $newLoginDetail = array();
+
+                for($i = 0; $i < sizeof($logins); $i++){
+                    if($logins[$i]->login_obj_id != $login_obj_id){
+                        array_push($newLoginDetail, $logins[$i]);
+                    }
+                }//end for
+            }//end if
+            
+            $project_description->logins = $newLoginDetail;
+
+            $updateArray = array(
+                'project_description' => json_encode($project_description)
+            );
+
+            $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+            $data['file_updated'] = $val;   
+        }   
+
+        if ($status == true) {
+            $data['title'] = 'Deleted!';
+            $data['type'] = 'success';
+            $data['msg'] = 'Login Deleted Successfully';
         }
         return $data;        
     }//end fun 
@@ -1701,7 +1798,50 @@ class Projects_m extends CI_Model {
         );
         
         return $json_data;
-    }   
+    }   //end contact
+     
+
+    //Login info Details
+    public function ajax_logininfo_details_table_data() {     
+        $project_id = $this->input->post('project_id');
+        $data = array();
+        $logins = array();
+
+        $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
+        //print_r($result);
+
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1);
+            if(isset($project_description->logins)){
+                $logins = $project_description->logins;
+            }
+        }
+
+        if(sizeof($logins) > 0){
+            $slno = 1;
+            foreach($logins as $key => $value){
+                $nestedData['sl_no'] = $slno;
+                $nestedData['category'] = $value->li_category;
+                $nestedData['user_name'] = $value->li_username;
+                $nestedData['password'] = $value->li_password;
+                $nestedData['login_url'] = $value->li_url;
+                $nestedData['note'] = $value->li_note;
+                $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" data-login_obj_id="'.$value->login_obj_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+
+                array_push($data, $nestedData);
+                $slno++;
+            }//end foreach
+        }//end if
+
+        $json_data = array(
+            "recordsTotal"    => sizeof($data),
+            "recordsFiltered" => sizeof($data),
+            "data"            => $data
+        );
+        
+        return $json_data;
+    }   //end fun
 
     //Requirement Gathering Part
     public function ajax_requirementgather_details_table_data() {     

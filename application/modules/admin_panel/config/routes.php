@@ -85,12 +85,14 @@
 	$route['admin/project-detail/(:num)'] = 'admin_panel/Projects/project_detail/$1';
 	$route['admin/ajax-project-details-table-data'] = 'admin_panel/Projects/ajax_project_details_table_data';
 	$route['admin/ajax-contact-details-table-data'] = 'admin_panel/Projects/ajax_contact_details_table_data';
+	$route['admin/ajax-logininfo-details-table-data'] = 'admin_panel/Projects/ajax_logininfo_details_table_data';
 	$route['admin/ajax-requirementgather-details-table-data'] = 'admin_panel/Projects/ajax_requirementgather_details_table_data';
 	$route['admin/ajax-quotation-details-table-data'] = 'admin_panel/Projects/ajax_quotation_details_table_data';
 	$route['admin/ajax-particular-details-table-data'] = 'admin_panel/Projects/ajax_particular_details_table_data';
 	$route['admin/ajax-commission-details-table-data'] = 'admin_panel/Projects/ajax_commission_details_table_data';
 	$route['admin/ajax-update-project-document'] = 'admin_panel/Projects/ajax_update_project_document';	
 	$route['admin/form-add-contact'] = 'admin_panel/Projects/form_add_contact';
+	$route['admin/form-add-login-info'] = 'admin_panel/Projects/form_add_login_info';
 	$route['admin/form-add-client-details'] = 'admin_panel/Projects/form_add_client_details';
 	$route['admin/form-gather-requirement'] = 'admin_panel/Projects/form_gather_requirement';
 	$route['admin/form-parti-basic-info-add'] = 'admin_panel/Projects/form_particular_basic_info_add';
@@ -104,6 +106,7 @@
 	$route['admin/fetch-contact-details-on-pk'] = 'admin_panel/Projects/fetch_contact_details_on_pk';
 	$route['admin/form-edit-contact'] = 'admin_panel/Projects/form_edit_contact';
 	$route['admin/del-row-contact-details'] = 'admin_panel/Projects/del_row_contact_details';
+	$route['admin/del-row-logininfo-details'] = 'admin_panel/Projects/del_row_logininfo_details';
 	$route['admin/fetch-requirement-details-on-pk'] = 'admin_panel/Projects/fetch_requirement_details_on_pk';
 	$route['admin/form-edit-gather-requirement'] = 'admin_panel/Projects/requirement_gather_edit_form';
 	$route['admin/del-row-requirement-details'] = 'admin_panel/Projects/del_row_requirement_details';

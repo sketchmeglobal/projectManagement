@@ -69,6 +69,15 @@ class Projects extends My_Controller {
         }
     }
     
+    public function ajax_logininfo_details_table_data() {
+        if($this->check_permission() == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_logininfo_details_table_data();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+    
     public function ajax_requirementgather_details_table_data() {
         if($this->check_permission() == true) {
             $this->load->model('Projects_m');
@@ -149,6 +158,15 @@ class Projects extends My_Controller {
         if($this->check_permission(array()) == true) {
             $this->load->model('Projects_m');
             $data = $this->Projects_m->form_add_contact();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
+    public function form_add_login_info(){        
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->form_add_login_info();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -278,7 +296,16 @@ class Projects extends My_Controller {
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
-    }  
+    }   
+
+    public function del_row_logininfo_details() {
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->del_row_logininfo_details();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }   
 
     public function del_row_requirement_details() {
         if($this->check_permission(array()) == true) {
