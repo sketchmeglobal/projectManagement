@@ -1974,7 +1974,7 @@
                     $('#par_Amount_e').val('');
                     $('#par_Taxable_e').val('1').trigger('change');
 
-                    initTableParticulars($project_id, $bi_obj, 'tableParticularsEdit');
+                    //initTableParticulars($project_id, $bi_obj, 'tableParticularsEdit');
                     calculateTax('edit', obj.project_id, obj.bi_obj)
 
                 }            	
@@ -2296,6 +2296,36 @@
     });
 
     //Delete Particulars     
+    $('#tableParticularsAdd').on('click', '.delete', function(){
+        $project_id = $(this).data('project_id');
+        $bi_obj = $(this).data('bi_obj');
+        $parti_obj = $(this).data('parti_obj');
+
+        if(confirm("Are You Sure? This Process Can\'t be Undone.")){
+            $pk = $(this).attr('data-pk');
+            
+            $.ajax({
+                url: "<?= base_url('admin/del-row-particular-details/') ?>",
+                dataType: 'json',
+                type: 'POST',
+                data: { project_id: $project_id, bi_obj: $bi_obj, parti_obj: $parti_obj },
+                success: function (returnData) {
+                    console.log(returnData);
+                    $('#tableParticularsAdd').closest('tr').remove();
+                    notification(returnData);
+                    //refresh table
+                    initTableParticulars($project_id, $bi_obj, 'tableParticularsAdd');
+                    calculateTax('add', $project_id, $bi_obj);
+                },
+                error: function (returnData) {
+                    obj = JSON.parse(returnData);
+                    notification(obj);
+                }
+            });
+        }        
+    });
+
+    //Delete Particulars     
     $('#tableParticularsEdit').on('click', '.delete', function(){
         $project_id = $(this).data('project_id');
         $bi_obj = $(this).data('bi_obj');
@@ -2315,6 +2345,7 @@
                     notification(returnData);
                     //refresh table
                     initTableParticulars($project_id, $bi_obj, 'tableParticularsEdit');
+                    calculateTax('edit', $project_id, $bi_obj);
                 },
                 error: function (returnData) {
                     obj = JSON.parse(returnData);
