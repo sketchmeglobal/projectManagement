@@ -1082,6 +1082,132 @@
             </div>
             <!-- End Quotation Part -->
 
+            <!-- Start Invoice part -->
+            <div class="row"> 
+                <div class="col-md-12">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            Invoice
+                            <span class="tools pull-right">
+                                <a class="t-collapse fa fa-chevron-down" href="javascript:;"></a>
+                            </span>
+                        </header>
+                        <div class="panel-body collapse">
+                            <!--Tabs-->
+                            <ul id="invoice_tabs" class="nav nav-tabs nav-justified">
+                                <li class="active"><a href="#invoice_list" data-toggle="tab">List</a></li>
+                                <li  id="invoice_details_add_tab"><a href="#invoice_details_add" data-toggle="tab">Add</a></li>
+                                <!-- <li id="contact_details_edit_tab" class="disabled" ><a href="#contact_details_edit" data-toggle="tab">Edit</a></li> -->
+                            </ul>
+                            <!--Tab Content-->
+                            <div class="tab-content">
+                            <img style="display:none; position: absolute;margin: auto;left: 0;right: 0;" src="<?=base_url('assets/img/ellipsis.gif')?>" id="loading_div"><span class="sr-only">Processing...</span>                            
+                                <div id="invoice_list" class="tab-pane fade in active">
+                                    <table id="invoice_details_table" class="table data-table dataTable" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th>SL.No</th>
+                                                <th>Party Name</th>
+                                                <th>Invoice No</th>
+                                                <th>Invoice Date</th>
+                                                <th>Gross Amount</th>                                            
+                                                <th>Bill Amount</th>
+                                                <th>Paid</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>SL.No</th>
+                                                <th>Party Name</th>
+                                                <th>Invoice No</th>
+                                                <th>Invoice Date</th>
+                                                <th>Gross Amount</th>                                            
+                                                <th>Bill Amount</th>
+                                                <th>Paid</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </tfoot>  
+                                        
+                                    </table>
+                                </div>
+
+                                <div id="invoice_details_add" class="tab-pane fade">
+                                    <br/>
+                                    <h4 >Basic Info</h4>
+                                    <div class="form">                                       
+                                        <form autocomplete="off" id="add_invoice_form" method="post" action="<?=base_url('admin/form-add-invoice-info')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
+                                            <div class="form-group "> 
+                                                <div class="col-lg-3">
+                                                    <label for="li_category" class="control-label">Bill No</label>
+                                                    <input type="text" name="li_category" id="li_category" class="form-control">
+                                                </div>   
+                                                <div class="col-lg-3">
+                                                    <label for="li_username" class="control-label">Bill Date</label>
+                                                    <input type="date" name="li_username" id="li_username" class="form-control">
+                                                </div>   
+                                                <div class="col-lg-3">
+                                                    <label for="li_password" class="control-label">Invoice Date</label>
+                                                    <input type="date" name="li_password" id="li_password" class="form-control">
+                                                </div>  
+                                                <div class="col-lg-3">
+                                                    <label for="li_url" class="control-label">Work Order No.</label>
+                                                    <input type="text" name="li_url" id="li_url" class="form-control">
+                                                </div>  
+                                                <div class="col-lg-3">
+                                                    <label for="li_url" class="control-label">Sub Party Name</label>
+                                                    <input type="text" name="li_url" id="li_url" class="form-control">
+                                                </div>    
+                                                <div class="col-lg-3">
+                                                    <label for="li_note" class="control-label">Remarks</label>
+                                                    <input type="text" name="li_note" id="li_note" class="form-control">
+                                                </div> 
+                                                <div class="col-lg-3" style="margin-top: 25px;">
+                                                    <label for="" class="control-label"></label>
+                                                    <input type="submit" name="invoice_submit" class="btn btn-success text-center" id="invoice_submit" value="Add"> 
+                                                    <input type="hidden" value="<?=$project_id?>" name="invoice_project_id" id="invoice_project_id">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <!-- Final Particulars List -->
+                                    <?php
+                                    echo json_encode($particulars);
+                                    ?>
+                                    <h4 >Particulars</h4>
+                                    <div class="form-group">   
+                                        <div class="col-lg-6">
+                                            <label for="inv_particular" class="control-label">Particulars</label>
+                                            <select name="inv_particular" id="inv_particular" class="form-control select2">
+                                                <option value="0" >-- Select Particular --</option>
+                                                <?php
+                                                    if(sizeof($particulars) > 0){
+                                                        echo json_encode($particulars);
+                                                        for($i = 0; $i < sizeof($particulars); $i++){
+                                                        ?>                                                
+                                                            <option value="<?=$particulars[$i]->parti_obj?>" ><?=$particulars[$i]->par_TaskType_name?></option>
+                                                        <?php
+                                                        }//end for
+                                                    }//end if
+                                                ?>
+                                            </select>
+                                            <input type="hidden" value="" name="inv_particular_name" id="inv_particular_name">
+                                        </div> 
+                                    </div>
+
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <!-- End Invoice part -->
+
             <!-- Start Login Info part -->
             <div class="row"> 
                 <div class="col-md-12">
@@ -1229,6 +1355,7 @@
         initGatherRequirementTable()
         initQuotationListTable()
         initLoginInfoTable()
+        initInvoiceTable()
     } );
     
     //Quotation
@@ -1404,6 +1531,9 @@
                 initTableCommission($project_id, $bi_obj, 'p_commissionListEdit');
                 $('#commi_bi_obj_e').val($bi_obj);
 
+                //Invoice Part
+
+
                 $('a[href="#quotation_edit"]').tab('show');
 
             },
@@ -1448,6 +1578,47 @@
             //column initialisation properties
             "columnDefs": [{
                 "targets": [0,1,2,3,4,5,6],
+                "orderable": false,
+            }]
+        });
+    }//end fun
+    
+
+    //Invoice Table
+    function initInvoiceTable(){
+        $('#invoice_details_table').dataTable().fnClearTable();
+        $('#invoice_details_table').dataTable().fnDestroy();
+        
+        $('#invoice_details_table').DataTable( {
+            "processing": true,
+            "language": {
+                processing: '<img src="<?=base_url('assets/img/ellipsis.gif')?>"><span class="sr-only">Processing...</span>',
+            },
+            "serverSide": true,
+            "ajax": {
+                "url": "<?=base_url('admin/ajax-invoice-details-table-data')?>",
+                "type": "POST",
+                "dataType": "json",
+                data: {
+                    project_id: function () {
+                        return $("#project_id").val();
+                    },
+                },
+            },
+            //will get these values from JSON 'data' variable
+            "columns": [
+                { "data": "sl_no" },
+                { "data": "partyName" },
+                { "data": "invoiceNo" },
+                { "data": "invoiceDate" },
+                { "data": "grossAmount" },
+                { "data": "billAmounnt" },
+                { "data": "paid" },
+                { "data": "action" },
+            ],
+            //column initialisation properties
+            "columnDefs": [{
+                "targets": [0, 1, 2, 3, 4, 5, 6, 7],
                 "orderable": false,
             }]
         });

@@ -78,6 +78,15 @@ class Projects extends My_Controller {
         }
     }
     
+    public function ajax_invoice_details_table_data() {
+        if($this->check_permission() == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_invoice_details_table_data();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+    
     public function ajax_requirementgather_details_table_data() {
         if($this->check_permission() == true) {
             $this->load->model('Projects_m');

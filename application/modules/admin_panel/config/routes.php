@@ -86,6 +86,7 @@
 	$route['admin/ajax-project-details-table-data'] = 'admin_panel/Projects/ajax_project_details_table_data';
 	$route['admin/ajax-contact-details-table-data'] = 'admin_panel/Projects/ajax_contact_details_table_data';
 	$route['admin/ajax-logininfo-details-table-data'] = 'admin_panel/Projects/ajax_logininfo_details_table_data';
+	$route['admin/ajax-invoice-details-table-data'] = 'admin_panel/Projects/ajax_invoice_details_table_data';
 	$route['admin/ajax-requirementgather-details-table-data'] = 'admin_panel/Projects/ajax_requirementgather_details_table_data';
 	$route['admin/ajax-quotation-details-table-data'] = 'admin_panel/Projects/ajax_quotation_details_table_data';
 	$route['admin/ajax-particular-details-table-data'] = 'admin_panel/Projects/ajax_particular_details_table_data';

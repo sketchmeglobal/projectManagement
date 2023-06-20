@@ -102,6 +102,19 @@ class Projects_m extends CI_Model {
         $data['important_note'] = $important_note;
         $data['other_client_details'] = $other_client_details;
 
+        //Invoice particular
+        $quotationDetail = $project_description->quotationDetail;
+        $particulars = array();
+        if(sizeof($quotationDetail) > 0){
+            for($i = 0; $i < sizeof($quotationDetail); $i++){
+                if($quotationDetail[$i]->bi_finalQuote == '1'){
+                    $particulars = $quotationDetail[$i]->particulars;
+                }//end if
+            }//end for
+        }//end if
+        $data['particulars'] = $particulars;
+
+
         return array('page'=>'projects/project_detail_v', 'data'=>$data);
     }
 
@@ -1802,6 +1815,50 @@ class Projects_m extends CI_Model {
         
         return $json_data;
     }   //end contact
+     
+
+    //Invoice Details
+    public function ajax_invoice_details_table_data() {     
+        $project_id = $this->input->post('project_id');
+        $data = array();
+        $logins = array();
+
+        $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
+        //print_r($result);
+
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1);
+            if(isset($project_description->logins)){
+                $logins = $project_description->logins;
+            }
+        }
+
+        if(sizeof($logins) > 0){
+            $slno = 1;
+            foreach($logins as $key => $value){
+                $nestedData['sl_no'] = $slno;
+                $nestedData['partyName'] = $slno;
+                $nestedData['invoiceNo'] = $slno;
+                $nestedData['invoiceDate'] = $slno;
+                $nestedData['grossAmount'] = $slno;
+                $nestedData['billAmounnt'] = $slno;
+                $nestedData['paid'] = $slno;
+                $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" data-login_obj_id="'.$value->login_obj_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+
+                array_push($data, $nestedData);
+                $slno++;
+            }//end foreach
+        }//end if
+
+        $json_data = array(
+            "recordsTotal"    => sizeof($data),
+            "recordsFiltered" => sizeof($data),
+            "data"            => $data
+        );
+        
+        return $json_data;
+    }   //end fun
      
 
     //Login info Details
