@@ -472,6 +472,7 @@
                                                 <th>Party Name</th>
                                                 <th>Quotation No</th>
                                                 <th>Quotation Date</th>
+                                                <th>Final Quotation</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -833,6 +834,14 @@
                                                 <div class="col-lg-3">
                                                     <label for="bi_ImportantNotes_e" class="control-label">Important Notes</label>
                                                     <textarea name="bi_ImportantNotes_e" id="bi_ImportantNotes_e" class="form-control"></textarea>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label for="bi_ImportantNotes_e" class="control-label">Make it final Quotation</label>
+                                                    <select name="bi_finalQuote" id="bi_finalQuote" class="form-control select2">
+                                                        <option value="0" >-- Make it final --</option>
+                                                        <option value="1" >Yes</option>
+                                                        <option value="2" >No</option>
+                                                    </select>
                                                 </div>
                                                 <div class="col-lg-3" style="margin-top: 25px;">
                                                     <label for="basic_info_submit_e" class="control-label"></label>
@@ -1248,6 +1257,7 @@
                 { "data": "PartyName" },
                 { "data": "QuotationNo" },
                 { "data": "QuotationDate" },
+                { "data": "finalQuotation" },
                 { "data": "action" },
             ],
             //column initialisation properties
@@ -1361,6 +1371,11 @@
                 $("#bi_Remarks_e").val(returnData.bi_Remarks);
                 $("#bi_OtherClientInfo_e").val(returnData.bi_OtherClientInfo);
                 $("#bi_ImportantNotes_e").val(returnData.bi_ImportantNotes);
+                $bi_finalQuote = 0;
+                if(returnData.bi_finalQuote){
+                    $bi_finalQuote = returnData.bi_finalQuote;
+                }
+                $("#bi_finalQuote").val($bi_finalQuote).trigger('change');
 
                 //Particular Part
                 initTableParticulars($project_id, $bi_obj, 'tableParticularsEdit');

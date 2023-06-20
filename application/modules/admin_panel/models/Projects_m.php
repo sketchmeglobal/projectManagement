@@ -1096,6 +1096,8 @@ class Projects_m extends CI_Model {
         $bi_Remarks = $this->input->post('bi_Remarks_e'); 
         $bi_OtherClientInfo = $this->input->post('bi_OtherClientInfo_e'); 
         $bi_ImportantNotes = $this->input->post('bi_ImportantNotes_e'); 
+        $bi_finalQuote = $this->input->post('bi_finalQuote');
+
 
         //check existing data
         $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $bi_project_id_e))->result();
@@ -1120,6 +1122,7 @@ class Projects_m extends CI_Model {
                 $quotationDetail[$i]->bi_Remarks = $bi_Remarks;
                 $quotationDetail[$i]->bi_OtherClientInfo = $bi_OtherClientInfo;
                 $quotationDetail[$i]->bi_ImportantNotes = $bi_ImportantNotes;
+                $quotationDetail[$i]->bi_finalQuote = $bi_finalQuote;
             }
         }//end for
 
@@ -1927,11 +1930,20 @@ class Projects_m extends CI_Model {
                 $PartyName = $value->bi_PartyId_name;
                 $QuotationNo = $value->bi_QuotationNo;
                 $QuotationDate = $value->bi_QuotationDate;
+                $bi_finalQuote = 'No';
+
+                if(isset($value->bi_finalQuote)){
+                    if($value->bi_finalQuote == 1){
+                        $bi_finalQuote = 'Yes';
+                    }
+                }
+                
 
                 $nestedData['SlNo'] = $slno;
                 $nestedData['PartyName'] = $PartyName;
                 $nestedData['QuotationNo'] = $QuotationNo;
                 $nestedData['QuotationDate'] = date("d-m-Y", strtotime($QuotationDate));
+                $nestedData['finalQuotation'] = $bi_finalQuote;
                 $nestedData['action'] = '<a href="'. base_url('admin/print-quotation/'.$project_id.'/'.$value->bi_obj).'" target="_blank" data-project_id="'.$project_id.'" class="btn bg-yellow print_quotation"><i class="fa fa-eye"></i> View</a>
                 <a href="javascript:void(0)" data-project_id="'.$project_id.'" data-bi_obj="'.$value->bi_obj.'" class="btn btn-info edit_bi_obj"><i class="fa fa-pencil"></i> Edit</a>
                 <a href="javascript:void(0)" data-project_id="'.$project_id.'" data-bi_obj="'.$value->bi_obj.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
