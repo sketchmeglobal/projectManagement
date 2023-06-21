@@ -529,6 +529,68 @@ class Projects_m extends CI_Model {
     }//end login info
     
 
+    //Invoice Info part
+    public function form_add_invoice_particular_info(){  
+        $daya = array();
+        $status = true;
+
+        $project_id = $this->input->post('inv_project_id');
+
+        if($project_id > 0){
+            $inv_Amount = $this->input->post('inv_Amount');
+            $inv_parti_obj = $this->input->post('inv_parti_obj');
+            $inv_par_TaskType = $this->input->post('inv_par_TaskType');
+            $inv_par_TaskType_name = $this->input->post('inv_par_TaskType_name');
+            $inv_par_HSNCode = $this->input->post('inv_par_HSNCode');
+            $inv_par_Duration = $this->input->post('inv_par_Duration');
+            $inv_par_StartDate = $this->input->post('inv_par_StartDate');
+            $inv_project_id = $this->input->post('inv_project_id');
+
+            $created_by = $this->session->user_id;
+            $inv_obj_id = rand(1000, 9999);
+            $inv_parti_obj_id = rand(1000, 9999);
+            $inv_particulars = array();
+
+            $inv_parti_obj = new stdClass();
+            $inv_parti_obj->inv_parti_obj_id = $inv_parti_obj_id;
+            $inv_parti_obj->parti_obj = $inv_parti_obj;
+            $inv_parti_obj->inv_Amount = $inv_Amount;
+            $inv_parti_obj->inv_par_TaskType = $inv_par_TaskType;
+            $inv_parti_obj->inv_par_TaskType_name = $inv_par_TaskType_name;
+            $inv_parti_obj->inv_par_HSNCode = $inv_par_HSNCode;
+            $inv_parti_obj->inv_par_Duration = $inv_par_Duration;
+            $inv_parti_obj->inv_par_StartDate = $inv_par_StartDate;
+
+            //check existing data
+            $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1); 
+                if(isset($project_description->inv_particulars)){
+                    $inv_particulars = $project_description->inv_particulars;
+                }
+            }
+                    
+            array_push($inv_particulars, $inv_parti_obj);
+            $project_description->inv_particulars = $inv_particulars;
+
+            $updateArray = array(
+                'project_description' => json_encode($project_description)
+            );
+
+            //$val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+            //$data['file_updated'] = $val;  
+        }   
+        
+        $data['type'] = 'success';
+        $data['msg'] = 'Invoice Info added Properly';
+        $data['title'] = 'Invoice';
+        $data['update_id'] = $project_id;
+        return $data;
+
+    }//end invoice info
+    
+
     //Contact details edit
     public function form_edit_contact(){  
         $daya = array();

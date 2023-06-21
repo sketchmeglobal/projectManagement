@@ -1176,7 +1176,7 @@
 
                                     <!-- Final Particulars List -->
                                     <?php
-                                    echo json_encode($particulars);
+                                    //echo json_encode($particulars);
                                     ?>
                                     <h4 >Particulars</h4>
                                     <div class="form-group">   
@@ -1186,11 +1186,21 @@
                                                 <option value="0" >-- Select Particular --</option>
                                                 <?php
                                                     if(sizeof($particulars) > 0){
-                                                        echo json_encode($particulars);
+                                                        //echo json_encode($particulars);
                                                         for($i = 0; $i < sizeof($particulars); $i++){
+                                                            if($particulars[$i]->par_Taxable == '1'){
                                                         ?>                                                
-                                                            <option value="<?=$particulars[$i]->parti_obj?>" ><?=$particulars[$i]->par_TaskType_name?></option>
+                                                            <option value="<?=$particulars[$i]->parti_obj?>" 
+                                                            par_TaskType="<?=$particulars[$i]->par_TaskType?>"
+                                                            par_TaskType_name="<?=$particulars[$i]->par_TaskType_name?>"
+                                                            par_HSNCode="<?=$particulars[$i]->par_HSNCode?>"
+                                                            par_Duration="<?=$particulars[$i]->par_Duration?>"
+                                                            par_StartDate="<?=$particulars[$i]->par_StartDate?>"
+                                                            par_Amount="<?=$particulars[$i]->par_Amount?>"
+                                                            par_Taxable="<?=$particulars[$i]->par_Taxable?>"
+                                                            ><?=$particulars[$i]->par_TaskType_name?></option>
                                                         <?php
+                                                            }//end if
                                                         }//end for
                                                     }//end if
                                                 ?>
@@ -1206,6 +1216,55 @@
                     </section>
                 </div>
             </div>
+
+            <!-- Modal Start -->
+            <div id="invoiceModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="invoiceModalTitle"> </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="row"> 
+                                <div class="col-md-12">
+                                    <div class="form">                                      
+                                        <form autocomplete="off" id="add_invoice_parti_form" method="post" action="<?=base_url('admin/form-add-invoice-particular-info')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">   
+                                            <div class="form-group "> 
+                                                <div class="col-lg-3">
+                                                    <label for="inv_Amount" class="control-label">Amount</label>
+                                                    <input type="text" name="inv_Amount" id="inv_Amount" class="form-control">
+                                                    <input type="hidden" name="inv_parti_obj" id="inv_parti_obj" class="form-control">
+                                                    <input type="hidden" name="inv_par_TaskType" id="inv_par_TaskType" class="form-control">
+                                                    <input type="hidden" name="inv_par_TaskType_name" id="inv_par_TaskType_name" class="form-control">
+                                                    <input type="hidden" name="inv_par_HSNCode" id="inv_par_HSNCode" class="form-control">
+                                                    <input type="hidden" name="inv_par_Duration" id="inv_par_Duration" class="form-control">
+                                                    <input type="hidden" name="inv_par_StartDate" id="inv_par_StartDate" class="form-control">
+                                                </div> 
+                                                <div class="col-lg-3" style="margin-top: 25px;">
+                                                    <label for="" class="control-label"></label>
+                                                    <input type="submit" name="invoice_parti_submit" class="btn btn-success text-center" id="invoice_parti_submit" value="Add"> 
+                                                    <input type="hidden" value="<?=$project_id?>" name="inv_project_id" id="inv_project_id">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>                                                        
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <!-- <button type="button" class="btn btn-primary" id="saveInvoiceParticular" >Save changes</button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal End -->
+
             <!-- End Invoice part -->
 
             <!-- Start Login Info part -->
@@ -2858,6 +2917,78 @@
         $('#tax_NetAmount_e').val($tax_NetAmount_e);*/
 
     });//end 
+
+    //Invoice Part
+    $('#inv_particular').on('change', function(){
+        $inv_particular = $('#inv_particular').val();
+        $inv_particular_text = $('#inv_particular option:selected').text();
+
+        if(parseInt($inv_particular) > 0){
+            $parti_obj = $('#inv_particular').val();
+            $par_TaskType = $('#inv_particular option:selected').attr('par_TaskType');
+            $par_TaskType_name = $('#inv_particular option:selected').attr('par_TaskType_name');
+            $par_HSNCode = $('#inv_particular option:selected').attr('par_HSNCode');
+            $par_Duration = $('#inv_particular option:selected').attr('par_Duration');
+            $par_StartDate = $('#inv_particular option:selected').attr('par_StartDate');
+            $par_Amount = $('#inv_particular option:selected').attr('par_Amount');
+            $par_Taxable = $('#inv_particular option:selected').attr('par_Taxable');
+
+            $('#invoiceModalTitle').html($inv_particular_text);
+            $('#inv_parti_obj').val($parti_obj);
+            $('#inv_par_TaskType').val($par_TaskType);
+            $('#inv_par_TaskType_name').val($par_TaskType_name);
+            $('#inv_par_HSNCode').val($par_HSNCode);
+            $('#inv_par_Duration').val($par_Duration);
+            $('#inv_par_StartDate').val($par_StartDate);
+            $('#inv_Amount').val($par_Amount);
+            
+            $('#invoiceModal').modal('show');
+        }
+    });
+
+    //Add Invoice particular to Table
+    $("#add_invoice_parti_form").validate({        
+        rules: {
+            inv_Amount: {
+                required: true
+            }    
+        },
+        messages: {
+
+        }
+    });
+    $('#add_invoice_parti_form').ajaxForm({
+        beforeSubmit: function () {
+            return $("#add_invoice_parti_form").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            //console.log(returnData);
+            obj = JSON.parse(returnData);
+            notification(obj);
+			if(parseInt(obj.update_id) > 0){
+                /*$('#li_category').val('');
+                $('#li_username').val('');
+                $('#li_password').val('');
+                $('#li_url').val('');
+                $('#li_note').val('');*/
+
+                $('#invoiceModal').modal('hide');
+                initInvoiceParticularTable();
+
+                console.log(JSON.stringify(obj));
+                if(obj.type == 'error'){
+                    console.log('Error from API')
+                }else{
+                    console.log('Login Info save success')
+                }            	
+			}
+		}
+    });
+
+    function initInvoiceParticularTable(){
+        console.log('initInvoiceParticularTable')
+    }//end fun
+    //Invoice Part end
 
     
 

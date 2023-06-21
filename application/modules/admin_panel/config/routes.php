@@ -94,6 +94,7 @@
 	$route['admin/ajax-update-project-document'] = 'admin_panel/Projects/ajax_update_project_document';	
 	$route['admin/form-add-contact'] = 'admin_panel/Projects/form_add_contact';
 	$route['admin/form-add-login-info'] = 'admin_panel/Projects/form_add_login_info';
+	$route['admin/form-add-invoice-particular-info'] = 'admin_panel/Projects/form_add_invoice_particular_info';
 	$route['admin/form-add-client-details'] = 'admin_panel/Projects/form_add_client_details';
 	$route['admin/form-gather-requirement'] = 'admin_panel/Projects/form_gather_requirement';
 	$route['admin/form-parti-basic-info-add'] = 'admin_panel/Projects/form_particular_basic_info_add';
