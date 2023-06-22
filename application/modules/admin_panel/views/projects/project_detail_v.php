@@ -185,7 +185,7 @@
                                         <input type="hidden" value="<?=$project_id?>" name="cli_project_id" id="cli_project_id">
                                     </div>
                                 </div>  
-                            <!-- </form> -->
+                            </form>
 
                         </div>
                     </section>
@@ -1111,7 +1111,7 @@
                                                 <th>Invoice No</th>
                                                 <th>Invoice Date</th>
                                                 <th>Gross Amount</th>                                            
-                                                <th>Bill Amount</th>
+                                                <th>Net Amount</th>
                                                 <th>Paid</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -1126,7 +1126,7 @@
                                                 <th>Invoice No</th>
                                                 <th>Invoice Date</th>
                                                 <th>Gross Amount</th>                                            
-                                                <th>Bill Amount</th>
+                                                <th>Net Amount</th>
                                                 <th>Paid</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -1138,32 +1138,32 @@
                                 <div id="invoice_details_add" class="tab-pane fade">
                                     <br/>
                                     <h4 >Basic Info</h4>
-                                    <div class="form">                                       
+                                    <div class="form-group " style="float: left;">                                        
                                         <form autocomplete="off" id="add_invoice_form" method="post" action="<?=base_url('admin/form-add-invoice-info')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
                                             <div class="form-group "> 
                                                 <div class="col-lg-3">
-                                                    <label for="li_category" class="control-label">Bill No</label>
-                                                    <input type="text" name="li_category" id="li_category" class="form-control">
+                                                    <label for="inv_BillNo" class="control-label">Bill No</label>
+                                                    <input type="text" name="inv_BillNo" id="inv_BillNo" class="form-control">
                                                 </div>   
                                                 <div class="col-lg-3">
-                                                    <label for="li_username" class="control-label">Bill Date</label>
-                                                    <input type="date" name="li_username" id="li_username" class="form-control">
+                                                    <label for="inv_BillDate" class="control-label">Bill Date</label>
+                                                    <input type="date" name="inv_BillDate" id="inv_BillDate" class="form-control">
                                                 </div>   
                                                 <div class="col-lg-3">
-                                                    <label for="li_password" class="control-label">Invoice Date</label>
-                                                    <input type="date" name="li_password" id="li_password" class="form-control">
+                                                    <label for="inv_InvoiceDate" class="control-label">Invoice Date</label>
+                                                    <input type="date" name="inv_InvoiceDate" id="inv_InvoiceDate" class="form-control">
                                                 </div>  
                                                 <div class="col-lg-3">
-                                                    <label for="li_url" class="control-label">Work Order No.</label>
-                                                    <input type="text" name="li_url" id="li_url" class="form-control">
+                                                    <label for="inv_WorkOrderNo" class="control-label">Work Order No.</label>
+                                                    <input type="text" name="inv_WorkOrderNo" id="inv_WorkOrderNo" class="form-control">
                                                 </div>  
                                                 <div class="col-lg-3">
-                                                    <label for="li_url" class="control-label">Sub Party Name</label>
-                                                    <input type="text" name="li_url" id="li_url" class="form-control">
+                                                    <label for="inv_SubPartyName" class="control-label">Sub Party Name</label>
+                                                    <input type="text" name="inv_SubPartyName" id="inv_SubPartyName" class="form-control">
                                                 </div>    
                                                 <div class="col-lg-3">
-                                                    <label for="li_note" class="control-label">Remarks</label>
-                                                    <input type="text" name="li_note" id="li_note" class="form-control">
+                                                    <label for="inv_Remarks" class="control-label">Remarks</label>
+                                                    <input type="text" name="inv_Remarks" id="inv_Remarks" class="form-control">
                                                 </div> 
                                                 <div class="col-lg-3" style="margin-top: 25px;">
                                                     <label for="" class="control-label"></label>
@@ -1174,13 +1174,13 @@
                                         </form>
                                     </div>
 
-                                    <!-- Final Particulars List -->
-                                    <?php
-                                    //echo json_encode($particulars);
-                                    ?>
-                                    <h4 >Particulars</h4>
-                                    <div class="form-group">   
-                                        <div class="col-lg-6">
+                                    <!-- Final Particulars List -->                                    
+                                    
+                                      
+                                    <div class="form-group " style="float: left;">   
+                                        <h4 >Particulars</h4>
+
+                                        <div class="col-lg-12">
                                             <label for="inv_particular" class="control-label">Particulars</label>
                                             <select name="inv_particular" id="inv_particular" class="form-control select2">
                                                 <option value="0" >-- Select Particular --</option>
@@ -1207,9 +1207,123 @@
                                             </select>
                                             <input type="hidden" value="" name="inv_particular_name" id="inv_particular_name">
                                         </div> 
-                                    </div>
+                                    </div>              
+                                    
+                                    
+                                        <div class="form-group " style="float: left;">   
+                                            <h4>Particular Table</h4>
+                                            <div id="invoice_particular_list" class="tab-pane fade in active">
+                                                <table id="invoice_particular_details_table" class="table data-table dataTable" style="width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>SL.No</th>
+                                                        <th>Task Type</th>
+                                                        <th>HSN Code</th>
+                                                        <th>Duration</th>
+                                                        <th>Start Date</th>                                            
+                                                        <th>Amount</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>SL.No</th>
+                                                        <th>Task Type</th>
+                                                        <th>HSN Code</th>
+                                                        <th>Duration</th>
+                                                        <th>Start Date</th>                                            
+                                                        <th>Amount</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </tfoot>                                          
+                                                </table>
+                                            </div>
+                                        </div>
 
                                     
+                                        
+                                    <div class="form-group " style="float: left;"> 
+                                        <form autocomplete="off" id="form_invoice_tax_add" method="post" action="<?=base_url('admin/form-invoice-tax-add')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
+                                            <h4 style="margin-left: 15px;">TAX Calculation</h4>
+                                            <div class="col-lg-3">
+                                                <label for="inv_tax_GrossAmount" class="control-label">Gross Amount</label>
+                                                <input value="0" id="inv_tax_GrossAmount" name="inv_tax_GrossAmount" type="text" placeholder="Gross Amount" class="form-control" readonly="readonly" />
+                                            </div> 
+                                            <div class="col-lg-3">
+                                                <label for="inv_tax_DiscountPercentage" class="control-label">Discount Percentage</label>
+                                                <input value="0" id="inv_tax_DiscountPercentage" name="inv_tax_DiscountPercentage" type="text" placeholder="Discount Percentage" class="form-control" />
+                                            </div> 
+                                            <div class="col-lg-3">
+                                                <label for="inv_tax_DiscountAmount" class="control-label">Discount Amount</label>
+                                                <input value="0" id="inv_tax_DiscountAmount" name="inv_tax_DiscountAmount" type="text" placeholder="Discount Amount" class="form-control" readonly="readonly" />
+                                            </div> 
+                                            <div class="col-lg-3">
+                                                <label for="inv_tax_TaxableAmount" class="control-label">Taxable Amount</label>
+                                                <input value="0" id="inv_tax_TaxableAmount" name="inv_tax_TaxableAmount" type="text" placeholder="Taxable Amount" class="form-control" readonly="readonly" />
+                                            </div> 
+                                            
+                                            <div class="col-lg-3">
+                                                <label for="inv_tax_SGST_Rate" class="control-label">SGST (in %)</label>
+                                                <input value="0" id="inv_tax_SGST_Rate" name="inv_tax_SGST_Rate" type="text" placeholder="SGST(in %)" class="form-control" readonly="readonly" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="inv_tax_SGST_Amount" class="control-label">SGST Amount</label>
+                                                <input value="0" id="inv_tax_SGST_Amount" name="inv_tax_SGST_Amount" type="text" placeholder="SGST Amount" class="form-control" readonly="readonly" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="inv_tax_CGST_Rate" class="control-label">CGST (in %)</label>
+                                                <input value="0" id="inv_tax_CGST_Rate" name="inv_tax_CGST_Rate" type="text" placeholder="CGST (in %)" class="form-control" readonly="readonly" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="inv_tax_CGST_Amount" class="control-label">CGST Amount</label>
+                                                <input value="0" id="inv_tax_CGST_Amount" name="inv_tax_CGST_Amount" type="text" placeholder="CGST Amount" class="form-control" readonly="readonly" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="inv_tax_IGST_Rate" class="control-label">IGST (in %)</label>
+                                                <input value="0" id="inv_tax_IGST_Rate" name="inv_tax_IGST_Rate" type="text" placeholder="IGST (in %)" class="form-control" readonly="readonly" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="inv_tax_IGST_Amount" class="control-label">IGST Amount</label>
+                                                <input value="0" id="inv_tax_IGST_Amount" name="inv_tax_IGST_Amount" type="text" placeholder="IGST Amount" class="form-control" readonly="readonly" />
+                                            </div>
+                                            
+                                            <div class="col-lg-3">
+                                                <label for="inv_tax_NetAmount" class="control-label">Net Amount</label>
+                                                <input value="0" id="inv_tax_NetAmount" name="inv_tax_NetAmount" type="text" placeholder="Net Amount" class="form-control" readonly="readonly" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="inv_tax_TotalTax" class="control-label">Total Tax.</label>
+                                                <input value="0" id="inv_tax_TotalTax" name="inv_tax_TotalTax" type="text" placeholder="Total Tax." class="form-control" readonly="readonly" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="inv_tax_Bank" class="control-label">Bank</label>
+                                                <select name="inv_tax_Bank" id="inv_tax_Bank" class="form-control select2">
+                                                    <option value="0" >-- Select Bank --</option>
+                                                    <option value="1" >HDFC</option>
+                                                    <option value="2" >SBI</option>
+                                                </select>
+                                                <input type="hidden" name="inv_tax_BankName" id="inv_tax_BankName" value="">
+                                            </div> 
+                                            <div class="col-lg-3">
+                                                <label for="inv_tax_ShowStamp" class="control-label">Show Stamp</label>
+                                                <select name="inv_tax_ShowStamp" id="inv_tax_ShowStamp" class="form-control select2">
+                                                    <option value="1" >YES</option>
+                                                    <option value="2" >NO</option>
+                                                </select>
+                                                <input type="hidden" name="tax_ShowStampName" id="tax_ShowStampName" value="">
+                                            </div> 
+                                            <div class="col-lg-3" style="margin-top: 25px;">
+                                                <label for="inv_tax_details_submit" class="control-label"></label>
+                                                <input type="submit" name="inv_tax_details_submit" class="btn btn-success text-center" id="inv_tax_details_submit" value="Update Tax">
+                                                <input type="hidden" name="inv_tax_project_id" id="inv_tax_project_id" value="<?=$project_id?>">
+                                                <input type="hidden" name="tax_inv_obj_id" id="tax_inv_obj_id" value="">
+                                            </div> 
+                                        </form>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -1243,6 +1357,7 @@
                                                     <input type="hidden" name="inv_par_HSNCode" id="inv_par_HSNCode" class="form-control">
                                                     <input type="hidden" name="inv_par_Duration" id="inv_par_Duration" class="form-control">
                                                     <input type="hidden" name="inv_par_StartDate" id="inv_par_StartDate" class="form-control">
+                                                    <input type="hidden" name="inv_obj_id" id="inv_obj_id" class="form-control">
                                                 </div> 
                                                 <div class="col-lg-3" style="margin-top: 25px;">
                                                     <label for="" class="control-label"></label>
@@ -1671,7 +1786,7 @@
                 { "data": "invoiceNo" },
                 { "data": "invoiceDate" },
                 { "data": "grossAmount" },
-                { "data": "billAmounnt" },
+                { "data": "NetAmount" },
                 { "data": "paid" },
                 { "data": "action" },
             ],
@@ -1837,6 +1952,48 @@
             //column initialisation properties
             "columnDefs": [{
                 "targets": [0, 1, 2, 3, 4],
+                "orderable": false,
+            }]
+        });
+    }//end fun
+
+    //Populate Invoice Particular table    
+    function initInvoiceParticularTable($project_id, $inv_obj_id, $tableId){
+        $('#'+$tableId).dataTable().fnClearTable();
+        $('#'+$tableId).dataTable().fnDestroy();
+        
+        $('#'+$tableId).DataTable( {
+            "processing": true,
+            "language": {
+                processing: '<img src="<?=base_url('assets/img/ellipsis.gif')?>"><span class="sr-only">Processing...</span>',
+            },
+            "serverSide": true,
+            "ajax": {
+                "url": "<?=base_url('admin/ajax-inv-parti-details-table-data')?>",
+                "type": "POST",
+                "dataType": "json",
+                data: {
+                    project_id: function () {
+                        return $project_id;
+                    },
+                    inv_obj_id: function () {
+                        return $inv_obj_id;
+                    }
+                },
+            },
+            //will get these values from JSON 'data' variable
+            "columns": [
+                { "data": "slNo" },
+                { "data": "taskType" },
+                { "data": "hsnCode" },
+                { "data": "Duration" },
+                { "data": "startDate" },
+                { "data": "amount" },
+                { "data": "action" },
+            ],
+            //column initialisation properties
+            "columnDefs": [{
+                "targets": [0, 1, 2, 3, 4, 5, 6],
                 "orderable": false,
             }]
         });
@@ -2403,6 +2560,50 @@
     });
     //end TAX Part
 
+    //Start Invoice tax part
+    $("#inv_tax_Bank").change(function(){
+        $tax_BankName = $("#inv_tax_Bank :selected").text();
+        $('#inv_tax_BankName').val($tax_BankName);
+    });
+    $("#inv_tax_ShowStamp").change(function(){
+        $tax_ShowStampName = $("#inv_tax_ShowStamp :selected").text();
+        $('#inv_tax_ShowStampName').val($tax_ShowStampName);
+    });
+    $("#form_invoice_tax_add").validate({        
+        rules: {
+            inv_tax_GrossAmount: {
+                required: true
+            },
+            inv_tax_NetAmount: {
+                required: true
+            },
+            inv_tax_Bank: {
+                required: true
+            }  
+        },
+        messages: {
+
+        }
+    });
+    $('#form_invoice_tax_add').ajaxForm({
+        beforeSubmit: function () {
+            return $("#form_invoice_tax_add").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            obj = JSON.parse(returnData);
+            notification(obj);
+			if(parseInt(obj.update_id) > 0){
+                console.log(JSON.stringify(obj));
+                if(obj.type == 'error'){
+                    console.log('Error from API')
+                }else{
+                    console.log('Document save success')
+                }            	
+			}
+		}
+    });
+    //end Invoice TAX Part
+
     //Edit TAX calculation start
     $("#tax_Bank_e").change(function(){
         $tax_BankName_e = $("#tax_Bank_e :selected").text();
@@ -2747,6 +2948,32 @@
         }        
     });
 
+    //Delete Invoice     
+    $('#invoice_details_table').on('click', '.delete', function(){
+        $project_id = $(this).data('project_id');
+        $inv_obj_id = $(this).data('inv_obj_id');
+
+        if(confirm("Are You Sure? This Process Can\'t be Undone.")){            
+            $.ajax({
+                url: "<?= base_url('admin/del-row-invoice-details/') ?>",
+                dataType: 'json',
+                type: 'POST',
+                data: {project_id: $project_id, inv_obj_id: $inv_obj_id},
+                success: function (returnData) {
+                    console.log(returnData);
+                    $('#invoice_details_table').closest('tr').remove();
+                    notification(returnData);
+                    //refresh table
+                    initInvoiceTable()
+                },
+                error: function (returnData) {
+                    obj = JSON.parse(returnData);
+                    notification(obj);
+                }
+            });
+        }        
+    });
+
     //Delete Particulars     
     $('#tableParticularsAdd').on('click', '.delete', function(){
         $project_id = $(this).data('project_id');
@@ -2887,6 +3114,42 @@
         });
     }//end
 
+
+    //Invoice Tax calculation
+    function calculateInvoiceTax($project_id, $inv_obj_id){
+        $.ajax({
+            url: "<?= base_url('admin/calculate-invoice-tax/') ?>",
+            dataType: 'json',
+            type: 'POST',
+            data: { project_id: $project_id, inv_obj_id: $inv_obj_id },
+            success: function (returnData) {
+                notification(returnData);
+                $tax_obj = returnData.tax_obj;
+                
+                console.log(JSON.stringify(returnData.tax_obj))
+                
+                $('#inv_tax_GrossAmount').val($tax_obj.tax_GrossAmount);
+                $('#inv_tax_DiscountPercentage').val($tax_obj.tax_DiscountPercentage);
+                $('#inv_tax_DiscountAmount').val($tax_obj.tax_DiscountAmount);
+                $('#inv_tax_TaxableAmount').val($tax_obj.tax_TaxableAmount);
+                $('#inv_tax_SGST_Rate').val($tax_obj.tax_SGST_Rate);
+                $('#inv_tax_SGST_Amount').val($tax_obj.tax_SGST_Amount);
+                $('#inv_tax_CGST_Rate').val($tax_obj.tax_CGST_Rate);
+                $('#inv_tax_CGST_Amount').val($tax_obj.tax_CGST_Amount);
+                $('#inv_tax_IGST_Rate').val($tax_obj.tax_IGST_Rate);
+                $('#inv_tax_IGST_Amount').val($tax_obj.tax_IGST_Amount);
+                $('#inv_tax_NetAmount').val($tax_obj.tax_NetAmount);
+                $('#inv_tax_TotalTax').val($tax_obj.tax_TotalTax);  
+                $('#tax_inv_obj_id').val($inv_obj_id);                      
+
+            },
+            error: function (returnData) {
+                obj = JSON.parse(returnData);
+                notification(obj);
+            }
+        });
+    }//end
+
     //TAX calculation for Dicount
     $('#tax_DiscountPercentage_e').blur(function(){
         $tax_GrossAmount_e = $('#tax_GrossAmount_e').val();
@@ -2946,6 +3209,44 @@
         }
     });
 
+    //Add Invoice Basic Info
+    $("#add_invoice_form").validate({        
+        rules: {
+            inv_BillNo: {
+                required: true
+            },
+            inv_BillDate: {
+                required: true
+            },
+            inv_InvoiceDate: {
+                required: true
+            }    
+        },
+        messages: {
+
+        }
+    });
+    $('#add_invoice_form').ajaxForm({
+        beforeSubmit: function () {
+            return $("#add_invoice_form").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            //console.log(returnData);
+            obj = JSON.parse(returnData);
+            notification(obj);
+            if(parseInt(obj.update_id) > 0){
+                $('#inv_obj_id').val(obj.inv_obj_id);
+
+                console.log(JSON.stringify(obj));
+                if(obj.type == 'error'){
+                    console.log('Error from API')
+                }else{
+                    console.log('Login Info save success')
+                }            	
+            }
+        }
+    });
+
     //Add Invoice particular to Table
     $("#add_invoice_parti_form").validate({        
         rules: {
@@ -2973,7 +3274,8 @@
                 $('#li_note').val('');*/
 
                 $('#invoiceModal').modal('hide');
-                initInvoiceParticularTable();
+                initInvoiceParticularTable(obj.project_id, obj.inv_obj_id, 'invoice_particular_details_table');
+                calculateInvoiceTax(obj.project_id, obj.inv_obj_id);
 
                 console.log(JSON.stringify(obj));
                 if(obj.type == 'error'){
@@ -2984,10 +3286,7 @@
 			}
 		}
     });
-
-    function initInvoiceParticularTable(){
-        console.log('initInvoiceParticularTable')
-    }//end fun
+    
     //Invoice Part end
 
     

@@ -50,6 +50,14 @@ class Projects extends My_Controller {
             $this->load->view($data['page'], $data['data']);
         }
     }
+
+    public function print_invoice_details($project_id, $inv_obj_id) {
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->print_invoice_details($project_id,  $inv_obj_id);
+            $this->load->view($data['page'], $data['data']);
+        }
+    }
     
     public function ajax_project_details_table_data() {
         if($this->check_permission() == true) {
@@ -109,6 +117,15 @@ class Projects extends My_Controller {
         if($this->check_permission() == true) {
             $this->load->model('Projects_m');
             $data = $this->Projects_m->ajax_particular_details_table_data();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+    
+    public function ajax_inv_particular_details_table_data() {
+        if($this->check_permission() == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_inv_particular_details_table_data();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -176,6 +193,15 @@ class Projects extends My_Controller {
         if($this->check_permission(array()) == true) {
             $this->load->model('Projects_m');
             $data = $this->Projects_m->form_add_login_info();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
+    public function form_add_invoice_info(){        
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->form_add_invoice_info();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -257,6 +283,15 @@ class Projects extends My_Controller {
         if($this->check_permission(array()) == true) {
             $this->load->model('Projects_m');
             $data = $this->Projects_m->form_tax_add();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
+    public function form_invoice_tax_add(){        
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->form_invoice_tax_add();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -352,6 +387,15 @@ class Projects extends My_Controller {
         }
     }
 
+    public function del_row_invoice_details() {
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->del_row_invoice_details();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
     public function del_row_particular_details() {
         if($this->check_permission(array()) == true) {
             $this->load->model('Projects_m');
@@ -374,6 +418,15 @@ class Projects extends My_Controller {
         if($this->check_permission(array()) == true) {
             $this->load->model('Projects_m');
             $data = $this->Projects_m->calculate_tax();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
+    public function calculate_invoice_tax() {
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->calculate_invoice_tax();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }

@@ -90,10 +90,12 @@
 	$route['admin/ajax-requirementgather-details-table-data'] = 'admin_panel/Projects/ajax_requirementgather_details_table_data';
 	$route['admin/ajax-quotation-details-table-data'] = 'admin_panel/Projects/ajax_quotation_details_table_data';
 	$route['admin/ajax-particular-details-table-data'] = 'admin_panel/Projects/ajax_particular_details_table_data';
+	$route['admin/ajax-inv-parti-details-table-data'] = 'admin_panel/Projects/ajax_inv_particular_details_table_data';
 	$route['admin/ajax-commission-details-table-data'] = 'admin_panel/Projects/ajax_commission_details_table_data';
 	$route['admin/ajax-update-project-document'] = 'admin_panel/Projects/ajax_update_project_document';	
 	$route['admin/form-add-contact'] = 'admin_panel/Projects/form_add_contact';
 	$route['admin/form-add-login-info'] = 'admin_panel/Projects/form_add_login_info';
+	$route['admin/form-add-invoice-info'] = 'admin_panel/Projects/form_add_invoice_info';
 	$route['admin/form-add-invoice-particular-info'] = 'admin_panel/Projects/form_add_invoice_particular_info';
 	$route['admin/form-add-client-details'] = 'admin_panel/Projects/form_add_client_details';
 	$route['admin/form-gather-requirement'] = 'admin_panel/Projects/form_gather_requirement';
@@ -102,6 +104,7 @@
 	$route['admin/form-particular-add'] = 'admin_panel/Projects/form_particular_add';
 	$route['admin/form-particular-edit'] = 'admin_panel/Projects/form_particular_edit';
 	$route['admin/form-tax-add'] = 'admin_panel/Projects/form_tax_add';
+	$route['admin/form-invoice-tax-add'] = 'admin_panel/Projects/form_invoice_tax_add';
 	$route['admin/form-tax-edit'] = 'admin_panel/Projects/form_tax_edit';
 	$route['admin/form-commission-add'] = 'admin_panel/Projects/form_commission_add';
 	$route['admin/form-commission-edit'] = 'admin_panel/Projects/form_commission_edit';
@@ -114,12 +117,15 @@
 	$route['admin/del-row-requirement-details'] = 'admin_panel/Projects/del_row_requirement_details';
 	$route['admin/del-row-project-details'] = 'admin_panel/Projects/del_row_project_details';
 	$route['admin/del-row-quotation-details'] = 'admin_panel/Projects/del_row_quotation_details';
+	$route['admin/del-row-invoice-details'] = 'admin_panel/Projects/del_row_invoice_details';
 	$route['admin/del-row-particular-details'] = 'admin_panel/Projects/del_row_particular_details';
 	$route['admin/del-row-commission-details'] = 'admin_panel/Projects/del_row_commission_details';
 	$route['admin/fetch-quotation-details-on-pk'] = 'admin_panel/Projects/fetch_quotation_details_on_pk';
 	$route['admin/calculate-tax'] = 'admin_panel/Projects/calculate_tax';
+	$route['admin/calculate-invoice-tax'] = 'admin_panel/Projects/calculate_invoice_tax';
 	//print
 	$route['admin/print-quotation/(:num)/(:num)'] = 'admin_panel/Projects/print_quotation_details/$1/$2';
+	$route['admin/print-invoice/(:num)/(:num)'] = 'admin_panel/Projects/print_invoice_details/$1/$2';
 	//'Admin_dashboard/Admin_print/cbill';
 
 		//delete

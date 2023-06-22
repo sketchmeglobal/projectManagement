@@ -103,16 +103,21 @@ class Projects_m extends CI_Model {
         $data['other_client_details'] = $other_client_details;
 
         //Invoice particular
-        $quotationDetail = $project_description->quotationDetail;
         $particulars = array();
-        if(sizeof($quotationDetail) > 0){
-            for($i = 0; $i < sizeof($quotationDetail); $i++){
-                if($quotationDetail[$i]->bi_finalQuote == '1'){
-                    $particulars = $quotationDetail[$i]->particulars;
-                }//end if
-            }//end for
+        if(isset($project_description->quotationDetail)){
+            $quotationDetail = $project_description->quotationDetail;
+            
+            if(sizeof($quotationDetail) > 0){
+                for($i = 0; $i < sizeof($quotationDetail); $i++){
+                    if(isset($quotationDetail[$i]->bi_finalQuote)){
+                        if($quotationDetail[$i]->bi_finalQuote == '1'){
+                            $particulars = $quotationDetail[$i]->particulars;
+                        }//end if
+                    }
+                }//end for
+            }//end if
         }//end if
-        $data['particulars'] = $particulars;
+        $data['particulars'] = $particulars; 
 
 
         return array('page'=>'projects/project_detail_v', 'data'=>$data);
@@ -316,6 +321,205 @@ class Projects_m extends CI_Model {
 
         return array('page' => 'projects/quotation_print', 'data' => $data);
     }
+
+    //Print Invoice
+    public function print_invoice_details($project_id, $inv_obj_id) {
+        $usertype = $this->session->usertype;
+        $user_id = $this->session->user_id;
+        $project_description = array();
+        $invoice_details = array();
+        $particulars = array();
+        $quotation = '';
+
+        if($project_id > 0){
+            $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
+            //print_r($result);
+
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1);
+                $invoice_details = $project_description->invoice_details;
+            }
+        }
+
+        if(sizeof($invoice_details) > 0){
+            for($i = 0; $i < sizeof($invoice_details); $i++){
+                if($invoice_details[$i]->inv_obj_id == $inv_obj_id){
+                    $invoice_detail = $invoice_details[$i];
+                    $particulars = $invoice_detail->inv_particulars;
+                }
+            }
+        }
+
+        //Header details/Client Details
+        if(isset($project_description->client)){
+            $client = $project_description->client;
+            $account_name = $client->account_name;
+            $account_address1 = $client->account_address1;
+            $account_address2 = $client->account_address2;
+            $account_gst_no = $client->account_gst_no;
+            $account_telephone = $client->account_telephone;
+            $cbill_payment_mode = $client->cbill_payment_mode;
+            $important_note = $client->important_note;
+            $other_client_details = $client->other_client_details;
+        }else{
+            $account_name = '';
+            $account_address1 = '';
+            $account_address2 = '';
+            $account_gst_no = '';
+            $account_telephone = '';
+            $cbill_payment_mode = '';
+            $important_note = '';
+            $other_client_details = '';
+        }
+
+        $cbill_header_details = array();
+        $cbill_header_detail = new stdClass();
+        $cbill_header_detail->account_name = $account_name;
+        $cbill_header_detail->account_address1 = $account_address1;
+        $cbill_header_detail->account_address2 = $account_address2;
+        $cbill_header_detail->account_gst_no = $account_gst_no;
+        $cbill_header_detail->account_telephone = $account_telephone;
+        $cbill_header_detail->cbill_payment_mode = $cbill_payment_mode;
+        $cbill_header_detail->important_note = $important_note;
+        $cbill_header_detail->other_client_details =  $other_client_details;
+
+        array_push($cbill_header_details, $cbill_header_detail);
+
+        //Company Details start
+        $company_name = '';
+        $address1 =  '';
+        $GST =  '';
+        $phone =  '';
+        $email =  '';
+        $website =  '';
+        $PAN =  '';
+        $contact_person =  '';
+        $mobile1 =  '';
+        $mobile2 =  '';
+        $alternate_email =  '';
+        $company_subtitle =  '';
+        $company_detail =  '';
+
+        $result_u = $this->db->get_where('user_details', array('user_id' => $user_id))->result();
+        //print_r($result_u);
+
+        //Bank details & company details
+        if(count($result_u) > 0){
+            $company_details1 = $result_u[0]->company_details;
+            $company_details = json_decode($company_details1);
+
+            $bank_details1 = $result_u[0]->sbi_bank_details;
+            $bank_details2 = $result_u[0]->hdfc_bank_details;
+
+            if(isset($quotation->tax_BankName)){
+                if($quotation->tax_BankName == "SBI"){
+                    $bank_details = json_decode($bank_details1);
+                }else if($quotation->tax_BankName == "HDFC"){
+                    $bank_details = json_decode($bank_details2);
+                }else{
+                    $bank_details = '';
+                }
+            }else{
+                $bank_details = '';
+            }
+
+            $company_name = $company_details->company_name;
+            $address1 = $company_details->address1;
+            $GST = $company_details->GST;
+            $phone = $company_details->phone;
+            $email = $company_details->email;
+            $website = $company_details->website;
+            $PAN = $company_details->PAN;
+            $contact_person = $company_details->contact_person;
+            $mobile1 = $company_details->mobile1;
+            $mobile2 = $company_details->mobile2;
+            $alternate_email = $company_details->alternate_email;
+            $company_subtitle = $company_details->company_subtitle;
+            $company_detail = $company_details->company_detail;
+        }
+
+        $company_details = array();        
+        $company_detail = new stdClass();
+        
+        $company_detail->company_name = $company_name;
+        $company_detail->address1 = $address1;
+        $company_detail->GST = $GST;
+        $company_detail->phone = $phone;
+        $company_detail->email = $email;
+        $company_detail->website = $website;
+        $company_detail->PAN = $PAN;
+        $company_detail->contact_person = $contact_person;
+        $company_detail->mobile1 = $mobile1;
+        $company_detail->mobile2 = $mobile2;
+        $company_detail->alternate_email = $alternate_email;
+        $company_detail->company_subtitle = "[Think - Design - Develop - Maintain]";
+        $company_detail->company_detail = "[Website Designing - Website Development - Software Development - Android Apps - System Maintenance - Domain Name - Server Space]";
+        
+        array_push($company_details, $company_detail);
+        
+        //Banking Details
+        $banking_details = array();
+        $banking_detail = new stdClass();
+        if($bank_details != ''){
+            $banking_detail->bank_name = $bank_details->bank_name;
+            $banking_detail->bank_address = $bank_details->bank_address;
+            $banking_detail->bank_account_no = $bank_details->bank_account_no;
+            $banking_detail->bank_ifs_code = $bank_details->bank_ifs_code;
+            $banking_detail->bank_micr_code = $bank_details->bank_micr_code;
+            $banking_detail->bank_branch_code = $bank_details->bank_branch_code;
+        }else{
+            $banking_detail->bank_name = '';
+            $banking_detail->bank_address = '';
+            $banking_detail->bank_account_no = '';
+            $banking_detail->bank_ifs_code = '';
+            $banking_detail->bank_micr_code = '';
+            $banking_detail->bank_branch_code = '';
+        }
+
+        array_push($banking_details, $banking_detail);
+
+        //Tax Calculation
+        $taxes = array();
+        $tax = new stdClass();
+        if(isset($invoice_detail->tax_GrossAmount)){
+            $tax->tax_GrossAmount = $invoice_detail->tax_GrossAmount;
+            $tax->tax_DiscountPercentage = $invoice_detail->tax_DiscountPercentage;
+            $tax->tax_DiscountAmount = $invoice_detail->tax_DiscountAmount;
+            $tax->tax_CGST_Rate = $invoice_detail->tax_CGST_Rate;
+            $tax->tax_CGST_Amount = $invoice_detail->tax_CGST_Amount;
+            $tax->tax_SGST_Rate = $invoice_detail->tax_SGST_Rate;
+            $tax->tax_SGST_Amount = $invoice_detail->tax_SGST_Amount;
+            $tax->tax_IGST_Rate = $invoice_detail->tax_IGST_Rate;
+            $tax->tax_IGST_Amount = $invoice_detail->tax_IGST_Amount;
+        }else{
+            $tax->tax_GrossAmount = 0.00;
+            $tax->tax_DiscountPercentage = 0.00;
+            $tax->tax_DiscountAmount = 0.00;
+            $tax->tax_CGST_Rate = 0.00;
+            $tax->tax_CGST_Amount = 0.00;
+            $tax->tax_SGST_Rate = 0.00;
+            $tax->tax_SGST_Amount = 0.00;
+            $tax->tax_IGST_Rate = 0.00;
+            $tax->tax_IGST_Amount = 0.00;
+        }
+
+        array_push($taxes, $tax);
+
+
+
+        $data['title'] = 'Print Invoice';
+        $data['menu'] = 'Offers';
+        $data['project_id'] = $project_id;   
+        $data['company_details'] = $company_details; 
+        $data['cbill_header_details'] = $cbill_header_details; 
+        $data['banking_details'] = $banking_details;
+        $data['quotation'] = $invoice_detail;
+        $data['particulars'] = $particulars;
+        $data['taxes'] = $taxes;
+
+        return array('page' => 'projects/invoice_print', 'data' => $data);
+    }//end print Invoice
 
     public function ajax_update_project_document(){
         $project_id = $this->input->post('project_id');
@@ -529,31 +733,91 @@ class Projects_m extends CI_Model {
     }//end login info
     
 
-    //Invoice Info part
-    public function form_add_invoice_particular_info(){  
+    //Invoice Basic Info Add
+    public function form_add_invoice_info(){  
         $daya = array();
         $status = true;
 
-        $project_id = $this->input->post('inv_project_id');
+        $created_by = $this->session->user_id;
+
+        $project_id = $this->input->post('invoice_project_id');
 
         if($project_id > 0){
+            $inv_BillNo = $this->input->post('inv_BillNo');
+            $inv_BillDate = $this->input->post('inv_BillDate');
+            $inv_InvoiceDate = $this->input->post('inv_InvoiceDate');
+            $inv_WorkOrderNo = $this->input->post('inv_WorkOrderNo');
+            $inv_SubPartyName = $this->input->post('inv_SubPartyName');
+            $inv_Remarks = $this->input->post('inv_Remarks');
+
+            $inv_obj_id = rand(1000, 9999);
+            $invoice_details = array();
+
+            $inv_obj = new stdClass();
+            $inv_obj->inv_obj_id = $inv_obj_id;
+            $inv_obj->inv_BillNo = $inv_BillNo;
+            $inv_obj->inv_BillDate = $inv_BillDate;
+            $inv_obj->inv_InvoiceDate = $inv_InvoiceDate;
+            $inv_obj->inv_WorkOrderNo = $inv_WorkOrderNo;
+            $inv_obj->inv_SubPartyName = $inv_SubPartyName;
+            $inv_obj->inv_Remarks = $inv_Remarks;
+
+            //check existing data
+            $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1); 
+                if(isset($project_description->invoice_details)){
+                    $invoice_details = $project_description->invoice_details;
+                }
+            }
+                    
+            array_push($invoice_details, $inv_obj);
+            $project_description->invoice_details = $invoice_details;
+
+            $updateArray = array(
+                'project_description' => json_encode($project_description)
+            );
+
+            $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+            $data['file_updated'] = $val;  
+            $data['inv_obj_id'] = $inv_obj_id; 
+        }   
+        
+        $data['type'] = 'success';
+        $data['msg'] = 'Invoice Info added Properly';
+        $data['title'] = 'Invoice';
+        $data['update_id'] = $project_id;
+        return $data;
+
+    }//end invoice info
+    
+
+    //Invoice Info part
+    public function form_add_invoice_particular_info(){  
+        $daya = array();
+        $invoice_details = array();
+        $status = true;
+        $created_by = $this->session->user_id;
+
+        $project_id = $this->input->post('inv_project_id');
+        $inv_obj_id = $this->input->post('inv_obj_id');
+
+        if($project_id > 0 && $inv_obj_id > 0){
             $inv_Amount = $this->input->post('inv_Amount');
-            $inv_parti_obj = $this->input->post('inv_parti_obj');
+            $quote_parti_obj = $this->input->post('inv_parti_obj');
             $inv_par_TaskType = $this->input->post('inv_par_TaskType');
             $inv_par_TaskType_name = $this->input->post('inv_par_TaskType_name');
             $inv_par_HSNCode = $this->input->post('inv_par_HSNCode');
             $inv_par_Duration = $this->input->post('inv_par_Duration');
             $inv_par_StartDate = $this->input->post('inv_par_StartDate');
-            $inv_project_id = $this->input->post('inv_project_id');
 
-            $created_by = $this->session->user_id;
-            $inv_obj_id = rand(1000, 9999);
-            $inv_parti_obj_id = rand(1000, 9999);
-            $inv_particulars = array();
+            
+            $parti_obj_id = rand(1000, 9999);
 
             $inv_parti_obj = new stdClass();
-            $inv_parti_obj->inv_parti_obj_id = $inv_parti_obj_id;
-            $inv_parti_obj->parti_obj = $inv_parti_obj;
+            $inv_parti_obj->parti_obj_id = $parti_obj_id;
+            $inv_parti_obj->quote_parti_obj = $quote_parti_obj;
             $inv_parti_obj->inv_Amount = $inv_Amount;
             $inv_parti_obj->inv_par_TaskType = $inv_par_TaskType;
             $inv_parti_obj->inv_par_TaskType_name = $inv_par_TaskType_name;
@@ -566,26 +830,46 @@ class Projects_m extends CI_Model {
             if(count($result) > 0){
                 $project_description1 = $result[0]->project_description;
                 $project_description = json_decode($project_description1); 
-                if(isset($project_description->inv_particulars)){
-                    $inv_particulars = $project_description->inv_particulars;
+                if(isset($project_description->invoice_details)){
+                    $invoice_details = $project_description->invoice_details;
                 }
             }
-                    
-            array_push($inv_particulars, $inv_parti_obj);
-            $project_description->inv_particulars = $inv_particulars;
+
+            //print_r($invoice_details);
+            
+
+            if(sizeof($invoice_details) > 0){
+                for($i = 0; $i < sizeof($invoice_details); $i++){
+                    if($invoice_details[$i]->inv_obj_id == $inv_obj_id){
+                        if(isset($invoice_details[$i]->inv_particulars)){
+                            $inv_particulars = $invoice_details[$i]->inv_particulars;
+                        }else{
+                            $invoice_details[$i]->inv_particulars = array();
+                            $inv_particulars = array();
+                        }
+                        array_push($inv_particulars, $inv_parti_obj);                        
+                        $invoice_details[$i]->inv_particulars = $inv_particulars;
+                    }//end if
+                }//end for
+            }//end if
+            
+           
+            $project_description->invoice_details = $invoice_details;
 
             $updateArray = array(
                 'project_description' => json_encode($project_description)
             );
 
-            //$val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
-            //$data['file_updated'] = $val;  
+            $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+            $data['file_updated'] = $val;  
         }   
         
         $data['type'] = 'success';
-        $data['msg'] = 'Invoice Info added Properly';
+        $data['msg'] = 'Invoice Particular added Properly';
         $data['title'] = 'Invoice';
         $data['update_id'] = $project_id;
+        $data['project_id'] = $project_id;
+        $data['inv_obj_id'] = $inv_obj_id;
         return $data;
 
     }//end invoice info
@@ -886,6 +1170,47 @@ class Projects_m extends CI_Model {
             $data['title'] = 'Deleted!';
             $data['type'] = 'success';
             $data['msg'] = 'Quotatiom Deleted Successfully';
+        }
+        return $data;        
+    }//end fun
+
+
+    //Invoice list delete
+    public function del_row_invoice_details(){
+        $project_id = $this->input->post('project_id');
+        $inv_obj_id = $this->input->post('inv_obj_id');
+        $status = true;
+        
+        if($inv_obj_id > 0){
+            //check existing data
+            $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1);            
+                $invoice_details = $project_description->invoice_details;
+                $newInvoice_details = array();
+
+                for($i = 0; $i < sizeof($invoice_details); $i++){ 
+                    if($invoice_details[$i]->inv_obj_id != $inv_obj_id){
+                        array_push($newInvoice_details, $invoice_details[$i]);
+                    }
+                }//end for
+            }//end if
+            
+            $project_description->invoice_details = $newInvoice_details;
+
+            $updateArray = array(
+                'project_description' => json_encode($project_description)
+            );
+
+            $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+            $data['file_updated'] = $val;   
+        }   
+
+        if ($status == true) {
+            $data['title'] = 'Invoice!';
+            $data['type'] = 'success';
+            $data['msg'] = 'Invoice Deleted Successfully';
         }
         return $data;        
     }//end fun
@@ -1432,6 +1757,79 @@ class Projects_m extends CI_Model {
     }
     //end Tax add
     
+    //Invoice TAX Add portion
+    public function form_invoice_tax_add(){  
+        $daya = array();
+        $status = true;
+
+        $project_id = $this->input->post('inv_tax_project_id'); 
+        $inv_obj_id = $this->input->post('tax_inv_obj_id'); 
+
+        $tax_GrossAmount = $this->input->post('inv_tax_GrossAmount'); 
+        $tax_DiscountPercentage = $this->input->post('inv_tax_DiscountPercentage'); 
+        $tax_DiscountAmount = $this->input->post('inv_tax_DiscountAmount');      
+        $tax_TaxableAmount = $this->input->post('inv_tax_TaxableAmount'); 
+        $tax_SGST_Rate = $this->input->post('inv_tax_SGST_Rate'); 
+        $tax_SGST_Amount = $this->input->post('inv_tax_SGST_Amount'); 
+        $tax_CGST_Rate = $this->input->post('inv_tax_CGST_Rate'); 
+        $tax_CGST_Amount = $this->input->post('inv_tax_CGST_Amount'); 
+        $tax_IGST_Rate = $this->input->post('inv_tax_IGST_Rate'); 
+        $tax_IGST_Amount = $this->input->post('inv_tax_IGST_Amount'); 
+        $tax_NetAmount = $this->input->post('inv_tax_NetAmount'); 
+        $tax_TotalTax = $this->input->post('inv_tax_TotalTax'); 
+        $tax_Bank = $this->input->post('inv_tax_Bank'); 
+        $tax_BankName = $this->input->post('inv_tax_BankName'); 
+        $tax_ShowStamp = $this->input->post('inv_tax_ShowStamp'); 
+        $tax_ShowStampName = $this->input->post('inv_tax_ShowStampName'); 
+        
+
+        //check existing data
+        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1); 
+            $invoice_details = $project_description->invoice_details;          
+            
+        }
+
+        for($i = 0; $i < sizeof($invoice_details); $i++){
+            if($invoice_details[$i]->inv_obj_id == $inv_obj_id){
+                $invoice_details[$i]->tax_GrossAmount = $tax_GrossAmount;
+                $invoice_details[$i]->tax_DiscountPercentage = $tax_DiscountPercentage;
+                $invoice_details[$i]->tax_DiscountAmount = $tax_DiscountAmount;
+                $invoice_details[$i]->tax_TaxableAmount = $tax_TaxableAmount;
+                $invoice_details[$i]->tax_SGST_Rate = $tax_SGST_Rate;
+                $invoice_details[$i]->tax_SGST_Amount = $tax_SGST_Amount;
+                $invoice_details[$i]->tax_CGST_Rate = $tax_CGST_Rate;
+                $invoice_details[$i]->tax_CGST_Amount = $tax_CGST_Amount;
+                $invoice_details[$i]->tax_IGST_Rate = $tax_IGST_Rate;
+                $invoice_details[$i]->tax_IGST_Amount = $tax_IGST_Amount;
+                $invoice_details[$i]->tax_NetAmount = $tax_NetAmount;
+                $invoice_details[$i]->tax_TotalTax = $tax_TotalTax;
+                $invoice_details[$i]->tax_Bank = $tax_Bank;
+                $invoice_details[$i]->tax_BankName = $tax_BankName;
+                $invoice_details[$i]->tax_ShowStamp = $tax_ShowStamp;
+                $invoice_details[$i]->tax_ShowStampName = $tax_ShowStampName;
+            }
+        }//end for
+
+        $project_description->invoice_details = $invoice_details;    
+
+        $updateArray = array(
+            'project_description' => json_encode($project_description)
+        );
+
+        $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+        $data['db_updated'] = $val;
+        
+        $data['type'] = 'success';
+        $data['msg'] = 'TAX Updated Properly';
+        $data['title'] = 'TAX Calculation';
+        return $data;
+
+    }
+    //end Invoice Tax add
+    
     //TAX Edit portion astrt
     public function form_tax_edit(){  
         $daya = array();
@@ -1837,6 +2235,111 @@ class Projects_m extends CI_Model {
         }
         return $data;        
     }//end fun
+
+
+    //Tax Calculation for Invoice
+    public function calculate_invoice_tax(){
+        $project_id = $this->input->post('project_id');
+        $inv_obj_id = $this->input->post('inv_obj_id');
+        $account_gst_no = '';
+
+        $status = true;
+        $commissionsNew = array();
+
+        $tax_GrossAmount = 0;
+        $tax_DiscountPercentage = 0;
+        $tax_DiscountAmount = 0;
+        $tax_TaxableAmount = 0;
+        $tax_SGST_Rate = 0;
+        $tax_SGST_Amount = 0;
+        $tax_CGST_Rate = 0;
+        $tax_CGST_Amount = 0;
+        $tax_IGST_Rate = 0;
+        $tax_IGST_Amount = 0;
+        $tax_NetAmount = 0;
+        $tax_TotalTax = 0;
+        
+        if($inv_obj_id > 0){   
+            //check existing data
+            $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1); 
+                $invoice_details = $project_description->invoice_details;
+
+                for($i = 0; $i < sizeof($invoice_details); $i++){
+                    if($invoice_details[$i]->inv_obj_id == $inv_obj_id){
+                        if(isset($invoice_details[$i]->inv_particulars)){
+                            $particulars = $invoice_details[$i]->inv_particulars;
+                        }
+
+                    }//end if
+                }//end for
+
+                if(isset($project_description->client->account_gst_no)){
+                    $account_gst_no = $project_description->client->account_gst_no;
+                    $first_two = substr($account_gst_no, 0, 2);
+
+                    if($first_two == "19"){
+                        $tax_CGST_Rate = 9;
+                        $tax_IGST_Rate = 0;
+                        $tax_SGST_Rate = 9;
+                    }else{
+                        $tax_CGST_Rate = 0;
+                        $tax_IGST_Rate = 18;
+                        $tax_SGST_Rate = 0;
+                    }//end
+                }
+
+                for($j = 0; $j < sizeof($particulars); $j++){                      
+                    $tax_GrossAmount = $tax_GrossAmount + $particulars[$j]->inv_Amount;                      
+                    $tempTotalTax = 0;    
+                    $tempAmount = 0;
+
+                    $tax_TaxableAmount = $tax_TaxableAmount + $particulars[$j]->inv_Amount;
+                    $tempAmount = $particulars[$j]->inv_Amount;
+
+                    $tempCGST_Amount = $tempAmount * $tax_CGST_Rate * 0.01;
+                    $tempIGST_Amount = $tempAmount * $tax_IGST_Rate * 0.01;
+                    $tempSGST_Amount = $tempAmount * $tax_SGST_Rate * 0.01;
+
+                    $tax_CGST_Amount = $tax_CGST_Amount + $tempCGST_Amount;
+                    $tax_IGST_Amount = $tax_IGST_Amount + $tempIGST_Amount;
+                    $tax_SGST_Amount = $tax_SGST_Amount + $tempSGST_Amount;
+                    
+                }//end for
+                
+                $tax_TotalTax = $tax_CGST_Amount + $tax_IGST_Amount + $tax_SGST_Amount;
+                
+                $tax_NetAmount = $tax_GrossAmount + $tax_TotalTax;
+
+                $tax_obj = new stdClass();
+                $tax_obj->tax_GrossAmount = $tax_GrossAmount;
+                $tax_obj->tax_DiscountPercentage = $tax_DiscountPercentage;
+                $tax_obj->tax_DiscountAmount = $tax_DiscountAmount;
+                $tax_obj->tax_TaxableAmount = $tax_TaxableAmount;
+                $tax_obj->tax_SGST_Rate = $tax_SGST_Rate;
+                $tax_obj->tax_SGST_Amount = $tax_SGST_Amount;
+                $tax_obj->tax_CGST_Rate = $tax_CGST_Rate;
+                $tax_obj->tax_CGST_Amount = $tax_CGST_Amount;
+                $tax_obj->tax_IGST_Rate = $tax_IGST_Rate;
+                $tax_obj->tax_IGST_Amount = $tax_IGST_Amount;
+                $tax_obj->tax_NetAmount = $tax_NetAmount;
+                $tax_obj->tax_TotalTax = $tax_TotalTax;
+
+
+            }//end if
+             
+        }//edn if   
+
+        if ($status == true) {
+            $data['title'] = 'Calculated!';
+            $data['type'] = 'success';
+            $data['msg'] = 'Tax Calculated';
+            $data['tax_obj'] = $tax_obj;
+        }
+        return $data;        
+    }//end fun
      
 
     //Contact Details
@@ -1883,7 +2386,7 @@ class Projects_m extends CI_Model {
     public function ajax_invoice_details_table_data() {     
         $project_id = $this->input->post('project_id');
         $data = array();
-        $logins = array();
+        $invoice_details = array();
 
         $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
         //print_r($result);
@@ -1891,22 +2394,38 @@ class Projects_m extends CI_Model {
         if(count($result) > 0){
             $project_description1 = $result[0]->project_description;
             $project_description = json_decode($project_description1);
-            if(isset($project_description->logins)){
-                $logins = $project_description->logins;
+            
+            if(isset($project_description->invoice_details)){
+                $invoice_details = $project_description->invoice_details;
             }
         }
 
-        if(sizeof($logins) > 0){
+        $partyName = $project_description->client->account_name;
+        $paid = 'Pending';
+
+        if(sizeof($invoice_details) > 0){
             $slno = 1;
-            foreach($logins as $key => $value){
+            foreach($invoice_details as $key => $value){
+                if(isset($value->tax_GrossAmount)){
+                    $tax_GrossAmount = $value->tax_GrossAmount;
+                }else{
+                    $tax_GrossAmount = 0;
+                }
+                if(isset($value->tax_NetAmount)){
+                    $tax_NetAmount = $value->tax_NetAmount;
+                }else{
+                    $tax_NetAmount = 0;
+                }
+
                 $nestedData['sl_no'] = $slno;
-                $nestedData['partyName'] = $slno;
-                $nestedData['invoiceNo'] = $slno;
-                $nestedData['invoiceDate'] = $slno;
-                $nestedData['grossAmount'] = $slno;
-                $nestedData['billAmounnt'] = $slno;
-                $nestedData['paid'] = $slno;
-                $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" data-login_obj_id="'.$value->login_obj_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+                $nestedData['partyName'] = $partyName;
+                $nestedData['invoiceNo'] = $value->inv_BillNo;
+                $nestedData['invoiceDate'] = date('d-m-Y', strtotime($value->inv_InvoiceDate));
+                $nestedData['grossAmount'] = number_format($tax_GrossAmount, 2);
+                $nestedData['NetAmount'] = number_format($tax_NetAmount, 2);
+                $nestedData['paid'] = $paid;
+                $nestedData['action'] = '<a href="'. base_url('admin/print-invoice/'.$project_id.'/'.$value->inv_obj_id).'" target="_blank" data-project_id="'.$project_id.'" class="btn bg-yellow print_invoice"><i class="fa fa-eye"></i> View</a>
+                <a href="javascript:void(0)" data-project_id="'.$project_id.'" data-inv_obj_id="'.$value->inv_obj_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
                 array_push($data, $nestedData);
                 $slno++;
@@ -2132,6 +2651,73 @@ class Projects_m extends CI_Model {
                 $nestedData['amount'] = $par_Amount;
                 $nestedData['taxable'] = ($par_Taxable == 1) ? 'Yes' : 'No';
                 $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" data-bi_obj="'.$bi_obj.'" data-parti_obj="'.$parti_obj.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+
+                $counter++;
+                array_push($data, $nestedData);
+            }//end foreach
+        }//end if
+
+
+
+        $json_data = array(
+            "recordsTotal"    => sizeof($data),
+            "recordsFiltered" => sizeof($data),
+            "data"            => $data
+        );       
+        
+        return $json_data;
+    } 
+
+    //Invoice Particular table data
+    public function ajax_inv_particular_details_table_data() {       
+        $project_id = $this->input->post('project_id');      
+        $inv_obj_id = $this->input->post('inv_obj_id');
+        $data = array();
+        $particulars = array();
+        $invoice_details = array();
+
+        $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
+        //print_r($result);
+
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1);
+            $invoice_details = $project_description->invoice_details;
+        }
+
+        if(sizeof($invoice_details) > 0){
+            $inv_obj_id_new = 0;
+            foreach($invoice_details as $key => $value){
+                $inv_obj_id_new = $value->inv_obj_id;
+
+                if($inv_obj_id == $inv_obj_id_new){
+                    if(isset($value->inv_particulars)){
+                        $particulars = $value->inv_particulars;
+                    }
+                    break;
+                }//end if
+            }//end foreach
+        }//end if
+
+        if(sizeof($particulars) > 0){
+            $counter = 1;
+            foreach($particulars as $key => $value){
+                $parti_obj_id = $value->parti_obj_id;
+                $quote_parti_obj = $value->quote_parti_obj;
+                $inv_Amount = $value->inv_Amount;
+                $inv_par_TaskType = $value->inv_par_TaskType;
+                $inv_par_TaskType_name = $value->inv_par_TaskType_name;
+                $inv_par_HSNCode = $value->inv_par_HSNCode;
+                $inv_par_Duration = $value->inv_par_Duration;
+                $inv_par_StartDate = $value->inv_par_StartDate;
+
+                $nestedData['slNo'] = $counter;
+                $nestedData['taskType'] = $inv_par_TaskType_name;
+                $nestedData['hsnCode'] = $inv_par_HSNCode;
+                $nestedData['Duration'] = $inv_par_Duration;
+                $nestedData['startDate'] = $inv_par_StartDate;
+                $nestedData['amount'] = $inv_Amount;
+                $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" data-inv_obj_id="'.$inv_obj_id.'" data-parti_obj_id="'.$parti_obj_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
                 $counter++;
                 array_push($data, $nestedData);
