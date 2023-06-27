@@ -47,24 +47,47 @@
 
 	// OFFER COMMENTS
 
-	$route['admin/offer-comments'] = 'admin_panel/Offer/offer_comments';
+	$route['admin/offer-comments'] = 'admin_panel/Offer/offer_comments';*/
 
+	//EMPLOYEE MANAGEMENT
+	//list
+	$route['admin/employee-management'] = 'admin_panel/Employee/employee_managemnt';
+	$route['admin/ajax-employee-table-data'] = 'admin_panel/Employee/ajax_employee_table_data';
+
+	//add employee
+	$route['admin/add-employee'] = 'admin_panel/Employee/add_employee';	
+	$route['admin/form-add-employee'] = 'admin_panel/Employee/form_add_employee';		
+
+	//edit
+	$route['admin/edit-employee/(:num)'] = 'admin_panel/Employee/edit_employee/$1';	
+ 	$route['admin/form-edit-employee'] = 'admin_panel/Employee/form_edit_employee';
+
+	 //EMPLOYEE SALARY
+	 //list
+	 $route['admin/employee-salary'] = 'admin_panel/Employeesalary/employee_salary';
+	 $route['admin/ajax-employee-salary-table-data'] = 'admin_panel/Employeesalary/ajax_employee_salary_table_data';
+
+	 //add salary
+	 $route['admin/add-salary'] = 'admin_panel/Employeesalary/add_salary';	
+	 $route['admin/form-add-employee'] = 'admin_panel/Employeesalary/form_add_salary';		
+
+	/*******
 	// USER MANAGEMENT
-
 	//list
 	$route['admin/user-management'] = 'admin_panel/User/user_management';
 	$route['admin/ajax-user-table-data'] = 'admin_panel/User/ajax_user_table_data';
 
-		//add user
+	//add user
 	$route['admin/add-user'] = 'admin_panel/User/add_user';	
 	$route['admin/ajax-unique-username'] = 'admin_panel/User/ajax_unique_username';	
 	$route['admin/acc_master-on-usertype'] = 'admin_panel/User/acc_master_on_usertype';		
 	$route['admin/form-add-user'] = 'admin_panel/User/form_add_user';	
 
-		//edit
+	//edit
 	$route['admin/edit-user/(:num)'] = 'admin_panel/User/edit_user/$1';	
  	$route['admin/form-edit-user'] = 'admin_panel/User/form_edit_user';
- 	$route['admin/ajax-unique-username-edit'] = 'admin_panel/User/ajax_unique_username_edit';*/
+ 	$route['admin/ajax-unique-username-edit'] = 'admin_panel/User/ajax_unique_username_edit';
+***********/
 
 	//For Document manager types user START
 	$route['admin/my-documents/(:num)'] = 'admin_panel/Documents/my_documents/$1';
@@ -73,8 +96,7 @@
 	$route['admin/form-add-document'] = 'admin_panel/Documents/form_add_document';
 	$route['admin/ajax-delete-document'] = 'admin_panel/Documents/ajax_delete_document';
 	$route['admin/ajax-share-document'] = 'admin_panel/Documents/ajax_share_document';
-	$route['admin/ajax-edit-document'] = 'admin_panel/Documents/ajax_edit_document';
-	
+	$route['admin/ajax-edit-document'] = 'admin_panel/Documents/ajax_edit_document';	
 	//Share Document
 	$route['admin/shared-with-me/(:num)'] = 'admin_panel/SharedWithMe/shared_with_me/$1';
 	//For Document manager types user END
