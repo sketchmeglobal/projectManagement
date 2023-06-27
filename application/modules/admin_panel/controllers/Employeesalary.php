@@ -112,10 +112,10 @@ class Employeesalary extends My_Controller {
         }
     }
 
-    public function edit_employee($emp_id){        
+    public function edit_salary($salary_id){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Employeesalary_m');
-            $data = $this->Employeesalary_m->edit_employee($emp_id);
+            $data = $this->Employeesalary_m->edit_salary($salary_id);
             $this->load->view($data['page'], $data['data']);
         }
     }
@@ -131,10 +131,10 @@ class Employeesalary extends My_Controller {
 
     }
 
-    public function form_edit_employee(){        
+    public function form_edit_salary(){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Employeesalary_m');
-            $data = $this->Employeesalary_m->form_edit_employee();
+            $data = $this->Employeesalary_m->form_edit_salary();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }

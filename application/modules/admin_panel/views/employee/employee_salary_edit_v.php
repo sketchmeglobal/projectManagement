@@ -45,87 +45,196 @@
                 <div class="col-lg-12">
                     <section class="panel">
                         <div class="panel-body">
-                            <form autocomplete="off" id="form_edit_employee" method="post" action="<?=base_url('admin/form-edit-employee')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
+                        <?php
+                            //echo json_encode($salary_details);
+                            $all_allowance = json_decode($salary_details[0]->all_allowance);
+                            $all_deduction = json_decode($salary_details[0]->all_deduction);
 
+                            //echo 'emp_name: '. $salary_details[0]->emp_name;
+                        ?>    
+                        
+                        <form autocomplete="off" id="form_edit_salary" method="post" action="<?=base_url('admin/form-edit-salary')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
+                                <h4>Allowance</h4>
                                 <div class="form-group ">
                                     <div class="col-lg-3">                                        
-                                        <label for="emp_type" class="control-label text-danger">Employee Type *</label>
-                                        <select name="emp_type" id="emp_type" class="form-control select2">
-                                            <option value="0" <?php if($employee_details[0]->emp_type == '0'){?> selected <?php } ?>>Select Employee Type</option>
-                                            <option value="1" <?php if($employee_details[0]->emp_type == '1'){?> selected <?php } ?>>Permanent</option>
-                                            <option value="2" <?php if($employee_details[0]->emp_type == '2'){?> selected <?php } ?>>Part Timer</option>
-                                            <option value="3" <?php if($employee_details[0]->emp_type == '3'){?> selected <?php } ?>>Freelancer</option>
+                                        <label for="emp_id" class="control-label text-danger">Employee Name *</label>
+                                        <select name="emp_id" id="emp_id" class="form-control select2">
+                                            <option value="" >Select Employee</option>
+                                            <?php 
+                                            if(sizeof($employees) > 0){
+                                                foreach($employees as $employee){
+                                            ?>
+                                            <option value="<?=$employee->emp_id?>" <?php if($salary_details[0]->emp_id == $employee->emp_id){?> selected <?php } ?>><?=$employee->first_name.' '.$employee->last_name?></option>
+                                            <?php 
+                                                } 
+                                            }
+                                            ?>
                                         </select>
-                                    </div>
 
-                                    <div class="col-lg-3">                                        
-                                        <label for="emp_desig" class="control-label text-danger">Employee Designation *</label>
-                                        <select name="emp_desig" id="emp_desig" class="form-control select2">
-                                            <option value="0" <?php if($employee_details[0]->emp_desig == '0'){?> selected <?php } ?>>Select Employee Designation</option>
-                                            <option value="1" <?php if($employee_details[0]->emp_desig == '1'){?> selected <?php } ?>>Designer</option>
-                                            <option value="2" <?php if($employee_details[0]->emp_desig == '2'){?> selected <?php } ?>>Developer</option>
-                                            <option value="3" <?php if($employee_details[0]->emp_desig == '3'){?> selected <?php } ?>>Full Stack Developer</option>
-                                            <option value="4" <?php if($employee_details[0]->emp_desig == '4'){?> selected <?php } ?>>Sr. Designer</option>
-                                            <option value="5" <?php if($employee_details[0]->emp_desig == '5'){?> selected <?php } ?>>Sr. Developer</option>
-                                            <option value="6" <?php if($employee_details[0]->emp_desig == '6'){?> selected <?php } ?>>Team Lead</option>
-                                            <option value="7" <?php if($employee_details[0]->emp_desig == '7'){?> selected <?php } ?>>Project Mgr.</option>
-                                            <option value="8" <?php if($employee_details[0]->emp_desig == '8'){?> selected <?php } ?>>Manager</option>
-                                            <option value="9" <?php if($employee_details[0]->emp_desig == '9'){?> selected <?php } ?>>Director</option>
-                                            <option value="10" <?php if($employee_details[0]->emp_desig == '0'){?> selected <?php } ?>>Managing Director</option>
-                                            <option value="11" <?php if($employee_details[0]->emp_desig == '11'){?> selected <?php } ?>>Accounts & project coordinator</option>
-                                            <option value="12" <?php if($employee_details[0]->emp_desig == '12'){?> selected <?php } ?>>Business Developer</option>
-                                        </select>
+                                        <input type="hidden" name="emp_name" id="emp_name" value="<?=$salary_details[0]->emp_name?>">
                                     </div>
 
                                     <div class="col-lg-3">
-                                        <label for="first_name" class="control-label">First Name</label>
-                                        <input value="<?=$employee_details[0]->first_name?>" id="first_name" name="first_name" type="text" placeholder="First Name" class="form-control round-input" />
+                                        <label for="basic" class="control-label text-danger">Basic *</label>
+                                        <input value="<?=$all_allowance->basic?>" id="basic" name="basic" type="number" placeholder="Basic" class="form-control round-input" />
                                     </div>
 
                                     <div class="col-lg-3">
-                                        <label for="last_name" class="control-label">Last Name</label>
-                                        <input value="<?=$employee_details[0]->last_name?>" id="last_name" name="last_name" type="text" placeholder="Last Name" class="form-control round-input" />
+                                        <label for="hra" class="control-label">HRA</label>
+                                        <input value="<?=$all_allowance->hra?>" id="hra" name="hra" type="number" placeholder="HRA" class="form-control round-input" />
+                                    </div> 
+
+                                    <div class="col-lg-3">
+                                        <label for="conveyanceAllowance" class="control-label">Conveyance Allowance</label>
+                                        <input value="<?=$all_allowance->conveyanceAllowance?>" id="conveyanceAllowance" name="conveyanceAllowance" type="number" placeholder="Conveyance Allowance" class="form-control round-input" />
                                     </div>                              
                                 </div>
 
                                 <div class="form-group">
                                     <div class="col-lg-3">
-                                        <label for="email_id" class="control-label">Email ID</label>
-                                        <input value="<?=$employee_details[0]->email_id?>" id="email_id" name="email_id" type="email" placeholder="Email ID" class="form-control round-input" />
-                                    </div>
-
-                                    <div class="col-lg-3">
-                                        <label for="ph_number" class="control-label">Mobile Number</label>
-                                        <input value="<?=$employee_details[0]->ph_number?>" id="ph_number" name="ph_number" type="tel" placeholder="Mobile Number" class="form-control round-input" />
+                                        <label for="ProfDevelopmentAllowance" class="control-label">Prof. Development Allowance</label>
+                                        <input value="<?=$all_allowance->ProfDevelopmentAllowance?>" id="ProfDevelopmentAllowance" name="ProfDevelopmentAllowance" type="number" placeholder="Prof. Development Allowance" class="form-control round-input" />
                                     </div> 
 
                                     <div class="col-lg-3">
-                                        <label for="active_loan" class="control-label">Active Loan Amount</label>
-                                        <input value="<?=$employee_details[0]->active_loan?>" id="active_loan" name="active_loan" type="number" placeholder="Active Loan Amount" class="form-control round-input" />
+                                        <label for="booksAndPeriodicals" class="control-label">Books and Periodicals</label>
+                                        <input value="<?=$all_allowance->booksAndPeriodicals?>" id="booksAndPeriodicals" name="booksAndPeriodicals" type="number" placeholder="Books and Periodicals" class="form-control round-input" />
                                     </div> 
 
                                     <div class="col-lg-3">
-                                        <label for="loan_duration" class="control-label">Loan Duration(in month)</label>
-                                        <input value="<?=$employee_details[0]->loan_duration?>" id="loan_duration" name="loan_duration" type="number" placeholder="Loan Duration" class="form-control round-input" />
+                                        <label for="medicalReimbursement" class="control-label">Medical Reimbursement</label>
+                                        <input value="<?=$all_allowance->medicalReimbursement?>" id="medicalReimbursement" name="medicalReimbursement" type="number" placeholder="Medical Reimbursement" class="form-control round-input" />
                                     </div>  
+
+                                    <div class="col-lg-3">
+                                        <label for="childEducationAllowance" class="control-label">Child Education Allowance</label>
+                                        <input value="<?=$all_allowance->childEducationAllowance?>" id="childEducationAllowance" name="childEducationAllowance" type="number" placeholder="Child Education Allowance" class="form-control round-input" />
+                                    </div> 
                                 </div>
-                               
+
                                 <div class="form-group">
                                     <div class="col-lg-3">
-                                        <label for="last_incriment_date" class="control-label">Last Incriment Date</label>
-                                        <input value="<?=date('Y-m-d', strtotime($employee_details[0]->last_incriment_date))?>" id="last_incriment_date" name="last_incriment_date" type="date" placeholder="Loan Duration" class="form-control round-input" />
+                                        <label for="PerformancePayAllowance" class="control-label">Performance Pay Allowance</label>
+                                        <input value="<?=$all_allowance->PerformancePayAllowance?>" id="PerformancePayAllowance" name="PerformancePayAllowance" type="number" placeholder="Performance Pay Allowance" class="form-control round-input" />
                                     </div>
-                                     
+
                                     <div class="col-lg-3">
-                                        <label for="" class="control-label">Employee Photo</label>
-                                        <input type="file" name="employeefile" id="employeefile" accept=".jpg,.jpeg,.png,.bmp" class="file">
-                                    </div>                                                                        
-                                </div>    
+                                        <label for="specialAllowance" class="control-label">Special Allowance</label>
+                                        <input value="<?=$all_allowance->specialAllowance?>" id="specialAllowance" name="specialAllowance" type="number" placeholder="Special Allowance" class="form-control round-input" />
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="entertainmentAllowance" class="control-label">Entertainment Allowance</label>
+                                        <input value="<?=$all_allowance->entertainmentAllowance?>" id="entertainmentAllowance" name="entertainmentAllowance" type="number" placeholder="Entertainment Allowance" class="form-control round-input" />
+                                    </div> 
+                                    
+                                    <div class="col-lg-3">
+                                        <label for="fuelAndMaintenance" class="control-label">Fuel and Maintenance (F&M) Car</label>
+                                        <input value="<?=$all_allowance->fuelAndMaintenance?>" id="fuelAndMaintenance" name="fuelAndMaintenance" type="number" placeholder="Fuel and Maintenance (F&M) Car" class="form-control round-input" />
+                                    </div>  
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-3">
+                                        <label for="otherAllowance" class="control-label">Other Allowance</label>
+                                        <input value="<?=$all_allowance->otherAllowance?>" id="otherAllowance" name="otherAllowance" type="number" placeholder="Other Allowance" class="form-control round-input" />
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="variablePay" class="control-label">Variable Pay</label>
+                                        <input value="<?=$all_allowance->variablePay?>" id="variablePay" name="variablePay" type="number" placeholder="Variable Pay" class="form-control round-input" />
+                                    </div> 
+                                    
+                                    <div class="col-lg-3">
+                                        <label for="lta_AnnualBenefit" class="control-label">LTA (Annual Benefit)</label>
+                                        <input value="<?=$all_allowance->lta_AnnualBenefit?>" id="lta_AnnualBenefit" name="lta_AnnualBenefit" type="number" placeholder="LTA (Annual Benefit)" class="form-control round-input" />
+                                    </div>  
+
+                                    <div class="col-lg-3">
+                                        <label for="festivalBonus" class="control-label">Festival Bonus (Annual Benefit)</label>
+                                        <input value="<?=$all_allowance->festivalBonus?>" id="festivalBonus" name="festivalBonus" type="number" placeholder="Festival Bonus (Annual Benefit)" class="form-control round-input" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    
+                                    <div class="col-lg-3">
+                                        <label for="medicalInsurancePremium" class="control-label">Medical Insurance Premium</label>
+                                        <input value="<?=$all_allowance->medicalInsurancePremium?>" id="medicalInsurancePremium" name="medicalInsurancePremium" type="number" placeholder="Medical Insurance Premium(Annual Benefit)" class="form-control round-input" />
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="arrear" class="control-label">Arrear</label>
+                                        <input value="<?=$all_allowance->arrear?>" id="arrear" name="arrear" type="number" placeholder="Arrear" class="form-control round-input" />
+                                    </div>  
+                                </div>
+
+
+
+
+                                <h4>Deduction</h4>
+
+                                <div class="form-group">
+                                    <div class="col-lg-3">
+                                        <label for="employees_PF_PPF" class="control-label">Employee's PF/PPF</label>
+                                        <input value="<?=$all_deduction->employees_PF_PPF?>" id="employees_PF_PPF" name="employees_PF_PPF" type="number" placeholder="Employee's PF/PPF" class="form-control round-input" />
+                                    </div> 
+
+                                    <div class="col-lg-3">
+                                        <label for="employeesESIC" class="control-label">Employees ESIC</label>
+                                        <input value="<?=$all_deduction->employeesESIC?>" id="employeesESIC" name="employeesESIC" type="number" placeholder="Employees ESIC" class="form-control round-input" />
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="professionalTax" class="control-label">Professional Tax</label>
+                                        <input value="<?=$all_deduction->professionalTax?>" id="professionalTax" name="professionalTax" type="number" placeholder="Professional Tax" class="form-control round-input" />
+                                    </div>  
+
+                                    <div class="col-lg-3">
+                                        <label for="incomeTax" class="control-label">Income Tax</label>
+                                        <input value="<?=$all_deduction->incomeTax?>" id="incomeTax" name="incomeTax" type="number" placeholder="Income Tax" class="form-control round-input" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-3">
+                                        <label for="ltaDeduction" class="control-label">LTA (Deduction)</label>
+                                        <input value="<?=$all_deduction->ltaDeduction?>" id="ltaDeduction" name="ltaDeduction" type="number" placeholder="LTA (Deduction)" class="form-control round-input" />
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="festivalBonusDeduction" class="control-label">Festival Bonus (Deduction)</label>
+                                        <input value="<?=$all_deduction->festivalBonusDeduction?>" id="festivalBonusDeduction" name="festivalBonusDeduction" type="number" placeholder="Festival Bonus (Deduction)" class="form-control round-input" />
+                                    </div> 
+
+                                    <div class="col-lg-3">
+                                        <label for="medicalInsurancePremiumDeduct" class="control-label">Medical Insurance Premium</label>
+                                        <input value="<?=$all_deduction->medicalInsurancePremiumDeduct?>" id="medicalInsurancePremiumDeduct" name="medicalInsurancePremiumDeduct" type="number" placeholder="Medical Insurance Premium" class="form-control round-input" />
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="otherDeductions" class="control-label">Other Deductions</label>
+                                        <input value="<?=$all_deduction->otherDeductions?>" id="otherDeductions" name="otherDeductions" type="number" placeholder="Other Deductions" class="form-control round-input" />
+                                    </div>  
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-3">
+                                        <label for="miscDeduction" class="control-label">Misc. Deduction</label>
+                                        <input value="<?=$all_deduction->miscDeduction?>" id="miscDeduction" name="miscDeduction" type="number" placeholder="Misc. Deduction" class="form-control round-input" />
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="loan" class="control-label">Loan</label>
+                                        <input value="<?=$all_deduction->loan?>" id="loan" name="loan" type="number" placeholder="Loan" class="form-control round-input" />
+                                    </div>  
+                                </div>
+                                   
 
                                 <div class="form-group">
                                     <div class="col-lg-12">
-                                        <button class="btn btn-success pull-right" type="submit"><i class="fa fa-plus"> Update Employee</i></button>
-                                        <input type="hidden" name="emp_id" id="emp_id" value="<?=$employee_details[0]->emp_id?>">
+                                        <input type="hidden" name="salary_id" id="salary_id" value="<?=$salary_details[0]->salary_id?>">
+                                        <button class="btn btn-success pull-right" type="submit"><i class="fa fa-plus"> Update Salary</i></button>
                                     </div>
                                 </div>
                             </form>
@@ -165,16 +274,13 @@
 
 <script>
     //add-item-form validation and submit
-    $("#form_edit_employee").validate({
+    $("#form_edit_salary").validate({
         
         rules: {
-            emp_type: {
-                required: true
+            emp_id: {
+                required: true,
             },            
-            emp_desig:{
-                required: true
-            },
-            first_name : {
+            basic:{
                 required: true
             }   
         },
@@ -182,9 +288,9 @@
 
         }
     });
-    $('#form_edit_employee').ajaxForm({
+    $('#form_edit_salary').ajaxForm({
         beforeSubmit: function () {
-            return $("#form_edit_employee").valid(); // TRUE when form is valid, FALSE will cancel submit
+            return $("#form_edit_salary").valid(); // TRUE when form is valid, FALSE will cancel submit
         },
         success: function (returnData) {
             console.log(returnData);

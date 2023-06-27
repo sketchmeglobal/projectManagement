@@ -178,13 +178,13 @@
         $this = $(this);
         if(confirm("Are You Sure? This Process Can\'t be Undone.")){
 
-            $user_id = $(this).data('user_id');           
+            $emp_id = $(this).data('emp_id');           
 
             $.ajax({
-                url: "<?= base_url('admin/ajax-delete-user/') ?>",
+                url: "<?= base_url('admin/ajax-delete-employee/') ?>",
                 dataType: 'json',
                 type: 'POST',
-                data: {user_id: $user_id},
+                data: {emp_id: $emp_id},
                 success: function (returnData) {
                     console.log(returnData);
                    

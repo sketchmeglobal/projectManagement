@@ -358,22 +358,19 @@ class employee_m extends CI_Model {
         return $data;
     }
 
-    public function ajax_delete_user(){
-
-        $user_id = $this->input->post('user_id');
+    public function ajax_delete_employee(){
+        $emp_id = $this->input->post('emp_id');
         $delClause = array(
-            'user_id' => $user_id
+            'emp_id' => $emp_id
         );
-
-        $this->db->where($delClause)->delete('user_details');
-        $this->db->where($delClause)->delete('users');
+        
+        $this->db->where($delClause)->delete('employee');
 
         $data['type'] = 'success';
         $data['title'] = 'Deletion!';
-        $data['msg'] = 'User deleted successfully'; 
+        $data['msg'] = 'Employee deleted successfully'; 
 
-        return $data;
-        
+        return $data;        
     }
 
     

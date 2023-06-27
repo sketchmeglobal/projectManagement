@@ -61,7 +61,7 @@ $user_type = $this->session->usertype;
             </li>
 
             <!-- For Employee -->            
-            <li class="menu-list <?=($class_name == 'Employee' || $class_name == 'EmployeeSalary') ? 'active' : ''; ?>"><a href=""><i class="fa fa-vcard-o"></i> <span>Employee</span></a>
+            <li class="menu-list <?=($class_name == 'Employee' || $class_name == 'Employeesalary') ? 'active' : ''; ?>"><a href=""><i class="fa fa-vcard-o"></i> <span>Employee</span></a>
                 <ul class="child-list">
                     <li class="<?=(($class_name == 'Employee')) ? 'active' : ''; ?>">
                         <a href="<?=base_url();?>admin/employee-management"><i class="fa fa-caret-right"></i> <span>Employee List</span></a>

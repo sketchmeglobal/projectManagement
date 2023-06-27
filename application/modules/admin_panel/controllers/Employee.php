@@ -83,15 +83,13 @@ class Employee extends My_Controller {
 
     }
 
-    public function ajax_delete_user(){
-        
+    public function ajax_delete_employee(){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Employee_m');
-            $data = $this->Employee_m->ajax_delete_user();
+            $data = $this->Employee_m->ajax_delete_employee();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
-
     }
 
     public function acc_master_on_usertype(){

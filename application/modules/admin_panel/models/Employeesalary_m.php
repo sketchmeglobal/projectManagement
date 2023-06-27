@@ -192,52 +192,58 @@ class employeesalary_m extends CI_Model {
 
     }
 
-    public function form_add_salary(){  
+    public function form_add_salary(){ 
+        $emp_id = $this->input->post('emp_id');
+        $emp_name = $this->input->post('emp_name');
+
+        $all_allowance = new stdClass();
+        $all_deduction = new stdClass();
+
+        //Allowance
+        $all_allowance->basic = $this->input->post('basic');
+        $all_allowance->hra = $this->input->post('hra');
+        $all_allowance->conveyanceAllowance = $this->input->post('conveyanceAllowance');
+        $all_allowance->ProfDevelopmentAllowance = $this->input->post('ProfDevelopmentAllowance');
+        $all_allowance->booksAndPeriodicals = $this->input->post('booksAndPeriodicals');
+        $all_allowance->medicalReimbursement = $this->input->post('medicalReimbursement');
+        $all_allowance->childEducationAllowance = $this->input->post('childEducationAllowance');
+        $all_allowance->PerformancePayAllowance = $this->input->post('PerformancePayAllowance');
+        $all_allowance->specialAllowance = $this->input->post('specialAllowance');
+        $all_allowance->entertainmentAllowance = $this->input->post('entertainmentAllowance');
+        $all_allowance->fuelAndMaintenance = $this->input->post('fuelAndMaintenance');
+        $all_allowance->otherAllowance = $this->input->post('otherAllowance');
+        $all_allowance->variablePay = $this->input->post('variablePay');
+        $all_allowance->lta_AnnualBenefit = $this->input->post('lta_AnnualBenefit');
+        $all_allowance->festivalBonus = $this->input->post('festivalBonus');
+        $all_allowance->medicalInsurancePremium = $this->input->post('medicalInsurancePremium');
+        $all_allowance->arrear = $this->input->post('arrear');
+
+        //Deduction
+        $all_deduction->employees_PF_PPF = $this->input->post('employees_PF_PPF');
+        $all_deduction->employeesESIC = $this->input->post('employeesESIC');
+        $all_deduction->professionalTax = $this->input->post('professionalTax');
+        $all_deduction->incomeTax = $this->input->post('incomeTax');
+        $all_deduction->ltaDeduction = $this->input->post('ltaDeduction');
+        $all_deduction->festivalBonusDeduction = $this->input->post('festivalBonusDeduction');
+        $all_deduction->medicalInsurancePremiumDeduct = $this->input->post('medicalInsurancePremiumDeduct');
+        $all_deduction->otherDeductions = $this->input->post('otherDeductions');
+        $all_deduction->miscDeduction = $this->input->post('miscDeduction');
+        $all_deduction->loan = $this->input->post('loan');
+
+
         $insertArray = array(
-            'emp_type' => $this->input->post('emp_type'),
-            'emp_desig' => $this->input->post('emp_desig'),
-            'first_name' => $this->input->post('first_name'),
-            'last_name' => $this->input->post('last_name'),
-            'email_id' => $this->input->post('email_id'),
-            'ph_number' => $this->input->post('ph_number'),
-            'active_loan' => $this->input->post('active_loan'),
-            'loan_duration' => $this->input->post('loan_duration'),
-            'last_incriment_date' => $this->input->post('last_incriment_date')
+            'emp_id' => $emp_id,
+            'emp_name' => $emp_name,
+            'all_allowance' => json_encode($all_allowance),
+            'all_deduction' => json_encode($all_deduction)
         );   
 
-        if($this->db->insert('employee', $insertArray)){
-            $emp_id = $this->db->insert_id();
-            $data['insert_id'] = $emp_id;
+        if($this->db->insert('emp_salary', $insertArray)){
+            $salary_id = $this->db->insert_id();
+            $data['salary_id'] = $salary_id;
 
             $data['type'] = 'success';
-            $data['msg'] = 'Employee added successfully.'; 
-
-            // image upload
-            if (!empty($_FILES['employeefile']['name'][0])) {
-                $return_data = array(); 
-
-                $upload_path = './upload/employee/' ; 
-                $file_type = 'jpg|jpeg|png|bmp';
-                $user_file_name = 'employeefile';
-
-                $return_data = $this->_upload_files($_FILES['employeefile'], $upload_path, $file_type, $user_file_name);
-                //print_r($return_data);die;
-
-                foreach ($return_data as $datam) {
-                    if ($datam['status'] != 'error') {                        
-                        // Insert filename to db
-
-                        $updateArray = array(
-                            'emp_photo' => $datam['filename']
-                        );
-
-                        $val = $this->db->update('employee', $updateArray, array('emp_id' => $emp_id));
-                    }
-                }
-                
-                $data['msg'] = 'Image Files Uploaded<hr>Employee added successfully.'; 
-
-            }
+            $data['msg'] = 'Salary added successfully.'; 
         }else{
             $data['type'] = 'error';
             $data['msg'] = 'Database Insert Error';
@@ -299,14 +305,16 @@ class employeesalary_m extends CI_Model {
         return $final_array;
     }
 
-    public function edit_employee($emp_id = ''){
-        
-        $data['title'] = 'Employee Management';
-        $data['menu'] = 'Users';
+    public function edit_salary($salary_id = ''){        
+        $data['title'] = 'Employee Salary';
+        $data['menu'] = 'Salary';
 
-        $data['employee_details'] = $this->db->get_where('employee', array('emp_id' => $emp_id))->result();
+        $employees = $this->db->get('employee')->result();
+        $data['employees'] = $employees;
 
-        return array('page' => 'employee/employee_edit_v', 'data' => $data);
+        $data['salary_details'] = $this->db->get_where('emp_salary', array('salary_id' => $salary_id))->result();
+
+        return array('page' => 'employee/employee_salary_edit_v', 'data' => $data);
 
     }
 
@@ -328,27 +336,58 @@ class employeesalary_m extends CI_Model {
 
     }
 
-    public function form_edit_employee(){   
-        $emp_id = $this->input->post('emp_id');  
+    public function form_edit_salary(){   
+        $salary_id = $this->input->post('salary_id'); 
+        $emp_id = $this->input->post('emp_id');
+        $emp_name = $this->input->post('emp_name');
+
+        $all_allowance = new stdClass();
+        $all_deduction = new stdClass();
+
+        //Allowance
+        $all_allowance->basic = $this->input->post('basic');
+        $all_allowance->hra = $this->input->post('hra');
+        $all_allowance->conveyanceAllowance = $this->input->post('conveyanceAllowance');
+        $all_allowance->ProfDevelopmentAllowance = $this->input->post('ProfDevelopmentAllowance');
+        $all_allowance->booksAndPeriodicals = $this->input->post('booksAndPeriodicals');
+        $all_allowance->medicalReimbursement = $this->input->post('medicalReimbursement');
+        $all_allowance->childEducationAllowance = $this->input->post('childEducationAllowance');
+        $all_allowance->PerformancePayAllowance = $this->input->post('PerformancePayAllowance');
+        $all_allowance->specialAllowance = $this->input->post('specialAllowance');
+        $all_allowance->entertainmentAllowance = $this->input->post('entertainmentAllowance');
+        $all_allowance->fuelAndMaintenance = $this->input->post('fuelAndMaintenance');
+        $all_allowance->otherAllowance = $this->input->post('otherAllowance');
+        $all_allowance->variablePay = $this->input->post('variablePay');
+        $all_allowance->lta_AnnualBenefit = $this->input->post('lta_AnnualBenefit');
+        $all_allowance->festivalBonus = $this->input->post('festivalBonus');
+        $all_allowance->medicalInsurancePremium = $this->input->post('medicalInsurancePremium');
+        $all_allowance->arrear = $this->input->post('arrear');
+
+        //Deduction
+        $all_deduction->employees_PF_PPF = $this->input->post('employees_PF_PPF');
+        $all_deduction->employeesESIC = $this->input->post('employeesESIC');
+        $all_deduction->professionalTax = $this->input->post('professionalTax');
+        $all_deduction->incomeTax = $this->input->post('incomeTax');
+        $all_deduction->ltaDeduction = $this->input->post('ltaDeduction');
+        $all_deduction->festivalBonusDeduction = $this->input->post('festivalBonusDeduction');
+        $all_deduction->medicalInsurancePremiumDeduct = $this->input->post('medicalInsurancePremiumDeduct');
+        $all_deduction->otherDeductions = $this->input->post('otherDeductions');
+        $all_deduction->miscDeduction = $this->input->post('miscDeduction');
+        $all_deduction->loan = $this->input->post('loan'); 
 
         $updateArray1 = array(
-            'emp_type' => $this->input->post('emp_type'),
-            'emp_desig' => $this->input->post('emp_desig'),
-            'first_name' => $this->input->post('first_name'),
-            'last_name' => $this->input->post('last_name'),
-            'email_id' => $this->input->post('email_id'),
-            'ph_number' => $this->input->post('ph_number'),
-            'active_loan' => $this->input->post('active_loan'),
-            'loan_duration' => $this->input->post('loan_duration'),
-            'last_incriment_date' => $this->input->post('last_incriment_date')
+            'emp_id' => $emp_id,
+            'emp_name' => $emp_name,
+            'all_allowance' => json_encode($all_allowance),
+            'all_deduction' => json_encode($all_deduction)
         );
 
-        $val = $this->db->update('employee', $updateArray1, array('emp_id' => $emp_id));
+        $val = $this->db->update('emp_salary', $updateArray1, array('salary_id' => $salary_id));
         //echo $this->db->last_query();die;
         
         if($val){
             $data['type'] = 'success';
-            $data['msg'] = 'User edited successfully<hr>No Files Uploaded.';          
+            $data['msg'] = 'Salary Uploaded successfully.';          
         }else{
             $data['type'] = 'error';
             $data['msg'] = 'Database Update Error';

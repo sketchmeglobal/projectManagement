@@ -61,15 +61,22 @@
 	//edit
 	$route['admin/edit-employee/(:num)'] = 'admin_panel/Employee/edit_employee/$1';	
  	$route['admin/form-edit-employee'] = 'admin_panel/Employee/form_edit_employee';
+	
+	//delete
+	$route['admin/ajax-delete-employee'] = 'admin_panel/Employee/ajax_delete_employee';
 
-	 //EMPLOYEE SALARY
-	 //list
-	 $route['admin/employee-salary'] = 'admin_panel/Employeesalary/employee_salary';
-	 $route['admin/ajax-employee-salary-table-data'] = 'admin_panel/Employeesalary/ajax_employee_salary_table_data';
+	//EMPLOYEE SALARY
+	//list
+	$route['admin/employee-salary'] = 'admin_panel/Employeesalary/employee_salary';
+	$route['admin/ajax-employee-salary-table-data'] = 'admin_panel/Employeesalary/ajax_employee_salary_table_data';
 
-	 //add salary
-	 $route['admin/add-salary'] = 'admin_panel/Employeesalary/add_salary';	
-	 $route['admin/form-add-employee'] = 'admin_panel/Employeesalary/form_add_salary';		
+	//add salary
+	$route['admin/add-salary'] = 'admin_panel/Employeesalary/add_salary';	
+	$route['admin/form-add-salary'] = 'admin_panel/Employeesalary/form_add_salary';			
+
+	//edit
+	$route['admin/edit-salary/(:num)'] = 'admin_panel/Employeesalary/edit_salary/$1';	
+ 	$route['admin/form-edit-salary'] = 'admin_panel/Employeesalary/form_edit_salary';	
 
 	/*******
 	// USER MANAGEMENT

@@ -55,7 +55,7 @@
                                     <div class="col-lg-3">                                        
                                         <label for="emp_id" class="control-label text-danger">Employee Name *</label>
                                         <select name="emp_id" id="emp_id" class="form-control select2">
-                                            <option value="0" >Select Employee</option>
+                                            <option value="" >Select Employee</option>
                                             <?php 
                                             if(sizeof($employees) > 0){
                                                 foreach($employees as $employee){
@@ -66,83 +66,163 @@
                                             }
                                             ?>
                                         </select>
+
+                                        <input type="hidden" name="emp_name" id="emp_name" value="">
                                     </div>
 
                                     <div class="col-lg-3">
-                                        <label for="salaryAmount" class="control-label text-danger">Salary Amount *</label>
-                                        <input value="0.00" id="salaryAmount" name="salaryAmount" type="number" placeholder="Salary Amount" class="form-control round-input" />
+                                        <label for="basic" class="control-label text-danger">Basic *</label>
+                                        <input value="" id="basic" name="basic" type="number" placeholder="Basic" class="form-control round-input" />
                                     </div>
 
                                     <div class="col-lg-3">
-                                        <label for="allowanceName1" class="control-label">Allowance Name</label>
-                                        <input value="" id="allowanceName1" name="allowanceName1" type="text" placeholder="Allowance Name" class="form-control round-input" />
+                                        <label for="hrs" class="control-label">HRA</label>
+                                        <input value="0.00" id="hra" name="hra" type="number" placeholder="HRA" class="form-control round-input" />
                                     </div> 
 
                                     <div class="col-lg-3">
-                                        <label for="allowanceAmount1" class="control-label">Allowance Amount</label>
-                                        <input value="" id="allowanceAmount1" name="allowanceAmount1" type="text" placeholder="Allowance Amount" class="form-control round-input" />
+                                        <label for="conveyanceAllowance" class="control-label">Conveyance Allowance</label>
+                                        <input value="0.00" id="conveyanceAllowance" name="conveyanceAllowance" type="number" placeholder="Conveyance Allowance" class="form-control round-input" />
                                     </div>                              
                                 </div>
 
                                 <div class="form-group">
                                     <div class="col-lg-3">
-                                        <label for="allowanceName2" class="control-label">Allowance Name</label>
-                                        <input value="" id="allowanceName2" name="allowanceName2" type="text" placeholder="Allowance Name" class="form-control round-input" />
+                                        <label for="ProfDevelopmentAllowance" class="control-label">Prof. Development Allowance</label>
+                                        <input value="0.00" id="ProfDevelopmentAllowance" name="ProfDevelopmentAllowance" type="number" placeholder="Prof. Development Allowance" class="form-control round-input" />
                                     </div> 
 
                                     <div class="col-lg-3">
-                                        <label for="allowanceAmount2" class="control-label">Allowance Amount</label>
-                                        <input value="" id="allowanceAmount2" name="allowanceAmount2" type="text" placeholder="Allowance Amount" class="form-control round-input" />
+                                        <label for="booksAndPeriodicals" class="control-label">Books and Periodicals</label>
+                                        <input value="0.00" id="booksAndPeriodicals" name="booksAndPeriodicals" type="number" placeholder="Books and Periodicals" class="form-control round-input" />
+                                    </div> 
+
+                                    <div class="col-lg-3">
+                                        <label for="medicalReimbursement" class="control-label">Medical Reimbursement</label>
+                                        <input value="0.00" id="medicalReimbursement" name="medicalReimbursement" type="number" placeholder="Medical Reimbursement" class="form-control round-input" />
+                                    </div>  
+
+                                    <div class="col-lg-3">
+                                        <label for="childEducationAllowance" class="control-label">Child Education Allowance</label>
+                                        <input value="0.00" id="childEducationAllowance" name="childEducationAllowance" type="number" placeholder="Child Education Allowance" class="form-control round-input" />
+                                    </div> 
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-3">
+                                        <label for="PerformancePayAllowance" class="control-label">Performance Pay Allowance</label>
+                                        <input value="0.00" id="PerformancePayAllowance" name="PerformancePayAllowance" type="number" placeholder="Performance Pay Allowance" class="form-control round-input" />
                                     </div>
 
                                     <div class="col-lg-3">
-                                        <label for="allowanceName3" class="control-label">Allowance Name</label>
-                                        <input value="" id="allowanceName3" name="allowanceName3" type="text" placeholder="Allowance Name" class="form-control round-input" />
-                                    </div> 
+                                        <label for="specialAllowance" class="control-label">Special Allowance</label>
+                                        <input value="0.00" id="specialAllowance" name="specialAllowance" type="number" placeholder="Special Allowance" class="form-control round-input" />
+                                    </div>
 
                                     <div class="col-lg-3">
-                                        <label for="allowanceAmount3" class="control-label">Allowance Amount</label>
-                                        <input value="" id="allowanceAmount3" name="allowanceAmount3" type="text" placeholder="Allowance Amount" class="form-control round-input" />
+                                        <label for="entertainmentAllowance" class="control-label">Entertainment Allowance</label>
+                                        <input value="0.00" id="entertainmentAllowance" name="entertainmentAllowance" type="number" placeholder="Entertainment Allowance" class="form-control round-input" />
+                                    </div> 
+                                    
+                                    <div class="col-lg-3">
+                                        <label for="fuelAndMaintenance" class="control-label">Fuel and Maintenance (F&M) Car</label>
+                                        <input value="0.00" id="fuelAndMaintenance" name="fuelAndMaintenance" type="number" placeholder="Fuel and Maintenance (F&M) Car" class="form-control round-input" />
                                     </div>  
                                 </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-3">
+                                        <label for="otherAllowance" class="control-label">Other Allowance</label>
+                                        <input value="0.00" id="otherAllowance" name="otherAllowance" type="number" placeholder="Other Allowance" class="form-control round-input" />
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="variablePay" class="control-label">Variable Pay</label>
+                                        <input value="0.00" id="variablePay" name="variablePay" type="number" placeholder="Variable Pay" class="form-control round-input" />
+                                    </div> 
+                                    
+                                    <div class="col-lg-3">
+                                        <label for="lta_AnnualBenefit" class="control-label">LTA (Annual Benefit)</label>
+                                        <input value="0.00" id="lta_AnnualBenefit" name="lta_AnnualBenefit" type="number" placeholder="LTA (Annual Benefit)" class="form-control round-input" />
+                                    </div>  
+
+                                    <div class="col-lg-3">
+                                        <label for="festivalBonus" class="control-label">Festival Bonus (Annual Benefit)</label>
+                                        <input value="0.00" id="festivalBonus" name="festivalBonus" type="number" placeholder="Festival Bonus (Annual Benefit)" class="form-control round-input" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    
+                                    <div class="col-lg-3">
+                                        <label for="medicalInsurancePremium" class="control-label">Medical Insurance Premium</label>
+                                        <input value="0.00" id="medicalInsurancePremium" name="medicalInsurancePremium" type="number" placeholder="Medical Insurance Premium(Annual Benefit)" class="form-control round-input" />
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="arrear" class="control-label">Arrear</label>
+                                        <input value="0.00" id="arrear" name="arrear" type="number" placeholder="Arrear" class="form-control round-input" />
+                                    </div>  
+                                </div>
+
+
+
+
                                 <h4>Deduction</h4>
 
                                 <div class="form-group">
                                     <div class="col-lg-3">
-                                        <label for="loanAmount" class="control-label">Loan Amount</label>
-                                        <input value="" id="loanAmount" name="loanAmount" type="text" placeholder="Loan Amount" class="form-control round-input" />
+                                        <label for="employees_PF_PPF" class="control-label">Employee's PF/PPF</label>
+                                        <input value="0.00" id="employees_PF_PPF" name="employees_PF_PPF" type="number" placeholder="Employee's PF/PPF" class="form-control round-input" />
                                     </div> 
 
                                     <div class="col-lg-3">
-                                        <label for="deductionName1" class="control-label">Deduction Name</label>
-                                        <input value="" id="deductionName1" name="deductionName1" type="text" placeholder="Deduction Name" class="form-control round-input" />
+                                        <label for="employeesESIC" class="control-label">Employees ESIC</label>
+                                        <input value="0.00" id="employeesESIC" name="employeesESIC" type="number" placeholder="Employees ESIC" class="form-control round-input" />
                                     </div>
 
                                     <div class="col-lg-3">
-                                        <label for="deductionAmount1" class="control-label">Deduction Amount</label>
-                                        <input value="" id="deductionAmount1" name="deductionAmount1" type="text" placeholder="Deduction Amount" class="form-control round-input" />
+                                        <label for="professionalTax" class="control-label">Professional Tax</label>
+                                        <input value="0.00" id="professionalTax" name="professionalTax" type="number" placeholder="Professional Tax" class="form-control round-input" />
+                                    </div>  
+
+                                    <div class="col-lg-3">
+                                        <label for="incomeTax" class="control-label">Income Tax</label>
+                                        <input value="0.00" id="incomeTax" name="incomeTax" type="number" placeholder="Income Tax" class="form-control round-input" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-3">
+                                        <label for="ltaDeduction" class="control-label">LTA (Deduction)</label>
+                                        <input value="0.00" id="ltaDeduction" name="ltaDeduction" type="number" placeholder="LTA (Deduction)" class="form-control round-input" />
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="festivalBonusDeduction" class="control-label">Festival Bonus (Deduction)</label>
+                                        <input value="0.00" id="festivalBonusDeduction" name="festivalBonusDeduction" type="number" placeholder="Festival Bonus (Deduction)" class="form-control round-input" />
+                                    </div> 
+
+                                    <div class="col-lg-3">
+                                        <label for="medicalInsurancePremiumDeduct" class="control-label">Medical Insurance Premium</label>
+                                        <input value="0.00" id="medicalInsurancePremiumDeduct" name="medicalInsurancePremiumDeduct" type="number" placeholder="Medical Insurance Premium" class="form-control round-input" />
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="otherDeductions" class="control-label">Other Deductions</label>
+                                        <input value="0.00" id="otherDeductions" name="otherDeductions" type="number" placeholder="Other Deductions" class="form-control round-input" />
                                     </div>  
                                 </div>
 
                                 <div class="form-group">
                                     <div class="col-lg-3">
-                                        <label for="deductionName2" class="control-label">Deduction Name</label>
-                                        <input value="" id="deductionName2" name="deductionName2" type="text" placeholder="Deduction Name" class="form-control round-input" />
+                                        <label for="miscDeduction" class="control-label">Misc. Deduction</label>
+                                        <input value="0.00" id="miscDeduction" name="miscDeduction" type="number" placeholder="Misc. Deduction" class="form-control round-input" />
                                     </div>
 
                                     <div class="col-lg-3">
-                                        <label for="deductionAmount2" class="control-label">Deduction Amount</label>
-                                        <input value="" id="deductionAmount2" name="deductionAmount2" type="text" placeholder="Deduction Amount" class="form-control round-input" />
-                                    </div> 
-
-                                    <div class="col-lg-3">
-                                        <label for="deductionName3" class="control-label">Deduction Name</label>
-                                        <input value="" id="deductionName3" name="deductionName3" type="text" placeholder="Deduction Name" class="form-control round-input" />
-                                    </div>
-
-                                    <div class="col-lg-3">
-                                        <label for="deductionAmount3" class="control-label">Deduction Amount</label>
-                                        <input value="" id="deductionAmount3" name="deductionAmount3" type="text" placeholder="Deduction Amount" class="form-control round-input" />
+                                        <label for="loan" class="control-label">Loan</label>
+                                        <input value="0.00" id="loan" name="loan" type="number" placeholder="Loan" class="form-control round-input" />
                                     </div>  
                                 </div>
                                    
@@ -188,47 +268,40 @@
 <script src="<?=base_url();?>assets/admin_panel/js/jquery.form.min.js"></script>
 
 <script>
+    $('#emp_id').on('change', function(){
+        $emp_name = $('#emp_id option:selected').text();
+        $('#emp_name').val($emp_name)
+    })
+
     //add-item-form validation and submit
-    $("#form_add_employee").validate({        
+    $("#form_add_salary").validate({        
         rules: {
-            username: {
+            emp_id: {
                 required: true,
-                remote: {
-                    url: "<?=base_url('admin/ajax-unique-username')?>",
-                    type: "post",
-                    data: {
-                        username: function() {
-                          return $("#username").val();
-                        }
-                    },
-                }
             },            
-            user_type:{
+            basic:{
                 required: true
-            },
-            pass : {
-                required: true
-            }   
+            } 
         },
         messages: {
 
         }
     });
-    $('#form_add_employee').ajaxForm({
+    $('#form_add_salary').ajaxForm({
         beforeSubmit: function () {
-            return $("#form_add_employee").valid(); // TRUE when form is valid, FALSE will cancel submit
+            return $("#form_add_salary").valid(); // TRUE when form is valid, FALSE will cancel submit
         },
         success: function (returnData) {
             console.log(returnData);
             obj = JSON.parse(returnData);
             notification(obj);
-			if(parseInt(obj.insert_id) > 0){
+			if(parseInt(obj.salary_id) > 0){
                 if(obj.type == 'error'){
                     setTimeout(function(){ 
-                        window.location.href = '<?=base_url()?>admin/edit-employee/'+obj.insert_id; 
-                        }, 3000);
+                        window.location.href = '<?=base_url()?>admin/edit-salary/'+obj.salary_id; 
+                    }, 3000);
                 }else{
-                    window.location.href = '<?=base_url()?>admin/edit-employee/'+obj.insert_id;
+                    window.location.href = '<?=base_url()?>admin/edit-salary/'+obj.salary_id;
                 }            	
 			}
 		}
