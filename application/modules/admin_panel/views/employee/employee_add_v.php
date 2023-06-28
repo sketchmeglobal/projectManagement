@@ -52,7 +52,7 @@
                                     <div class="col-lg-3">                                        
                                         <label for="emp_type" class="control-label text-danger">Employee Type *</label>
                                         <select name="emp_type" id="emp_type" class="form-control select2">
-                                            <option value="0" >Select Employee Type</option>
+                                            <option value="" >Select Employee Type</option>
                                             <option value="1">Permanent</option>
                                             <option value="2">Part Timer</option>
                                             <option value="3">Freelancer</option>
@@ -62,7 +62,7 @@
                                     <div class="col-lg-3">                                        
                                         <label for="emp_desig" class="control-label text-danger">Employee Designation *</label>
                                         <select name="emp_desig" id="emp_desig" class="form-control select2">
-                                            <option value="0" >Select Employee Designation</option>
+                                            <option value="" >Select Employee Designation</option>
                                             <option value="1">Designer</option>
                                             <option value="2">Developer</option>
                                             <option value="3">Full Stack Developer</option>
@@ -112,6 +112,11 @@
                                 </div>
                                
                                 <div class="form-group">
+                                    <div class="col-lg-3">
+                                        <label for="basic_pay" class="control-label">Basic Pay</label>
+                                        <input value="" id="basic_pay" name="basic_pay" type="number" placeholder="Basic Pay" class="form-control round-input" />
+                                    </div>
+
                                     <div class="col-lg-3">
                                         <label for="last_incriment_date" class="control-label">Last Incriment Date</label>
                                         <input value="" id="last_incriment_date" name="last_incriment_date" type="date" placeholder="Loan Duration" class="form-control round-input" />
@@ -167,22 +172,16 @@
     //add-item-form validation and submit
     $("#form_add_employee").validate({        
         rules: {
-            username: {
-                required: true,
-                remote: {
-                    url: "<?=base_url('admin/ajax-unique-username')?>",
-                    type: "post",
-                    data: {
-                        username: function() {
-                          return $("#username").val();
-                        }
-                    },
-                }
+            emp_type: {
+                required: true
             },            
-            user_type:{
+            emp_desig:{
                 required: true
             },
-            pass : {
+            first_name : {
+                required: true
+            } ,
+            basic_pay : {
                 required: true
             }   
         },
@@ -231,67 +230,6 @@
         })
     }
     
-    $("#user_type").on('change', function(){
-        
-         $usertype = $(this).val();
-        // console.log($val);
-        
-        if($usertype == 4){
-            
-            $(".acc_masters_values").hide();
-            $(".offer_values").show();
-            
-        }else{
-            
-            $(".acc_masters_values").show();
-            $(".offer_values").hide();
-            
-        }
-        
-        
-        $.ajax({
-            url: "<?= base_url('admin/acc_master-on-usertype/') ?>",
-            dataType: 'json',
-            type: 'POST',
-            data: {usertype: $usertype},
-            success: function (returnData) {
-                
-                console.log(returnData);
-                
-                $("#acc_masters").html("");
-                
-                if($usertype == 4){
-                    
-                    $.each(returnData, function (index, itemData) {
-                       $str = '<option value="'+itemData.offer_id+'">'+itemData.offer_name + ' ['+ itemData.offer_fz_number +']' +'</option>';
-                       $("#offer_values").append($str);
-                    });
-                    
-                    $('#offer_values').select2({
-                      placeholder: 'Select an option'
-                    });
-                    
-                }else{
-                
-                    $.each(returnData, function (index, itemData) {
-                       $str = '<option value="'+itemData.am_id+'">'+itemData.name + ' ['+ itemData.am_code +']' +'</option>';
-                       $("#acc_masters").append($str);
-                    });
-                    
-                    $('#acc_masters').select2({
-                      placeholder: 'Select an option'
-                    });
-                    
-                }
-                
-
-            },
-            error: function (returnData) {
-                obj = JSON.parse(returnData);
-                notification(obj);
-            }
-        });
-    })
 </script>
 
 </body>

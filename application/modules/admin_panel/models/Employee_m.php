@@ -25,6 +25,7 @@ class employee_m extends CI_Model {
                 $emp_id = $val->emp_id;
                 $first_name = $val->first_name;
                 $last_name = $val->last_name;
+                $basicPay = $val->basic_pay;
 
                 if($val->emp_photo != ''){
                     $emp_photo = $val->emp_photo;
@@ -79,6 +80,7 @@ class employee_m extends CI_Model {
                 $nestedData['emailId'] = $val->email_id;
                 $nestedData['employeeType'] = $employeeType;
                 $nestedData['designation'] = $designation;
+                $nestedData['basicPay'] = number_format($basicPay);
                 $nestedData['photo'] = '<img src="'.base_url('upload/employee/'.$emp_photo).'" style="height: 50px;">';
                 $nestedData['action'] = '<a href="javascript:void(0)" data-emp_id="'.$emp_id.'" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
                 <a href="'. base_url('admin/edit-employee/'.$emp_id).'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
@@ -199,6 +201,7 @@ class employee_m extends CI_Model {
             'last_name' => $this->input->post('last_name'),
             'email_id' => $this->input->post('email_id'),
             'ph_number' => $this->input->post('ph_number'),
+            'basic_pay' => $this->input->post('basic_pay'),
             'active_loan' => $active_loan,
             'loan_duration' => $this->input->post('loan_duration'),
             'loan_amount_remaining' => $active_loan,
@@ -338,6 +341,7 @@ class employee_m extends CI_Model {
             'last_name' => $this->input->post('last_name'),
             'email_id' => $this->input->post('email_id'),
             'ph_number' => $this->input->post('ph_number'),
+            'basic_pay' => $this->input->post('basic_pay'),
             'active_loan' => $this->input->post('active_loan'),
             'loan_duration' => $this->input->post('loan_duration'),
             'loan_amount_remaining' => $this->input->post('active_loan'),

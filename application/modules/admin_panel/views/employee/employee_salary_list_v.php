@@ -52,11 +52,8 @@
                                     <tr>
                                         <th>Sl#</th>
                                         <th>Employee Name</th>
-                                        <th>Phone Number</th>
-                                        <th>Email Id</th>
-                                        <th>Employee Type</th>
-                                        <th>Designation</th>
-                                        <th>Photo</th>
+                                        <th>Payout Month</th>
+                                        <th>Total Pay</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -126,25 +123,14 @@
             },
             "rowCallback": function (row, data) {
                 // console.log(data);
-                if (data.usertype == 'Resource Developer') {
-                    $(row).addClass('bg-green1');
-                }
-                if (data.usertype == 'Exporter') {
-                    $(row).addClass('bg-green2');
-                }
-                if (data.usertype == 'Marketing') {
-                    $(row).addClass('bg-green3');
-                }
+                
             },
             //will get these values from JSON 'data' variable
             "columns": [
                 { "data": "slNo" },
                 { "data": "employeeName" },
-                { "data": "phNumber" },
-                { "data": "emailId" },
-                { "data": "employeeType" },
-                { "data": "designation" },
-                { "data": "photo" },
+                { "data": "payoutMonth" },
+                { "data": "totalPay" },
                 { "data": "action" }
             ],
             //column initialisation properties
@@ -177,14 +163,13 @@
     $(document).on('click', '.delete', function(){
         $this = $(this);
         if(confirm("Are You Sure? This Process Can\'t be Undone.")){
-
-            $user_id = $(this).data('user_id');           
+            $salary_id = $(this).data('salary_id');           
 
             $.ajax({
-                url: "<?= base_url('admin/ajax-delete-user/') ?>",
+                url: "<?= base_url('admin/ajax-delete-salary/') ?>",
                 dataType: 'json',
                 type: 'POST',
-                data: {user_id: $user_id},
+                data: {salary_id: $salary_id},
                 success: function (returnData) {
                     console.log(returnData);
                    

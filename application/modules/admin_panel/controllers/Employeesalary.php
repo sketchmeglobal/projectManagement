@@ -81,11 +81,11 @@ class Employeesalary extends My_Controller {
 
     }
 
-    public function ajax_delete_user(){
+    public function ajax_delete_salary(){
         
         if($this->check_permission(array()) == true) {
             $this->load->model('Employeesalary_m');
-            $data = $this->Employeesalary_m->ajax_delete_user();
+            $data = $this->Employeesalary_m->ajax_delete_salary();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }

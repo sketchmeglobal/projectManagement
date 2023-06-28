@@ -49,8 +49,6 @@
                             //echo json_encode($salary_details);
                             $all_allowance = json_decode($salary_details[0]->all_allowance);
                             $all_deduction = json_decode($salary_details[0]->all_deduction);
-
-                            //echo 'emp_name: '. $salary_details[0]->emp_name;
                         ?>    
                         
                         <form autocomplete="off" id="form_edit_salary" method="post" action="<?=base_url('admin/form-edit-salary')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
@@ -64,7 +62,7 @@
                                             if(sizeof($employees) > 0){
                                                 foreach($employees as $employee){
                                             ?>
-                                            <option value="<?=$employee->emp_id?>" <?php if($salary_details[0]->emp_id == $employee->emp_id){?> selected <?php } ?>><?=$employee->first_name.' '.$employee->last_name?></option>
+                                            <option value="<?=$employee->emp_id?>" data-loan_amount_remaining="<?=$employee->loan_amount_remaining?>" data-basic_pay="<?=$employee->basic_pay?>" <?php if($salary_details[0]->emp_id == $employee->emp_id){?> selected <?php } ?>><?=$employee->first_name.' '.$employee->last_name?></option>
                                             <?php 
                                                 } 
                                             }
@@ -273,6 +271,17 @@
 <script src="<?=base_url();?>assets/admin_panel/js/jquery.form.min.js"></script>
 
 <script>
+    $('#emp_id').on('change', function(){
+        $emp_name = $('#emp_id option:selected').text();
+        $('#emp_name').val($emp_name);
+
+        $loan_amount_remaining = $('#emp_id option:selected').data('loan_amount_remaining');
+        $('#loan').val($loan_amount_remaining);
+
+        $basic_pay = $('#emp_id option:selected').data('basic_pay');
+        $('#basic').val($basic_pay);
+    })
+
     //add-item-form validation and submit
     $("#form_edit_salary").validate({
         

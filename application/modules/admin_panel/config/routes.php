@@ -76,7 +76,10 @@
 
 	//edit
 	$route['admin/edit-salary/(:num)'] = 'admin_panel/Employeesalary/edit_salary/$1';	
- 	$route['admin/form-edit-salary'] = 'admin_panel/Employeesalary/form_edit_salary';	
+ 	$route['admin/form-edit-salary'] = 'admin_panel/Employeesalary/form_edit_salary';
+	
+	 //delete
+	 $route['admin/ajax-delete-salary'] = 'admin_panel/Employeesalary/ajax_delete_salary';	
 
 	/*******
 	// USER MANAGEMENT

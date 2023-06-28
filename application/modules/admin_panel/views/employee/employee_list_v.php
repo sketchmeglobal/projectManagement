@@ -56,6 +56,7 @@
                                         <th>Email Id</th>
                                         <th>Employee Type</th>
                                         <th>Designation</th>
+                                        <th>Basic Pay</th>
                                         <th>Photo</th>
                                         <th>Actions</th>
                                     </tr>
@@ -144,6 +145,7 @@
                 { "data": "emailId" },
                 { "data": "employeeType" },
                 { "data": "designation" },
+                { "data": "basicPay" },
                 { "data": "photo" },
                 { "data": "action" }
             ],

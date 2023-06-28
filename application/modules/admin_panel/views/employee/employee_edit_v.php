@@ -112,6 +112,11 @@
                                
                                 <div class="form-group">
                                     <div class="col-lg-3">
+                                        <label for="basic_pay" class="control-label">Basic Pay</label>
+                                        <input value="<?=$employee_details[0]->basic_pay?>" id="basic_pay" name="basic_pay" type="number" placeholder="Basic Pay" class="form-control round-input" />
+                                    </div>
+
+                                    <div class="col-lg-3">
                                         <label for="last_incriment_date" class="control-label">Last Incriment Date</label>
                                         <input value="<?=date('Y-m-d', strtotime($employee_details[0]->last_incriment_date))?>" id="last_incriment_date" name="last_incriment_date" type="date" placeholder="Loan Duration" class="form-control round-input" />
                                     </div>

@@ -17,72 +17,23 @@ class employeesalary_m extends CI_Model {
         $data = array();
         $nestedData = array();
 
-        $p_data = $this->db->get('employee')->result();
+        $p_data = $this->db->get('emp_salary')->result();
 
         if(sizeof($p_data) > 0){
             $slNo = 1;
             foreach($p_data as $index => $val){
-                $emp_id = $val->emp_id;
-                $first_name = $val->first_name;
-                $last_name = $val->last_name;
-
-                if($val->emp_photo != ''){
-                    $emp_photo = $val->emp_photo;
-                }else{
-                    $emp_photo = 'no_image.png';
-                }
-                
-                $employeeName = $first_name;
-                if($last_name != ''){
-                    $employeeName .= ' '.$last_name;
-                }
-
-                $emp_type = $val->emp_type;
-                if($emp_type == '1'){
-                    $employeeType = 'Permanent';
-                }else if($emp_type == '2'){
-                    $employeeType = 'Part Timer';
-                }else{
-                    $employeeType = 'Freelancer';
-                }
-
-                $emp_desig = $val->emp_desig;
-                if($emp_desig == '1'){
-                    $designation = 'Designer';
-                }else if($emp_desig == '2'){
-                    $designation = 'Developer';
-                }else if($emp_desig == '3'){
-                    $designation = 'Full Stack Developer';
-                }else if($emp_desig == '4'){
-                    $designation = 'Sr. Designer';
-                }else if($emp_desig == '5'){
-                    $designation = 'Sr. Developer';
-                }else if($emp_desig == '6'){
-                    $designation = 'Team Lead';
-                }else if($emp_desig == '7'){
-                    $designation = 'Project Mgr.';
-                }else if($emp_desig == '8'){
-                    $designation = 'Manager';
-                }else if($emp_desig == '9'){
-                    $designation = 'Director';
-                }else if($emp_desig == '10'){
-                    $designation = 'Managing Director';
-                }else if($emp_desig == '11'){
-                    $designation = 'Accounts & project coordinator';
-                }else{
-                    $designation = 'Business Developer';
-                }
+                $salary_id = $val->salary_id;
+                $emp_name = $val->emp_name;
+                $payout_date = $val->payout_date;
+                $total_pay = $val->total_pay;
 
                 $nestedData['slNo'] = $slNo;
-                $nestedData['employeeName'] = $employeeName;
-                $nestedData['phNumber'] = $val->ph_number;
-                $nestedData['emailId'] = $val->email_id;
-                $nestedData['employeeType'] = $employeeType;
-                $nestedData['designation'] = $designation;
-                $nestedData['photo'] = '<img src="'.base_url('upload/employee/'.$emp_photo).'" style="height: 50px;">';
-                $nestedData['action'] = '<a href="javascript:void(0)" data-emp_id="'.$emp_id.'" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
-                <a href="'. base_url('admin/edit-employee/'.$emp_id).'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
-                <a href="javascript:void(0)" data-emp_id="'.$emp_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+                $nestedData['employeeName'] = $emp_name;
+                $nestedData['payoutMonth'] = date('d-m-Y', strtotime($payout_date));
+                $nestedData['totalPay'] = number_format($total_pay);
+                $nestedData['action'] = '<a href="javascript:void(0)" data-salary_id="'.$salary_id.'" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
+                <a href="'. base_url('admin/edit-salary/'.$salary_id).'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
+                <a href="javascript:void(0)" data-salary_id="'.$salary_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
                             
                 array_push($data, $nestedData);
                 $slNo++;
@@ -199,6 +150,10 @@ class employeesalary_m extends CI_Model {
         $all_allowance = new stdClass();
         $all_deduction = new stdClass();
 
+        $total_allowance = 0;
+        $total_deduction = 0;
+        $total_pay = 0;
+
         //Allowance
         $all_allowance->basic = $this->input->post('basic');
         $all_allowance->hra = $this->input->post('hra');
@@ -218,6 +173,8 @@ class employeesalary_m extends CI_Model {
         $all_allowance->medicalInsurancePremium = $this->input->post('medicalInsurancePremium');
         $all_allowance->arrear = $this->input->post('arrear');
 
+        $total_allowance = ($this->input->post('basic') + $this->input->post('hra') + $this->input->post('conveyanceAllowance') + $this->input->post('ProfDevelopmentAllowance') + $this->input->post('booksAndPeriodicals') + $this->input->post('medicalReimbursement') + $this->input->post('childEducationAllowance') + $this->input->post('PerformancePayAllowance') + $this->input->post('specialAllowance') + $this->input->post('entertainmentAllowance') + $this->input->post('fuelAndMaintenance') + $this->input->post('otherAllowance') + $this->input->post('variablePay') + $this->input->post('lta_AnnualBenefit') + $this->input->post('festivalBonus') + $this->input->post('medicalInsurancePremium') + $this->input->post('arrear'));
+
         //Deduction
         $all_deduction->employees_PF_PPF = $this->input->post('employees_PF_PPF');
         $all_deduction->employeesESIC = $this->input->post('employeesESIC');
@@ -230,17 +187,34 @@ class employeesalary_m extends CI_Model {
         $all_deduction->miscDeduction = $this->input->post('miscDeduction');
         $all_deduction->loan = $this->input->post('loan');
 
+        $total_deduction = ($this->input->post('employees_PF_PPF') + $this->input->post('employeesESIC') + $this->input->post('professionalTax') + $this->input->post('incomeTax') + $this->input->post('ltaDeduction') + $this->input->post('festivalBonusDeduction') + $this->input->post('medicalInsurancePremiumDeduct') + $this->input->post('otherDeductions') + $this->input->post('miscDeduction') + $this->input->post('loan'));
+
+        $total_pay = ($total_allowance - $total_deduction);
 
         $insertArray = array(
             'emp_id' => $emp_id,
             'emp_name' => $emp_name,
             'all_allowance' => json_encode($all_allowance),
-            'all_deduction' => json_encode($all_deduction)
+            'all_deduction' => json_encode($all_deduction),
+            'total_pay' => $total_pay
         );   
 
         if($this->db->insert('emp_salary', $insertArray)){
             $salary_id = $this->db->insert_id();
             $data['salary_id'] = $salary_id;
+
+            //Update Loan amount
+            $loan = $this->input->post('loan');
+            $rs = $this->db->get_where('employee', array('emp_id' => $emp_id))->result();
+            $loan_amount_remaining = $rs[0]->loan_amount_remaining;
+            $loan_amount_remaining = $loan_amount_remaining - $loan;
+
+            $updateArray2 = array(
+                'loan_amount_remaining' => $loan_amount_remaining
+            );
+    
+            $val = $this->db->update('employee', $updateArray2, array('emp_id' => $emp_id));
+
 
             $data['type'] = 'success';
             $data['msg'] = 'Salary added successfully.'; 
@@ -344,6 +318,10 @@ class employeesalary_m extends CI_Model {
         $all_allowance = new stdClass();
         $all_deduction = new stdClass();
 
+        $total_allowance = 0;
+        $total_deduction = 0;
+        $total_pay = 0;
+
         //Allowance
         $all_allowance->basic = $this->input->post('basic');
         $all_allowance->hra = $this->input->post('hra');
@@ -363,6 +341,8 @@ class employeesalary_m extends CI_Model {
         $all_allowance->medicalInsurancePremium = $this->input->post('medicalInsurancePremium');
         $all_allowance->arrear = $this->input->post('arrear');
 
+        $total_allowance = ($this->input->post('basic') + $this->input->post('hra') + $this->input->post('conveyanceAllowance') + $this->input->post('ProfDevelopmentAllowance') + $this->input->post('booksAndPeriodicals') + $this->input->post('medicalReimbursement') + $this->input->post('childEducationAllowance') + $this->input->post('PerformancePayAllowance') + $this->input->post('specialAllowance') + $this->input->post('entertainmentAllowance') + $this->input->post('fuelAndMaintenance') + $this->input->post('otherAllowance') + $this->input->post('variablePay') + $this->input->post('lta_AnnualBenefit') + $this->input->post('festivalBonus') + $this->input->post('medicalInsurancePremium') + $this->input->post('arrear'));
+
         //Deduction
         $all_deduction->employees_PF_PPF = $this->input->post('employees_PF_PPF');
         $all_deduction->employeesESIC = $this->input->post('employeesESIC');
@@ -375,11 +355,16 @@ class employeesalary_m extends CI_Model {
         $all_deduction->miscDeduction = $this->input->post('miscDeduction');
         $all_deduction->loan = $this->input->post('loan'); 
 
+        $total_deduction = ($this->input->post('employees_PF_PPF') + $this->input->post('employeesESIC') + $this->input->post('professionalTax') + $this->input->post('incomeTax') + $this->input->post('ltaDeduction') + $this->input->post('festivalBonusDeduction') + $this->input->post('medicalInsurancePremiumDeduct') + $this->input->post('otherDeductions') + $this->input->post('miscDeduction') + $this->input->post('loan'));
+
+        $total_pay = ($total_allowance - $total_deduction);
+
         $updateArray1 = array(
             'emp_id' => $emp_id,
             'emp_name' => $emp_name,
             'all_allowance' => json_encode($all_allowance),
-            'all_deduction' => json_encode($all_deduction)
+            'all_deduction' => json_encode($all_deduction),
+            'total_pay' => $total_pay
         );
 
         $val = $this->db->update('emp_salary', $updateArray1, array('salary_id' => $salary_id));
@@ -396,19 +381,16 @@ class employeesalary_m extends CI_Model {
         return $data;
     }
 
-    public function ajax_delete_user(){
-
-        $user_id = $this->input->post('user_id');
+    public function ajax_delete_salary(){
+        $salary_id = $this->input->post('salary_id');
         $delClause = array(
-            'user_id' => $user_id
+            'salary_id' => $salary_id
         );
-
-        $this->db->where($delClause)->delete('user_details');
-        $this->db->where($delClause)->delete('users');
+        $this->db->where($delClause)->delete('emp_salary');
 
         $data['type'] = 'success';
         $data['title'] = 'Deletion!';
-        $data['msg'] = 'User deleted successfully'; 
+        $data['msg'] = 'Salary Slip deleted successfully'; 
 
         return $data;
         

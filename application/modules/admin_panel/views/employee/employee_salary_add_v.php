@@ -60,7 +60,7 @@
                                             if(sizeof($employees) > 0){
                                                 foreach($employees as $employee){
                                             ?>
-                                            <option value="<?=$employee->emp_id?>"><?=$employee->first_name.' '.$employee->last_name?></option>
+                                            <option value="<?=$employee->emp_id?>" data-loan_amount_remaining="<?=$employee->loan_amount_remaining?>" data-basic_pay="<?=$employee->basic_pay?>"><?=$employee->first_name.' '.$employee->last_name?></option>
                                             <?php 
                                                 } 
                                             }
@@ -270,7 +270,13 @@
 <script>
     $('#emp_id').on('change', function(){
         $emp_name = $('#emp_id option:selected').text();
-        $('#emp_name').val($emp_name)
+        $('#emp_name').val($emp_name);
+
+        $loan_amount_remaining = $('#emp_id option:selected').data('loan_amount_remaining');
+        $('#loan').val($loan_amount_remaining);
+
+        $basic_pay = $('#emp_id option:selected').data('basic_pay');
+        $('#basic').val($basic_pay);
     })
 
     //add-item-form validation and submit
