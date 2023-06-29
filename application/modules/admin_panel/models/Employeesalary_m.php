@@ -31,7 +31,7 @@ class employeesalary_m extends CI_Model {
                 $nestedData['employeeName'] = $emp_name;
                 $nestedData['payoutMonth'] = date('d-m-Y', strtotime($payout_date));
                 $nestedData['totalPay'] = number_format($total_pay);
-                $nestedData['action'] = '<a href="javascript:void(0)" data-salary_id="'.$salary_id.'" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
+                $nestedData['action'] = '<a href="'. base_url('admin/print-salaryslip/'.$salary_id).'" target="_blank" data-salary_id="'.$salary_id.'" class="btn bg-yellow print_salaryslip"><i class="fa fa-eye"></i> View</a>
                 <a href="'. base_url('admin/edit-salary/'.$salary_id).'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
                 <a href="javascript:void(0)" data-salary_id="'.$salary_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
                             
@@ -196,6 +196,8 @@ class employeesalary_m extends CI_Model {
             'emp_name' => $emp_name,
             'all_allowance' => json_encode($all_allowance),
             'all_deduction' => json_encode($all_deduction),
+            'total_allowance' => $total_allowance,
+            'total_deduction' => $total_deduction,
             'total_pay' => $total_pay
         );   
 
@@ -289,7 +291,15 @@ class employeesalary_m extends CI_Model {
         $data['salary_details'] = $this->db->get_where('emp_salary', array('salary_id' => $salary_id))->result();
 
         return array('page' => 'employee/employee_salary_edit_v', 'data' => $data);
+    }
 
+    public function print_salaryslip($salary_id = ''){        
+        $data['title'] = 'Salary Slip';
+        $data['menu'] = 'Salary';
+
+        $data['salary_details'] = $this->db->get_where('emp_salary', array('salary_id' => $salary_id))->result();
+
+        return array('page' => 'employee/print_salaryslip', 'data' => $data);
     }
 
     public function ajax_unique_username_edit(){
@@ -364,6 +374,8 @@ class employeesalary_m extends CI_Model {
             'emp_name' => $emp_name,
             'all_allowance' => json_encode($all_allowance),
             'all_deduction' => json_encode($all_deduction),
+            'total_allowance' => $total_allowance,
+            'total_deduction' => $total_deduction,
             'total_pay' => $total_pay
         );
 

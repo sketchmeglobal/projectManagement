@@ -120,6 +120,14 @@ class Employeesalary extends My_Controller {
         }
     }
 
+    public function print_salaryslip($salary_id) {
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Employeesalary_m');
+            $data = $this->Employeesalary_m->print_salaryslip($salary_id);
+            $this->load->view($data['page'], $data['data']);
+        }
+    }
+
     public function ajax_unique_username_edit(){
         
         if($this->check_permission(array()) == true) {

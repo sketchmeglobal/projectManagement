@@ -158,6 +158,7 @@
 	//print
 	$route['admin/print-quotation/(:num)/(:num)'] = 'admin_panel/Projects/print_quotation_details/$1/$2';
 	$route['admin/print-invoice/(:num)/(:num)'] = 'admin_panel/Projects/print_invoice_details/$1/$2';
+	$route['admin/print-salaryslip/(:num)'] = 'admin_panel/Employeesalary/print_salaryslip/$1';
 	//'Admin_dashboard/Admin_print/cbill';
 
 		//delete
