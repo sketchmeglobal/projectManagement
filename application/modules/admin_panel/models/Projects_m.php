@@ -737,6 +737,7 @@ class Projects_m extends CI_Model {
     public function form_add_invoice_info(){  
         $daya = array();
         $status = true;
+        $inv_status = '1';
 
         $created_by = $this->session->user_id;
 
@@ -761,6 +762,7 @@ class Projects_m extends CI_Model {
             $inv_obj->inv_WorkOrderNo = $inv_WorkOrderNo;
             $inv_obj->inv_SubPartyName = $inv_SubPartyName;
             $inv_obj->inv_Remarks = $inv_Remarks;
+            $inv_obj->inv_status = $inv_status;
 
             //check existing data
             $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
@@ -874,6 +876,78 @@ class Projects_m extends CI_Model {
 
     }//end invoice info
     
+    //Receive Invoice Payment
+    public function form_invoice_receive_payment(){  
+        $daya = array();
+        $invoice_details = array();
+        $status = true;
+        $created_by = $this->session->user_id;
+
+        $project_id = $this->input->post('inv_project_id1');
+        $inv_obj_id = $this->input->post('e_inv_obj_id1');
+        $data['updated'] = false; 
+
+        if($project_id > 0 && $inv_obj_id > 0){
+            $inv_receive_amount = $this->input->post('inv_receive_amount');
+            $inv_deduction_amount = $this->input->post('inv_deduction_amount');
+            $inv_payment_rcv_date = $this->input->post('inv_payment_rcv_date');
+            $inv_payment_rcv_note = $this->input->post('inv_payment_rcv_note');
+            
+            $inv_payment_id = rand(1000, 9999);
+
+            $inv_payment_obj = new stdClass();
+            $inv_payment_obj->inv_payment_id = $inv_payment_id;
+            $inv_payment_obj->inv_obj_id = $inv_obj_id;
+            $inv_payment_obj->inv_receive_amount = $inv_receive_amount;
+            $inv_payment_obj->inv_deduction_amount = $inv_deduction_amount;
+            $inv_payment_obj->inv_payment_rcv_date = $inv_payment_rcv_date;
+            $inv_payment_obj->inv_payment_rcv_note = $inv_payment_rcv_note;
+
+            //check existing data
+            $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1); 
+                if(isset($project_description->invoice_details)){
+                    $invoice_details = $project_description->invoice_details;
+                }
+            }            
+
+            if(sizeof($invoice_details) > 0){
+                for($i = 0; $i < sizeof($invoice_details); $i++){
+                    if($invoice_details[$i]->inv_obj_id == $inv_obj_id){
+                        if(isset($invoice_details[$i]->inv_paymentHistory)){
+                            $inv_paymentHistory = $invoice_details[$i]->inv_paymentHistory;
+                        }else{
+                            $invoice_details[$i]->inv_paymentHistory = array();
+                            $inv_paymentHistory = array();
+                        }
+                        array_push($inv_paymentHistory, $inv_payment_obj);                        
+                        $invoice_details[$i]->inv_paymentHistory = $inv_paymentHistory;
+                    }//end if
+                }//end for
+            }//end if
+            
+           
+            $project_description->invoice_details = $invoice_details;
+
+            $updateArray = array(
+                'project_description' => json_encode($project_description)
+            );
+
+            $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+            $data['updated'] = $val;  
+        }   
+        
+        $data['type'] = 'success';
+        $data['msg'] = 'Payment Received Properly';
+        $data['title'] = 'Payment';
+        $data['project_id'] = $project_id;
+        $data['inv_obj_id'] = $inv_obj_id;
+        $data['inv_payment_id'] = $inv_payment_id;
+        return $data;
+
+    }//end invoice info
 
     //Contact details edit
     public function form_edit_contact(){  
@@ -1319,6 +1393,60 @@ class Projects_m extends CI_Model {
             $data['title'] = 'Deleted!';
             $data['type'] = 'success';
             $data['msg'] = 'Commission Deleted Successfully';
+        }
+        return $data;        
+    }//end fun
+
+
+    //Payment History list delete
+    public function del_row_invoicepayment_details(){
+        $project_id = $this->input->post('project_id');
+        $inv_obj_id = $this->input->post('inv_obj_id');
+        $inv_payment_id = $this->input->post('inv_payment_id');
+
+        $status = true;
+        $paymentHistoryNew = array();
+        
+        if($inv_obj_id > 0){   
+            //check existing data
+            $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1); 
+                $invoice_details = $project_description->invoice_details;
+
+                for($i = 0; $i < sizeof($invoice_details); $i++){
+                    if($invoice_details[$i]->inv_obj_id == $inv_obj_id){
+                        if(isset($invoice_details[$i]->inv_paymentHistory)){
+                            $inv_paymentHistory = $invoice_details[$i]->inv_paymentHistory;
+                        }
+
+                        for($j = 0; $j < sizeof($inv_paymentHistory); $j++){
+                            if($inv_paymentHistory[$j]->inv_payment_id != $inv_payment_id){                        
+                                array_push($paymentHistoryNew, $inv_paymentHistory[$j]);
+                            }
+                        }
+
+                        $invoice_details[$i]->inv_paymentHistory = $paymentHistoryNew;
+
+                    }//end if
+                }//end for
+            }
+            
+            $project_description->invoice_details = $invoice_details;
+
+            $updateArray = array(
+                'project_description' => json_encode($project_description)
+            );
+
+            $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+            $data['file_updated'] = $val;   
+        }   
+
+        if ($status == true) {
+            $data['title'] = 'Deleted!';
+            $data['type'] = 'success';
+            $data['msg'] = 'Payment Deleted Successfully';
         }
         return $data;        
     }//end fun
@@ -2084,7 +2212,7 @@ class Projects_m extends CI_Model {
         return $final_array;
     }//file upload end
 
-    //Contact detail edit tata fetch
+    //Contact detail edit data fetch
     public function fetch_contact_details_on_pk(){        
         $project_id = $this->input->post('project_id');      
         $contact_obj = $this->input->post('contact_obj');
@@ -2107,7 +2235,7 @@ class Projects_m extends CI_Model {
         return $returnObj;
     }
 
-    //Quotation detail edit tata fetch
+    //Quotation detail edit data fetch
     public function fetch_quotation_details_on_pk(){        
         $project_id = $this->input->post('project_id');      
         $bi_obj = $this->input->post('bi_obj');
@@ -2122,6 +2250,29 @@ class Projects_m extends CI_Model {
             for($i = 0; $i < sizeof($quotationDetail); $i++){
                 if($quotationDetail[$i]->bi_obj == $bi_obj){
                     $returnObj = $quotationDetail[$i];
+                    break;
+                }//end if
+            }//end for
+        }
+
+        return $returnObj;
+    }
+
+    //Invoice detail edit data fetch
+    public function fetch_invoice_details_on_pk(){        
+        $project_id = $this->input->post('project_id');      
+        $inv_obj_id = $this->input->post('inv_obj_id');
+
+        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1); 
+            $invoice_details = $project_description->invoice_details;
+
+            $returnObj = new stdClass();
+            for($i = 0; $i < sizeof($invoice_details); $i++){
+                if($invoice_details[$i]->inv_obj_id == $inv_obj_id){
+                    $returnObj = $invoice_details[$i];
                     break;
                 }//end if
             }//end for
@@ -2425,6 +2576,7 @@ class Projects_m extends CI_Model {
                 $nestedData['NetAmount'] = number_format($tax_NetAmount, 2);
                 $nestedData['paid'] = $paid;
                 $nestedData['action'] = '<a href="'. base_url('admin/print-invoice/'.$project_id.'/'.$value->inv_obj_id).'" target="_blank" data-project_id="'.$project_id.'" class="btn bg-yellow print_invoice"><i class="fa fa-eye"></i> View</a>
+                <a href="javascript:void(0)" data-project_id="'.$project_id.'" data-inv_obj_id="'.$value->inv_obj_id.'" class="btn btn-info edit_inv_obj_id"><i class="fa fa-pencil"></i> Edit</a>
                 <a href="javascript:void(0)" data-project_id="'.$project_id.'" data-inv_obj_id="'.$value->inv_obj_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
                 array_push($data, $nestedData);
@@ -2523,7 +2675,7 @@ class Projects_m extends CI_Model {
     }  
     
 
-    //Requirement edit tata fetch
+    //Requirement edit data fetch
     public function fetch_requirement_details_on_pk(){        
         $project_id = $this->input->post('project_id');      
         $doc_obj = $this->input->post('doc_obj');
@@ -2718,6 +2870,71 @@ class Projects_m extends CI_Model {
                 $nestedData['startDate'] = $inv_par_StartDate;
                 $nestedData['amount'] = $inv_Amount;
                 $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" data-inv_obj_id="'.$inv_obj_id.'" data-parti_obj_id="'.$parti_obj_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+
+                $counter++;
+                array_push($data, $nestedData);
+            }//end foreach
+        }//end if
+
+
+
+        $json_data = array(
+            "recordsTotal"    => sizeof($data),
+            "recordsFiltered" => sizeof($data),
+            "data"            => $data
+        );       
+        
+        return $json_data;
+    } 
+
+    //Invoice payment history
+    public function ajax_inv_payment_details_table_data() {       
+        $project_id = $this->input->post('project_id');      
+        $inv_obj_id = $this->input->post('inv_obj_id');
+
+        $data = array();
+        $particulars = array();
+        $invoice_details = array();
+
+        $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
+        //print_r($result);
+
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1);
+            $invoice_details = $project_description->invoice_details;
+        }
+
+        if(sizeof($invoice_details) > 0){
+            $inv_obj_id_new = 0;
+            foreach($invoice_details as $key => $value){
+                $inv_obj_id_new = $value->inv_obj_id;
+
+                if($inv_obj_id == $inv_obj_id_new){
+                    if(isset($value->inv_paymentHistory)){
+                        $inv_paymentHistory = $value->inv_paymentHistory;
+                    }
+                    break;
+                }//end if
+            }//end foreach
+        }//end if
+
+        if(sizeof($inv_paymentHistory) > 0){
+            $counter = 1;
+            foreach($inv_paymentHistory as $key => $value){
+                $inv_payment_id = $value->inv_payment_id;
+                $inv_obj_id = $value->inv_obj_id;
+                $inv_receive_amount = $value->inv_receive_amount;
+                $inv_deduction_amount = $value->inv_deduction_amount;
+                $inv_payment_rcv_date = $value->inv_payment_rcv_date;
+                $inv_payment_rcv_note = $value->inv_payment_rcv_note;
+
+                $nestedData['slNo'] = $counter;
+                $nestedData['receiveAmount'] = number_format($inv_receive_amount, 2);
+                $nestedData['deduction'] = number_format($inv_deduction_amount, 2);
+                $nestedData['paymentReceiveDate'] = $inv_payment_rcv_date;
+                $nestedData['note'] = $inv_payment_rcv_note;
+                $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" data-inv_payment_id="'.$inv_payment_id.'" data-inv_obj_id="'.$inv_obj_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
                 $counter++;
                 array_push($data, $nestedData);

@@ -131,6 +131,15 @@ class Projects extends My_Controller {
         }
     }
     
+    public function ajax_inv_payment_details_table_data() {
+        if($this->check_permission() == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_inv_payment_details_table_data();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+    
     public function ajax_commission_details_table_data() {
         if($this->check_permission() == true) {
             $this->load->model('Projects_m');
@@ -211,6 +220,15 @@ class Projects extends My_Controller {
         if($this->check_permission(array()) == true) {
             $this->load->model('Projects_m');
             $data = $this->Projects_m->form_add_invoice_particular_info();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
+    public function form_invoice_receive_payment(){        
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->form_invoice_receive_payment();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -340,6 +358,15 @@ class Projects extends My_Controller {
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
+    } 
+
+    public function fetch_invoice_details_on_pk() {
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->fetch_invoice_details_on_pk();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
     }    
 
     public function del_row_contact_details() {
@@ -409,6 +436,15 @@ class Projects extends My_Controller {
         if($this->check_permission(array()) == true) {
             $this->load->model('Projects_m');
             $data = $this->Projects_m->del_row_commission_details();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
+    public function del_row_invoicepayment_details() {
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->del_row_invoicepayment_details();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }

@@ -1097,7 +1097,7 @@
                             <ul id="invoice_tabs" class="nav nav-tabs nav-justified">
                                 <li class="active"><a href="#invoice_list" data-toggle="tab">List</a></li>
                                 <li  id="invoice_details_add_tab"><a href="#invoice_details_add" data-toggle="tab">Add</a></li>
-                                <!-- <li id="contact_details_edit_tab" class="disabled" ><a href="#contact_details_edit" data-toggle="tab">Edit</a></li> -->
+                                <li id="invoice_details_edit_tab" class="disabled" ><a href="#invoice_details_edit" data-toggle="tab">Edit</a></li>
                             </ul>
                             <!--Tab Content-->
                             <div class="tab-content">
@@ -1325,6 +1325,113 @@
                                     </div>
 
                                 </div>
+
+                                <div id="invoice_details_edit" class="tab-pane fade">
+                                    <br/>
+                                    <h4 >Basic Info</h4>
+                                    <div class="form-group " style="float: left;">                                        
+                                        <form autocomplete="off" id="edit_invoice_form" method="post" action="<?=base_url('admin/form-edit-invoice-info')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
+                                            <div class="form-group "> 
+                                                <div class="col-lg-3">
+                                                    <label for="e_inv_BillNo" class="control-label">Bill No</label>
+                                                    <input type="text" name="e_inv_BillNo" id="e_inv_BillNo" class="form-control">
+                                                </div>   
+                                                <div class="col-lg-3">
+                                                    <label for="e_inv_BillDate" class="control-label">Bill Date</label>
+                                                    <input type="date" name="e_inv_BillDate" id="e_inv_BillDate" class="form-control">
+                                                </div>   
+                                                <div class="col-lg-3">
+                                                    <label for="e_inv_InvoiceDate" class="control-label">Invoice Date</label>
+                                                    <input type="date" name="e_inv_InvoiceDate" id="e_inv_InvoiceDate" class="form-control">
+                                                </div>  
+                                                <div class="col-lg-3">
+                                                    <label for="e_inv_WorkOrderNo" class="control-label">Work Order No.</label>
+                                                    <input type="text" name="e_inv_WorkOrderNo" id="e_inv_WorkOrderNo" class="form-control">
+                                                </div>  
+                                                <div class="col-lg-3">
+                                                    <label for="e_inv_SubPartyName" class="control-label">Sub Party Name</label>
+                                                    <input type="text" name="e_inv_SubPartyName" id="e_inv_SubPartyName" class="form-control">
+                                                </div>    
+                                                <div class="col-lg-3">
+                                                    <label for="e_inv_Remarks" class="control-label">Remarks</label>
+                                                    <input type="text" name="e_inv_Remarks" id="e_inv_Remarks" class="form-control">
+                                                </div>   
+                                                <div class="col-lg-3">
+                                                    <label for="e_inv_status" class="control-label">Invoice Status</label>
+                                                    <select name="e_inv_status" id="e_inv_status" class="form-control select2">
+                                                        <option value="0" >-- Select Status --</option>
+                                                        <option value="1" >Sent</option>
+                                                        <option value="2" >Partially Paid</option>
+                                                        <option value="3" >Full Paid</option>
+                                                    </select>
+                                                </div> 
+                                                <div class="col-lg-3" style="margin-top: 25px;">
+                                                    <label for="" class="control-label"></label>
+                                                    <input type="submit" name="e_invoice_submit" class="btn btn-success text-center" id="e_invoice_submit" value="Update"> 
+                                                    <input type="hidden" value="" name="e_inv_obj_id" id="e_inv_obj_id">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <h4 >Receive Payment</h4>
+                                    <div class="form-group " style="float: left;">                                        
+                                        <form autocomplete="off" id="invoice_receive_payment" method="post" action="<?=base_url('admin/form-invoice-receive-payment')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
+                                            <div class="form-group "> 
+                                                <div class="col-lg-2">
+                                                    <label for="inv_receive_amount" class="control-label">Receive Amount</label>
+                                                    <input type="number" name="inv_receive_amount" id="inv_receive_amount" class="form-control">
+                                                </div>   
+                                                <div class="col-lg-2">
+                                                    <label for="inv_deduction_amount" class="control-label">Deduction</label>
+                                                    <input type="number" name="inv_deduction_amount" id="inv_deduction_amount" class="form-control">
+                                                </div>   
+                                                <div class="col-lg-3">
+                                                    <label for="inv_payment_rcv_date" class="control-label">Payment Receive Date</label>
+                                                    <input type="date" name="inv_payment_rcv_date" id="inv_payment_rcv_date" class="form-control">
+                                                </div>  
+                                                <div class="col-lg-3">
+                                                    <label for="inv_payment_rcv_note" class="control-label">Note</label>
+                                                    <input type="text" name="inv_payment_rcv_note" id="inv_payment_rcv_note" class="form-control">
+                                                </div> 
+                                                <div class="col-lg-2" style="margin-top: 25px;">
+                                                    <label for="" class="control-label"></label>
+                                                    <input type="submit" name="receive_payment" class="btn btn-success text-center" id="receive_payment" value="Receive"> 
+                                                    <input type="hidden" value="<?=$project_id?>" name="inv_project_id1" id="inv_project_id1">
+                                                    <input type="hidden" value="" name="e_inv_obj_id1" id="e_inv_obj_id1">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <!-- Invoice Payment Receive Table -->                                    
+                                    <table id="invoice_received_payment_table" class="table data-table dataTable" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th>SL.No</th>
+                                                <th>Receive Amount</th>
+                                                <th>Deduction</th>
+                                                <th>Payment Receive Date</th>
+                                                <th>Note</th>  
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>SL.No</th>
+                                                <th>Receive Amount</th>
+                                                <th>Deduction</th>
+                                                <th>Payment Receive Date</th>
+                                                <th>Note</th> 
+                                                <th>Actions</th>
+                                            </tr>
+                                        </tfoot>                                          
+                                    </table>
+                                    <!-- //Invoice Payment Receive Table -->
+                                </div>
+
                             </div>
                         </div>
                     </section>
@@ -1332,8 +1439,8 @@
             </div>
 
             <!-- Modal Start -->
-            <div id="invoiceModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
+            <div id="invoiceModal" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="invoiceModalTitle"> </h5>
@@ -2592,12 +2699,13 @@
         success: function (returnData) {
             obj = JSON.parse(returnData);
             notification(obj);
-			if(parseInt(obj.update_id) > 0){
+			if(obj.db_updated == true){
                 console.log(JSON.stringify(obj));
                 if(obj.type == 'error'){
                     console.log('Error from API')
                 }else{
                     console.log('Document save success')
+                    initInvoiceTable()
                 }            	
 			}
 		}
@@ -3267,12 +3375,6 @@
             obj = JSON.parse(returnData);
             notification(obj);
 			if(parseInt(obj.update_id) > 0){
-                /*$('#li_category').val('');
-                $('#li_username').val('');
-                $('#li_password').val('');
-                $('#li_url').val('');
-                $('#li_note').val('');*/
-
                 $('#invoiceModal').modal('hide');
                 initInvoiceParticularTable(obj.project_id, obj.inv_obj_id, 'invoice_particular_details_table');
                 calculateInvoiceTax(obj.project_id, obj.inv_obj_id);
@@ -3287,6 +3389,147 @@
 		}
     });
     
+    //Edit Invoice
+    $('#invoice_details_table').on('click', '.edit_inv_obj_id', function(){
+        $inv_obj_id = $(this).data('inv_obj_id');
+        $project_id = $('#project_id').val();
+        $('#e_inv_obj_id').val($inv_obj_id); 
+        $('#e_inv_obj_id1').val($inv_obj_id); 
+        
+        $.ajax({
+            url: "<?= base_url('admin/fetch-invoice-details-on-pk/') ?>",
+            dataType: 'json',
+            type: 'POST',
+            data: {inv_obj_id: $inv_obj_id, project_id: $project_id},
+            success: function (returnData) {
+                console.log(returnData); 
+                
+                //Basic info part
+                $("#e_inv_BillNo").val(returnData.inv_BillNo);
+                $("#e_inv_BillDate").val(returnData.inv_BillDate);
+                $("#e_inv_InvoiceDate").val(returnData.inv_InvoiceDate);
+                $("#e_inv_WorkOrderNo").val(returnData.inv_WorkOrderNo);
+                $("#e_inv_SubPartyName").val(returnData.inv_SubPartyName);
+                $("#e_inv_Remarks").val(returnData.inv_Remarks);
+
+                $inv_status = 0;
+                if(returnData.inv_status){
+                    $inv_status = returnData.inv_status;
+                }
+                $("#e_inv_status").val($inv_status).trigger('change');
+
+                initInvoicePaymentTable($project_id, $inv_obj_id)
+
+                $('a[href="#invoice_details_edit"]').tab('show');
+            },
+            error: function (returnData) {
+                obj = JSON.parse(returnData);
+                notification(obj);
+            }
+        });
+    })//end fun
+
+    //Receive Invoice payment
+    $("#invoice_receive_payment").validate({        
+        rules: {
+            inv_receive_amount: {
+                required: true
+            },
+            inv_payment_rcv_date:{
+                required: true
+            }    
+        },
+        messages: {
+
+        }
+    });
+    $('#invoice_receive_payment').ajaxForm({
+        beforeSubmit: function () {
+            return $("#invoice_receive_payment").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            obj = JSON.parse(returnData);
+            notification(obj);
+			if(obj.updated == true){
+                //clear form data
+                $('#inv_receive_amount').val('');
+                $('#inv_deduction_amount').val('');
+                $('#inv_payment_rcv_date').val('');
+                $('#inv_payment_rcv_note').val('');
+                initInvoicePaymentTable(obj.project_id, obj.inv_obj_id)           	
+			}
+		}
+    });
+
+    //Populate Invoice Payment Receive Table
+    function initInvoicePaymentTable($project_id, $inv_obj_id){
+        console.log('project_id: ' + $project_id + ' inv_obj_id: ' + $inv_obj_id)
+        $('#invoice_received_payment_table').dataTable().fnClearTable();
+        $('#invoice_received_payment_table').dataTable().fnDestroy();
+        
+        $('#invoice_received_payment_table').DataTable( {
+            "processing": true,
+            "language": {
+                processing: '<img src="<?=base_url('assets/img/ellipsis.gif')?>"><span class="sr-only">Processing...</span>',
+            },
+            "serverSide": true,
+            "ajax": {
+                "url": "<?=base_url('admin/ajax-inv-payment-details-table-data')?>",
+                "type": "POST",
+                "dataType": "json",
+                data: {
+                    project_id: function () {
+                        return $project_id;
+                    },
+                    inv_obj_id: function () {
+                        return $inv_obj_id;
+                    }
+                },
+            },
+            //will get these values from JSON 'data' variable
+            "columns": [
+                { "data": "slNo" },
+                { "data": "receiveAmount" },
+                { "data": "deduction" },
+                { "data": "paymentReceiveDate" },
+                { "data": "note" },
+                { "data": "action" },
+            ],
+            //column initialisation properties
+            "columnDefs": [{
+                "targets": [0, 1, 2, 3, 4, 5],
+                "orderable": false,
+            }]
+        });
+    }//end 
+
+
+    //Delete payment history     
+    $('#invoice_received_payment_table').on('click', '.delete', function(){
+        $project_id = $(this).data('project_id');
+        $inv_obj_id = $(this).data('inv_obj_id');
+        $inv_payment_id = $(this).data('inv_payment_id');
+
+        if(confirm("Are You Sure? This Process Can\'t be Undone.")){
+            $pk = $(this).attr('data-pk');
+            
+            $.ajax({
+                url: "<?= base_url('admin/del-row-invoicepayment-details/') ?>",
+                dataType: 'json',
+                type: 'POST',
+                data: { project_id: $project_id, inv_obj_id: $inv_obj_id, inv_payment_id: $inv_payment_id },
+                success: function (returnData) {
+                    console.log(returnData);
+                    initInvoicePaymentTable($project_id, $inv_obj_id)
+                    notification(returnData);
+                },
+                error: function (returnData) {
+                    obj = JSON.parse(returnData);
+                    notification(obj);
+                }
+            });
+        }        
+    });
     //Invoice Part end
 
     
