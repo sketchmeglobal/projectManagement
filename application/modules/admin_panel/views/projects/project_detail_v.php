@@ -222,7 +222,8 @@
                                             <th>Email</th>
                                             <th>Phone (Primary)</th>
                                             <th>Phone (Alternative)</th>                                            
-                                            <th>Address</th>
+                                            <th>Address</th>                                          
+                                            <th>Note</th>
                                             <th>Actions</th>
                                         </tr>
                                         </thead>
@@ -261,7 +262,11 @@
                                             <div class="col-lg-3">
                                                 <label for="contact_persn_address" class="control-label">Address</label>
                                                 <textarea name="contact_persn_address" id="contact_persn_address" class="form-control"></textarea>
-                                            </div>  
+                                            </div> 
+                                            <div class="col-lg-3">
+                                                <label for="contact_persn_note" class="control-label">Note</label>
+                                                <textarea name="contact_persn_note" id="contact_persn_note" class="form-control"></textarea>
+                                            </div>   
                                             <div class="col-lg-3" style="margin-top: 25px;">
                                                 <label for="product_line_po" class="control-label"></label>
                                                 <input type="submit" name="contact_details_submit" class="btn btn-success text-center" id="contact_details_submit" value="Add"> 
@@ -301,6 +306,10 @@
                                                     <label for="e_contact_persn_address" class="control-label">Address</label>
                                                     <textarea name="e_contact_persn_address" id="e_contact_persn_address" class="form-control"></textarea>
                                                 </div>  
+                                                <div class="col-lg-3">
+                                                    <label for="e_contact_persn_note" class="control-label">Note</label>
+                                                    <textarea name="e_contact_persn_note" id="e_contact_persn_note" class="form-control"></textarea>
+                                                </div>   
                                                 <div class="col-lg-3" style="margin-top: 25px;">
                                                     <label for="product_line_po" class="control-label"></label>
                                                     <input type="submit" name="e_contact_details_submit" class="btn btn-success text-center" id="e_contact_details_submit" value="Update">
@@ -492,8 +501,6 @@
                                                     <label for="bi_PartyId" class="control-label">Select Party</label>
                                                     <select name="bi_PartyId" id="bi_PartyId" class="form-control select2">
                                                         <option value="0" >-- Select Party --</option>
-                                                        <option value="1" >Party 1</option>
-                                                        <option value="2" >Party 2</option>
                                                     </select>
                                                     <input type="hidden" value="" name="bi_PartyId_name" id="bi_PartyId_name">
                                                 </div>  
@@ -1854,6 +1861,7 @@
                 { "data": "Phone1st" },
                 { "data": "Phone2nd" },
                 { "data": "Address" },
+                { "data": "ContactNote" },
                 { "data": "action" },
             ],
             //column initialisation properties
@@ -1862,6 +1870,31 @@
                 "orderable": false,
             }]
         });
+
+        console.log('populate party name dropdown')
+        $project_id = $("#project_id").val();
+        $.ajax({
+            url: "<?= base_url('admin/ajax-contact-details-table-data/') ?>",
+            dataType: 'json',
+            type: 'POST',
+            data: { project_id: $project_id },
+            success: function (returnData) {
+                //console.log(' contact list data: '+ JSON.stringify(returnData));
+                $contact_data_list = returnData.data;
+                $bi_PartyIdList = '<option value="0" >-- Select Party --</option>';
+
+                for($i = 0; $i < $contact_data_list.length; $i++){
+                    //console.log('Contact Person Name: ' + $contact_data_list[$i].contact_obj+' . '+$contact_data_list[$i].ContactPersonName)
+                    $bi_PartyIdList += '<option value="' + $contact_data_list[$i].contact_obj+'" >'+$contact_data_list[$i].ContactPersonName+'</option>';
+                }//end for
+                console.log('bi_PartyIdList: ' + $bi_PartyIdList)
+                $('#bi_PartyId').html($bi_PartyIdList);
+            },
+            error: function (returnData) {
+                obj = JSON.parse(returnData);
+            }
+        });//end ajax
+
     }//end fun
     
 
@@ -1967,6 +2000,7 @@
                 $("#e_contact_first_ph").val(returnData.contact_first_ph);
                 $("#e_contact_second_ph").val(returnData.contact_second_ph);
                 $("#e_contact_persn_address").val(returnData.contact_persn_address);
+                $("#e_contact_persn_note").val(returnData.contact_persn_note);
                 $("#e_cont_project_id").val($project_id);
 
                 $('a[href="#contact_details_edit"]').tab('show');
@@ -2207,6 +2241,7 @@
                 $('#contact_first_ph').val('');
                 $('#contact_second_ph').val('');
                 $('#contact_persn_address').val('');
+                $('#contact_persn_note').val('');
                 
                 initContactTable()
 
@@ -2249,7 +2284,8 @@
                 $('#e_contact_email').val('');
                 $('#e_contact_first_ph').val('');
                 $('#e_contact_second_ph').val('');
-                $('#e_contact_persn_address').val('');
+                $('#e_contact_persn_address').val('');                
+                $('#e_contact_persn_note').val('');
 
                 //$('a[href="#contact_details_edit"]').tab('hide');
                 $('#contact_obj').val('');
@@ -2350,7 +2386,6 @@
                 $('#e_req_gather_by').val('0').trigger('change');
                 $('#e_req_gather_by_name').val('');
                 $('#e_req_gather_date').val('');
-                $('#contact_persn_address').val('');
 
                 initGatherRequirementTable()
                 $('a[href="#req_gather_list"]').tab('show');
@@ -3530,9 +3565,7 @@
             });
         }        
     });
-    //Invoice Part end
-
-    
+    //Invoice Part end    
 
     function getTransactionId(){
         const d = new Date().toLocaleString();

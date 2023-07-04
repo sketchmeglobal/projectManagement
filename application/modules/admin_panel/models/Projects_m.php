@@ -634,6 +634,7 @@ class Projects_m extends CI_Model {
         $contact_first_ph = $this->input->post('contact_first_ph');
         $contact_second_ph = $this->input->post('contact_second_ph');
         $contact_persn_address = $this->input->post('contact_persn_address');
+        $contact_persn_note = $this->input->post('contact_persn_note');
 
         $created_by = $this->session->user_id;
         $contact_obj = rand(1000, 9999);
@@ -647,6 +648,7 @@ class Projects_m extends CI_Model {
         $contact_list_obj->contact_first_ph = $contact_first_ph;
         $contact_list_obj->contact_second_ph = $contact_second_ph;
         $contact_list_obj->contact_persn_address = $contact_persn_address;
+        $contact_list_obj->contact_persn_note = $contact_persn_note;
 
         //check existing data
         $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $cont_project_id))->result();
@@ -964,6 +966,7 @@ class Projects_m extends CI_Model {
         $contact_first_ph = $this->input->post('e_contact_first_ph');
         $contact_second_ph = $this->input->post('e_contact_second_ph');
         $contact_persn_address = $this->input->post('e_contact_persn_address');
+        $contact_persn_note = $this->input->post('e_contact_persn_note');
 
         $created_by = $this->session->user_id;
 
@@ -983,6 +986,7 @@ class Projects_m extends CI_Model {
                         $contactDetail[$i]->contact_first_ph = $contact_first_ph;
                         $contactDetail[$i]->contact_second_ph = $contact_second_ph;
                         $contactDetail[$i]->contact_persn_address = $contact_persn_address;
+                        $contactDetail[$i]->contact_persn_note = $contact_persn_note;
                     }
                 }//end for
                 $project_description->contactDetail = $contactDetail;
@@ -1017,7 +1021,6 @@ class Projects_m extends CI_Model {
         $e_req_gather_by = $this->input->post('e_req_gather_by');
         $e_req_gather_by_name = $this->input->post('e_req_gather_by_name');
         $e_req_gather_date = $this->input->post('e_req_gather_date');
-        $contact_persn_address = $this->input->post('e_contact_persn_address');
 
         $created_by = $this->session->user_id;
 
@@ -2510,12 +2513,14 @@ class Projects_m extends CI_Model {
 
         if(sizeof($contactDetail) > 0){
             foreach($contactDetail as $key => $value){
+                $nestedData['contact_obj'] = $value->contact_obj;
                 $nestedData['ContactPersonName'] = $value->cont_person_name;
                 $nestedData['OrganizationName'] = $value->org_name;
                 $nestedData['Email'] = $value->contact_email;
                 $nestedData['Phone1st'] = $value->contact_first_ph;
                 $nestedData['Phone2nd'] = $value->contact_second_ph;
                 $nestedData['Address'] = $value->contact_persn_address;
+                $nestedData['ContactNote'] = $value->contact_persn_note;
                 $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" data-contact_obj="'.$value->contact_obj.'" class="btn btn-info edit_contact_obj"><i class="fa fa-pencil"></i> Edit</a>
                 <a href="javascript:void(0)" data-project_id="'.$project_id.'" data-contact_obj="'.$value->contact_obj.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
@@ -2655,11 +2660,23 @@ class Projects_m extends CI_Model {
 
         if(sizeof($requirementDetail) > 0){
             foreach($requirementDetail as $key => $value){
+                $attachment_text = '';
+
+                if(isset($value->files)){
+                    $files = $value->files;
+                    if(sizeof($files) > 0){
+                        for($i = 0; $i < sizeof($files); $i++){
+                            $attachment_text .= '  <a href="'.base_url('upload/proj_doc/'.$files[$i]->file_name) .'" download>
+                            <i class="fa fa-download"></i></a>';
+                        }
+                    }
+                }
+
                 $nestedData['Title'] = $value->req_gather_title;
                 $nestedData['Description'] = $value->req_gather_desc;
                 $nestedData['Employee'] = $value->req_gather_by_name;
                 $nestedData['Date'] = date("d-m-Y", strtotime($value->req_gather_date));
-                $nestedData['Attachment'] = '';
+                $nestedData['Attachment'] = $attachment_text;
                 $nestedData['action'] = '<a href="javascript:void(0)" data-doc_obj="'.$value->doc_obj.'" class="btn btn-info edit_doc_obj"><i class="fa fa-pencil "></i> Edit</a>
                 <a data-doc_obj="'.$value->doc_obj.'" href="javascript:void(0)" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
