@@ -2539,49 +2539,51 @@ class Projects_m extends CI_Model {
         $data = array();
         $invoice_details = array();
 
-        $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
-        //print_r($result);
+        if($project_id > 0){
+            $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
+            //print_r($result);
 
-        if(count($result) > 0){
-            $project_description1 = $result[0]->project_description;
-            $project_description = json_decode($project_description1);
-            
-            if(isset($project_description->invoice_details)){
-                $invoice_details = $project_description->invoice_details;
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1);
+                
+                if(isset($project_description->invoice_details)){
+                    $invoice_details = $project_description->invoice_details;
+                }
             }
-        }
 
-        $partyName = $project_description->client->account_name;
-        $paid = 'Pending';
+            $partyName = $project_description->client->account_name;
+            $paid = 'Pending';
 
-        if(sizeof($invoice_details) > 0){
-            $slno = 1;
-            foreach($invoice_details as $key => $value){
-                if(isset($value->tax_GrossAmount)){
-                    $tax_GrossAmount = $value->tax_GrossAmount;
-                }else{
-                    $tax_GrossAmount = 0;
-                }
-                if(isset($value->tax_NetAmount)){
-                    $tax_NetAmount = $value->tax_NetAmount;
-                }else{
-                    $tax_NetAmount = 0;
-                }
+            if(sizeof($invoice_details) > 0){
+                $slno = 1;
+                foreach($invoice_details as $key => $value){
+                    if(isset($value->tax_GrossAmount)){
+                        $tax_GrossAmount = $value->tax_GrossAmount;
+                    }else{
+                        $tax_GrossAmount = 0;
+                    }
+                    if(isset($value->tax_NetAmount)){
+                        $tax_NetAmount = $value->tax_NetAmount;
+                    }else{
+                        $tax_NetAmount = 0;
+                    }
 
-                $nestedData['sl_no'] = $slno;
-                $nestedData['partyName'] = $partyName;
-                $nestedData['invoiceNo'] = $value->inv_BillNo;
-                $nestedData['invoiceDate'] = date('d-m-Y', strtotime($value->inv_InvoiceDate));
-                $nestedData['grossAmount'] = number_format($tax_GrossAmount, 2);
-                $nestedData['NetAmount'] = number_format($tax_NetAmount, 2);
-                $nestedData['paid'] = $paid;
-                $nestedData['action'] = '<a href="'. base_url('admin/print-invoice/'.$project_id.'/'.$value->inv_obj_id).'" target="_blank" data-project_id="'.$project_id.'" class="btn bg-yellow print_invoice"><i class="fa fa-eye"></i> View</a>
-                <a href="javascript:void(0)" data-project_id="'.$project_id.'" data-inv_obj_id="'.$value->inv_obj_id.'" class="btn btn-info edit_inv_obj_id"><i class="fa fa-pencil"></i> Edit</a>
-                <a href="javascript:void(0)" data-project_id="'.$project_id.'" data-inv_obj_id="'.$value->inv_obj_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+                    $nestedData['sl_no'] = $slno;
+                    $nestedData['partyName'] = $partyName;
+                    $nestedData['invoiceNo'] = $value->inv_BillNo;
+                    $nestedData['invoiceDate'] = date('d-m-Y', strtotime($value->inv_InvoiceDate));
+                    $nestedData['grossAmount'] = number_format($tax_GrossAmount, 2);
+                    $nestedData['NetAmount'] = number_format($tax_NetAmount, 2);
+                    $nestedData['paid'] = $paid;
+                    $nestedData['action'] = '<a href="'. base_url('admin/print-invoice/'.$project_id.'/'.$value->inv_obj_id).'" target="_blank" data-project_id="'.$project_id.'" class="btn bg-yellow print_invoice"><i class="fa fa-eye"></i> View</a>
+                    <a href="javascript:void(0)" data-project_id="'.$project_id.'" data-inv_obj_id="'.$value->inv_obj_id.'" class="btn btn-info edit_inv_obj_id"><i class="fa fa-pencil"></i> Edit</a>
+                    <a href="javascript:void(0)" data-project_id="'.$project_id.'" data-inv_obj_id="'.$value->inv_obj_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
-                array_push($data, $nestedData);
-                $slno++;
-            }//end foreach
+                    array_push($data, $nestedData);
+                    $slno++;
+                }//end foreach
+            }//end if
         }//end if
 
         $json_data = array(
