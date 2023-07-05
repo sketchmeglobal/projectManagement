@@ -52,6 +52,25 @@ $user_type = $this->session->usertype;
                 <a href="<?=base_url();?>admin/dashboard"><i class="fa fa-tachometer"></i> <span>Dashboard</span></a>
             </li>
 
+            <!-- For Master Menu -->            
+            <li class="menu-list <?=($class_name == 'Paymentmode' || $class_name == 'Employeemaster' || $class_name == 'Tasktype' || $class_name == 'Bankaccount') ? 'active' : ''; ?>"><a href=""><i class="fa fa-vcard-o"></i> <span>Master</span></a>
+                <ul class="child-list">
+                    <li class="<?=(($class_name == 'Paymentmode')) ? 'active' : ''; ?>">
+                        <a href="<?=base_url();?>admin/payment-mode"><i class="fa fa-caret-right"></i> <span>Payment Mode</span></a>
+                    </li>
+                    <li class="<?=(($class_name == 'Employeemaster')) ? 'active' : ''; ?>">
+                        <a href="<?=base_url();?>admin/employee-master"><i class="fa fa-caret-right"></i> <span>Employee Master</span></a>
+                    </li>
+                    <li class="<?=(($class_name == 'Tasktype')) ? 'active' : ''; ?>">
+                        <a href="<?=base_url();?>admin/task-type"><i class="fa fa-caret-right"></i> <span>Task Type</span></a>
+                    </li>
+                    <li class="<?=(($class_name == 'Bankaccount')) ? 'active' : ''; ?>">
+                        <a href="<?=base_url();?>admin/bank-account"><i class="fa fa-caret-right"></i> <span>Bank Account</span></a>
+                    </li>
+                </ul>
+            </li>
+            <!-- For Master Menu -->
+
             <li class="<?= (($class_name == 'Profile') && ($method_name == 'profile')) ? 'active' : ''; ?>">
                 <a href="<?=base_url();?>admin/profile"><i class="fa fa-vcard-o"></i> <span>Profile</span></a>
             </li>

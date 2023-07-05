@@ -12,6 +12,37 @@
 	$route['admin/ajax_username_check'] = 'admin_panel/Profile/ajax_username_check';
 	$route['admin/form_change_username'] = 'admin_panel/Profile/form_change_username';
 	
+	//PAYMENT MODE MASTER
+	//list
+	$route['admin/payment-mode'] = 'admin_panel/Paymentmode/payment_mode';
+	$route['admin/ajax-payment-mode-data'] = 'admin_panel/Paymentmode/ajax_payment_mode_data';	
+
+	//add employee
+	$route['admin/add-payment-mode'] = 'admin_panel/Paymentmode/add_payment_mode';	
+	$route['admin/form-add-payment-mode'] = 'admin_panel/Paymentmode/form_add_payment_mode';		
+
+	//edit
+	$route['admin/edit-payment-mode/(:num)'] = 'admin_panel/Paymentmode/edit_payment_mode/$1';	
+	$route['admin/form-edit-payment-mode'] = 'admin_panel/Paymentmode/form_edit_payment_mode';	
+	
+	//delete
+	$route['admin/ajax-delete-payment-mode'] = 'admin_panel/Paymentmode/ajax_delete_payment_mode';
+
+
+
+	
+	//EMPLOYEE MASTER
+	//list
+	$route['admin/employee-master'] = 'admin_panel/Employeemaster/employeemaster_managemnt';
+	
+	//TASK TYPE MASTER
+	//list
+	$route['admin/task-type'] = 'admin_panel/Tasktype/task_type';
+	
+	//BANK ACCOUNT MASTER
+	//list
+	$route['admin/bank-account'] = 'admin_panel/Bankaccount/bank_account';
+	
 	//EMPLOYEE MANAGEMENT
 	//list
 	$route['admin/employee-management'] = 'admin_panel/Employee/employee_managemnt';
