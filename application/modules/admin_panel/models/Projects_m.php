@@ -119,6 +119,22 @@ class Projects_m extends CI_Model {
         }//end if
         $data['particulars'] = $particulars; 
 
+        //Payment mode
+        $payment_mode = $this->db->get('master_payment_mode')->result();
+        $data['payment_mode'] = $payment_mode;  
+
+        //Bank Account
+        $bank_account = $this->db->get('master_bank_account')->result();
+        $data['bank_account'] = $bank_account;   
+
+        //Employee/Party Master
+        $party_list = $this->db->get('employee_master')->result();
+        $data['party_list'] = $party_list;  
+
+        //Task Type Master
+        $task_types = $this->db->get('master_task_type')->result();
+        $data['task_types'] = $task_types;
+
 
         return array('page'=>'projects/project_detail_v', 'data'=>$data);
     }
@@ -2513,6 +2529,12 @@ class Projects_m extends CI_Model {
 
         if(sizeof($contactDetail) > 0){
             foreach($contactDetail as $key => $value){
+                if(isset($value->contact_persn_note)){
+                    $contact_persn_note = $value->contact_persn_note;
+                }else{
+                    $contact_persn_note = '';
+                }
+
                 $nestedData['contact_obj'] = $value->contact_obj;
                 $nestedData['ContactPersonName'] = $value->cont_person_name;
                 $nestedData['OrganizationName'] = $value->org_name;
@@ -2520,7 +2542,7 @@ class Projects_m extends CI_Model {
                 $nestedData['Phone1st'] = $value->contact_first_ph;
                 $nestedData['Phone2nd'] = $value->contact_second_ph;
                 $nestedData['Address'] = $value->contact_persn_address;
-                $nestedData['ContactNote'] = $value->contact_persn_note;
+                $nestedData['ContactNote'] = $contact_persn_note;
                 $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" data-contact_obj="'.$value->contact_obj.'" class="btn btn-info edit_contact_obj"><i class="fa fa-pencil"></i> Edit</a>
                 <a href="javascript:void(0)" data-project_id="'.$project_id.'" data-contact_obj="'.$value->contact_obj.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 

@@ -501,6 +501,13 @@
                                                     <label for="bi_PartyId" class="control-label">Select Party</label>
                                                     <select name="bi_PartyId" id="bi_PartyId" class="form-control select2">
                                                         <option value="0" >-- Select Party --</option>
+                                                        <?php
+                                                            if(sizeof($party_list) > 0){
+                                                                foreach($party_list as $val){
+                                                            ?>
+                                                            <option value="<?=$val->emp_id?>" ><?=$val->first_name.' '.$val->last_name?></option>
+                                                            <?php } 
+                                                            }?>
                                                     </select>
                                                     <input type="hidden" value="" name="bi_PartyId_name" id="bi_PartyId_name">
                                                 </div>  
@@ -528,11 +535,13 @@
                                                     <label for="bi_PaymentMode" class="control-label">Payment Mode</label>
                                                     <select name="bi_PaymentMode" id="bi_PaymentMode" class="form-control select2">
                                                         <option value="0" >-- Select Payment Mode --</option>
-                                                        <option value="1" >Cash</option>
-                                                        <option value="2" >Card</option>
-                                                        <option value="3" >Cheque</option>
-                                                        <option value="4" >UPI</option>
-                                                        <option value="5" >Bank Transfer</option>
+                                                        <?php
+                                                            if(sizeof($payment_mode) > 0){
+                                                                foreach($payment_mode as $val){
+                                                        ?>
+                                                        <option value="<?=$val->pm_id?>" ><?=$val->pm_name?></option>
+                                                            <?php } 
+                                                            }?>
                                                     </select>
                                                     <input type="hidden" name="bi_PaymentModeName" id="bi_PaymentModeName" value="">
                                                 </div> 
@@ -600,10 +609,13 @@
                                                     <label for="par_TaskType" class="control-label">Task Type</label>
                                                     <select name="par_TaskType" id="par_TaskType" class="form-control select2">
                                                         <option value="0" >-- Select Task Type --</option>
-                                                        <option value="1" >Web Design</option>
-                                                        <option value="2" >Web Development</option>
-                                                        <option value="3" >SSL</option>
-                                                        <option value="4" >Domain with Privacy settings FOR 2 YEARS</option>
+                                                        <?php
+                                                        if(sizeof($task_types) > 0){
+                                                            foreach($task_types as $val){
+                                                        ?>
+                                                        <option value="<?=$val->tt_id?>" task_name="<?=$val->task_name?>" hsn_code="<?=$val->hsn_code?>" price="<?=$val->price?>" ><?=$val->task_name.'['.$val->hsn_code.']'?></option>
+                                                        <?php } 
+                                                        }?>
                                                     </select>
                                                     <input type="hidden" value="" name="par_TaskType_name" id="par_TaskType_name">
                                                 </div> 
@@ -612,12 +624,16 @@
                                                     <input value="" id="par_HSNCode" name="par_HSNCode" type="text" placeholder="HSN Code" class="form-control" />
                                                 </div>
                                                 <div class="col-lg-3">
-                                                    <label for="par_Duration" class="control-label">Duration</label>
-                                                    <input value="" id="par_Duration" name="par_Duration" type="text" placeholder="Duration" class="form-control" />
-                                                </div>
-                                                <div class="col-lg-3">
                                                     <label for="par_StartDate" class="control-label">Start Date</label>
                                                     <input value="" id="par_StartDate" name="par_StartDate" type="date"  class="form-control" />
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label for="par_EndDate" class="control-label">End Date</label>
+                                                    <input value="" id="par_EndDate" name="par_EndDate" type="date"  class="form-control" />
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label for="par_Duration" class="control-label">Duration</label>
+                                                    <input value="" id="par_Duration" name="par_Duration" type="text" placeholder="Duration" class="form-control" />
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <label for="par_Amount" class="control-label">Amount</label>
@@ -697,8 +713,13 @@
                                                     <label for="tax_Bank" class="control-label">Bank</label>
                                                     <select name="tax_Bank" id="tax_Bank" class="form-control select2">
                                                         <option value="0" >-- Select Bank --</option>
-                                                        <option value="1" >HDFC</option>
-                                                        <option value="2" >SBI</option>
+                                                        <?php
+                                                            if(sizeof($bank_account) > 0){
+                                                                foreach($bank_account as $val){
+                                                            ?>
+                                                            <option value="<?=$val->ba_id?>" ><?=$val->bank_name?></option>
+                                                            <?php } 
+                                                            }?>
                                                     </select>
                                                     <input type="hidden" name="tax_BankName" id="tax_BankName" value="">
                                                 </div> 
@@ -789,8 +810,13 @@
                                                     <label for="bi_PartyId_e" class="control-label">Select Party</label>
                                                     <select name="bi_PartyId_e" id="bi_PartyId_e" class="form-control select2">
                                                         <option value="0" >Select Party</option>
-                                                        <option value="1" >Party 1</option>
-                                                        <option value="2" >Party 2</option>
+                                                        <?php
+                                                            if(sizeof($party_list) > 0){
+                                                                foreach($party_list as $val){
+                                                            ?>
+                                                            <option value="<?=$val->emp_id?>" ><?=$val->first_name.' '.$val->last_name?></option>
+                                                            <?php } 
+                                                            }?>
                                                     </select>
                                                     <input type="hidden" value="" name="bi_PartyId_name_e" id="bi_PartyId_name_e">
                                                 </div>  
@@ -818,11 +844,13 @@
                                                     <label for="bi_PaymentMode_e" class="control-label">Payment Mode</label>
                                                     <select name="bi_PaymentMode_e" id="bi_PaymentMode_e" class="form-control select2">
                                                         <option value="0" >-- Select Payment Mode --</option>
-                                                        <option value="1" >Cash</option>
-                                                        <option value="2" >Card</option>
-                                                        <option value="3" >Cheque</option>
-                                                        <option value="4" >UPI</option>
-                                                        <option value="5" >Bank Transfer</option>
+                                                        <?php
+                                                            if(sizeof($payment_mode) > 0){
+                                                                foreach($payment_mode as $val){
+                                                        ?>
+                                                        <option value="<?=$val->pm_id?>" ><?=$val->pm_name?></option>
+                                                            <?php } 
+                                                            }?>
                                                     </select>
                                                     <input type="hidden" name="bi_PaymentModeName_e" id="bi_PaymentModeName_e" value="">
                                                 </div> 
@@ -900,10 +928,13 @@
                                                 <label for="par_TaskType_e" class="control-label">Task Type</label>
                                                 <select name="par_TaskType_e" id="par_TaskType_e" class="form-control select2">
                                                     <option value="0" >-- Select Task Type --</option>
-                                                    <option value="1" >Web Design</option>
-                                                    <option value="2" >Web Development</option>
-                                                    <option value="3" >SSL</option>
-                                                    <option value="4" >Domain with Privacy settings FOR 2 YEARS</option>
+                                                        <?php
+                                                        if(sizeof($task_types) > 0){
+                                                            foreach($task_types as $val){
+                                                        ?>
+                                                        <option value="<?=$val->tt_id?>" task_name="<?=$val->task_name?>" hsn_code="<?=$val->hsn_code?>" price="<?=$val->price?>" ><?=$val->task_name.'['.$val->hsn_code.']'?></option>
+                                                        <?php } 
+                                                        }?>
                                                 </select>
                                                 <input type="hidden" value="" name="par_TaskType_name_e" id="par_TaskType_name_e">
                                             </div> 
@@ -912,12 +943,16 @@
                                                 <input value="" id="par_HSNCode_e" name="par_HSNCode_e" type="text" placeholder="HSN Code" class="form-control" />
                                             </div>
                                             <div class="col-lg-3">
-                                                <label for="par_Duration_e" class="control-label">Duration</label>
-                                                <input value="" id="par_Duration_e" name="par_Duration_e" type="text" placeholder="Duration" class="form-control" />
-                                            </div>
-                                            <div class="col-lg-3">
                                                 <label for="par_StartDate_e" class="control-label">Start Date</label>
                                                 <input value="" id="par_StartDate_e" name="par_StartDate_e" type="date"  class="form-control" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="par_EndDate_e" class="control-label">End Date</label>
+                                                <input value="" id="par_EndDate_e" name="par_EndDate_e" type="date"  class="form-control" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="par_Duration_e" class="control-label">Duration</label>
+                                                <input value="" id="par_Duration_e" name="par_Duration_e" type="text" placeholder="Duration" class="form-control" />
                                             </div>
                                             <div class="col-lg-3">
                                                 <label for="par_Amount_e" class="control-label">Amount</label>
@@ -997,8 +1032,13 @@
                                                 <label for="tax_Bank_e" class="control-label">Bank</label>
                                                 <select name="tax_Bank_e" id="tax_Bank_e" class="form-control select2">
                                                     <option value="0" >-- Select Bank --</option>
-                                                    <option value="1" >HDFC</option>
-                                                    <option value="2" >SBI</option>
+                                                        <?php
+                                                        if(sizeof($bank_account) > 0){
+                                                            foreach($bank_account as $val){
+                                                        ?>
+                                                        <option value="<?=$val->ba_id?>" ><?=$val->bank_name?></option>
+                                                        <?php } 
+                                                        }?>
                                                 </select>
                                                 <input type="hidden" name="tax_BankName_e" id="tax_BankName_e" value="">
                                             </div> 
@@ -1309,8 +1349,13 @@
                                                 <label for="inv_tax_Bank" class="control-label">Bank</label>
                                                 <select name="inv_tax_Bank" id="inv_tax_Bank" class="form-control select2">
                                                     <option value="0" >-- Select Bank --</option>
-                                                    <option value="1" >HDFC</option>
-                                                    <option value="2" >SBI</option>
+                                                        <?php
+                                                        if(sizeof($bank_account) > 0){
+                                                            foreach($bank_account as $val){
+                                                        ?>
+                                                        <option value="<?=$val->ba_id?>" ><?=$val->bank_name?></option>
+                                                        <?php } 
+                                                        }?>
                                                 </select>
                                                 <input type="hidden" name="inv_tax_BankName" id="inv_tax_BankName" value="">
                                             </div> 
@@ -1888,7 +1933,7 @@
                     $bi_PartyIdList += '<option value="' + $contact_data_list[$i].contact_obj+'" >'+$contact_data_list[$i].ContactPersonName+'</option>';
                 }//end for
                 console.log('bi_PartyIdList: ' + $bi_PartyIdList)
-                $('#bi_PartyId').html($bi_PartyIdList);
+                //$('#bi_PartyId').html($bi_PartyIdList);
             },
             error: function (returnData) {
                 obj = JSON.parse(returnData);
@@ -3566,6 +3611,36 @@
         }        
     });
     //Invoice Part end    
+
+    //Date duration
+    $('#par_EndDate_e').on('change', function(){
+        $par_StartDate_e = $('#par_StartDate_e').val();
+        $par_EndDate_e = $('#par_EndDate_e').val();
+
+        if($par_StartDate_e != '' && $par_EndDate_e != ''){
+            const date1 = new Date($par_StartDate_e);
+            const date2 = new Date($par_EndDate_e);
+            const diffTime = Math.abs(date2 - date1);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+            console.log(diffTime + " milliseconds");
+            $('#par_Duration_e').val(diffDays + " days");
+        }
+    })   
+
+    //Date duration
+    $('#par_EndDate').on('change', function(){
+        $par_StartDate = $('#par_StartDate').val();
+        $par_EndDate = $('#par_EndDate').val();
+        
+        if($par_StartDate != '' && $par_EndDate != ''){
+            const date1 = new Date($par_StartDate);
+            const date2 = new Date($par_EndDate);
+            const diffTime = Math.abs(date2 - date1);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+            console.log(diffTime + " milliseconds");
+            $('#par_Duration').val(diffDays + " days");
+        }
+    })
 
     function getTransactionId(){
         const d = new Date().toLocaleString();
