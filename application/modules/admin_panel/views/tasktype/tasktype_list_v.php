@@ -44,20 +44,16 @@
 
             <div class="row">
                 <div class="col-lg-12 text-right">
-                    <a href="<?= base_url('admin/add-employee') ?>" class="btn btn-success  mx-auto"><i class="fa fa-plus"></i> Add <?=$menu?></a>
+                    <a href="<?= base_url('admin/add-task-type') ?>" class="btn btn-success  mx-auto"><i class="fa fa-plus"></i> Add <?=$menu?></a>
                     <section class="panel">
                         <div class="panel-body">
-                            <table id="employee_table" class="table data-table dataTable">
+                            <table id="task_table" class="table data-table dataTable">
                                 <thead>
                                     <tr>
                                         <th>Sl#</th>
-                                        <th>Employee Name</th>
-                                        <th>Phone Number</th>
-                                        <th>Email Id</th>
-                                        <th>Employee Type</th>
-                                        <th>Designation</th>
-                                        <th>Basic Pay</th>
-                                        <th>Photo</th>
+                                        <th>Task Name</th>
+                                        <th>HSN Code</th>
+                                        <th>Price</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -113,7 +109,7 @@
 
 <script>
     $(document).ready(function() {
-        $('#employee_table').DataTable( {
+        $('#task_table').DataTable( {
             // "scrollX": true,
             "processing": true,
             "language": {
@@ -121,53 +117,18 @@
             },
             "serverSide": true,
             "ajax": {
-                "url": "<?=base_url('admin/ajax-employee-table-data')?>",
+                "url": "<?=base_url('admin/ajax-task-table-data')?>",
                 "type": "POST",
                 "dataType": "json",
-            },
-            "rowCallback": function (row, data) {
-                // console.log(data);
-                if (data.usertype == 'Resource Developer') {
-                    $(row).addClass('bg-green1');
-                }
-                if (data.usertype == 'Exporter') {
-                    $(row).addClass('bg-green2');
-                }
-                if (data.usertype == 'Marketing') {
-                    $(row).addClass('bg-green3');
-                }
             },
             //will get these values from JSON 'data' variable
             "columns": [
                 { "data": "slNo" },
-                { "data": "employeeName" },
-                { "data": "phNumber" },
-                { "data": "emailId" },
-                { "data": "employeeType" },
-                { "data": "designation" },
-                { "data": "basicPay" },
-                { "data": "photo" },
+                { "data": "taskName" },
+                { "data": "hsnCode" },
+                { "data": "price" },
                 { "data": "action" }
-            ],
-            //column initialisation properties
-            /*"columnDefs": [{
-                "targets": [1,2,3], //disable 'Image','Actions' column sorting
-                "orderable": false,
-            },
-            {
-                "targets": [10],
-                "visible": false
-            },
-            { 
-                "className": "nowrap", 
-                "targets": [ 3 ] 
-            },
-            { 
-                "className": "ut", 
-                "targets": [ 0 ] 
-            },
-            ],*/
-           
+            ],           
             "initComplete": function(settings, json) {   
 
               }
@@ -180,20 +141,20 @@
         $this = $(this);
         if(confirm("Are You Sure? This Process Can\'t be Undone.")){
 
-            $emp_id = $(this).data('emp_id');           
+            $tt_id = $(this).data('tt_id');           
 
             $.ajax({
-                url: "<?= base_url('admin/ajax-delete-employee/') ?>",
+                url: "<?= base_url('admin/ajax-delete-task-type/') ?>",
                 dataType: 'json',
                 type: 'POST',
-                data: {emp_id: $emp_id},
+                data: {tt_id: $tt_id},
                 success: function (returnData) {
                     console.log(returnData);
                    
                     notification(returnData);
 
                     //refresh table
-                    $("#employee_table").DataTable().ajax.reload();
+                    $("#task_table").DataTable().ajax.reload();
 
                 },
                 error: function (returnData) {

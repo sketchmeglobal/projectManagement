@@ -11,80 +11,34 @@ class bankaccount_m extends CI_Model {
         return array('page'=>'bankaccount/bankaccount_list_v', 'data'=>$data);
     }
 
-    public function ajax_employee_table_data() {
+    public function ajax_bank_table_data() {
         $usertype = $this->session->usertype;
         $user_id = $this->session->user_id;
         $data = array();
         $nestedData = array();
 
-        $p_data = $this->db->get('employee')->result();
+        $p_data = $this->db->get('master_bank_account')->result();
 
         if(sizeof($p_data) > 0){
             $slNo = 1;
             foreach($p_data as $index => $val){
-                $emp_id = $val->emp_id;
-                $first_name = $val->first_name;
-                $last_name = $val->last_name;
-                $basicPay = $val->basic_pay;
-
-                if($val->emp_photo != ''){
-                    $emp_photo = $val->emp_photo;
-                }else{
-                    $emp_photo = 'no_image.png';
-                }
-                
-                $employeeName = $first_name;
-                if($last_name != ''){
-                    $employeeName .= ' '.$last_name;
-                }
-
-                $emp_type = $val->emp_type;
-                if($emp_type == '1'){
-                    $employeeType = 'Permanent';
-                }else if($emp_type == '2'){
-                    $employeeType = 'Part Timer';
-                }else{
-                    $employeeType = 'Freelancer';
-                }
-
-                $emp_desig = $val->emp_desig;
-                if($emp_desig == '1'){
-                    $designation = 'Designer';
-                }else if($emp_desig == '2'){
-                    $designation = 'Developer';
-                }else if($emp_desig == '3'){
-                    $designation = 'Full Stack Developer';
-                }else if($emp_desig == '4'){
-                    $designation = 'Sr. Designer';
-                }else if($emp_desig == '5'){
-                    $designation = 'Sr. Developer';
-                }else if($emp_desig == '6'){
-                    $designation = 'Team Lead';
-                }else if($emp_desig == '7'){
-                    $designation = 'Project Mgr.';
-                }else if($emp_desig == '8'){
-                    $designation = 'Manager';
-                }else if($emp_desig == '9'){
-                    $designation = 'Director';
-                }else if($emp_desig == '10'){
-                    $designation = 'Managing Director';
-                }else if($emp_desig == '11'){
-                    $designation = 'Accounts & project coordinator';
-                }else{
-                    $designation = 'Business Developer';
-                }
+                $ba_id = $val->ba_id;
+                $bank_name = $val->bank_name;
+                $bank_address = $val->bank_address;
+                $bank_account_no = $val->bank_account_no;
+                $bank_ifs_code = $val->bank_ifs_code;
+                $bank_micr_code = $val->bank_micr_code;
+                $bank_branch_code = $val->bank_branch_code;
 
                 $nestedData['slNo'] = $slNo;
-                $nestedData['employeeName'] = $employeeName;
-                $nestedData['phNumber'] = $val->ph_number;
-                $nestedData['emailId'] = $val->email_id;
-                $nestedData['employeeType'] = $employeeType;
-                $nestedData['designation'] = $designation;
-                $nestedData['basicPay'] = number_format($basicPay);
-                $nestedData['photo'] = '<img src="'.base_url('upload/employee/'.$emp_photo).'" style="height: 50px;">';
-                $nestedData['action'] = '<a href="javascript:void(0)" data-emp_id="'.$emp_id.'" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
-                <a href="'. base_url('admin/edit-employee/'.$emp_id).'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
-                <a href="javascript:void(0)" data-emp_id="'.$emp_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+                $nestedData['bank_name'] = $bank_name;
+                $nestedData['bank_address'] = $val->bank_address;
+                $nestedData['bank_account_no'] = $val->bank_account_no;
+                $nestedData['bank_ifs_code'] = $bank_ifs_code;
+                $nestedData['bank_micr_code'] = $bank_micr_code;
+                $nestedData['bank_branch_code'] = $bank_branch_code;
+                $nestedData['action'] = '<a href="'. base_url('admin/edit-bank-account/'.$ba_id).'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
+                <a href="javascript:void(0)" data-ba_id="'.$ba_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
                             
                 array_push($data, $nestedData);
                 $slNo++;
@@ -138,11 +92,11 @@ class bankaccount_m extends CI_Model {
 
     }
 
-    public function add_employee(){        
-        $data['title'] = 'Employee Management';
-        $data['menu'] = 'Add Employee';
+    public function add_bank_account(){        
+        $data['title'] = 'Bank Account Master';
+        $data['menu'] = 'Add Bank A/c';
 
-        return array('page'=>'employee/employee_add_v', 'data'=>$data);
+        return array('page'=>'bankaccount/bankaccount_add_v', 'data'=>$data);
     }
 
     public function ajax_unique_username(){
@@ -191,56 +145,22 @@ class bankaccount_m extends CI_Model {
 
     }
 
-    public function form_add_employee(){  
-        $active_loan = $this->input->post('active_loan');
-
+    public function form_add_bank_account(){  
         $insertArray = array(
-            'emp_type' => $this->input->post('emp_type'),
-            'emp_desig' => $this->input->post('emp_desig'),
-            'first_name' => $this->input->post('first_name'),
-            'last_name' => $this->input->post('last_name'),
-            'email_id' => $this->input->post('email_id'),
-            'ph_number' => $this->input->post('ph_number'),
-            'basic_pay' => $this->input->post('basic_pay'),
-            'active_loan' => $active_loan,
-            'loan_duration' => $this->input->post('loan_duration'),
-            'loan_amount_remaining' => $active_loan,
-            'last_incriment_date' => $this->input->post('last_incriment_date')
+            'bank_name' => $this->input->post('bank_name'),
+            'bank_address' => $this->input->post('bank_address'),
+            'bank_account_no' => $this->input->post('bank_account_no'),
+            'bank_ifs_code' => $this->input->post('bank_ifs_code'),
+            'bank_micr_code' => $this->input->post('bank_micr_code'),
+            'bank_branch_code' => $this->input->post('bank_branch_code')
         );   
 
-        if($this->db->insert('employee', $insertArray)){
-            $emp_id = $this->db->insert_id();
-            $data['insert_id'] = $emp_id;
+        if($this->db->insert('master_bank_account', $insertArray)){
+            $ba_id = $this->db->insert_id();
+            $data['insert_id'] = $ba_id;
 
             $data['type'] = 'success';
-            $data['msg'] = 'Employee added successfully.'; 
-
-            // image upload
-            if (!empty($_FILES['employeefile']['name'][0])) {
-                $return_data = array(); 
-
-                $upload_path = './upload/employee/' ; 
-                $file_type = 'jpg|jpeg|png|bmp';
-                $user_file_name = 'employeefile';
-
-                $return_data = $this->_upload_files($_FILES['employeefile'], $upload_path, $file_type, $user_file_name);
-                //print_r($return_data);die;
-
-                foreach ($return_data as $datam) {
-                    if ($datam['status'] != 'error') {                        
-                        // Insert filename to db
-
-                        $updateArray = array(
-                            'emp_photo' => $datam['filename']
-                        );
-
-                        $val = $this->db->update('employee', $updateArray, array('emp_id' => $emp_id));
-                    }
-                }
-                
-                $data['msg'] = 'Image Files Uploaded<hr>Employee added successfully.'; 
-
-            }
+            $data['msg'] = 'Bank added successfully.'; 
         }else{
             $data['type'] = 'error';
             $data['msg'] = 'Database Insert Error';
@@ -302,14 +222,14 @@ class bankaccount_m extends CI_Model {
         return $final_array;
     }
 
-    public function edit_employee($emp_id = ''){
+    public function edit_bank_account($ba_id = ''){
         
-        $data['title'] = 'Employee Management';
+        $data['title'] = 'Bank Account Management';
         $data['menu'] = 'Users';
 
-        $data['employee_details'] = $this->db->get_where('employee', array('emp_id' => $emp_id))->result();
+        $data['bankaccount_details'] = $this->db->get_where('master_bank_account', array('ba_id' => $ba_id))->result();
 
-        return array('page' => 'employee/employee_edit_v', 'data' => $data);
+        return array('page' => 'bankaccount/bankaccount_edit_v', 'data' => $data);
 
     }
 
@@ -331,29 +251,24 @@ class bankaccount_m extends CI_Model {
 
     }
 
-    public function form_edit_employee(){   
-        $emp_id = $this->input->post('emp_id');  
+    public function form_edit_bank_account(){   
+        $ba_id = $this->input->post('ba_id');  
 
         $updateArray1 = array(
-            'emp_type' => $this->input->post('emp_type'),
-            'emp_desig' => $this->input->post('emp_desig'),
-            'first_name' => $this->input->post('first_name'),
-            'last_name' => $this->input->post('last_name'),
-            'email_id' => $this->input->post('email_id'),
-            'ph_number' => $this->input->post('ph_number'),
-            'basic_pay' => $this->input->post('basic_pay'),
-            'active_loan' => $this->input->post('active_loan'),
-            'loan_duration' => $this->input->post('loan_duration'),
-            'loan_amount_remaining' => $this->input->post('active_loan'),
-            'last_incriment_date' => $this->input->post('last_incriment_date')
+            'bank_name' => $this->input->post('bank_name'),
+            'bank_address' => $this->input->post('bank_address'),
+            'bank_account_no' => $this->input->post('bank_account_no'),
+            'bank_ifs_code' => $this->input->post('bank_ifs_code'),
+            'bank_micr_code' => $this->input->post('bank_micr_code'),
+            'bank_branch_code' => $this->input->post('bank_branch_code')
         );
 
-        $val = $this->db->update('employee', $updateArray1, array('emp_id' => $emp_id));
+        $val = $this->db->update('master_bank_account', $updateArray1, array('ba_id' => $ba_id));
         //echo $this->db->last_query();die;
         
         if($val){
             $data['type'] = 'success';
-            $data['msg'] = 'User edited successfully<hr>No Files Uploaded.';          
+            $data['msg'] = 'Bank Info Uploaded.';          
         }else{
             $data['type'] = 'error';
             $data['msg'] = 'Database Update Error';
@@ -362,17 +277,17 @@ class bankaccount_m extends CI_Model {
         return $data;
     }
 
-    public function ajax_delete_employee(){
-        $emp_id = $this->input->post('emp_id');
+    public function ajax_delete_bank_account(){
+        $ba_id = $this->input->post('ba_id');
         $delClause = array(
-            'emp_id' => $emp_id
+            'ba_id' => $ba_id
         );
         
-        $this->db->where($delClause)->delete('employee');
+        $this->db->where($delClause)->delete('master_bank_account');
 
         $data['type'] = 'success';
         $data['title'] = 'Deletion!';
-        $data['msg'] = 'Employee deleted successfully'; 
+        $data['msg'] = 'Bank Info deleted successfully'; 
 
         return $data;        
     }

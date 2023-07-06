@@ -48,11 +48,11 @@ class Bankaccount extends My_Controller {
         }
     }
 
-    public function ajax_employee_table_data(){
+    public function ajax_bank_table_data(){
         
         if($this->check_permission(array()) == true) {
             $this->load->model('Bankaccount_m');
-            $data = $this->Bankaccount_m->ajax_employee_table_data();
+            $data = $this->Bankaccount_m->ajax_bank_table_data();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -60,11 +60,11 @@ class Bankaccount extends My_Controller {
     }
 
 
-    public function add_employee(){
+    public function add_bank_account(){
         
         if($this->check_permission(array()) == true) {
             $this->load->model('Bankaccount_m');
-            $data = $this->Bankaccount_m->add_employee();
+            $data = $this->Bankaccount_m->add_bank_account();
             $this->load->view($data['page'], $data['data']);
         }        
 
@@ -81,10 +81,10 @@ class Bankaccount extends My_Controller {
 
     }
 
-    public function ajax_delete_employee(){        
+    public function ajax_delete_bank_account(){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Bankaccount_m');
-            $data = $this->Bankaccount_m->ajax_delete_employee();
+            $data = $this->Bankaccount_m->ajax_delete_bank_account();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -101,19 +101,19 @@ class Bankaccount extends My_Controller {
 
     }
 
-    public function form_add_employee(){        
+    public function form_add_bank_account(){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Bankaccount_m');
-            $data = $this->Bankaccount_m->form_add_employee();
+            $data = $this->Bankaccount_m->form_add_bank_account();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
     }
 
-    public function edit_employee($emp_id){        
+    public function edit_bank_account($emp_id){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Bankaccount_m');
-            $data = $this->Bankaccount_m->edit_employee($emp_id);
+            $data = $this->Bankaccount_m->edit_bank_account($emp_id);
             $this->load->view($data['page'], $data['data']);
         }
     }
@@ -129,10 +129,10 @@ class Bankaccount extends My_Controller {
 
     }
 
-    public function form_edit_employee(){        
+    public function form_edit_bank_account(){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Bankaccount_m');
-            $data = $this->Bankaccount_m->form_edit_employee();
+            $data = $this->Bankaccount_m->form_edit_bank_account();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }

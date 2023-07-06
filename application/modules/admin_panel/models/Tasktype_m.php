@@ -11,80 +11,28 @@ class tasktype_m extends CI_Model {
         return array('page'=>'tasktype/tasktype_list_v', 'data'=>$data);
     }
 
-    public function ajax_employee_table_data() {
+    public function ajax_task_table_data() {
         $usertype = $this->session->usertype;
         $user_id = $this->session->user_id;
         $data = array();
         $nestedData = array();
 
-        $p_data = $this->db->get('employee')->result();
+        $p_data = $this->db->get('master_task_type')->result();
 
         if(sizeof($p_data) > 0){
             $slNo = 1;
             foreach($p_data as $index => $val){
-                $emp_id = $val->emp_id;
-                $first_name = $val->first_name;
-                $last_name = $val->last_name;
-                $basicPay = $val->basic_pay;
-
-                if($val->emp_photo != ''){
-                    $emp_photo = $val->emp_photo;
-                }else{
-                    $emp_photo = 'no_image.png';
-                }
-                
-                $employeeName = $first_name;
-                if($last_name != ''){
-                    $employeeName .= ' '.$last_name;
-                }
-
-                $emp_type = $val->emp_type;
-                if($emp_type == '1'){
-                    $employeeType = 'Permanent';
-                }else if($emp_type == '2'){
-                    $employeeType = 'Part Timer';
-                }else{
-                    $employeeType = 'Freelancer';
-                }
-
-                $emp_desig = $val->emp_desig;
-                if($emp_desig == '1'){
-                    $designation = 'Designer';
-                }else if($emp_desig == '2'){
-                    $designation = 'Developer';
-                }else if($emp_desig == '3'){
-                    $designation = 'Full Stack Developer';
-                }else if($emp_desig == '4'){
-                    $designation = 'Sr. Designer';
-                }else if($emp_desig == '5'){
-                    $designation = 'Sr. Developer';
-                }else if($emp_desig == '6'){
-                    $designation = 'Team Lead';
-                }else if($emp_desig == '7'){
-                    $designation = 'Project Mgr.';
-                }else if($emp_desig == '8'){
-                    $designation = 'Manager';
-                }else if($emp_desig == '9'){
-                    $designation = 'Director';
-                }else if($emp_desig == '10'){
-                    $designation = 'Managing Director';
-                }else if($emp_desig == '11'){
-                    $designation = 'Accounts & project coordinator';
-                }else{
-                    $designation = 'Business Developer';
-                }
+                $tt_id = $val->tt_id;
+                $task_name = $val->task_name;
+                $hsn_code = $val->hsn_code;
+                $price = $val->price;
 
                 $nestedData['slNo'] = $slNo;
-                $nestedData['employeeName'] = $employeeName;
-                $nestedData['phNumber'] = $val->ph_number;
-                $nestedData['emailId'] = $val->email_id;
-                $nestedData['employeeType'] = $employeeType;
-                $nestedData['designation'] = $designation;
-                $nestedData['basicPay'] = number_format($basicPay);
-                $nestedData['photo'] = '<img src="'.base_url('upload/employee/'.$emp_photo).'" style="height: 50px;">';
-                $nestedData['action'] = '<a href="javascript:void(0)" data-emp_id="'.$emp_id.'" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
-                <a href="'. base_url('admin/edit-employee/'.$emp_id).'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
-                <a href="javascript:void(0)" data-emp_id="'.$emp_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+                $nestedData['taskName'] = $task_name;
+                $nestedData['hsnCode'] = $val->hsn_code;
+                $nestedData['price'] = number_format($val->price, 2);
+                $nestedData['action'] = '<a href="'. base_url('admin/edit-task-type/'.$tt_id).'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
+                <a href="javascript:void(0)" data-tt_id="'.$tt_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
                             
                 array_push($data, $nestedData);
                 $slNo++;
@@ -138,11 +86,11 @@ class tasktype_m extends CI_Model {
 
     }
 
-    public function add_employee(){        
-        $data['title'] = 'Employee Management';
-        $data['menu'] = 'Add Employee';
+    public function add_task_type(){        
+        $data['title'] = 'Task Type Management';
+        $data['menu'] = 'Add Task';
 
-        return array('page'=>'employee/employee_add_v', 'data'=>$data);
+        return array('page'=>'tasktype/tasktype_add_v', 'data'=>$data);
     }
 
     public function ajax_unique_username(){
@@ -191,56 +139,21 @@ class tasktype_m extends CI_Model {
 
     }
 
-    public function form_add_employee(){  
+    public function form_add_task_type(){  
         $active_loan = $this->input->post('active_loan');
 
         $insertArray = array(
-            'emp_type' => $this->input->post('emp_type'),
-            'emp_desig' => $this->input->post('emp_desig'),
-            'first_name' => $this->input->post('first_name'),
-            'last_name' => $this->input->post('last_name'),
-            'email_id' => $this->input->post('email_id'),
-            'ph_number' => $this->input->post('ph_number'),
-            'basic_pay' => $this->input->post('basic_pay'),
-            'active_loan' => $active_loan,
-            'loan_duration' => $this->input->post('loan_duration'),
-            'loan_amount_remaining' => $active_loan,
-            'last_incriment_date' => $this->input->post('last_incriment_date')
+            'task_name' => $this->input->post('task_name'),
+            'hsn_code' => $this->input->post('hsn_code'),
+            'price' => $this->input->post('price')
         );   
 
-        if($this->db->insert('employee', $insertArray)){
-            $emp_id = $this->db->insert_id();
-            $data['insert_id'] = $emp_id;
+        if($this->db->insert('master_task_type', $insertArray)){
+            $tt_id = $this->db->insert_id();
+            $data['insert_id'] = $tt_id;
 
             $data['type'] = 'success';
-            $data['msg'] = 'Employee added successfully.'; 
-
-            // image upload
-            if (!empty($_FILES['employeefile']['name'][0])) {
-                $return_data = array(); 
-
-                $upload_path = './upload/employee/' ; 
-                $file_type = 'jpg|jpeg|png|bmp';
-                $user_file_name = 'employeefile';
-
-                $return_data = $this->_upload_files($_FILES['employeefile'], $upload_path, $file_type, $user_file_name);
-                //print_r($return_data);die;
-
-                foreach ($return_data as $datam) {
-                    if ($datam['status'] != 'error') {                        
-                        // Insert filename to db
-
-                        $updateArray = array(
-                            'emp_photo' => $datam['filename']
-                        );
-
-                        $val = $this->db->update('employee', $updateArray, array('emp_id' => $emp_id));
-                    }
-                }
-                
-                $data['msg'] = 'Image Files Uploaded<hr>Employee added successfully.'; 
-
-            }
+            $data['msg'] = 'Task added successfully.'; 
         }else{
             $data['type'] = 'error';
             $data['msg'] = 'Database Insert Error';
@@ -302,14 +215,14 @@ class tasktype_m extends CI_Model {
         return $final_array;
     }
 
-    public function edit_employee($emp_id = ''){
+    public function edit_task_type($tt_id = ''){
         
-        $data['title'] = 'Employee Management';
-        $data['menu'] = 'Users';
+        $data['title'] = 'Task Type Management';
+        $data['menu'] = 'Task';
 
-        $data['employee_details'] = $this->db->get_where('employee', array('emp_id' => $emp_id))->result();
+        $data['task_details'] = $this->db->get_where('master_task_type', array('tt_id' => $tt_id))->result();
 
-        return array('page' => 'employee/employee_edit_v', 'data' => $data);
+        return array('page' => 'tasktype/tasktype_edit_v', 'data' => $data);
 
     }
 
@@ -331,29 +244,21 @@ class tasktype_m extends CI_Model {
 
     }
 
-    public function form_edit_employee(){   
-        $emp_id = $this->input->post('emp_id');  
+    public function form_edit_task_type(){   
+        $tt_id = $this->input->post('tt_id');  
 
         $updateArray1 = array(
-            'emp_type' => $this->input->post('emp_type'),
-            'emp_desig' => $this->input->post('emp_desig'),
-            'first_name' => $this->input->post('first_name'),
-            'last_name' => $this->input->post('last_name'),
-            'email_id' => $this->input->post('email_id'),
-            'ph_number' => $this->input->post('ph_number'),
-            'basic_pay' => $this->input->post('basic_pay'),
-            'active_loan' => $this->input->post('active_loan'),
-            'loan_duration' => $this->input->post('loan_duration'),
-            'loan_amount_remaining' => $this->input->post('active_loan'),
-            'last_incriment_date' => $this->input->post('last_incriment_date')
+            'task_name' => $this->input->post('task_name'),
+            'hsn_code' => $this->input->post('hsn_code'),
+            'price' => $this->input->post('price')
         );
 
-        $val = $this->db->update('employee', $updateArray1, array('emp_id' => $emp_id));
+        $val = $this->db->update('master_task_type', $updateArray1, array('tt_id' => $tt_id));
         //echo $this->db->last_query();die;
         
         if($val){
             $data['type'] = 'success';
-            $data['msg'] = 'User edited successfully<hr>No Files Uploaded.';          
+            $data['msg'] = 'Task Uploaded.';          
         }else{
             $data['type'] = 'error';
             $data['msg'] = 'Database Update Error';
@@ -362,17 +267,17 @@ class tasktype_m extends CI_Model {
         return $data;
     }
 
-    public function ajax_delete_employee(){
-        $emp_id = $this->input->post('emp_id');
+    public function ajax_delete_task_type(){
+        $tt_id = $this->input->post('tt_id');
         $delClause = array(
-            'emp_id' => $emp_id
+            'tt_id' => $tt_id
         );
         
-        $this->db->where($delClause)->delete('employee');
+        $this->db->where($delClause)->delete('master_task_type');
 
         $data['type'] = 'success';
         $data['title'] = 'Deletion!';
-        $data['msg'] = 'Employee deleted successfully'; 
+        $data['msg'] = 'Task deleted successfully'; 
 
         return $data;        
     }

@@ -27,9 +27,6 @@
 	
 	//delete
 	$route['admin/ajax-delete-payment-mode'] = 'admin_panel/Paymentmode/ajax_delete_payment_mode';
-
-
-
 	
 	//EMPLOYEE MASTER
 	//list
@@ -50,10 +47,35 @@
 	//TASK TYPE MASTER
 	//list
 	$route['admin/task-type'] = 'admin_panel/Tasktype/task_type';
+	$route['admin/ajax-task-table-data'] = 'admin_panel/Tasktype/ajax_task_table_data';
+
+	//add
+	$route['admin/add-task-type'] = 'admin_panel/Tasktype/add_task_type';	
+	$route['admin/form-add-task-type'] = 'admin_panel/Tasktype/form_add_task_type';			
+
+	//edit
+	$route['admin/edit-task-type/(:num)'] = 'admin_panel/Tasktype/edit_task_type/$1';	
+	$route['admin/form-edit-task-type'] = 'admin_panel/Tasktype/form_edit_task_type';
+	
+	//delete
+	$route['admin/ajax-delete-task-type'] = 'admin_panel/Tasktype/ajax_delete_task_type';
+
 	
 	//BANK ACCOUNT MASTER
 	//list
-	$route['admin/bank-account'] = 'admin_panel/Bankaccount/bank_account';
+	$route['admin/bank-account'] = 'admin_panel/Bankaccount/bank_account';	
+	$route['admin/ajax-bank-table-data'] = 'admin_panel/Bankaccount/ajax_bank_table_data';
+
+	//add
+	$route['admin/add-bank-account'] = 'admin_panel/Bankaccount/add_bank_account';	
+	$route['admin/form-add-bank-account'] = 'admin_panel/Bankaccount/form_add_bank_account';		
+
+	//edit
+	$route['admin/edit-bank-account/(:num)'] = 'admin_panel/Bankaccount/edit_bank_account/$1';	
+ 	$route['admin/form-edit-bank-account'] = 'admin_panel/Bankaccount/form_edit_bank_account';	
+	
+	 //delete
+	 $route['admin/ajax-delete-bank-account'] = 'admin_panel/Bankaccount/ajax_delete_bank_account';
 	
 	//EMPLOYEE MANAGEMENT
 	//list

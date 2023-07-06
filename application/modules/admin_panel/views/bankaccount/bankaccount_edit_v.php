@@ -45,94 +45,46 @@
                 <div class="col-lg-12">
                     <section class="panel">
                         <div class="panel-body">
-                            <form autocomplete="off" id="form_edit_employee" method="post" action="<?=base_url('admin/form-edit-employee')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
-
-                                <div class="form-group ">
-                                    <div class="col-lg-3">                                        
-                                        <label for="emp_type" class="control-label text-danger">Employee Type *</label>
-                                        <select name="emp_type" id="emp_type" class="form-control select2">
-                                            <option value="0" <?php if($employee_details[0]->emp_type == '0'){?> selected <?php } ?>>Select Employee Type</option>
-                                            <option value="1" <?php if($employee_details[0]->emp_type == '1'){?> selected <?php } ?>>Permanent</option>
-                                            <option value="2" <?php if($employee_details[0]->emp_type == '2'){?> selected <?php } ?>>Part Timer</option>
-                                            <option value="3" <?php if($employee_details[0]->emp_type == '3'){?> selected <?php } ?>>Freelancer</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-lg-3">                                        
-                                        <label for="emp_desig" class="control-label text-danger">Employee Designation *</label>
-                                        <select name="emp_desig" id="emp_desig" class="form-control select2">
-                                            <option value="0" <?php if($employee_details[0]->emp_desig == '0'){?> selected <?php } ?>>Select Employee Designation</option>
-                                            <option value="1" <?php if($employee_details[0]->emp_desig == '1'){?> selected <?php } ?>>Designer</option>
-                                            <option value="2" <?php if($employee_details[0]->emp_desig == '2'){?> selected <?php } ?>>Developer</option>
-                                            <option value="3" <?php if($employee_details[0]->emp_desig == '3'){?> selected <?php } ?>>Full Stack Developer</option>
-                                            <option value="4" <?php if($employee_details[0]->emp_desig == '4'){?> selected <?php } ?>>Sr. Designer</option>
-                                            <option value="5" <?php if($employee_details[0]->emp_desig == '5'){?> selected <?php } ?>>Sr. Developer</option>
-                                            <option value="6" <?php if($employee_details[0]->emp_desig == '6'){?> selected <?php } ?>>Team Lead</option>
-                                            <option value="7" <?php if($employee_details[0]->emp_desig == '7'){?> selected <?php } ?>>Project Mgr.</option>
-                                            <option value="8" <?php if($employee_details[0]->emp_desig == '8'){?> selected <?php } ?>>Manager</option>
-                                            <option value="9" <?php if($employee_details[0]->emp_desig == '9'){?> selected <?php } ?>>Director</option>
-                                            <option value="10" <?php if($employee_details[0]->emp_desig == '0'){?> selected <?php } ?>>Managing Director</option>
-                                            <option value="11" <?php if($employee_details[0]->emp_desig == '11'){?> selected <?php } ?>>Accounts & project coordinator</option>
-                                            <option value="12" <?php if($employee_details[0]->emp_desig == '12'){?> selected <?php } ?>>Business Developer</option>
-                                        </select>
+                            
+                        <form autocomplete="off" id="form_edit_bank_account" method="post" action="<?=base_url('admin/form-edit-bank-account')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
+                                  <div class="form-group">
+                                    <div class="col-lg-3">
+                                        <label for="bank_name" class="control-label">Bank Name</label>
+                                        <input value="<?=$bankaccount_details[0]->bank_name?>" id="bank_name" name="bank_name" type="text" placeholder="Bank Name" class="form-control round-input" />
                                     </div>
 
                                     <div class="col-lg-3">
-                                        <label for="first_name" class="control-label">First Name</label>
-                                        <input value="<?=$employee_details[0]->first_name?>" id="first_name" name="first_name" type="text" placeholder="First Name" class="form-control round-input" />
-                                    </div>
-
-                                    <div class="col-lg-3">
-                                        <label for="last_name" class="control-label">Last Name</label>
-                                        <input value="<?=$employee_details[0]->last_name?>" id="last_name" name="last_name" type="text" placeholder="Last Name" class="form-control round-input" />
-                                    </div>                              
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="col-lg-3">
-                                        <label for="email_id" class="control-label">Email ID</label>
-                                        <input value="<?=$employee_details[0]->email_id?>" id="email_id" name="email_id" type="email" placeholder="Email ID" class="form-control round-input" />
-                                    </div>
-
-                                    <div class="col-lg-3">
-                                        <label for="ph_number" class="control-label">Mobile Number</label>
-                                        <input value="<?=$employee_details[0]->ph_number?>" id="ph_number" name="ph_number" type="tel" placeholder="Mobile Number" class="form-control round-input" />
+                                        <label for="bank_address" class="control-label">Address</label>
+                                        <textarea id="bank_address" name="bank_address" placeholder="Address" class="form-control round-input" ><?=$bankaccount_details[0]->bank_address?></textarea>
                                     </div> 
 
                                     <div class="col-lg-3">
-                                        <label for="active_loan" class="control-label">Active Loan Amount</label>
-                                        <input value="<?=$employee_details[0]->active_loan?>" id="active_loan" name="active_loan" type="number" placeholder="Active Loan Amount" class="form-control round-input" />
+                                        <label for="bank_account_no" class="control-label">Account No</label>
+                                        <input value="<?=$bankaccount_details[0]->bank_account_no?>" id="bank_account_no" name="bank_account_no" type="text" placeholder="Account No" class="form-control round-input" />
                                     </div> 
 
                                     <div class="col-lg-3">
-                                        <label for="loan_duration" class="control-label">Loan Duration(in month)</label>
-                                        <input value="<?=$employee_details[0]->loan_duration?>" id="loan_duration" name="loan_duration" type="number" placeholder="Loan Duration" class="form-control round-input" />
+                                        <label for="bank_ifs_code" class="control-label">IFSC Code</label>
+                                        <input value="<?=$bankaccount_details[0]->bank_ifs_code?>" id="bank_ifs_code" name="bank_ifs_code" type="text" placeholder="IFSC Code" class="form-control round-input" />
                                     </div>  
-                                </div>
-                               
+                                </div> 
+
                                 <div class="form-group">
                                     <div class="col-lg-3">
-                                        <label for="basic_pay" class="control-label">Basic Pay</label>
-                                        <input value="<?=$employee_details[0]->basic_pay?>" id="basic_pay" name="basic_pay" type="number" placeholder="Basic Pay" class="form-control round-input" />
+                                        <label for="bank_micr_code" class="control-label">MICR Code</label>
+                                        <input value="<?=$bankaccount_details[0]->bank_micr_code?>" id="bank_micr_code" name="bank_micr_code" type="text" placeholder="MICR Code" class="form-control round-input" />
                                     </div>
 
                                     <div class="col-lg-3">
-                                        <label for="last_incriment_date" class="control-label">Last Incriment Date</label>
-                                        <input value="<?=date('Y-m-d', strtotime($employee_details[0]->last_incriment_date))?>" id="last_incriment_date" name="last_incriment_date" type="date" placeholder="Loan Duration" class="form-control round-input" />
+                                        <label for="bank_branch_code" class="control-label">Branch Code</label>
+                                        <input value="<?=$bankaccount_details[0]->bank_branch_code?>" type="text" id="bank_branch_code" name="bank_branch_code" placeholder="Branch Code" class="form-control round-input" />
                                     </div>
-                                     
-                                    <div class="col-lg-3">
-                                        <label for="" class="control-label">Employee Photo</label>
-                                        <input type="file" name="employeefile" id="employeefile" accept=".jpg,.jpeg,.png,.bmp" class="file">
-                                    </div>                                                                        
-                                </div>    
 
-                                <div class="form-group">
-                                    <div class="col-lg-12">
-                                        <button class="btn btn-success pull-right" type="submit"><i class="fa fa-plus"> Update Employee</i></button>
-                                        <input type="hidden" name="emp_id" id="emp_id" value="<?=$employee_details[0]->emp_id?>">
-                                    </div>
-                                </div>
+                                    <div class="col-lg-3">
+                                        <input type="hidden" name="ba_id" id="ba_id" value="<?=$bankaccount_details[0]->ba_id?>">
+                                    <button class="btn btn-success pull-right" type="submit"><i class="fa fa-plus"> Update Bank</i></button>
+                                    </div>  
+                                </div> 
                             </form>
                         </div>
                     </section>
@@ -170,26 +122,29 @@
 
 <script>
     //add-item-form validation and submit
-    $("#form_edit_employee").validate({
+    $("#form_edit_bank_account").validate({
         
         rules: {
-            emp_type: {
+            bank_name: {
                 required: true
             },            
-            emp_desig:{
+            bank_account_no:{
                 required: true
             },
-            first_name : {
+            bank_ifs_code : {
                 required: true
-            }   
+            } ,
+            bank_branch_code : {
+                required: true
+            } 
         },
         messages: {
 
         }
     });
-    $('#form_edit_employee').ajaxForm({
+    $('#form_edit_bank_account').ajaxForm({
         beforeSubmit: function () {
-            return $("#form_edit_employee").valid(); // TRUE when form is valid, FALSE will cancel submit
+            return $("#form_edit_bank_account").valid(); // TRUE when form is valid, FALSE will cancel submit
         },
         success: function (returnData) {
             console.log(returnData);

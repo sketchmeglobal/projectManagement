@@ -40,7 +40,7 @@ class Tasktype extends My_Controller {
         }
     }
 
-    public function bank_account(){        
+    public function task_type(){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Tasktype_m');
             $data = $this->Tasktype_m->task_type();
@@ -48,26 +48,22 @@ class Tasktype extends My_Controller {
         }
     }
 
-    public function ajax_employee_table_data(){
-        
+    public function ajax_task_table_data(){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Tasktype_m');
-            $data = $this->Tasktype_m->ajax_employee_table_data();
+            $data = $this->Tasktype_m->ajax_task_table_data();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
-
     }
 
 
-    public function add_employee(){
-        
+    public function add_task_type(){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Tasktype_m');
-            $data = $this->Tasktype_m->add_employee();
+            $data = $this->Tasktype_m->add_task_type();
             $this->load->view($data['page'], $data['data']);
-        }        
-
+        }
     }
 
     public function ajax_unique_username(){
@@ -81,10 +77,10 @@ class Tasktype extends My_Controller {
 
     }
 
-    public function ajax_delete_employee(){        
+    public function ajax_delete_task_type(){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Tasktype_m');
-            $data = $this->Tasktype_m->ajax_delete_employee();
+            $data = $this->Tasktype_m->ajax_delete_task_type();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -101,19 +97,19 @@ class Tasktype extends My_Controller {
 
     }
 
-    public function form_add_employee(){        
+    public function form_add_task_type(){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Tasktype_m');
-            $data = $this->Tasktype_m->form_add_employee();
+            $data = $this->Tasktype_m->form_add_task_type();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
     }
 
-    public function edit_employee($emp_id){        
+    public function edit_task_type($tt_id){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Tasktype_m');
-            $data = $this->Tasktype_m->edit_employee($emp_id);
+            $data = $this->Tasktype_m->edit_task_type($tt_id);
             $this->load->view($data['page'], $data['data']);
         }
     }
@@ -129,10 +125,10 @@ class Tasktype extends My_Controller {
 
     }
 
-    public function form_edit_employee(){        
+    public function form_edit_task_type(){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Tasktype_m');
-            $data = $this->Tasktype_m->form_edit_employee();
+            $data = $this->Tasktype_m->form_edit_task_type();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
