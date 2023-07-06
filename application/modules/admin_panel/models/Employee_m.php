@@ -82,8 +82,7 @@ class employee_m extends CI_Model {
                 $nestedData['designation'] = $designation;
                 $nestedData['basicPay'] = number_format($basicPay);
                 $nestedData['photo'] = '<img src="'.base_url('upload/employee/'.$emp_photo).'" style="height: 50px;">';
-                $nestedData['action'] = '<a href="javascript:void(0)" data-emp_id="'.$emp_id.'" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
-                <a href="'. base_url('admin/edit-employee/'.$emp_id).'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
+                $nestedData['action'] = '<a href="'. base_url('admin/edit-employee/'.$emp_id).'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
                 <a href="javascript:void(0)" data-emp_id="'.$emp_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
                             
                 array_push($data, $nestedData);

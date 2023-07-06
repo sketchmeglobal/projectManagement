@@ -48,11 +48,11 @@ class Employeemaster extends My_Controller {
         }
     }
 
-    public function ajax_employee_table_data(){
+    public function ajax_employee_master_table_data(){
         
         if($this->check_permission(array()) == true) {
             $this->load->model('Employeemaster_m');
-            $data = $this->Employeemaster_m->ajax_employee_table_data();
+            $data = $this->Employeemaster_m->ajax_employee_master_table_data();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -60,11 +60,11 @@ class Employeemaster extends My_Controller {
     }
 
 
-    public function add_employee(){
+    public function add_employee_master(){
         
         if($this->check_permission(array()) == true) {
             $this->load->model('Employeemaster_m');
-            $data = $this->Employeemaster_m->add_employee();
+            $data = $this->Employeemaster_m->add_employee_master();
             $this->load->view($data['page'], $data['data']);
         }        
 
@@ -81,10 +81,10 @@ class Employeemaster extends My_Controller {
 
     }
 
-    public function ajax_delete_employee(){        
+    public function ajax_delete_employee_master(){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Employeemaster_m');
-            $data = $this->Employeemaster_m->ajax_delete_employee();
+            $data = $this->Employeemaster_m->ajax_delete_employee_master();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -101,19 +101,19 @@ class Employeemaster extends My_Controller {
 
     }
 
-    public function form_add_employee(){        
+    public function form_add_employee_master(){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Employeemaster_m');
-            $data = $this->Employeemaster_m->form_add_employee();
+            $data = $this->Employeemaster_m->form_add_employee_master();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
     }
 
-    public function edit_employee($emp_id){        
+    public function edit_employee_master($emp_id){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Employeemaster_m');
-            $data = $this->Employeemaster_m->edit_employee($emp_id);
+            $data = $this->Employeemaster_m->edit_employee_master($emp_id);
             $this->load->view($data['page'], $data['data']);
         }
     }
@@ -129,10 +129,10 @@ class Employeemaster extends My_Controller {
 
     }
 
-    public function form_edit_employee(){        
+    public function form_edit_employee_master(){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Employeemaster_m');
-            $data = $this->Employeemaster_m->form_edit_employee();
+            $data = $this->Employeemaster_m->form_edit_employee_master();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }

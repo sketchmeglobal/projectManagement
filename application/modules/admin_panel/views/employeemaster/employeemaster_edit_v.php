@@ -45,7 +45,7 @@
                 <div class="col-lg-12">
                     <section class="panel">
                         <div class="panel-body">
-                            <form autocomplete="off" id="form_edit_employee" method="post" action="<?=base_url('admin/form-edit-employee')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
+                            <form autocomplete="off" id="form_edit_employee" method="post" action="<?=base_url('admin/form-edit-employee-master')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
 
                                 <div class="form-group ">
                                     <div class="col-lg-3">                                        
@@ -100,39 +100,10 @@
                                     </div> 
 
                                     <div class="col-lg-3">
-                                        <label for="active_loan" class="control-label">Active Loan Amount</label>
-                                        <input value="<?=$employee_details[0]->active_loan?>" id="active_loan" name="active_loan" type="number" placeholder="Active Loan Amount" class="form-control round-input" />
-                                    </div> 
-
-                                    <div class="col-lg-3">
-                                        <label for="loan_duration" class="control-label">Loan Duration(in month)</label>
-                                        <input value="<?=$employee_details[0]->loan_duration?>" id="loan_duration" name="loan_duration" type="number" placeholder="Loan Duration" class="form-control round-input" />
-                                    </div>  
-                                </div>
-                               
-                                <div class="form-group">
-                                    <div class="col-lg-3">
-                                        <label for="basic_pay" class="control-label">Basic Pay</label>
-                                        <input value="<?=$employee_details[0]->basic_pay?>" id="basic_pay" name="basic_pay" type="number" placeholder="Basic Pay" class="form-control round-input" />
-                                    </div>
-
-                                    <div class="col-lg-3">
-                                        <label for="last_incriment_date" class="control-label">Last Incriment Date</label>
-                                        <input value="<?=date('Y-m-d', strtotime($employee_details[0]->last_incriment_date))?>" id="last_incriment_date" name="last_incriment_date" type="date" placeholder="Loan Duration" class="form-control round-input" />
-                                    </div>
-                                     
-                                    <div class="col-lg-3">
-                                        <label for="" class="control-label">Employee Photo</label>
-                                        <input type="file" name="employeefile" id="employeefile" accept=".jpg,.jpeg,.png,.bmp" class="file">
-                                    </div>                                                                        
-                                </div>    
-
-                                <div class="form-group">
-                                    <div class="col-lg-12">
-                                        <button class="btn btn-success pull-right" type="submit"><i class="fa fa-plus"> Update Employee</i></button>
+                                    <button class="btn btn-success pull-right" type="submit"><i class="fa fa-plus"> Update Employee</i></button>
                                         <input type="hidden" name="emp_id" id="emp_id" value="<?=$employee_details[0]->emp_id?>">
-                                    </div>
-                                </div>
+                                    </div> 
+                                </div> 
                             </form>
                         </div>
                     </section>

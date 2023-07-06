@@ -11,13 +11,13 @@ class employeemaster_m extends CI_Model {
         return array('page'=>'employeemaster/employeemaster_list_v', 'data'=>$data);
     }
 
-    public function ajax_employee_table_data() {
+    public function ajax_employee_master_table_data() {
         $usertype = $this->session->usertype;
         $user_id = $this->session->user_id;
         $data = array();
         $nestedData = array();
 
-        $p_data = $this->db->get('employee')->result();
+        $p_data = $this->db->get('employee_master')->result();
 
         if(sizeof($p_data) > 0){
             $slNo = 1;
@@ -80,10 +80,7 @@ class employeemaster_m extends CI_Model {
                 $nestedData['emailId'] = $val->email_id;
                 $nestedData['employeeType'] = $employeeType;
                 $nestedData['designation'] = $designation;
-                $nestedData['basicPay'] = number_format($basicPay);
-                $nestedData['photo'] = '<img src="'.base_url('upload/employee/'.$emp_photo).'" style="height: 50px;">';
-                $nestedData['action'] = '<a href="javascript:void(0)" data-emp_id="'.$emp_id.'" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
-                <a href="'. base_url('admin/edit-employee/'.$emp_id).'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
+                $nestedData['action'] = '<a href="'. base_url('admin/edit-employee/'.$emp_id).'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
                 <a href="javascript:void(0)" data-emp_id="'.$emp_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
                             
                 array_push($data, $nestedData);
@@ -138,11 +135,11 @@ class employeemaster_m extends CI_Model {
 
     }
 
-    public function add_employee(){        
-        $data['title'] = 'Employee Management';
+    public function add_employee_master(){        
+        $data['title'] = 'EmployeeMaster Management';
         $data['menu'] = 'Add Employee';
 
-        return array('page'=>'employee/employee_add_v', 'data'=>$data);
+        return array('page'=>'employeemaster/employeemaster_add_v', 'data'=>$data);
     }
 
     public function ajax_unique_username(){
@@ -191,7 +188,7 @@ class employeemaster_m extends CI_Model {
 
     }
 
-    public function form_add_employee(){  
+    public function form_add_employee_master(){  
         $active_loan = $this->input->post('active_loan');
 
         $insertArray = array(
@@ -200,47 +197,15 @@ class employeemaster_m extends CI_Model {
             'first_name' => $this->input->post('first_name'),
             'last_name' => $this->input->post('last_name'),
             'email_id' => $this->input->post('email_id'),
-            'ph_number' => $this->input->post('ph_number'),
-            'basic_pay' => $this->input->post('basic_pay'),
-            'active_loan' => $active_loan,
-            'loan_duration' => $this->input->post('loan_duration'),
-            'loan_amount_remaining' => $active_loan,
-            'last_incriment_date' => $this->input->post('last_incriment_date')
+            'ph_number' => $this->input->post('ph_number')
         );   
 
-        if($this->db->insert('employee', $insertArray)){
+        if($this->db->insert('employee_master', $insertArray)){
             $emp_id = $this->db->insert_id();
             $data['insert_id'] = $emp_id;
 
             $data['type'] = 'success';
             $data['msg'] = 'Employee added successfully.'; 
-
-            // image upload
-            if (!empty($_FILES['employeefile']['name'][0])) {
-                $return_data = array(); 
-
-                $upload_path = './upload/employee/' ; 
-                $file_type = 'jpg|jpeg|png|bmp';
-                $user_file_name = 'employeefile';
-
-                $return_data = $this->_upload_files($_FILES['employeefile'], $upload_path, $file_type, $user_file_name);
-                //print_r($return_data);die;
-
-                foreach ($return_data as $datam) {
-                    if ($datam['status'] != 'error') {                        
-                        // Insert filename to db
-
-                        $updateArray = array(
-                            'emp_photo' => $datam['filename']
-                        );
-
-                        $val = $this->db->update('employee', $updateArray, array('emp_id' => $emp_id));
-                    }
-                }
-                
-                $data['msg'] = 'Image Files Uploaded<hr>Employee added successfully.'; 
-
-            }
         }else{
             $data['type'] = 'error';
             $data['msg'] = 'Database Insert Error';
@@ -302,14 +267,14 @@ class employeemaster_m extends CI_Model {
         return $final_array;
     }
 
-    public function edit_employee($emp_id = ''){
+    public function edit_employee_master($emp_id = ''){
         
         $data['title'] = 'Employee Management';
         $data['menu'] = 'Users';
 
-        $data['employee_details'] = $this->db->get_where('employee', array('emp_id' => $emp_id))->result();
+        $data['employee_details'] = $this->db->get_where('employee_master', array('emp_id' => $emp_id))->result();
 
-        return array('page' => 'employee/employee_edit_v', 'data' => $data);
+        return array('page' => 'employeemaster/employeemaster_edit_v', 'data' => $data);
 
     }
 
@@ -331,7 +296,7 @@ class employeemaster_m extends CI_Model {
 
     }
 
-    public function form_edit_employee(){   
+    public function form_edit_employee_master(){   
         $emp_id = $this->input->post('emp_id');  
 
         $updateArray1 = array(
@@ -340,20 +305,15 @@ class employeemaster_m extends CI_Model {
             'first_name' => $this->input->post('first_name'),
             'last_name' => $this->input->post('last_name'),
             'email_id' => $this->input->post('email_id'),
-            'ph_number' => $this->input->post('ph_number'),
-            'basic_pay' => $this->input->post('basic_pay'),
-            'active_loan' => $this->input->post('active_loan'),
-            'loan_duration' => $this->input->post('loan_duration'),
-            'loan_amount_remaining' => $this->input->post('active_loan'),
-            'last_incriment_date' => $this->input->post('last_incriment_date')
+            'ph_number' => $this->input->post('ph_number')
         );
 
-        $val = $this->db->update('employee', $updateArray1, array('emp_id' => $emp_id));
+        $val = $this->db->update('employee_master', $updateArray1, array('emp_id' => $emp_id));
         //echo $this->db->last_query();die;
         
         if($val){
             $data['type'] = 'success';
-            $data['msg'] = 'User edited successfully<hr>No Files Uploaded.';          
+            $data['msg'] = 'Employee edited successfully';          
         }else{
             $data['type'] = 'error';
             $data['msg'] = 'Database Update Error';
@@ -362,13 +322,13 @@ class employeemaster_m extends CI_Model {
         return $data;
     }
 
-    public function ajax_delete_employee(){
+    public function ajax_delete_employee_master(){
         $emp_id = $this->input->post('emp_id');
         $delClause = array(
             'emp_id' => $emp_id
         );
         
-        $this->db->where($delClause)->delete('employee');
+        $this->db->where($delClause)->delete('employee_master');
 
         $data['type'] = 'success';
         $data['title'] = 'Deletion!';

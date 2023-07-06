@@ -46,7 +46,7 @@
                 <div class="col-lg-12">
                     <section class="panel">
                         <div class="panel-body">
-                            <form autocomplete="off" id="form_add_employee" method="post" action="<?=base_url('admin/form-add-employee')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
+                            <form autocomplete="off" id="form_add_employee" method="post" action="<?=base_url('admin/form-add-employee-master')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
                                 
                                 <div class="form-group ">
                                     <div class="col-lg-3">                                        
@@ -101,37 +101,8 @@
                                     </div> 
 
                                     <div class="col-lg-3">
-                                        <label for="active_loan" class="control-label">Active Loan Amount</label>
-                                        <input value="" id="active_loan" name="active_loan" type="number" placeholder="Active Loan Amount" class="form-control round-input" />
-                                    </div> 
-
-                                    <div class="col-lg-3">
-                                        <label for="loan_duration" class="control-label">Loan Duration(in month)</label>
-                                        <input value="" id="loan_duration" name="loan_duration" type="number" placeholder="Loan Duration" class="form-control round-input" />
+                                    <button class="btn btn-success pull-right" type="submit"><i class="fa fa-plus"> Add Employee</i></button>
                                     </div>  
-                                </div>
-                               
-                                <div class="form-group">
-                                    <div class="col-lg-3">
-                                        <label for="basic_pay" class="control-label">Basic Pay</label>
-                                        <input value="" id="basic_pay" name="basic_pay" type="number" placeholder="Basic Pay" class="form-control round-input" />
-                                    </div>
-
-                                    <div class="col-lg-3">
-                                        <label for="last_incriment_date" class="control-label">Last Incriment Date</label>
-                                        <input value="" id="last_incriment_date" name="last_incriment_date" type="date" placeholder="Loan Duration" class="form-control round-input" />
-                                    </div>
-                                     
-                                    <div class="col-lg-3">
-                                        <label for="" class="control-label">Employee Photo</label>
-                                        <input type="file" name="employeefile" id="employeefile" accept=".jpg,.jpeg,.png,.bmp" class="file">
-                                    </div>                                                                        
-                                </div>    
-
-                                <div class="form-group">
-                                    <div class="col-lg-12">
-                                        <button class="btn btn-success pull-right" type="submit"><i class="fa fa-plus"> Add Employee</i></button>
-                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -200,10 +171,10 @@
 			if(parseInt(obj.insert_id) > 0){
                 if(obj.type == 'error'){
                     setTimeout(function(){ 
-                        window.location.href = '<?=base_url()?>admin/edit-employee/'+obj.insert_id; 
+                        window.location.href = '<?=base_url()?>admin/edit-employee-master/'+obj.insert_id; 
                         }, 3000);
                 }else{
-                    window.location.href = '<?=base_url()?>admin/edit-employee/'+obj.insert_id;
+                    window.location.href = '<?=base_url()?>admin/edit-employee-master/'+obj.insert_id;
                 }            	
 			}
 		}

@@ -44,7 +44,7 @@
 
             <div class="row">
                 <div class="col-lg-12 text-right">
-                    <a href="<?= base_url('admin/add-employee') ?>" class="btn btn-success  mx-auto"><i class="fa fa-plus"></i> Add <?=$menu?></a>
+                    <a href="<?= base_url('admin/add-employee-master') ?>" class="btn btn-success  mx-auto"><i class="fa fa-plus"></i> Add <?=$menu?></a>
                     <section class="panel">
                         <div class="panel-body">
                             <table id="employee_table" class="table data-table dataTable">
@@ -56,8 +56,6 @@
                                         <th>Email Id</th>
                                         <th>Employee Type</th>
                                         <th>Designation</th>
-                                        <th>Basic Pay</th>
-                                        <th>Photo</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -121,21 +119,9 @@
             },
             "serverSide": true,
             "ajax": {
-                "url": "<?=base_url('admin/ajax-employee-table-data')?>",
+                "url": "<?=base_url('admin/ajax-employee-master-table-data')?>",
                 "type": "POST",
                 "dataType": "json",
-            },
-            "rowCallback": function (row, data) {
-                // console.log(data);
-                if (data.usertype == 'Resource Developer') {
-                    $(row).addClass('bg-green1');
-                }
-                if (data.usertype == 'Exporter') {
-                    $(row).addClass('bg-green2');
-                }
-                if (data.usertype == 'Marketing') {
-                    $(row).addClass('bg-green3');
-                }
             },
             //will get these values from JSON 'data' variable
             "columns": [
@@ -145,29 +131,8 @@
                 { "data": "emailId" },
                 { "data": "employeeType" },
                 { "data": "designation" },
-                { "data": "basicPay" },
-                { "data": "photo" },
                 { "data": "action" }
-            ],
-            //column initialisation properties
-            /*"columnDefs": [{
-                "targets": [1,2,3], //disable 'Image','Actions' column sorting
-                "orderable": false,
-            },
-            {
-                "targets": [10],
-                "visible": false
-            },
-            { 
-                "className": "nowrap", 
-                "targets": [ 3 ] 
-            },
-            { 
-                "className": "ut", 
-                "targets": [ 0 ] 
-            },
-            ],*/
-           
+            ],           
             "initComplete": function(settings, json) {   
 
               }
@@ -183,7 +148,7 @@
             $emp_id = $(this).data('emp_id');           
 
             $.ajax({
-                url: "<?= base_url('admin/ajax-delete-employee/') ?>",
+                url: "<?= base_url('admin/ajax-delete-employee-master/') ?>",
                 dataType: 'json',
                 type: 'POST',
                 data: {emp_id: $emp_id},

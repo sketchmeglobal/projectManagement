@@ -34,6 +34,18 @@
 	//EMPLOYEE MASTER
 	//list
 	$route['admin/employee-master'] = 'admin_panel/Employeemaster/employeemaster_managemnt';
+	$route['admin/ajax-employee-master-table-data'] = 'admin_panel/Employeemaster/ajax_employee_master_table_data';
+
+	//add employee
+	$route['admin/add-employee-master'] = 'admin_panel/Employeemaster/add_employee_master';	
+	$route['admin/form-add-employee-master'] = 'admin_panel/Employeemaster/form_add_employee_master';		
+
+	//edit
+	$route['admin/edit-employee-master/(:num)'] = 'admin_panel/Employeemaster/edit_employee_master/$1';	
+ 	$route['admin/form-edit-employee-master'] = 'admin_panel/Employeemaster/form_edit_employee_master';
+	
+	//delete
+	$route['admin/ajax-delete-employee-master'] = 'admin_panel/Employeemaster/ajax_delete_employee_master';
 	
 	//TASK TYPE MASTER
 	//list
