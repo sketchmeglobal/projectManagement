@@ -382,9 +382,13 @@
                                             <div class="col-lg-3">
                                                 <label for="req_gather_by" class="control-label">Employee</label>
                                                 <select name="req_gather_by" id="req_gather_by" class="form-control select2">
-                                                    <option value="0" >-- Select Employee --</option>
-                                                    <option value="1" > Mr. Jana </option>
-                                                    <option value="2" > Mr. Roy </option>
+                                                    <option value="0" >-- Select Employee --</option><?php
+                                                            if(sizeof($party_list) > 0){
+                                                                foreach($party_list as $val){
+                                                            ?>
+                                                            <option value="<?=$val->emp_id?>" ><?=$val->first_name.' '.$val->last_name?></option>
+                                                            <?php } 
+                                                            }?>
                                                 </select>
                                                 <input type="hidden" value="" name="req_gather_by_name" id="req_gather_by_name">
                                             </div>  
@@ -422,9 +426,13 @@
                                                 <div class="col-lg-3">
                                                     <label for="e_req_gather_by" class="control-label">Employee</label>
                                                     <select name="e_req_gather_by" id="e_req_gather_by" class="form-control select2">
-                                                        <option value="0" >-- Select Employee --</option>
-                                                        <option value="1" >Mr. Jana</option>
-                                                        <option value="2" >Mr. Roy</option>
+                                                        <option value="0" >-- Select Employee --</option><?php
+                                                            if(sizeof($party_list) > 0){
+                                                                foreach($party_list as $val){
+                                                            ?>
+                                                            <option value="<?=$val->emp_id?>" ><?=$val->first_name.' '.$val->last_name?></option>
+                                                            <?php } 
+                                                            }?>
                                                     </select>
                                                     <input type="hidden" value="" name="e_req_gather_by_name" id="e_req_gather_by_name">
                                                 </div>  
@@ -578,8 +586,9 @@
                                                             <th>Sl#</th>
                                                             <th>Task Type</th>
                                                             <th>HSN Code</th>
-                                                            <th>Duration</th>
-                                                            <th>Start Date</th>                                            
+                                                            <th>Start Date</th> 
+                                                            <th>End Date</th>   
+                                                            <th>Duration</th>                                            
                                                             <th>Amount</th>                                           
                                                             <th>Taxable</th>
                                                             <th>Actions</th>
@@ -593,8 +602,9 @@
                                                             <th>Sl#</th>
                                                             <th>Task Type</th>
                                                             <th>HSN Code</th>
-                                                            <th>Duration</th>
-                                                            <th>Start Date</th>                                            
+                                                            <th>Start Date</th> 
+                                                            <th>End Date</th>   
+                                                            <th>Duration</th>                                            
                                                             <th>Amount</th>                                           
                                                             <th>Taxable</th>
                                                             <th>Actions</th>
@@ -773,8 +783,15 @@
                                                     <label for="comi_emp_id" class="control-label">Employee</label>
                                                     <select name="comi_emp_id" id="comi_emp_id" class="form-control select2">
                                                         <option value="0" >-- Select Employee --</option>
-                                                        <option value="1" >Mr. Jana</option>
-                                                        <option value="2" >Mr. Roy</option>
+                                                        <?php
+                                                        if(sizeof($party_list) > 0){
+                                                            foreach($party_list as $val){
+                                                                if($val->emp_type != '1'){
+                                                        ?>
+                                                        <option value="<?=$val->emp_id?>" ><?=$val->first_name.' '.$val->last_name?></option>
+                                                            <?php }
+                                                            } 
+                                                        }?>
                                                     </select>
                                                     <input type="hidden" name="comi_emp_name" id="comi_emp_name" value="">
                                                 </div> 
@@ -897,8 +914,9 @@
                                                         <th>Sl#</th>
                                                         <th>Task Type</th>
                                                         <th>HSN Code</th>
-                                                        <th>Duration</th>
-                                                        <th>Start Date</th>                                            
+                                                        <th>Start Date</th> 
+                                                        <th>End Date</th>   
+                                                        <th>Duration</th>                                        
                                                         <th>Amount</th>                                           
                                                         <th>Taxable</th>
                                                         <th>Actions</th>
@@ -912,8 +930,9 @@
                                                         <th>Sl#</th>
                                                         <th>Task Type</th>
                                                         <th>HSN Code</th>
-                                                        <th>Duration</th>
-                                                        <th>Start Date</th>                                            
+                                                        <th>Start Date</th> 
+                                                        <th>End Date</th>   
+                                                        <th>Duration</th>                                            
                                                         <th>Amount</th>                                           
                                                         <th>Taxable</th>
                                                         <th>Actions</th>
@@ -1093,8 +1112,15 @@
                                                 <label for="comi_emp_id" class="control-label">Employee</label>
                                                 <select name="comi_emp_id_e" id="comi_emp_id_e" class="form-control select2">
                                                     <option value="0" >-- Select Employee --</option>
-                                                    <option value="1" >Mr. Jana</option>
-                                                    <option value="2" >Mr. Roy</option>
+                                                    <?php
+                                                    if(sizeof($party_list) > 0){
+                                                        foreach($party_list as $val){
+                                                            if($val->emp_type != '1'){
+                                                    ?>
+                                                    <option value="<?=$val->emp_id?>" ><?=$val->first_name.' '.$val->last_name?></option>
+                                                        <?php }
+                                                        } 
+                                                    }?>
                                                 </select>
                                                 <input type="hidden" name="comi_emp_name_e" id="comi_emp_name_e" value="">
                                             </div> 
@@ -2089,8 +2115,9 @@
                 { "data": "slNo" },
                 { "data": "taskType" },
                 { "data": "hsnCode" },
-                { "data": "Duration" },
                 { "data": "startDate" },
+                { "data": "endDate" },
+                { "data": "Duration" },
                 { "data": "amount" },
                 { "data": "taxable" },
                 { "data": "action" },
@@ -2575,8 +2602,13 @@
 
     //Add particular
     $("#par_TaskType").change(function(){
-        $par_TaskType_name = $("#par_TaskType :selected").text();
+        $par_TaskType_name = $('#par_TaskType option:selected').attr("task_name");
+        $par_HSNCode = $('#par_TaskType option:selected').attr("hsn_code");
+        $price = $('#par_TaskType option:selected').attr("price");
+
         $('#par_TaskType_name').val($par_TaskType_name);
+        $('#par_HSNCode').val($par_HSNCode);
+        $('#par_Amount').val($price);
     });
     $("#par_Taxable").change(function(){
         $par_TaxableName = $("#par_Taxable :selected").text();
@@ -2594,6 +2626,9 @@
                 required: true
             },
             par_StartDate: {
+                required: true
+            },
+            par_EndDate: {
                 required: true
             },
             par_Amount: {
@@ -2639,8 +2674,13 @@
 
     //Add particular during edit
     $("#par_TaskType_e").change(function(){
-        $par_TaskType_name_e = $("#par_TaskType_e :selected").text();
-        $('#par_TaskType_name_e').val($par_TaskType_name_e);
+        $par_TaskType_name = $('#par_TaskType_e option:selected').attr("task_name");
+        $par_HSNCode = $('#par_TaskType_e option:selected').attr("hsn_code");
+        $price = $('#par_TaskType_e option:selected').attr("price");
+
+        $('#par_TaskType_name_e').val($par_TaskType_name);
+        $('#par_HSNCode_e').val($par_HSNCode);
+        $('#par_Amount_e').val($price);
     });
     $("#par_Taxable_e").change(function(){
         $par_TaxableName_e = $("#par_Taxable_e :selected").text();
@@ -2658,6 +2698,9 @@
                 required: true
             },
             par_StartDate_e: {
+                required: true
+            },
+            par_EndDate_e: {
                 required: true
             },
             par_Amount_e: {
@@ -3623,7 +3666,7 @@
             const diffTime = Math.abs(date2 - date1);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
             console.log(diffTime + " milliseconds");
-            $('#par_Duration_e').val(diffDays + " days");
+            $('#par_Duration_e').val(parseInt(diffDays) + 1 + " days");
         }
     })   
 
@@ -3638,7 +3681,7 @@
             const diffTime = Math.abs(date2 - date1);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
             console.log(diffTime + " milliseconds");
-            $('#par_Duration').val(diffDays + " days");
+            $('#par_Duration').val(parseInt(diffDays) + 1 + " days");
         }
     })
 

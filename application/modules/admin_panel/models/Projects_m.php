@@ -35,8 +35,7 @@ class Projects_m extends CI_Model {
                 $nestedData['sl_no'] = $project_id;
                 $nestedData['project_name'] = $project_name;
                 $nestedData['create_dt'] = date("d-m-Y", strtotime($created_at));
-                $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" class="btn bg-yellow slt_view_ofr"><i class="fa fa-eye"></i> View</a>
-                <a href="'. base_url('admin/project-detail/'.$project_id).'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
+                $nestedData['action'] = '<a href="'. base_url('admin/project-detail/'.$project_id).'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
                 <a href="javascript:void(0)" data-project_id="'.$project_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
                             
                 array_push($data, $nestedData);
@@ -226,7 +225,7 @@ class Projects_m extends CI_Model {
             $company_details1 = $result_u[0]->company_details;
             $company_details = json_decode($company_details1);
 
-            $bank_details1 = $result_u[0]->sbi_bank_details;
+            /*$bank_details1 = $result_u[0]->sbi_bank_details;
             $bank_details2 = $result_u[0]->hdfc_bank_details;
 
             if(isset($quotation->tax_BankName)){
@@ -239,7 +238,7 @@ class Projects_m extends CI_Model {
                 }
             }else{
                 $bank_details = '';
-            }
+            }*/
 
             $company_name = $company_details->company_name;
             $address1 = $company_details->address1;
@@ -255,6 +254,31 @@ class Projects_m extends CI_Model {
             $company_subtitle = $company_details->company_subtitle;
             $company_detail = $company_details->company_detail;
         }
+        
+        //Banking Details
+        $result_bank = $this->db->get_where('master_bank_account', array('ba_id' => $quotation->tax_Bank))->result();
+        //print_r($result);         
+        $banking_details = array();
+        $banking_detail = new stdClass();
+
+        if(count($result_bank) > 0){          
+            $banking_detail->bank_name = $result_bank[0]->bank_name;
+            $banking_detail->bank_address = $result_bank[0]->bank_address;
+            $banking_detail->bank_account_no = $result_bank[0]->bank_account_no;
+            $banking_detail->bank_ifs_code = $result_bank[0]->bank_ifs_code;
+            $banking_detail->bank_micr_code = $result_bank[0]->bank_micr_code;
+            $banking_detail->bank_branch_code = $result_bank[0]->bank_branch_code;
+        }else{
+            $banking_detail->bank_name = '';
+            $banking_detail->bank_address = '';
+            $banking_detail->bank_account_no = '';
+            $banking_detail->bank_ifs_code = '';
+            $banking_detail->bank_micr_code = '';
+            $banking_detail->bank_branch_code = '';
+        }
+
+        array_push($banking_details, $banking_detail);
+        //Bank details end
 
         $company_details = array();        
         $company_detail = new stdClass();
@@ -274,27 +298,6 @@ class Projects_m extends CI_Model {
         $company_detail->company_detail = "[Website Designing - Website Development - Software Development - Android Apps - System Maintenance - Domain Name - Server Space]";
         
         array_push($company_details, $company_detail);
-        
-        //Banking Details
-        $banking_details = array();
-        $banking_detail = new stdClass();
-        if($bank_details != ''){
-            $banking_detail->bank_name = $bank_details->bank_name;
-            $banking_detail->bank_address = $bank_details->bank_address;
-            $banking_detail->bank_account_no = $bank_details->bank_account_no;
-            $banking_detail->bank_ifs_code = $bank_details->bank_ifs_code;
-            $banking_detail->bank_micr_code = $bank_details->bank_micr_code;
-            $banking_detail->bank_branch_code = $bank_details->bank_branch_code;
-        }else{
-            $banking_detail->bank_name = '';
-            $banking_detail->bank_address = '';
-            $banking_detail->bank_account_no = '';
-            $banking_detail->bank_ifs_code = '';
-            $banking_detail->bank_micr_code = '';
-            $banking_detail->bank_branch_code = '';
-        }
-
-        array_push($banking_details, $banking_detail);
 
         //Tax Calculation
         $taxes = array();
@@ -425,7 +428,7 @@ class Projects_m extends CI_Model {
             $company_details1 = $result_u[0]->company_details;
             $company_details = json_decode($company_details1);
 
-            $bank_details1 = $result_u[0]->sbi_bank_details;
+            /*$bank_details1 = $result_u[0]->sbi_bank_details;
             $bank_details2 = $result_u[0]->hdfc_bank_details;
 
             if(isset($quotation->tax_BankName)){
@@ -438,7 +441,7 @@ class Projects_m extends CI_Model {
                 }
             }else{
                 $bank_details = '';
-            }
+            }*/
 
             $company_name = $company_details->company_name;
             $address1 = $company_details->address1;
@@ -454,6 +457,31 @@ class Projects_m extends CI_Model {
             $company_subtitle = $company_details->company_subtitle;
             $company_detail = $company_details->company_detail;
         }
+        
+        //Banking Details
+        $result_bank = $this->db->get_where('master_bank_account', array('ba_id' => $invoice_details[0]->tax_Bank))->result();
+        //print_r($result);         
+        $banking_details = array();
+        $banking_detail = new stdClass();
+
+        if(count($result_bank) > 0){          
+            $banking_detail->bank_name = $result_bank[0]->bank_name;
+            $banking_detail->bank_address = $result_bank[0]->bank_address;
+            $banking_detail->bank_account_no = $result_bank[0]->bank_account_no;
+            $banking_detail->bank_ifs_code = $result_bank[0]->bank_ifs_code;
+            $banking_detail->bank_micr_code = $result_bank[0]->bank_micr_code;
+            $banking_detail->bank_branch_code = $result_bank[0]->bank_branch_code;
+        }else{
+            $banking_detail->bank_name = '';
+            $banking_detail->bank_address = '';
+            $banking_detail->bank_account_no = '';
+            $banking_detail->bank_ifs_code = '';
+            $banking_detail->bank_micr_code = '';
+            $banking_detail->bank_branch_code = '';
+        }
+
+        array_push($banking_details, $banking_detail);
+        //Bank details end
 
         $company_details = array();        
         $company_detail = new stdClass();
@@ -473,27 +501,6 @@ class Projects_m extends CI_Model {
         $company_detail->company_detail = "[Website Designing - Website Development - Software Development - Android Apps - System Maintenance - Domain Name - Server Space]";
         
         array_push($company_details, $company_detail);
-        
-        //Banking Details
-        $banking_details = array();
-        $banking_detail = new stdClass();
-        if($bank_details != ''){
-            $banking_detail->bank_name = $bank_details->bank_name;
-            $banking_detail->bank_address = $bank_details->bank_address;
-            $banking_detail->bank_account_no = $bank_details->bank_account_no;
-            $banking_detail->bank_ifs_code = $bank_details->bank_ifs_code;
-            $banking_detail->bank_micr_code = $bank_details->bank_micr_code;
-            $banking_detail->bank_branch_code = $bank_details->bank_branch_code;
-        }else{
-            $banking_detail->bank_name = '';
-            $banking_detail->bank_address = '';
-            $banking_detail->bank_account_no = '';
-            $banking_detail->bank_ifs_code = '';
-            $banking_detail->bank_micr_code = '';
-            $banking_detail->bank_branch_code = '';
-        }
-
-        array_push($banking_details, $banking_detail);
 
         //Tax Calculation
         $taxes = array();
@@ -1704,6 +1711,7 @@ class Projects_m extends CI_Model {
         $par_HSNCode = $this->input->post('par_HSNCode');      
         $par_Duration = $this->input->post('par_Duration'); 
         $par_StartDate = $this->input->post('par_StartDate'); 
+        $par_EndDate = $this->input->post('par_EndDate'); 
         $par_Amount = $this->input->post('par_Amount'); 
         $par_Taxable = $this->input->post('par_Taxable'); 
         $parti_obj = rand(1000, 9999);
@@ -1716,6 +1724,7 @@ class Projects_m extends CI_Model {
         $particular->par_HSNCode = $par_HSNCode;
         $particular->par_Duration = $par_Duration;
         $particular->par_StartDate = $par_StartDate;
+        $particular->par_EndDate = $par_EndDate;
         $particular->par_Amount = $par_Amount;
         $particular->par_Taxable = $par_Taxable;
 
@@ -1774,6 +1783,7 @@ class Projects_m extends CI_Model {
         $par_HSNCode = $this->input->post('par_HSNCode_e');      
         $par_Duration = $this->input->post('par_Duration_e'); 
         $par_StartDate = $this->input->post('par_StartDate_e'); 
+        $par_EndDate = $this->input->post('par_EndDate_e'); 
         $par_Amount = $this->input->post('par_Amount_e'); 
         $par_Taxable = $this->input->post('par_Taxable_e'); 
         $parti_obj = rand(1000, 9999);
@@ -1786,6 +1796,7 @@ class Projects_m extends CI_Model {
         $particular->par_HSNCode = $par_HSNCode;
         $particular->par_Duration = $par_Duration;
         $particular->par_StartDate = $par_StartDate;
+        $particular->par_EndDate = $par_EndDate;
         $particular->par_Amount = $par_Amount;
         $particular->par_Taxable = $par_Taxable;
 
@@ -2833,15 +2844,17 @@ class Projects_m extends CI_Model {
                 $par_HSNCode = $value->par_HSNCode;
                 $par_Duration = $value->par_Duration;
                 $par_StartDate = $value->par_StartDate;
+                $par_EndDate = $value->par_EndDate;
                 $par_Amount = $value->par_Amount;
                 $par_Taxable = $value->par_Taxable;
 
                 $nestedData['slNo'] = $counter;
                 $nestedData['taskType'] = $par_TaskType_name;
                 $nestedData['hsnCode'] = $par_HSNCode;
+                $nestedData['startDate'] = date('d-m-Y', strtotime($par_StartDate));
+                $nestedData['endDate'] = date('d-m-Y', strtotime($par_EndDate));
                 $nestedData['Duration'] = $par_Duration;
-                $nestedData['startDate'] = $par_StartDate;
-                $nestedData['amount'] = $par_Amount;
+                $nestedData['amount'] = number_format($par_Amount, 2);
                 $nestedData['taxable'] = ($par_Taxable == 1) ? 'Yes' : 'No';
                 $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" data-bi_obj="'.$bi_obj.'" data-parti_obj="'.$parti_obj.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
@@ -2908,8 +2921,8 @@ class Projects_m extends CI_Model {
                 $nestedData['taskType'] = $inv_par_TaskType_name;
                 $nestedData['hsnCode'] = $inv_par_HSNCode;
                 $nestedData['Duration'] = $inv_par_Duration;
-                $nestedData['startDate'] = $inv_par_StartDate;
-                $nestedData['amount'] = $inv_Amount;
+                $nestedData['startDate'] = date('d-m-Y', strtotime($inv_par_StartDate));
+                $nestedData['amount'] = number_format($inv_Amount, 2);
                 $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" data-inv_obj_id="'.$inv_obj_id.'" data-parti_obj_id="'.$parti_obj_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
                 $counter++;
@@ -2936,6 +2949,7 @@ class Projects_m extends CI_Model {
         $data = array();
         $particulars = array();
         $invoice_details = array();
+        $inv_paymentHistory = array();
 
         $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
         //print_r($result);
