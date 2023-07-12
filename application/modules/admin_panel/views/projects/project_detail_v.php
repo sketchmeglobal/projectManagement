@@ -512,6 +512,7 @@
 
                                 <div id="quotation_add" class="tab-pane fade">                                    
                                     <div class="form">
+                                    <div class="form-group " style="float: left;">    
                                         <form autocomplete="off" id="form_particular_basic_info_add" method="post" action="<?=base_url('admin/form-parti-basic-info-add')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
                                             <div class="form-group " style="float: left;"> 
                                                 <h4 style="margin-left: 15px;">Basic Information</h4>
@@ -519,13 +520,6 @@
                                                     <label for="bi_PartyId" class="control-label">Select Party</label>
                                                     <select name="bi_PartyId" id="bi_PartyId" class="form-control select2">
                                                         <option value="0" >-- Select Party --</option>
-                                                        <?php
-                                                            if(sizeof($party_list) > 0){
-                                                                foreach($party_list as $val){
-                                                            ?>
-                                                            <option value="<?=$val->emp_id?>" ><?=$val->first_name.' '.$val->last_name?></option>
-                                                            <?php } 
-                                                            }?>
                                                     </select>
                                                     <input type="hidden" value="" name="bi_PartyId_name" id="bi_PartyId_name">
                                                 </div>  
@@ -542,7 +536,7 @@
                                                     <input id="bi_SubPartyName" name="bi_SubPartyName" type="text" placeholder="Sub Party Name" class="form-control" />
                                                 </div> 
                                                 <div class="col-lg-3">
-                                                    <label for="bi_InvoiceDate" class="control-label">Invoice Date</label>
+                                                    <label for="bi_InvoiceDate" class="control-label">Notice Date</label>
                                                     <input id="bi_InvoiceDate" name="bi_InvoiceDate" type="date" class="form-control" />
                                                 </div>  
                                                 <div class="col-lg-3">
@@ -586,44 +580,12 @@
                                                 </div> 
                                             </div>
                                         </form>
+                                    </div>    
+                                
+                                    
                                         
                                         <div class="form-group " style="float: left;"> 
-                                            <h4 style="margin-left: 15px;">Particulars</h4>
-                                            <div id="quotation_list" class="tab-pane fade in active">
-                                                <table id="tableParticularsAdd" class="table data-table dataTable">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Sl#</th>
-                                                            <th>Task Type</th>
-                                                            <th>HSN Code</th>
-                                                            <th>Start Date</th> 
-                                                            <th>End Date</th>   
-                                                            <th>Duration</th>                                            
-                                                            <th>Amount</th>                                           
-                                                            <th>Taxable</th>
-                                                            <th>Actions</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-
-                                                    </tbody> 
-                                                    <tfoot>
-                                                        <tr>
-                                                            <th>Sl#</th>
-                                                            <th>Task Type</th>
-                                                            <th>HSN Code</th>
-                                                            <th>Start Date</th> 
-                                                            <th>End Date</th>   
-                                                            <th>Duration</th>                                            
-                                                            <th>Amount</th>                                           
-                                                            <th>Taxable</th>
-                                                            <th>Actions</th>
-                                                        </tr>
-                                                    </tfoot>                                                   
-                                                </table>
-                                            </div>  
-                                            
-                                                                                   
+                                        <h4>Add Particulars</h4>
                                             <form autocomplete="off" id="form_particular_add" method="post" action="<?=base_url('admin/form-particular-add')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
                                                 <div class="col-lg-3">
                                                     <label for="par_TaskType" class="control-label">Task Type</label>
@@ -673,7 +635,44 @@
                                                     <input type="hidden" name="parti_project_id" id="parti_project_id" value="<?=$project_id?>">
                                                     <input type="hidden" name="bi_obj" id="bi_obj" value="">
                                                 </div> 
-                                            </form>
+                                            </form> 
+
+                                            
+                                            <!-- <div id="quotation_list" class="tab-pane fade in active"> -->
+                                            <div class="form-group " style="float: left;">
+                                            <h4 >Particulars Table</h4>
+                                                <table id="tableParticularsAdd" class="table data-table dataTable" style="width: 100%;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Sl#</th>
+                                                            <th>Task Type</th>
+                                                            <th>HSN Code</th>
+                                                            <th>Start Date</th> 
+                                                            <th>End Date</th>   
+                                                            <th>Duration</th>                                            
+                                                            <th>Amount</th>                                           
+                                                            <th>Taxable</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                    </tbody> 
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th>Sl#</th>
+                                                            <th>Task Type</th>
+                                                            <th>HSN Code</th>
+                                                            <th>Start Date</th> 
+                                                            <th>End Date</th>   
+                                                            <th>Duration</th>                                            
+                                                            <th>Amount</th>                                           
+                                                            <th>Taxable</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </tfoot>                                                   
+                                                </table>
+                                            </div> 
                                         </div> 
                                         
                                         <div class="form-group " style="float: left;"> 
@@ -759,35 +758,8 @@
                                                 </div> 
                                             </form>
                                         </div>
-
-                                        <div class="form-group " style="float: left;"> 
-                                            <h4 style="margin-left: 15px;">Project Commission</h4>
-                                            <div id="p_commission_list" class="tab-pane fade in active">
-                                                <table id="p_commissionListAdd" class="table data-table dataTable">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Sl#</th>
-                                                            <th>Employee</th>
-                                                            <th>Rate Type</th>
-                                                            <th>Amount</th>
-                                                            <th>Actions</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        
-                                                    </tbody> 
-                                                    <tfoot>
-                                                        <tr>
-                                                            <th>Sl#</th>
-                                                            <th>Employee</th>
-                                                            <th>Rate Type</th>
-                                                            <th>Amount</th>
-                                                            <th>Actions</th>
-                                                        </tr>
-                                                    </tfoot>                                                   
-                                                </table>
-                                            </div>
-                                            
+                                        <div class="form-group " style="float: left;">  
+                                            <h4 style="margin-left: 15px;">Add Project Commission</h4>  
                                             <form autocomplete="off" id="form_commission_add" method="post" action="<?=base_url('admin/form-commission-add')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">  
                                                 <div class="col-lg-3">
                                                     <label for="comi_emp_id" class="control-label">Employee</label>
@@ -816,6 +788,10 @@
                                                 <div class="col-lg-3">
                                                     <label for="comi_amount" class="control-label">Amount</label>
                                                     <input value="0" id="comi_amount" name="comi_amount" type="text" placeholder="Amount" class="form-control" />
+                                                </div> 
+                                                <div class="col-lg-3">
+                                                    <label for="comi_info" class="control-label">Info</label>
+                                                    <input value="" id="comi_info" name="comi_info" type="text" placeholder="Info" class="form-control" />
                                                 </div>
                                                 <div class="col-lg-3" style="margin-top: 25px;">
                                                     <label for="product_line_po" class="control-label"></label>
@@ -824,6 +800,37 @@
                                                     <input type="hidden" name="commi_bi_obj" id="commi_bi_obj" value="">
                                                 </div>
                                             </form>
+                                        </div>
+
+                                        <div class="form-group " style="float: left;"> 
+                                            <h4 style="margin-left: 15px;">Project Commission List</h4>
+                                            <div id="p_commission_list" class="tab-pane fade in active">
+                                                <table id="p_commissionListAdd" class="table data-table dataTable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Sl#</th>
+                                                            <th>Employee</th>
+                                                            <th>Rate Type</th>
+                                                            <th>Amount</th>
+                                                            <th>Info</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        
+                                                    </tbody> 
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th>Sl#</th>
+                                                            <th>Employee</th>
+                                                            <th>Rate Type</th>
+                                                            <th>Amount</th>
+                                                            <th>Info</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </tfoot>                                                   
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -837,13 +844,6 @@
                                                     <label for="bi_PartyId_e" class="control-label">Select Party</label>
                                                     <select name="bi_PartyId_e" id="bi_PartyId_e" class="form-control select2">
                                                         <option value="0" >Select Party</option>
-                                                        <?php
-                                                            if(sizeof($party_list) > 0){
-                                                                foreach($party_list as $val){
-                                                            ?>
-                                                            <option value="<?=$val->emp_id?>" ><?=$val->first_name.' '.$val->last_name?></option>
-                                                            <?php } 
-                                                            }?>
                                                     </select>
                                                     <input type="hidden" value="" name="bi_PartyId_name_e" id="bi_PartyId_name_e">
                                                 </div>  
@@ -860,7 +860,7 @@
                                                     <input id="bi_SubPartyName_e" name="bi_SubPartyName_e" type="text" placeholder="Sub Party Name" class="form-control" />
                                                 </div> 
                                                 <div class="col-lg-3">
-                                                    <label for="bi_InvoiceDate_e" class="control-label">Invoice Date</label>
+                                                    <label for="bi_InvoiceDate_e" class="control-label">Notice Date</label>
                                                     <input id="bi_InvoiceDate_e" name="bi_InvoiceDate_e" type="date" class="form-control" />
                                                 </div>  
                                                 <div class="col-lg-3">
@@ -914,44 +914,9 @@
                                             </div>
                                         </form>
                                     </div>
-                                        
-                                    <div class="form-group " style="float: left;"> 
-                                        <h4 style="margin-left: 15px;">Particulars</h4>
-                                        <div id="particular_edit_list" class="tab-pane fade in active">
-                                            <table id="tableParticularsEdit" class="table data-table dataTable">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Sl#</th>
-                                                        <th>Task Type</th>
-                                                        <th>HSN Code</th>
-                                                        <th>Start Date</th> 
-                                                        <th>End Date</th>   
-                                                        <th>Duration</th>                                        
-                                                        <th>Amount</th>                                           
-                                                        <th>Taxable</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
 
-                                                </tbody> 
-                                                <tfoot>
-                                                    <tr>
-                                                        <th>Sl#</th>
-                                                        <th>Task Type</th>
-                                                        <th>HSN Code</th>
-                                                        <th>Start Date</th> 
-                                                        <th>End Date</th>   
-                                                        <th>Duration</th>                                            
-                                                        <th>Amount</th>                                           
-                                                        <th>Taxable</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </tfoot>                                                   
-                                            </table>
-                                        </div>  
-                                        
-                                                                                
+                                    <div class="form-group " style="float: left;"> 
+                                        <h4 style="margin-left: 15px;">Add Particulars</h4>                                           
                                         <form autocomplete="off" id="form_particular_edit" method="post" action="<?=base_url('admin/form-particular-edit')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
                                             <div class="col-lg-3">
                                                 <label for="par_TaskType_e" class="control-label">Task Type</label>
@@ -1002,7 +967,44 @@
                                                 <input type="hidden" name="parti_bi_obj_e" id="parti_bi_obj_e" value="">
                                             </div> 
                                         </form>
-                                    </div> 
+                                    </div>
+                                        
+                                    <div class="form-group " style="float: left;"> 
+                                        <h4 style="margin-left: 15px;">Particulars Table</h4>
+                                        <div id="particular_edit_list" class="tab-pane fade in active">
+                                            <table id="tableParticularsEdit" class="table data-table dataTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Sl#</th>
+                                                        <th>Task Type</th>
+                                                        <th>HSN Code</th>
+                                                        <th>Start Date</th> 
+                                                        <th>End Date</th>   
+                                                        <th>Duration</th>                                        
+                                                        <th>Amount</th>                                           
+                                                        <th>Taxable</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody> 
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>Sl#</th>
+                                                        <th>Task Type</th>
+                                                        <th>HSN Code</th>
+                                                        <th>Start Date</th> 
+                                                        <th>End Date</th>   
+                                                        <th>Duration</th>                                            
+                                                        <th>Amount</th>                                           
+                                                        <th>Taxable</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </tfoot>                                                   
+                                            </table>
+                                        </div>  
+                                    </div>  
                                         
                                     <div class="form-group " style="float: left;"> 
                                         <form autocomplete="off" id="form_tax_edit" method="post" action="<?=base_url('admin/form-tax-edit')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
@@ -1090,33 +1092,7 @@
 
                                     <!-- Start project commission edit -->
                                     <div class="form-group " style="float: left;"> 
-                                        <h4 style="margin-left: 15px;">Project Commission</h4>
-                                        <div id="p_commission_list_e" class="tab-pane fade in active">
-                                            <table id="p_commissionListEdit" class="table data-table dataTable">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Sl#</th>
-                                                        <th>Employee</th>
-                                                        <th>Rate Type</th>
-                                                        <th>Amount</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    
-                                                </tbody> 
-                                                <tfoot>
-                                                    <tr>
-                                                        <th>Sl#</th>
-                                                        <th>Employee</th>
-                                                        <th>Rate Type</th>
-                                                        <th>Amount</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </tfoot>                                                   
-                                            </table>
-                                        </div>
-                                        
+                                        <h4 style="margin-left: 15px;">Add Project Commission</h4>    
                                         <form autocomplete="off" id="form_commission_edit" method="post" action="<?=base_url('admin/form-commission-edit')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">  
                                             <div class="col-lg-3">
                                                 <label for="comi_emp_id" class="control-label">Employee</label>
@@ -1145,6 +1121,10 @@
                                             <div class="col-lg-3">
                                                 <label for="comi_amount_e" class="control-label">Amount</label>
                                                 <input value="0" id="comi_amount_e" name="comi_amount_e" type="text" placeholder="Amount" class="form-control" />
+                                            </div> 
+                                            <div class="col-lg-3">
+                                                <label for="comi_info_e" class="control-label">Info</label>
+                                                <input value="" id="comi_info_e" name="comi_info_e" type="text" placeholder="Info" class="form-control" />
                                             </div>
                                             <div class="col-lg-3" style="margin-top: 25px;">
                                                 <label for="product_line_po_e" class="control-label"></label>
@@ -1154,6 +1134,37 @@
                                             </div>
                                         </form>
                                     </div>
+
+                                    <div class="form-group " style="float: left;"> 
+                                        <h4 style="margin-left: 15px;">Project Commission List</h4>
+                                        <div id="p_commission_list_e" class="tab-pane fade in active">
+                                            <table id="p_commissionListEdit" class="table data-table dataTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Sl#</th>
+                                                        <th>Employee</th>
+                                                        <th>Rate Type</th>
+                                                        <th>Amount</th>
+                                                        <th>Info</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    
+                                                </tbody> 
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>Sl#</th>
+                                                        <th>Employee</th>
+                                                        <th>Rate Type</th>
+                                                        <th>Amount</th>
+                                                        <th>Info</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </tfoot>                                                   
+                                            </table>
+                                        </div>
+                                    </div> 
                                     <!-- End project commission edit-->
                                     
                                 </div> 
@@ -1969,7 +1980,8 @@
                     $bi_PartyIdList += '<option value="' + $contact_data_list[$i].contact_obj+'" >'+$contact_data_list[$i].ContactPersonName+'</option>';
                 }//end for
                 console.log('bi_PartyIdList: ' + $bi_PartyIdList)
-                //$('#bi_PartyId').html($bi_PartyIdList);
+                $('#bi_PartyId').html($bi_PartyIdList);
+                $('#bi_PartyId_e').html($bi_PartyIdList);
             },
             error: function (returnData) {
                 obj = JSON.parse(returnData);
@@ -2170,6 +2182,7 @@
                 { "data": "Employee" },
                 { "data": "RateType" },
                 { "data": "Amount" },
+                { "data": "comiInfo" },
                 { "data": "action" },
             ],
             //column initialisation properties
@@ -2928,6 +2941,7 @@
                     $('#comi_emp_name').val('0').trigger('change');
                     $('#comi_rate_type_').val('0').trigger('change');
                     $('#comi_amount').val('0');
+                    $('#comi_info').val('');
                     //populate commission table from here
                     initTableCommission(obj.project_id, obj.bi_obj, 'p_commissionListAdd');
 
@@ -2980,6 +2994,7 @@
                     $('#comi_emp_name_e').val('0').trigger('change');
                     $('#comi_rate_type_e').val('0').trigger('change');
                     $('#comi_amount_e').val('0');
+                    $('#comi_info_e').val('');
                     //populate commission table from here
                     initTableCommission(obj.project_id, obj.bi_obj, 'p_commissionListEdit');
 

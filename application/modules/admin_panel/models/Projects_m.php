@@ -2093,6 +2093,7 @@ class Projects_m extends CI_Model {
         $comi_rate_type = $this->input->post('comi_rate_type');      
         $comi_rate_type_name = $this->input->post('comi_rate_type_name'); 
         $comi_amount = $this->input->post('comi_amount'); 
+        $comi_info = $this->input->post('comi_info'); 
         $comi_obj = rand(1000, 9999);
 
         
@@ -2103,6 +2104,7 @@ class Projects_m extends CI_Model {
         $commission->comi_rate_type = $comi_rate_type;
         $commission->comi_rate_type_name = $comi_rate_type_name;
         $commission->comi_amount = $comi_amount;
+        $commission->comi_info = $comi_info;
 
         //check existing data
         $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
@@ -2159,6 +2161,7 @@ class Projects_m extends CI_Model {
         $comi_rate_type = $this->input->post('comi_rate_type_e');      
         $comi_rate_type_name = $this->input->post('comi_rate_type_name_e'); 
         $comi_amount = $this->input->post('comi_amount_e'); 
+        $comi_info = $this->input->post('comi_info_e'); 
         $comi_obj = rand(1000, 9999);
 
         
@@ -2169,6 +2172,7 @@ class Projects_m extends CI_Model {
         $commission->comi_rate_type = $comi_rate_type;
         $commission->comi_rate_type_name = $comi_rate_type_name;
         $commission->comi_amount = $comi_amount;
+        $commission->comi_info = $comi_info;
 
         //check existing data
         $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
@@ -2868,7 +2872,11 @@ class Projects_m extends CI_Model {
                 $par_HSNCode = $value->par_HSNCode;
                 $par_Duration = $value->par_Duration;
                 $par_StartDate = $value->par_StartDate;
-                $par_EndDate = $value->par_EndDate;
+                if(isset($value->par_EndDate)){
+                    $par_EndDate = $value->par_EndDate;
+                }else{
+                    $par_EndDate = $value->par_StartDate;
+                }
                 $par_Amount = $value->par_Amount;
                 $par_Taxable = $value->par_Taxable;
 
@@ -3071,11 +3079,17 @@ class Projects_m extends CI_Model {
                 $comi_rate_type = $value->comi_rate_type;
                 $comi_rate_type_name = $value->comi_rate_type_name;
                 $comi_amount = $value->comi_amount;
+                if(isset($value->comi_info)){
+                    $comi_info = $value->comi_info;
+                }else{
+                    $comi_info = '';
+                }
 
                 $nestedData['slNo'] = $counter;
                 $nestedData['Employee'] = $comi_emp_name;
                 $nestedData['RateType'] = $comi_rate_type_name;
                 $nestedData['Amount'] = $comi_amount;
+                $nestedData['comiInfo'] = $comi_info;
                 $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'"  data-bi_obj="'.$bi_obj.'" data-comi_obj="'.$comi_obj.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
                 $counter++;
