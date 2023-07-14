@@ -620,14 +620,16 @@ class Projects_m extends CI_Model {
         $account_address1 = $this->input->post('account_address1');
         $account_address2 = $this->input->post('account_address2');
         $account_gst_no = $this->input->post('account_gst_no');
+        $existingDomain = $this->input->post('existingDomain');
         $account_telephone = $this->input->post('account_telephone');
         $cbill_payment_mode = $this->input->post('cbill_payment_mode');
+        $cbill_payment_mode_text = $this->input->post('cbill_payment_mode_text');
         $important_note = $this->input->post('important_note');
         $other_client_details = $this->input->post('other_client_details');
 
         $created_by = $this->session->user_id;
         $client_obj = rand(1000, 9999);
-        $files = array();
+        $client_details = array();
 
         $client_list_obj = new stdClass();
         $client_list_obj->client_obj = $client_obj;
@@ -635,8 +637,10 @@ class Projects_m extends CI_Model {
         $client_list_obj->account_address1 = $account_address1;
         $client_list_obj->account_address2 = $account_address2;
         $client_list_obj->account_gst_no = $account_gst_no;
+        $client_list_obj->existingDomain = $existingDomain;
         $client_list_obj->account_telephone = $account_telephone;
         $client_list_obj->cbill_payment_mode = $cbill_payment_mode;
+        $client_list_obj->cbill_payment_mode_text = $cbill_payment_mode_text;
         $client_list_obj->important_note = $important_note;
         $client_list_obj->other_client_details = $other_client_details;
 
@@ -644,10 +648,14 @@ class Projects_m extends CI_Model {
         $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
         if(count($result) > 0){
             $project_description1 = $result[0]->project_description;
-            $project_description = json_decode($project_description1); 
+            $project_description = json_decode($project_description1);  
+            if(isset($project_description->client_details)){
+                $client_details = $project_description->client_details;
+            }
         }
-        
-        $project_description->client = $client_list_obj;
+
+        array_push($client_details, $client_list_obj);
+        $project_description->client_details = $client_details;
 
         $updateArray = array(
             'project_description' => json_encode($project_description)
@@ -994,6 +1002,69 @@ class Projects_m extends CI_Model {
 
     }//end invoice info
 
+    //client details edit
+    public function form_edit_client(){  
+        $daya = array();
+        $client_details = array();
+        $project_description = array();
+        $status = true;
+
+        $project_id = $this->input->post('cli_project_id_e');        
+        $client_obj = $this->input->post('client_obj');
+        $account_name = $this->input->post('account_name_e');
+        $account_address1 = $this->input->post('account_address1_e');
+        $account_address2 = $this->input->post('account_address2_e');
+        $account_gst_no = $this->input->post('account_gst_no_e');
+        $existingDomain = $this->input->post('existingDomain_e');
+        $account_telephone = $this->input->post('account_telephone_e');
+        $cbill_payment_mode = $this->input->post('cbill_payment_mode_e');
+        $cbill_payment_mode_text = $this->input->post('cbill_payment_mode_text_e');
+        $important_note = $this->input->post('important_note_e');
+        $other_client_details = $this->input->post('other_client_details_e');
+
+        $created_by = $this->session->user_id;
+
+        if($client_obj > 0){
+            //check existing data
+            $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1);            
+                $client_details = $project_description->client_details;
+
+                for($i = 0; $i < sizeof($client_details); $i++){
+                    if($client_details[$i]->client_obj == $client_obj){
+                        $client_details[$i]->account_name = $account_name;
+                        $client_details[$i]->account_address1 = $account_address1;
+                        $client_details[$i]->account_address2 = $account_address2;
+                        $client_details[$i]->account_gst_no = $account_gst_no;
+                        $client_details[$i]->existingDomain = $existingDomain;
+                        $client_details[$i]->account_telephone = $account_telephone;
+                        $client_details[$i]->cbill_payment_mode = $cbill_payment_mode;
+                        $client_details[$i]->cbill_payment_mode_text = $cbill_payment_mode_text;
+                        $client_details[$i]->important_note = $important_note;
+                        $client_details[$i]->other_client_details = $other_client_details;
+                    }
+                }//end for
+                $project_description->client_details = $client_details;
+            }//end if
+
+            $updateArray = array(
+                'project_description' => json_encode($project_description)
+            );
+
+            $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+            $data['file_updated'] = $val;   
+        }   
+        
+        $data['type'] = 'success';
+        $data['msg'] = 'client updated successfully';
+        $data['title'] = 'client';
+        $data['update_id'] = $project_id;
+        return $data;
+
+    }//end client edit 
+
     //Contact details edit
     public function form_edit_contact(){  
         $daya = array();
@@ -1103,6 +1174,47 @@ class Projects_m extends CI_Model {
         return $data;
 
     }//end contacts edit  
+
+
+    //Client list delete
+    public function del_row_client_details(){
+        $project_id = $this->input->post('project_id');
+        $client_obj = $this->input->post('client_obj');
+        $status = true;
+        
+        if($client_obj > 0){
+            //check existing data
+            $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1);            
+                $client_details = $project_description->client_details;
+                $newclient_details = array();
+
+                for($i = 0; $i < sizeof($client_details); $i++){
+                    if($client_details[$i]->client_obj != $client_obj){
+                        array_push($newclient_details, $client_details[$i]);
+                    }
+                }//end for
+            }//end if
+            
+            $project_description->client_details = $newclient_details;
+
+            $updateArray = array(
+                'project_description' => json_encode($project_description)
+            );
+
+            $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+            $data['file_updated'] = $val;   
+        }   
+
+        if ($status == true) {
+            $data['title'] = 'Deleted!';
+            $data['type'] = 'success';
+            $data['msg'] = 'Client Deleted Successfully';
+        }
+        return $data;        
+    }//end fun   
 
 
     //Contact list delete
@@ -2266,6 +2378,29 @@ class Projects_m extends CI_Model {
         return $final_array;
     }//file upload end
 
+    //client detail edit data fetch
+    public function fetch_client_details_on_pk(){        
+        $project_id = $this->input->post('project_id');      
+        $client_obj = $this->input->post('client_obj');
+
+        $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1); 
+            $client_details = $project_description->client_details;
+
+            $returnObj = new stdClass();
+            for($i = 0; $i < sizeof($client_details); $i++){
+                if($client_details[$i]->client_obj == $client_obj){
+                    $returnObj = $client_details[$i];
+                    break;
+                }//end if
+            }//end for
+        }
+
+        return $returnObj;
+    }
+
     //Contact detail edit data fetch
     public function fetch_contact_details_on_pk(){        
         $project_id = $this->input->post('project_id');      
@@ -2551,7 +2686,7 @@ class Projects_m extends CI_Model {
     public function ajax_client_details_table_data() {     
         $project_id = $this->input->post('project_id');
         $data = array();
-        $contactDetail = array();
+        $client_details = array();
 
         $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
         //print_r($result);
@@ -2559,27 +2694,22 @@ class Projects_m extends CI_Model {
         if(count($result) > 0){
             $project_description1 = $result[0]->project_description;
             $project_description = json_decode($project_description1);
-            $contactDetail = $project_description->contactDetail;
+            $client_details = $project_description->client_details;
         }
 
-        if(sizeof($contactDetail) > 0){
+        if(sizeof($client_details) > 0){
             $slNo = 1;
-            foreach($contactDetail as $key => $value){
-                if(isset($value->contact_persn_note)){
-                    $contact_persn_note = $value->contact_persn_note;
-                }else{
-                    $contact_persn_note = '';
-                }
+            foreach($client_details as $key => $value){
 
                 $nestedData['slNo'] = $slNo;
-                $nestedData['organizationName'] = $value->cont_person_name;
-                $nestedData['Phone'] = $value->org_name;
-                $nestedData['Email'] = $value->contact_email;
-                $nestedData['gstNo'] = $value->contact_first_ph;
-                $nestedData['Address'] = $value->contact_persn_address;
-                $nestedData['note'] = $contact_persn_note;
-                $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" data-contact_obj="'.$value->contact_obj.'" class="btn btn-info edit_contact_obj"><i class="fa fa-pencil"></i> Edit</a>
-                <a href="javascript:void(0)" data-project_id="'.$project_id.'" data-contact_obj="'.$value->contact_obj.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+                $nestedData['organizationName'] = $value->account_name;
+                $nestedData['Phone'] = $value->account_telephone;
+                $nestedData['gstNo'] = $value->account_gst_no;
+                $nestedData['Address'] = $value->account_address1;
+                $nestedData['Address2'] = $value->account_address2;
+                $nestedData['note'] = $value->important_note;
+                $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" data-client_obj="'.$value->client_obj.'" class="btn btn-info edit_client_obj"><i class="fa fa-pencil"></i> Edit</a>
+                <a href="javascript:void(0)" data-project_id="'.$project_id.'" data-client_obj="'.$value->client_obj.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
                 array_push($data, $nestedData);
                 $slNo++;

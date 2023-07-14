@@ -243,6 +243,15 @@ class Projects extends My_Controller {
         }
     }
 
+    public function form_edit_client(){        
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->form_edit_client();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
     public function form_edit_contact(){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Projects_m');
@@ -351,6 +360,15 @@ class Projects extends My_Controller {
         }
     }
 
+    public function fetch_client_details_on_pk() {
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->fetch_client_details_on_pk();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    } 
+
     public function fetch_contact_details_on_pk() {
         if($this->check_permission(array()) == true) {
             $this->load->model('Projects_m');
@@ -377,6 +395,15 @@ class Projects extends My_Controller {
             exit();
         }
     }    
+
+    public function del_row_client_details() {
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->del_row_client_details();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }      
 
     public function del_row_contact_details() {
         if($this->check_permission(array()) == true) {

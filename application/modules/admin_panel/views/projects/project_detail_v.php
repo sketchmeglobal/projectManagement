@@ -158,9 +158,9 @@
                                             <th>Sl#</th>
                                             <th>Organization Name</th>
                                             <th>Phone</th>
-                                            <th>Email</th>
                                             <th>GST No.</th>                                            
-                                            <th>Address</th>                                          
+                                            <th>Address</th>   
+                                            <th>Address 2</th>                                       
                                             <th>Note</th>
                                             <th>Actions</th>
                                         </tr>
@@ -209,6 +209,7 @@
                                                             <?php } 
                                                             }?>
                                                     </select>
+                                                    <input type="hidden" name="cbill_payment_mode_text" id="cbill_payment_mode_text" value="">
                                                 </div>
 
                                                 <div class="col-lg-3">
@@ -242,45 +243,72 @@
 
                                 <div id="client_details_edit" class="tab-pane">
                                     <br/>
-                                    <div class="form">    
-                                        <form autocomplete="off" id="edit_contact_form" method="post" action="<?=base_url('admin/form-edit-contact')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">                                    
+                                    <div class="form">  
+                                        <form id="form_edit_client_details" method="post" action="<?=base_url('admin/form-edit-client-details')?>" class="cmxform form-horizontal tasi-form">
                                             <div class="form-group "> 
                                                 <div class="col-lg-3">
-                                                    <label for="e_cont_person_name" class="control-label">Contact Person Name</label>
-                                                    <input type="text" name="e_cont_person_name" id="e_cont_person_name" class="form-control">
-                                                </div>   
-                                                <div class="col-lg-3">
-                                                    <label for="e_org_name" class="control-label">Organization Name</label>
-                                                    <input type="text" name="e_org_name" id="e_org_name" class="form-control">
-                                                </div>   
-                                                <div class="col-lg-3">
-                                                    <label for="e_contact_email" class="control-label">Email</label>
-                                                    <input type="text" name="e_contact_email" id="e_contact_email" class="form-control">
-                                                </div>  
-                                                <div class="col-lg-3">
-                                                    <label for="e_contact_first_ph" class="control-label">Phone (Primary)</label>
-                                                    <input type="text" name="e_contact_first_ph" id="e_contact_first_ph" class="form-control">
-                                                </div>    
-                                                <div class="col-lg-3">
-                                                    <label for="e_contact_second_ph" class="control-label">Phone (Alternative)</label>
-                                                    <input type="text" name="e_contact_second_ph" id="e_contact_second_ph" class="form-control">
-                                                </div>  
-                                                <div class="col-lg-3">
-                                                    <label for="e_contact_persn_address" class="control-label">Address</label>
-                                                    <textarea name="e_contact_persn_address" id="e_contact_persn_address" class="form-control"></textarea>
-                                                </div>  
-                                                <div class="col-lg-3">
-                                                    <label for="e_contact_persn_note" class="control-label">Note</label>
-                                                    <textarea name="e_contact_persn_note" id="e_contact_persn_note" class="form-control"></textarea>
-                                                </div>   
-                                                <div class="col-lg-3" style="margin-top: 25px;">
-                                                    <label for="product_line_po" class="control-label"></label>
-                                                    <input type="submit" name="e_contact_details_submit" class="btn btn-success text-center" id="e_contact_details_submit" value="Update">
-                                                    <input type="hidden" value="<?=$project_id?>" name="e_cont_project_id" id="e_cont_project_id">
-                                                    <input type="hidden" value="" name="contact_obj" id="contact_obj">
+                                                    <label for="account_name_e" class="control-label">Organization Name</label>
+                                                    <input type="text" name="account_name_e" id="account_name_e" class="form-control" value="">
                                                 </div>
-                                            </div>
+
+                                                <div class="col-lg-3">
+                                                    <label for="account_telephone_e" class="control-label">Phone No</label>
+                                                    <input type="number" name="account_telephone_e" id="account_telephone_e" class="form-control" value="">
+                                                </div> 
+
+                                                <div class="col-lg-3">
+                                                    <label for="account_gst_no_e" class="control-label">GST No</label>
+                                                    <input type="text" name="account_gst_no_e" id="account_gst_no_e" class="form-control" value="">
+                                                </div>
+
+                                                <div class="col-lg-3">
+                                                    <label for="existingDomain_e" class="control-label">Existing Domain</label>
+                                                    <input type="url" name="existingDomain_e" id="existingDomain_e" class="form-control" value="">
+                                                </div>
+
+                                                <div class="col-lg-3">
+                                                    <label for="cbill_payment_mode_e" class="control-label">Payment Mode</label>
+                                                    <select name="cbill_payment_mode_e" id="cbill_payment_mode_e" class="form-control select2">
+                                                        <option value="0" >-- Select Payment Mode --</option>
+                                                        <?php
+                                                            if(sizeof($payment_mode) > 0){
+                                                                foreach($payment_mode as $val){
+                                                        ?>
+                                                        <option value="<?=$val->pm_id?>" ><?=$val->pm_name?></option>
+                                                            <?php } 
+                                                            }?>
+                                                    </select>
+                                                    <input type="hidden" name="cbill_payment_mode_text_e" id="cbill_payment_mode_text_e" value="">
+                                                </div>
+
+                                                <div class="col-lg-3">
+                                                    <label for="account_address1_e" class="control-label">Address 1</label>
+                                                    <textarea name="account_address1_e" id="account_address1_e" class="form-control"></textarea>
+                                                </div> 
+
+                                                <div class="col-lg-3">
+                                                    <label for="account_address2_e" class="control-label">Address 2</label>
+                                                    <textarea name="account_address2_e" id="account_address2_e" class="form-control"></textarea>
+                                                </div>
+
+                                                <div class="col-lg-3">
+                                                    <label for="important_note_e" class="control-label">Note</label>
+                                                    <textarea name="important_note_e" id="important_note_e" class="form-control"> </textarea>
+                                                </div>  
+
+                                                <div class="col-lg-3">
+                                                    <label for="other_client_details_e" class="control-label">Others</label>
+                                                    <textarea name="other_client_details_e" id="other_client_details_e" class="form-control"> </textarea>
+                                                </div> 
+
+                                                <div class="col-lg-3 mt-3" style="margin-top: 27px;">
+                                                    <input type="submit" name="client_details_submit_e" class="btn btn-success text-center" id="client_details_submit_e" value="Update Party">
+                                                    <input type="hidden" value="<?=$project_id?>" name="cli_project_id_e" id="cli_project_id_e">
+                                                    <input type="hidden" value="" name="client_obj" id="client_obj">
+                                                </div>
+                                            </div>  
                                         </form>
+                                        
                                     </div>
                                 </div> 
                             </div>
@@ -2111,15 +2139,15 @@
                 { "data": "slNo" },
                 { "data": "organizationName" },
                 { "data": "Phone" },
-                { "data": "Email" },
                 { "data": "gstNo" },
                 { "data": "Address" },
+                { "data": "Address2" },
                 { "data": "note" },
                 { "data": "action" },
             ],
             //column initialisation properties
             "columnDefs": [{
-                "targets": [0,1,2,3,4,5,6,7],
+                "targets": [0,1,2,3,4,5,6],
                 "orderable": false,
             }]
         });
@@ -2270,6 +2298,44 @@
             }]
         });
     }//end fun
+
+    //Edit client details
+    $('#client_details_table').on('click', '.edit_client_obj', function(){
+        $project_id = $(this).data('project_id');
+        $client_obj = $(this).data('client_obj');
+        
+        $('#client_obj').val($client_obj);
+        console.log('client_obj: ' + $client_obj);
+
+        $.ajax({
+            url: "<?= base_url('admin/fetch-client-details-on-pk/') ?>",
+            dataType: 'json',
+            type: 'POST',
+            data: {client_obj: $client_obj, project_id: $project_id},
+            success: function (returnData) {
+                console.log(returnData);                
+                //data = returnData[0];
+
+                $("#account_name_e").val(returnData.account_name);
+                $("#account_telephone_e").val(returnData.account_telephone);
+                $("#account_gst_no_e").val(returnData.account_gst_no);
+                $("#existingDomain_e").val(returnData.existingDomain);
+                $("#cbill_payment_mode_e").val(returnData.cbill_payment_mode).trigger('change');
+                $("#cbill_payment_mode_text_e").val(returnData.cbill_payment_mode_text);
+                $("#account_address1_e").val(returnData.account_address1);
+                $("#account_address2_e").val(returnData.account_address2);
+                $("#important_note_e").val(returnData.important_note);
+                $("#other_client_details_e").val(returnData.other_client_details);
+
+                $('a[href="#client_details_edit"]').tab('show');
+
+            },
+            error: function (returnData) {
+                obj = JSON.parse(returnData);
+                notification(obj);
+            }
+        });
+    })//end fun
 
     //Edit contact details
     $('#contact_details_table').on('click', '.edit_contact_obj', function(){
@@ -2470,6 +2536,11 @@
     })//end fun
 
     //Client Details Part
+    $('#cbill_payment_mode').on('change', function(){
+        $cbill_payment_mode_text = $('#cbill_payment_mode option:selected').text();
+        $('#cbill_payment_mode_text').val($cbill_payment_mode_text);
+    })
+
     $("#form_add_client_details").validate({        
         rules: {
             account_name: {
@@ -2494,7 +2565,9 @@
             //console.log(returnData);
             obj = JSON.parse(returnData);
             notification(obj);
-            if(parseInt(obj.update_id) > 0){                
+            if(parseInt(obj.update_id) > 0){     
+                $("#form_add_client_details")[0].reset();  
+                initClientTable()         
                 console.log(JSON.stringify(obj));
                 if(obj.type == 'error'){
                     console.log('Error from API')
@@ -2549,6 +2622,45 @@
 		}
     });
     //Contact Details Part end
+
+    //client Details Edit start
+    $("#form_edit_client_details").validate({        
+        rules: {
+            account_name_e: {
+                required: true
+            },
+            account_telephone_e: {
+                required: true
+            }   
+        },
+        messages: {
+
+        }
+    });
+    $('#form_edit_client_details').ajaxForm({
+        beforeSubmit: function () {
+            return $("#form_edit_client_details").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            //console.log(returnData);
+            obj = JSON.parse(returnData);
+            notification(obj);
+			if(parseInt(obj.update_id) > 0){
+                $('#client_obj').val('');
+                $('a[href="#client_details_list"]').tab('show');
+                
+                initClientTable()
+
+                console.log(JSON.stringify(obj));
+                if(obj.type == 'error'){
+                    console.log('Error from API')
+                }else{
+                    console.log('Document save success')
+                }            	
+			}
+		}
+    });
+    //client Details Edit end
 
     //Contact Details Edit start
     $("#edit_contact_form").validate({        
@@ -2793,19 +2905,6 @@
             obj = JSON.parse(returnData);
             notification(obj);
 			if(parseInt(obj.update_id) > 0){
-                /*$('#bi_PartyId_e').val('0').trigger('change');
-                $('#bi_PartyId_name_e').val('');
-                $('#bi_QuotationNo_e').val('');
-                $('#bi_QuotationDate_e').val('');
-                $('#bi_SubPartyName_e').val('');
-                $('#bi_InvoiceDate_e').val('');
-                $('#bi_NoticeNo_e').val('');
-                $('#bi_PaymentMode_e').val('0').trigger('change');
-                $('#bi_PaymentModeName_e').val('');
-                $('#bi_InstrumentNumber_e').val('');
-                $('#bi_Remarks_e').val('');
-                $('#bi_OtherClientInfo_e').val('');
-                $('#bi_ImportantNotes_e').val('');*/
 
                 initQuotationListTable()
                 $('#bi_obj_e').val('');
@@ -3286,6 +3385,37 @@
             }
         });
     }//end fun
+
+
+    //DELETE CLIENT INFO
+    $('#client_details_table').on('click', '.delete', function(){
+        $client_obj = $(this).data('client_obj');
+        $project_id = $('#project_id').val();
+
+        if(confirm("Are You Sure? This Process Can\'t be Undone.")){
+            $pk = $(this).attr('data-pk');
+            
+            $.ajax({
+                url: "<?= base_url('admin/del-row-client-details/') ?>",
+                dataType: 'json',
+                type: 'POST',
+                data: {project_id: $project_id, client_obj: $client_obj},
+                success: function (returnData) {
+                    console.log(returnData);
+                    $('#client_details_table').closest('tr').remove();
+                    notification(returnData);
+                    //refresh table
+                    initClientTable()
+
+                },
+                error: function (returnData) {
+                    obj = JSON.parse(returnData);
+                    notification(obj);
+                }
+            });
+        }        
+    });
+
 
 
     //DELETE CONTACT INFO
