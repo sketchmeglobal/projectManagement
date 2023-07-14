@@ -129,13 +129,173 @@
                 </div>
             </div>
             <!-- End project details part -->
+            
 
-            <!-- Start client details part -->
+            <!-- Start party part -->
+            <div class="row"> 
+                <div class="col-md-12">
+                    <section class="panel">
+                        <header class="panel-heading">
+                        Client Details / Party Details:
+                            <span class="tools pull-right">
+                                <a class="t-collapse fa fa-chevron-down" href="javascript:;"></a>
+                            </span>
+                        </header>
+                        <div class="panel-body collapse">
+                            <!--Tabs-->
+                            <ul id="client_tabs" class="nav nav-tabs nav-justified">
+                                <li class="active"><a href="#client_details_list" data-toggle="tab">List</a></li>
+                                <li  id="client_details_add_tab"><a href="#client_details_add" data-toggle="tab">Add</a></li>
+                                <li id="client_details_edit_tab" class="disabled" ><a href="#client_details_edit" data-toggle="tab">Edit</a></li>
+                            </ul>
+                            <!--Tab Content-->
+                            <div class="tab-content">
+                            <img style="display:none; position: absolute;margin: auto;left: 0;right: 0;" src="<?=base_url('assets/img/ellipsis.gif')?>" id="loading_div"><span class="sr-only">Processing...</span>                            
+                                <div id="client_details_list" class="tab-pane fade in active">
+                                    <table id="client_details_table" class="table data-table dataTable" style="width: 100%;">
+                                        <thead>
+                                        <tr>
+                                            <th>Sl#</th>
+                                            <th>Organization Name</th>
+                                            <th>Phone</th>
+                                            <th>Email</th>
+                                            <th>GST No.</th>                                            
+                                            <th>Address</th>                                          
+                                            <th>Note</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                        
+                                    </table>
+                                </div>
+
+                                <div id="client_details_add" class="tab-pane fade">
+                                    <br/>
+                                    <div class="form"> 
+                                        <form id="form_add_client_details" method="post" action="<?=base_url('admin/form-add-client-details')?>" class="cmxform form-horizontal tasi-form">
+                                            <div class="form-group "> 
+                                                <div class="col-lg-3">
+                                                    <label for="account_name" class="control-label">Organization Name</label>
+                                                    <input type="text" name="account_name" id="account_name" class="form-control" value="">
+                                                </div>
+
+                                                <div class="col-lg-3">
+                                                    <label for="account_telephone" class="control-label">Phone No</label>
+                                                    <input type="number" name="account_telephone" id="account_telephone" class="form-control" value="">
+                                                </div> 
+
+                                                <div class="col-lg-3">
+                                                    <label for="account_gst_no" class="control-label">GST No</label>
+                                                    <input type="text" name="account_gst_no" id="account_gst_no" class="form-control" value="">
+                                                </div>
+
+                                                <div class="col-lg-3">
+                                                    <label for="existingDomain" class="control-label">Existing Domain</label>
+                                                    <input type="url" name="existingDomain" id="existingDomain" class="form-control" value="">
+                                                </div>
+
+                                                <div class="col-lg-3">
+                                                    <label for="cbill_payment_mode" class="control-label">Payment Mode</label>
+                                                    <select name="cbill_payment_mode" id="cbill_payment_mode" class="form-control select2">
+                                                        <option value="0" >-- Select Payment Mode --</option>
+                                                        <?php
+                                                            if(sizeof($payment_mode) > 0){
+                                                                foreach($payment_mode as $val){
+                                                        ?>
+                                                        <option value="<?=$val->pm_id?>" ><?=$val->pm_name?></option>
+                                                            <?php } 
+                                                            }?>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-lg-3">
+                                                    <label for="account_address1" class="control-label">Address 1</label>
+                                                    <textarea name="account_address1" id="account_address1" class="form-control"></textarea>
+                                                </div> 
+
+                                                <div class="col-lg-3">
+                                                    <label for="account_address2" class="control-label">Address 2</label>
+                                                    <textarea name="account_address2" id="account_address2" class="form-control"></textarea>
+                                                </div>
+
+                                                <div class="col-lg-3">
+                                                    <label for="important_note" class="control-label">Note</label>
+                                                    <textarea name="important_note" id="important_note" class="form-control"> </textarea>
+                                                </div>  
+
+                                                <div class="col-lg-3">
+                                                    <label for="other_client_details" class="control-label">Others</label>
+                                                    <textarea name="other_client_details" id="other_client_details" class="form-control"> </textarea>
+                                                </div> 
+
+                                                <div class="col-lg-3 mt-3" style="margin-top: 27px;">
+                                                    <input type="submit" name="client_details_submit" class="btn btn-success text-center" id="client_details_submit" value="Add Party">
+                                                    <input type="hidden" value="<?=$project_id?>" name="cli_project_id" id="cli_project_id">
+                                                </div>
+                                            </div>  
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div id="client_details_edit" class="tab-pane">
+                                    <br/>
+                                    <div class="form">    
+                                        <form autocomplete="off" id="edit_contact_form" method="post" action="<?=base_url('admin/form-edit-contact')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">                                    
+                                            <div class="form-group "> 
+                                                <div class="col-lg-3">
+                                                    <label for="e_cont_person_name" class="control-label">Contact Person Name</label>
+                                                    <input type="text" name="e_cont_person_name" id="e_cont_person_name" class="form-control">
+                                                </div>   
+                                                <div class="col-lg-3">
+                                                    <label for="e_org_name" class="control-label">Organization Name</label>
+                                                    <input type="text" name="e_org_name" id="e_org_name" class="form-control">
+                                                </div>   
+                                                <div class="col-lg-3">
+                                                    <label for="e_contact_email" class="control-label">Email</label>
+                                                    <input type="text" name="e_contact_email" id="e_contact_email" class="form-control">
+                                                </div>  
+                                                <div class="col-lg-3">
+                                                    <label for="e_contact_first_ph" class="control-label">Phone (Primary)</label>
+                                                    <input type="text" name="e_contact_first_ph" id="e_contact_first_ph" class="form-control">
+                                                </div>    
+                                                <div class="col-lg-3">
+                                                    <label for="e_contact_second_ph" class="control-label">Phone (Alternative)</label>
+                                                    <input type="text" name="e_contact_second_ph" id="e_contact_second_ph" class="form-control">
+                                                </div>  
+                                                <div class="col-lg-3">
+                                                    <label for="e_contact_persn_address" class="control-label">Address</label>
+                                                    <textarea name="e_contact_persn_address" id="e_contact_persn_address" class="form-control"></textarea>
+                                                </div>  
+                                                <div class="col-lg-3">
+                                                    <label for="e_contact_persn_note" class="control-label">Note</label>
+                                                    <textarea name="e_contact_persn_note" id="e_contact_persn_note" class="form-control"></textarea>
+                                                </div>   
+                                                <div class="col-lg-3" style="margin-top: 25px;">
+                                                    <label for="product_line_po" class="control-label"></label>
+                                                    <input type="submit" name="e_contact_details_submit" class="btn btn-success text-center" id="e_contact_details_submit" value="Update">
+                                                    <input type="hidden" value="<?=$project_id?>" name="e_cont_project_id" id="e_cont_project_id">
+                                                    <input type="hidden" value="" name="contact_obj" id="contact_obj">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <!-- End party details -->
+
+            <!-- Start client details part 
             <div class="row">
                 <div class="col-md-12">
                     <section class="panel">
                         <header class="panel-heading ">
-                            Client Details / Sub-project Details:
+                            Client Details / Party Details:
                             <span class="tools pull-right">
                                 <a class="t-collapse fa fa-chevron-down" href="javascript:;"></a>
                             </span>
@@ -1731,6 +1891,7 @@
     
     $(document).ready(function() {
         initProjectDescription()
+        initClientTable()
         initContactTable()
         initGatherRequirementTable()
         initQuotationListTable()
@@ -1922,7 +2083,47 @@
                 notification(obj);
             }
         });
-    })//end fun
+    })//end fun    
+    
+    //Client Detail Table
+    function initClientTable(){
+        $('#client_details_table').dataTable().fnClearTable();
+        $('#client_details_table').dataTable().fnDestroy();
+        
+        $('#client_details_table').DataTable( {
+            "processing": true,
+            "language": {
+                processing: '<img src="<?=base_url('assets/img/ellipsis.gif')?>"><span class="sr-only">Processing...</span>',
+            },
+            "serverSide": true,
+            "ajax": {
+                "url": "<?=base_url('admin/ajax-client-details-table-data')?>",
+                "type": "POST",
+                "dataType": "json",
+                data: {
+                    project_id: function () {
+                        return $("#project_id").val();
+                    },
+                },
+            },
+            //will get these values from JSON 'data' variable
+            "columns": [
+                { "data": "slNo" },
+                { "data": "organizationName" },
+                { "data": "Phone" },
+                { "data": "Email" },
+                { "data": "gstNo" },
+                { "data": "Address" },
+                { "data": "note" },
+                { "data": "action" },
+            ],
+            //column initialisation properties
+            "columnDefs": [{
+                "targets": [0,1,2,3,4,5,6,7],
+                "orderable": false,
+            }]
+        });
+    }//end fun
 
     //Contact Detail Table
     function initContactTable(){

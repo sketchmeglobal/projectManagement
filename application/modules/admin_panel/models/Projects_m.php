@@ -2547,6 +2547,55 @@ class Projects_m extends CI_Model {
     }//end fun
      
 
+    //Client Details
+    public function ajax_client_details_table_data() {     
+        $project_id = $this->input->post('project_id');
+        $data = array();
+        $contactDetail = array();
+
+        $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
+        //print_r($result);
+
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1);
+            $contactDetail = $project_description->contactDetail;
+        }
+
+        if(sizeof($contactDetail) > 0){
+            $slNo = 1;
+            foreach($contactDetail as $key => $value){
+                if(isset($value->contact_persn_note)){
+                    $contact_persn_note = $value->contact_persn_note;
+                }else{
+                    $contact_persn_note = '';
+                }
+
+                $nestedData['slNo'] = $slNo;
+                $nestedData['organizationName'] = $value->cont_person_name;
+                $nestedData['Phone'] = $value->org_name;
+                $nestedData['Email'] = $value->contact_email;
+                $nestedData['gstNo'] = $value->contact_first_ph;
+                $nestedData['Address'] = $value->contact_persn_address;
+                $nestedData['note'] = $contact_persn_note;
+                $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" data-contact_obj="'.$value->contact_obj.'" class="btn btn-info edit_contact_obj"><i class="fa fa-pencil"></i> Edit</a>
+                <a href="javascript:void(0)" data-project_id="'.$project_id.'" data-contact_obj="'.$value->contact_obj.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+
+                array_push($data, $nestedData);
+                $slNo++;
+            }//end foreach
+        }//end if
+
+        $json_data = array(
+            "recordsTotal"    => sizeof($data),
+            "recordsFiltered" => sizeof($data),
+            "data"            => $data
+        );
+        
+        return $json_data;
+    }   //end client
+     
+
     //Contact Details
     public function ajax_contact_details_table_data() {     
         $project_id = $this->input->post('project_id');
