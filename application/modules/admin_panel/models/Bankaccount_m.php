@@ -115,36 +115,6 @@ class bankaccount_m extends CI_Model {
 
     }
 
-    public function acc_master_on_usertype(){
-        
-        $usertype = $this->input->post('usertype');
-
-        if($usertype == 1){
-            # admin - all
-
-            $rs = $this->db->get_where('acc_master', array('status' => 1))->result();
-
-        }else if($usertype == 2){
-            
-            # resource develper -> Supplier
-            $rs = $this->db->get_where('acc_master', array('status' => 1, 'supplier_buyer' => 0))->result();
-
-        }else if($usertype == 3){
-            
-            # marketing -> Buyer
-            $rs = $this->db->get_where('acc_master', array('status' => 1, 'supplier_buyer' => 1))->result();
-
-        }if($usertype == 4){
-            
-            # exporter -> Offers
-            $rs = $this->db->get_where('offers', array('status' => 1))->result();
-            
-        }
-
-        return $rs;
-
-    }
-
     public function form_add_bank_account(){  
         $insertArray = array(
             'bank_name' => $this->input->post('bank_name'),
@@ -230,24 +200,6 @@ class bankaccount_m extends CI_Model {
         $data['bankaccount_details'] = $this->db->get_where('master_bank_account', array('ba_id' => $ba_id))->result();
 
         return array('page' => 'bankaccount/bankaccount_edit_v', 'data' => $data);
-
-    }
-
-    public function ajax_unique_username_edit(){
-        
-        $username = $this->input->post('username');
-        $user_id = $this->input->post('user_id');
-
-        $rs = $this->db->where('user_id !=', $user_id)->get_where('users', array('username' => $username))->num_rows();
-
-        
-        if($rs != '0') {
-            $data = 'Username already exists.';
-        }else{
-            $data='true';
-        }
-
-        return $data;
 
     }
 

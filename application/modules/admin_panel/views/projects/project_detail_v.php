@@ -713,7 +713,7 @@
                                                 </div>  
                                                 <div class="col-lg-3">
                                                     <label for="bi_QuotationNo" class="control-label">Quotation No.</label>
-                                                    <input id="bi_QuotationNo" name="bi_QuotationNo" type="text" placeholder="Quotation No." class="form-control" />
+                                                    <input id="bi_QuotationNo" name="bi_QuotationNo" type="text" placeholder="Quotation No." class="form-control" value="<?=$bi_QuotationNo?>" readonly />
                                                 </div>  
                                                 <div class="col-lg-3">
                                                     <label for="bi_QuotationDate" class="control-label">Quotation Date</label>
@@ -956,10 +956,9 @@
                                                         <?php
                                                         if(sizeof($party_list) > 0){
                                                             foreach($party_list as $val){
-                                                                if($val->emp_type != '1'){
                                                         ?>
                                                         <option value="<?=$val->emp_id?>" ><?=$val->first_name.' '.$val->last_name?></option>
-                                                            <?php }
+                                                            <?php 
                                                             } 
                                                         }?>
                                                     </select>
@@ -1037,7 +1036,7 @@
                                                 </div>  
                                                 <div class="col-lg-3">
                                                     <label for="bi_QuotationNo_e" class="control-label">Quotation No.</label>
-                                                    <input id="bi_QuotationNo_e" name="bi_QuotationNo_e" type="text" placeholder="Quotation No." class="form-control" />
+                                                    <input id="bi_QuotationNo_e" name="bi_QuotationNo_e" type="text" placeholder="Quotation No." class="form-control" readonly />
                                                 </div>  
                                                 <div class="col-lg-3">
                                                     <label for="bi_QuotationDate_e" class="control-label">Quotation Date</label>
@@ -1289,10 +1288,9 @@
                                                     <?php
                                                     if(sizeof($party_list) > 0){
                                                         foreach($party_list as $val){
-                                                            if($val->emp_type != '1'){
                                                     ?>
                                                     <option value="<?=$val->emp_id?>" ><?=$val->first_name.' '.$val->last_name?></option>
-                                                        <?php }
+                                                        <?php
                                                         } 
                                                     }?>
                                                 </select>
@@ -2151,6 +2149,31 @@
                 "orderable": false,
             }]
         });
+        
+
+        console.log('populate party name dropdown')
+        $project_id = $("#project_id").val();
+        $.ajax({
+            url: "<?= base_url('admin/ajax-client-details-table-data/') ?>",
+            dataType: 'json',
+            type: 'POST',
+            data: { project_id: $project_id },
+            success: function (returnData) {
+                //console.log(' contact list data: '+ JSON.stringify(returnData));
+                $client_data_list = returnData.data;
+                $bi_PartyIdList = '<option value="0" >-- Select Party --</option>';
+
+                for($i = 0; $i < $client_data_list.length; $i++){
+                    $bi_PartyIdList += '<option value="' + $client_data_list[$i].client_obj+'" >'+$client_data_list[$i].organizationName+'</option>';
+                }//end for
+                console.log('bi_PartyIdList: ' + $bi_PartyIdList)
+                $('#bi_PartyId').html($bi_PartyIdList);
+                $('#bi_PartyId_e').html($bi_PartyIdList);
+            },
+            error: function (returnData) {
+                obj = JSON.parse(returnData);
+            }
+        });//end ajax
     }//end fun
 
     //Contact Detail Table
@@ -2192,7 +2215,7 @@
             }]
         });
 
-        console.log('populate party name dropdown')
+        /*console.log('populate party name dropdown')
         $project_id = $("#project_id").val();
         $.ajax({
             url: "<?= base_url('admin/ajax-contact-details-table-data/') ?>",
@@ -2215,7 +2238,7 @@
             error: function (returnData) {
                 obj = JSON.parse(returnData);
             }
-        });//end ajax
+        });*/ //end ajax
 
     }//end fun
     
@@ -2824,10 +2847,7 @@
             },
             bi_QuotationDate: {
                 required: true
-            },
-            bi_InvoiceDate: {
-                required: true
-            }  
+            }
         },
         messages: {
 
@@ -2841,24 +2861,16 @@
             obj = JSON.parse(returnData);
             notification(obj);
 			if(parseInt(obj.update_id) > 0){
-                /*$('#bi_PartyId').val('0').trigger('change');
-                $('#bi_PartyId_name').val('');
-                $('#bi_QuotationNo').val('');
-                $('#bi_QuotationDate').val('');
-                $('#bi_SubPartyName').val('');
-                $('#bi_InvoiceDate').val('');
-                $('#bi_NoticeNo').val('');
-                $('#bi_PaymentMode').val('0').trigger('change');
-                $('#bi_PaymentModeName').val('');
-                $('#bi_InstrumentNumber').val('');
-                $('#bi_Remarks').val('');
-                $('#bi_OtherClientInfo').val('');
-                $('#bi_ImportantNotes').val('');*/
-
                 initQuotationListTable()
                 $('#bi_obj').val(obj.bi_obj);
                 $('#tax_bi_obj').val(obj.bi_obj);
                 $('#commi_bi_obj').val(obj.bi_obj);
+                $('#form_particular_basic_info_add')[0].reset();
+
+                
+                $('#bi_QuotationNo').val(obj.bi_QuotationNo);
+                $('#bi_PartyId').val('0').trigger('change');
+                $('#bi_PaymentMode').val('0').trigger('change');
 
                 console.log(JSON.stringify(obj));
                 if(obj.type == 'error'){
@@ -2888,10 +2900,7 @@
             },
             bi_QuotationDate_e: {
                 required: true
-            },
-            bi_InvoiceDate_e: {
-                required: true
-            }  
+            } 
         },
         messages: {
 
@@ -3101,6 +3110,7 @@
             notification(obj);
 			if(parseInt(obj.update_id) > 0){
                 console.log(JSON.stringify(obj));
+                $('#form_tax_add')[0].reset();
                 if(obj.type == 'error'){
                     console.log('Error from API')
                 }else{
@@ -3234,6 +3244,7 @@
             notification(obj);
 			if(parseInt(obj.project_id) > 0){
                 console.log(JSON.stringify(obj));
+                $('#form_commission_add')[0].reset();
                 if(obj.type == 'error'){
                     console.log('Error from API')
                 }else{
