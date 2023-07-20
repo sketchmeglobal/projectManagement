@@ -31,7 +31,8 @@ class Login_m extends CI_Model {
 
         $username = $this->input->post('username');
         $pass = $this->input->post('pass');
-        $pass_encrypted = hash('sha256', $pass); //encrypting password with sha256 encoding
+        //$pass_encrypted = hash('sha256', $pass); //encrypting password with sha256 encoding
+        $pass_encrypted = $pass; //encrypting password with sha256 encoding
 
         $this->db->where('username', $username);
         $this->db->or_where('email', $username);

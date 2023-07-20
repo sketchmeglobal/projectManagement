@@ -155,7 +155,7 @@
 	$route['admin/form-commission-edit'] = 'admin_panel/Projects/form_commission_edit';
 	$route['admin/fetch-client-details-on-pk'] = 'admin_panel/Projects/fetch_client_details_on_pk';
 	$route['admin/fetch-contact-details-on-pk'] = 'admin_panel/Projects/fetch_contact_details_on_pk';
-	$route['admin/form-edit-contact'] = 'admin_panel/Projects/form_edit_client';
+	$route['admin/form-edit-contact'] = 'admin_panel/Projects/form_edit_contact';
 	$route['admin/form-edit-client-details'] = 'admin_panel/Projects/form_edit_client';
 	$route['admin/del-row-client-details'] = 'admin_panel/Projects/del_row_client_details';
 	$route['admin/del-row-contact-details'] = 'admin_panel/Projects/del_row_contact_details';

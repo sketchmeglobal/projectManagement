@@ -725,6 +725,7 @@ class Projects_m extends CI_Model {
         $cont_project_id = $this->input->post('cont_project_id');
         $cont_person_name = $this->input->post('cont_person_name');
         $org_name = $this->input->post('org_name');
+        $org_name_text = $this->input->post('org_name_text');
         $contact_email = $this->input->post('contact_email');
         $contact_first_ph = $this->input->post('contact_first_ph');
         $contact_second_ph = $this->input->post('contact_second_ph');
@@ -739,6 +740,7 @@ class Projects_m extends CI_Model {
         $contact_list_obj->contact_obj = $contact_obj;
         $contact_list_obj->cont_person_name = $cont_person_name;
         $contact_list_obj->org_name = $org_name;
+        $contact_list_obj->org_name_text = $org_name_text;
         $contact_list_obj->contact_email = $contact_email;
         $contact_list_obj->contact_first_ph = $contact_first_ph;
         $contact_list_obj->contact_second_ph = $contact_second_ph;
@@ -1120,6 +1122,7 @@ class Projects_m extends CI_Model {
         $contact_obj = $this->input->post('contact_obj');
         $cont_person_name = $this->input->post('e_cont_person_name');
         $org_name = $this->input->post('e_org_name');
+        $org_name_text = $this->input->post('e_org_name_text');
         $contact_email = $this->input->post('e_contact_email');
         $contact_first_ph = $this->input->post('e_contact_first_ph');
         $contact_second_ph = $this->input->post('e_contact_second_ph');
@@ -1140,6 +1143,7 @@ class Projects_m extends CI_Model {
                     if($contactDetail[$i]->contact_obj == $contact_obj){
                         $contactDetail[$i]->cont_person_name = $cont_person_name;
                         $contactDetail[$i]->org_name = $org_name;
+                        $contactDetail[$i]->org_name_text = $org_name_text;
                         $contactDetail[$i]->contact_email = $contact_email;
                         $contactDetail[$i]->contact_first_ph = $contact_first_ph;
                         $contactDetail[$i]->contact_second_ph = $contact_second_ph;
@@ -1175,6 +1179,7 @@ class Projects_m extends CI_Model {
         $project_id = $this->input->post('e_gr_project_id');
         $doc_obj = $this->input->post('doc_obj');
         $e_req_gather_title = $this->input->post('e_req_gather_title');
+        $e_req_gather_title_text = $this->input->post('e_req_gather_title_text');
         $e_req_gather_desc = $this->input->post('e_req_gather_desc');
         $e_req_gather_by = $this->input->post('e_req_gather_by');
         $e_req_gather_by_name = $this->input->post('e_req_gather_by_name');
@@ -1193,6 +1198,7 @@ class Projects_m extends CI_Model {
                 for($i = 0; $i < sizeof($requirementDetail); $i++){
                     if($requirementDetail[$i]->doc_obj == $doc_obj){
                         $requirementDetail[$i]->req_gather_title = $e_req_gather_title;
+                        $requirementDetail[$i]->req_gather_title_text = $e_req_gather_title_text;
                         $requirementDetail[$i]->req_gather_desc = $e_req_gather_desc;
                         $requirementDetail[$i]->req_gather_by = $e_req_gather_by;
                         $requirementDetail[$i]->req_gather_by_name = $e_req_gather_by_name;
@@ -1662,6 +1668,7 @@ class Projects_m extends CI_Model {
 
         $gr_project_id = $this->input->post('gr_project_id');
         $req_gather_title = $this->input->post('req_gather_title');
+        $req_gather_title_text = $this->input->post('req_gather_title_text');
         $req_gather_desc = $this->input->post('req_gather_desc');
         $req_gather_by = $this->input->post('req_gather_by');
         $req_gather_by_name = $this->input->post('req_gather_by_name');
@@ -1675,6 +1682,7 @@ class Projects_m extends CI_Model {
         $requirementDetail_obj = new stdClass();
         $requirementDetail_obj->doc_obj = $doc_obj;
         $requirementDetail_obj->req_gather_title = $req_gather_title;
+        $requirementDetail_obj->req_gather_title_text = $req_gather_title_text;
         $requirementDetail_obj->req_gather_desc = $req_gather_desc;
         $requirementDetail_obj->req_gather_by = $req_gather_by;
         $requirementDetail_obj->req_gather_by_name = $req_gather_by_name;
@@ -2846,9 +2854,16 @@ class Projects_m extends CI_Model {
                     $contact_persn_note = '';
                 }
 
+                if(isset($value->org_name_text)){
+                    $org_name_text = $value->org_name_text;
+                }else{
+                    $org_name_text = '';
+                }
+
                 $nestedData['contact_obj'] = $value->contact_obj;
                 $nestedData['ContactPersonName'] = $value->cont_person_name;
                 $nestedData['OrganizationName'] = $value->org_name;
+                $nestedData['org_name_text'] = $org_name_text;
                 $nestedData['Email'] = $value->contact_email;
                 $nestedData['Phone1st'] = $value->contact_first_ph;
                 $nestedData['Phone2nd'] = $value->contact_second_ph;
@@ -3009,7 +3024,12 @@ class Projects_m extends CI_Model {
                     }
                 }
 
-                $nestedData['Title'] = $value->req_gather_title;
+                if(isset($value->req_gather_title_text)){
+                    $req_gather_title_text = $value->req_gather_title_text;
+                }else{
+                    $req_gather_title_text = '';
+                }
+                $nestedData['Title'] = $req_gather_title_text;
                 $nestedData['Description'] = $value->req_gather_desc;
                 $nestedData['Employee'] = $value->req_gather_by_name;
                 $nestedData['Date'] = date("d-m-Y", strtotime($value->req_gather_date));

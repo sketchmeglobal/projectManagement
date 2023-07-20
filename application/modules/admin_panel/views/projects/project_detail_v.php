@@ -443,7 +443,10 @@
                                             </div>   
                                             <div class="col-lg-3">
                                                 <label for="org_name" class="control-label">Organization Name</label>
-                                                <input type="text" name="org_name" id="org_name" class="form-control">
+                                                    <select name="org_name" id="org_name" class="form-control select2">
+                                                        <option value="0" >-- Select --</option>
+                                                    </select>
+                                                    <input type="hidden" name="org_name_text" id="org_name_text" class="form-control">
                                             </div>   
                                             <div class="col-lg-3">
                                                 <label for="contact_email" class="control-label">Email</label>
@@ -486,7 +489,10 @@
                                                 </div>   
                                                 <div class="col-lg-3">
                                                     <label for="e_org_name" class="control-label">Organization Name</label>
-                                                    <input type="text" name="e_org_name" id="e_org_name" class="form-control">
+                                                    <select name="e_org_name" id="e_org_name" class="form-control select2">
+                                                        <option value="0" >-- Select --</option>
+                                                    </select>
+                                                    <input type="hidden" name="e_org_name_text" id="e_org_name_text" class="form-control">
                                                 </div>   
                                                 <div class="col-lg-3">
                                                     <label for="e_contact_email" class="control-label">Email</label>
@@ -571,11 +577,10 @@
                                         <div class="form-group "> 
                                             <div class="col-lg-3">
                                                 <label for="req_gather_title" class="control-label">Title</label>
-                                                <input type="text" name="req_gather_title" id="req_gather_title" class="form-control">
-                                            </div>  
-                                            <div class="col-lg-3">
-                                                <label for="req_gather_desc" class="control-label">Description</label>
-                                                <textarea name="req_gather_desc" id="req_gather_desc" class="form-control"></textarea>
+                                                <select name="req_gather_title" id="req_gather_title" class="form-control select2">
+                                                    <option value="0" >-- Select --</option>
+                                                </select>
+                                                <input type="hidden" name="req_gather_title_text" id="req_gather_title_text" class="form-control">
                                             </div>     
                                             <div class="col-lg-3">
                                                 <label for="req_gather_by" class="control-label">Employee</label>
@@ -598,6 +603,12 @@
                                                 <label for="" class="control-label">Attachment</label>
                                                 <input type="file" name="requirementFile[]" id="requirementFile" accept=".jpg,.jpeg,.png,.bmp,.txt,.docx,.xlsx,.csv,.pdf,.zip" class="file" multiple>
                                             </div> 
+                                        </div>
+                                        <div class="form-group ">  
+                                            <div class="col-lg-12">
+                                                <label for="req_gather_desc" class="control-label">Description</label>
+                                                <textarea name="req_gather_desc" id="req_gather_desc" class="form-control"></textarea>
+                                            </div>  
                                             <div class="col-lg-3" style="margin-top: 25px;">
                                                 <label for="product_line_po" class="control-label"></label>
                                                 <input type="submit" name="requirement_gather_submit" class="btn btn-success text-center" id="requirement_gather_submit" value="Add"> 
@@ -615,12 +626,12 @@
                                             <div class="form-group "> 
                                                 <div class="col-lg-3">
                                                     <label for="e_req_gather_title" class="control-label">Title</label>
-                                                    <input type="text" name="e_req_gather_title" id="e_req_gather_title" class="form-control">
-                                                </div>  
-                                                <div class="col-lg-3">
-                                                    <label for="e_req_gather_desc" class="control-label">Description</label>
-                                                    <textarea name="e_req_gather_desc" id="e_req_gather_desc" class="form-control"></textarea>
-                                                </div>     
+                                                    <select name="e_req_gather_title" id="e_req_gather_title" class="form-control select2">
+                                                        <option value="0" >-- Select --</option>
+                                                    </select>
+                                                    <input type="hidden" name="e_req_gather_title_text" id="e_req_gather_title_text" class="form-control">
+                                                </div>    
+                                                  
                                                 <div class="col-lg-3">
                                                     <label for="e_req_gather_by" class="control-label">Employee</label>
                                                     <select name="e_req_gather_by" id="e_req_gather_by" class="form-control select2">
@@ -642,6 +653,12 @@
                                                     <label for="" class="control-label">Attachment</label>
                                                     <input type="file" name="e_requirementFile[]" id="e_requirementFile" accept=".jpg,.jpeg,.png,.bmp,.txt,.docx,.xlsx,.csv,.pdf,.zip" class="file" multiple>
                                                 </div> 
+                                            </div>                                    
+                                            <div class="form-group "> 
+                                                <div class="col-lg-12">
+                                                    <label for="e_req_gather_desc" class="control-label">Description</label>
+                                                    <textarea name="e_req_gather_desc" id="e_req_gather_desc" class="form-control"></textarea>
+                                                </div>
                                                 <div class="col-lg-3" style="margin-top: 25px;">
                                                     <label for="product_line_po" class="control-label"></label>
                                                     <input type="submit" name="e_requirement_gather_submit" class="btn btn-success text-center" id="e_requirement_gather_submit" value="Update">
@@ -2016,8 +2033,9 @@
                 console.log(returnData);                
                 //data = returnData[0];
 
-                $("#e_req_gather_title").val(returnData.req_gather_title);
+                $("#e_req_gather_title").val(returnData.req_gather_title).trigger('change');
                 $("#e_req_gather_desc").val(returnData.req_gather_desc);
+                $("#req_gather_title_text").val(returnData.req_gather_title_text);
                 $("#e_req_gather_by").val(returnData.req_gather_by).trigger('change');
                 //$("#size_after_glaze_edit").val(data.size_after_glaze).trigger('change');
                 $("#e_req_gather_by_name").val(returnData.req_gather_by_name);
@@ -2167,8 +2185,16 @@
                     $bi_PartyIdList += '<option value="' + $client_data_list[$i].client_obj+'" >'+$client_data_list[$i].organizationName+'</option>';
                 }//end for
                 console.log('bi_PartyIdList: ' + $bi_PartyIdList)
+
                 $('#bi_PartyId').html($bi_PartyIdList);
                 $('#bi_PartyId_e').html($bi_PartyIdList);
+
+                $('#org_name').html($bi_PartyIdList);
+                $('#e_org_name').html($bi_PartyIdList);
+
+                $('#req_gather_title').html($bi_PartyIdList);
+                $('#e_req_gather_title').html($bi_PartyIdList);
+
             },
             error: function (returnData) {
                 obj = JSON.parse(returnData);
@@ -2200,7 +2226,7 @@
             //will get these values from JSON 'data' variable
             "columns": [
                 { "data": "ContactPersonName" },
-                { "data": "OrganizationName" },
+                { "data": "org_name_text" },
                 { "data": "Email" },
                 { "data": "Phone1st" },
                 { "data": "Phone2nd" },
@@ -2214,31 +2240,6 @@
                 "orderable": false,
             }]
         });
-
-        /*console.log('populate party name dropdown')
-        $project_id = $("#project_id").val();
-        $.ajax({
-            url: "<?= base_url('admin/ajax-contact-details-table-data/') ?>",
-            dataType: 'json',
-            type: 'POST',
-            data: { project_id: $project_id },
-            success: function (returnData) {
-                //console.log(' contact list data: '+ JSON.stringify(returnData));
-                $contact_data_list = returnData.data;
-                $bi_PartyIdList = '<option value="0" >-- Select Party --</option>';
-
-                for($i = 0; $i < $contact_data_list.length; $i++){
-                    //console.log('Contact Person Name: ' + $contact_data_list[$i].contact_obj+' . '+$contact_data_list[$i].ContactPersonName)
-                    $bi_PartyIdList += '<option value="' + $contact_data_list[$i].contact_obj+'" >'+$contact_data_list[$i].ContactPersonName+'</option>';
-                }//end for
-                console.log('bi_PartyIdList: ' + $bi_PartyIdList)
-                $('#bi_PartyId').html($bi_PartyIdList);
-                $('#bi_PartyId_e').html($bi_PartyIdList);
-            },
-            error: function (returnData) {
-                obj = JSON.parse(returnData);
-            }
-        });*/ //end ajax
 
     }//end fun
     
@@ -2378,7 +2379,9 @@
                 //data = returnData[0];
 
                 $("#e_cont_person_name").val(returnData.cont_person_name);
+                $("#e_org_name").val(returnData.org_name).trigger('change');
                 $("#e_org_name").val(returnData.org_name);
+                $("#e_org_name_text").val(returnData.org_name_text);
                 $("#e_contact_email").val(returnData.contact_email);
                 $("#e_contact_first_ph").val(returnData.contact_first_ph);
                 $("#e_contact_second_ph").val(returnData.contact_second_ph);
@@ -2626,7 +2629,7 @@
             notification(obj);
 			if(parseInt(obj.update_id) > 0){
                 $('#cont_person_name').val('');
-                $('#org_name').val('');
+                $('#org_name').val('0').trigger('change');
                 $('#contact_email').val('');
                 $('#contact_first_ph').val('');
                 $('#contact_second_ph').val('');
@@ -2709,7 +2712,8 @@
             notification(obj);
 			if(parseInt(obj.update_id) > 0){
                 $('#e_cont_person_name').val('');
-                $('#e_org_name').val('');
+                $('#e_org_name').val('0').trigger('change');
+                $('#e_org_name_text').val('');
                 $('#e_contact_email').val('');
                 $('#e_contact_first_ph').val('');
                 $('#e_contact_second_ph').val('');
@@ -2763,7 +2767,8 @@
             obj = JSON.parse(returnData);
             notification(obj);
 			if(parseInt(obj.update_id) > 0){
-                $('#req_gather_title').val('');
+                $('#req_gather_title').val('0').trigger('change');
+                $('#req_gather_title_text').val('');
                 $('#req_gather_desc').val('');
                 $('#req_gather_by_name').val('');
                 $('#req_gather_by').val('0').trigger('change');
@@ -2810,7 +2815,8 @@
             obj = JSON.parse(returnData);
             notification(obj);
 			if(parseInt(obj.update_id) > 0){
-                $('#e_req_gather_title').val('');
+                $('#e_req_gather_title').val('0').trigger('change');
+                $('#e_req_gather_title_text').val('');
                 $('#e_req_gather_desc').val('');
                 $('#e_req_gather_by').val('0').trigger('change');
                 $('#e_req_gather_by_name').val('');
@@ -4048,6 +4054,26 @@
             console.log(diffTime + " milliseconds");
             $('#par_Duration').val(parseInt(diffDays) + 1 + " days");
         }
+    })
+
+    $('#org_name').on('change', function(){
+        $org_name_text = $('#org_name option:selected').text();
+        $('#org_name_text').val($org_name_text);
+    })
+
+    $('#e_org_name').on('change', function(){
+        $e_org_name_text = $('#e_org_name option:selected').text();
+        $('#e_org_name_text').val($e_org_name_text);
+    })
+
+    $('#req_gather_title').on('change', function(){
+        $req_gather_title_text = $('#req_gather_title option:selected').text();
+        $('#req_gather_title_text').val($req_gather_title_text);
+    })
+
+    $('#e_req_gather_title').on('change', function(){
+        $e_req_gather_title_text = $('#e_req_gather_title option:selected').text();
+        $('#e_req_gather_title_text').val($e_req_gather_title_text);
     })
 
     function getTransactionId(){
