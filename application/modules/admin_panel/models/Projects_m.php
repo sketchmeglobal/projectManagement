@@ -3029,6 +3029,7 @@ class Projects_m extends CI_Model {
                 }else{
                     $req_gather_title_text = '';
                 }
+                
                 $nestedData['Title'] = $req_gather_title_text;
                 $nestedData['Description'] = $value->req_gather_desc;
                 $nestedData['Employee'] = $value->req_gather_by_name;
