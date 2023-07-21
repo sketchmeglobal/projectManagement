@@ -1437,14 +1437,14 @@
                                     <h4 >Basic Info</h4>
                                     <div class="form-group " style="float: left;">                                        
                                         <form autocomplete="off" id="add_invoice_form" method="post" action="<?=base_url('admin/form-add-invoice-info')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
-                                            <div class="form-group "> 
+                                            <div class="form-group ">
                                                 <div class="col-lg-3">
-                                                    <label for="inv_BillNo" class="control-label">Bill No</label>
+                                                    <label for="inv_QuotationNo" class="control-label">Quotation No</label>
+                                                    <select name="inv_QuotationNo" id="inv_QuotationNo" class="form-control"></select>
+                                                </div>    
+                                                <div class="col-lg-3">
+                                                    <label for="inv_BillNo" class="control-label">Invoice No</label>
                                                     <input type="text" name="inv_BillNo" id="inv_BillNo" class="form-control">
-                                                </div>   
-                                                <div class="col-lg-3">
-                                                    <label for="inv_BillDate" class="control-label">Bill Date</label>
-                                                    <input type="date" name="inv_BillDate" id="inv_BillDate" class="form-control">
                                                 </div>   
                                                 <div class="col-lg-3">
                                                     <label for="inv_InvoiceDate" class="control-label">Invoice Date</label>
@@ -1480,27 +1480,7 @@
                                         <div class="col-lg-12">
                                             <label for="inv_particular" class="control-label">Particulars</label>
                                             <select name="inv_particular" id="inv_particular" class="form-control select2">
-                                                <option value="0" >-- Select Particular --</option>
-                                                <?php
-                                                    if(sizeof($particulars) > 0){
-                                                        //echo json_encode($particulars);
-                                                        for($i = 0; $i < sizeof($particulars); $i++){
-                                                            if($particulars[$i]->par_Taxable == '1'){
-                                                        ?>                                                
-                                                            <option value="<?=$particulars[$i]->parti_obj?>" 
-                                                            par_TaskType="<?=$particulars[$i]->par_TaskType?>"
-                                                            par_TaskType_name="<?=$particulars[$i]->par_TaskType_name?>"
-                                                            par_HSNCode="<?=$particulars[$i]->par_HSNCode?>"
-                                                            par_Duration="<?=$particulars[$i]->par_Duration?>"
-                                                            par_StartDate="<?=$particulars[$i]->par_StartDate?>"
-                                                            par_Amount="<?=$particulars[$i]->par_Amount?>"
-                                                            par_Taxable="<?=$particulars[$i]->par_Taxable?>"
-                                                            ><?=$particulars[$i]->par_TaskType_name?></option>
-                                                        <?php
-                                                            }//end if
-                                                        }//end for
-                                                    }//end if
-                                                ?>
+                                                <option value="0" >-- Select Particular --</option>                                                
                                             </select>
                                             <input type="hidden" value="" name="inv_particular_name" id="inv_particular_name">
                                         </div> 
@@ -1977,7 +1957,66 @@
                 "orderable": false,
             }]
         });
+
+        //Populate final Quotation to Invoice Section
+        $project_id = $("#project_id").val();
+        $.ajax({
+            url: "<?= base_url('admin/ajax-quotation-details-table-data/') ?>",
+            dataType: 'json',
+            type: 'POST',
+            data: { project_id: $project_id },
+            success: function (returnData) {
+                //console.log(' quotation list data: '+ JSON.stringify(returnData));
+                $quotation_data_list = returnData.data;
+                $inv_QuotationNoList = '<option value="0" >-- Select Quotation --</option>';
+
+                for($i = 0; $i < $quotation_data_list.length; $i++){
+                    if($quotation_data_list[$i].finalQuotation == 'Yes'){
+                        $inv_QuotationNoList += '<option value="' + $quotation_data_list[$i].bi_obj+'" >'+$quotation_data_list[$i].QuotationNo+'</option>';
+                    }
+                }//end for
+                //console.log('inv_QuotationNoList: ' + $inv_QuotationNoList)
+
+                $('#inv_QuotationNo').html($inv_QuotationNoList);
+                //$('#inv_QuotationNo_e').html($bi_PartyIdList);
+            },
+            error: function (returnData) {
+                obj = JSON.parse(returnData);
+            }
+        });//end ajax
     }//end fun
+
+    $('#inv_QuotationNo').on('change', function(){
+        $inv_QuotationNo = $('#inv_QuotationNo').val();
+        $project_id = $("#project_id").val();
+
+        $.ajax({
+            url: "<?= base_url('admin/ajax-get-particulars-by-quotation-no/') ?>",
+            dataType: 'json',
+            type: 'POST',
+            data: { project_id: $project_id, inv_QuotationNo: $inv_QuotationNo },
+            success: function (returnData) {
+                console.log(' quotation list data: '+ JSON.stringify(returnData));
+                $particular_data_list = returnData.data;
+                $inv_particularList = '<option value="0" >-- Select Particular --</option>';
+
+                for($i = 0; $i < $particular_data_list.length; $i++){
+                    if($particular_data_list[$i].par_Taxable == '1'){
+                        $inv_particularList += '<option value="' + $particular_data_list[$i].parti_obj+'" par_TaskType="' + $particular_data_list[$i].par_TaskType+'" par_TaskType_name="' + $particular_data_list[$i].par_TaskType_name+'" par_HSNCode="' + $particular_data_list[$i].par_HSNCode+'" par_Duration="' + $particular_data_list[$i].par_Duration+'" par_StartDate="' + $particular_data_list[$i].par_StartDate+'" par_EndDate="' + $particular_data_list[$i].par_EndDate+'" par_Amount="' + $particular_data_list[$i].par_Amount+'" par_Taxable="' + $particular_data_list[$i].par_Taxable+'">'+$particular_data_list[$i].par_TaskType_name+'</option>';
+                    }
+                }//end for
+                console.log('inv particular List: ' + $inv_particularList)
+
+                $('#inv_particular').html($inv_particularList);
+                $('#inv_particular').val('0').trigger('change');
+
+                //$('#inv_QuotationNo_e').html($bi_PartyIdList);
+            },
+            error: function (returnData) {
+                obj = JSON.parse(returnData);
+            }
+        });//end ajax
+    })
 
     //Requirement Gather
     function initGatherRequirementTable(){

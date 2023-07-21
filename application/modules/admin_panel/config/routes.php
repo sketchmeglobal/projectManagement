@@ -132,6 +132,7 @@
 	$route['admin/ajax-invoice-details-table-data'] = 'admin_panel/Projects/ajax_invoice_details_table_data';
 	$route['admin/ajax-requirementgather-details-table-data'] = 'admin_panel/Projects/ajax_requirementgather_details_table_data';
 	$route['admin/ajax-quotation-details-table-data'] = 'admin_panel/Projects/ajax_quotation_details_table_data';
+	$route['admin/ajax-get-particulars-by-quotation-no'] = 'admin_panel/Projects/ajax_get_particulars_by_quotation_no';
 	$route['admin/ajax-particular-details-table-data'] = 'admin_panel/Projects/ajax_particular_details_table_data';
 	$route['admin/ajax-inv-parti-details-table-data'] = 'admin_panel/Projects/ajax_inv_particular_details_table_data';
 	$route['admin/ajax-inv-payment-details-table-data'] = 'admin_panel/Projects/ajax_inv_payment_details_table_data';

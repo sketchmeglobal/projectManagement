@@ -148,7 +148,7 @@ class Projects_m extends CI_Model {
         $data['bi_QuotationNo'] = $bi_QuotationNo;
 
         //Invoice particular
-        $particulars = array();
+        /*$particulars = array();
         if(isset($project_description->quotationDetail)){
             $quotationDetail = $project_description->quotationDetail;
             
@@ -162,7 +162,7 @@ class Projects_m extends CI_Model {
                 }//end for
             }//end if
         }//end if
-        $data['particulars'] = $particulars; 
+        $data['particulars'] = $particulars; */
 
         //Payment mode
         $payment_mode = $this->db->get('master_payment_mode')->result();
@@ -3106,6 +3106,7 @@ class Projects_m extends CI_Model {
                 }
                 
 
+                $nestedData['bi_obj'] = $value->bi_obj;
                 $nestedData['SlNo'] = $slno;
                 $nestedData['PartyName'] = $PartyName;
                 $nestedData['QuotationNo'] = $QuotationNo;
@@ -3124,6 +3125,47 @@ class Projects_m extends CI_Model {
             "recordsTotal"    => sizeof($data),
             "recordsFiltered" => sizeof($data),
             "data"            => $data
+        );       
+        
+        return $json_data;
+    } 
+
+
+    //Particular part
+    public function ajax_get_particulars_by_quotation_no() {       
+        $project_id = $this->input->post('project_id');     
+        $inv_QuotationNo = $this->input->post('inv_QuotationNo');
+
+        $data = array();
+        $quotationDetail = array();
+        $particulars = array();
+
+        $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
+        //print_r($result);
+
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1);
+            $quotationDetail = $project_description->quotationDetail;
+        }
+
+        if(sizeof($quotationDetail) > 0){
+            foreach($quotationDetail as $key => $value){
+                if($value->bi_obj == $inv_QuotationNo){
+                    $particulars = $value->particulars;
+                    break;
+                }//end if
+            }//end foreach
+        }//end if   
+
+        if(sizeof($particulars) > 0){
+            foreach($particulars as $key => $value){
+                array_push($data, $value);
+            }
+        }//end
+
+        $json_data = array(
+            "data" => $data
         );       
         
         return $json_data;
@@ -3217,7 +3259,9 @@ class Projects_m extends CI_Model {
         if(count($result) > 0){
             $project_description1 = $result[0]->project_description;
             $project_description = json_decode($project_description1);
-            $invoice_details = $project_description->invoice_details;
+            if(isset($project_description->invoice_details)){
+                $invoice_details = $project_description->invoice_details;
+            }
         }
 
         if(sizeof($invoice_details) > 0){

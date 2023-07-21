@@ -65,15 +65,22 @@ Response: Completed
 
 2. Requirement Gathering 
     Title will be dropdown from Client Details / Party Details    
-    Add CKEditor in description (this will be big)
 Response: Completed
+    Add CKEditor in description (this will be big)
+Response: Not Completed
 
 3. Quotation
     Update Tax should be automated
     Comission calculation is wrong
 
 4. Invoice
-    Chnage Bill to Invoice
+    Chnage Bill to Invoice  
+Response: Completed
     Bill No. -> automatic
-    Remove Bill date
+    Remove Bill date  
+Response: Completed
     When added 'flash message' is showing added but table not populating
+
+5. Invoice add section, Quotation Dropdown  
+Response: Completed
+

@@ -122,6 +122,15 @@ class Projects extends My_Controller {
         }
     }
     
+    public function ajax_get_particulars_by_quotation_no() {
+        if($this->check_permission() == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->ajax_get_particulars_by_quotation_no();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+    
     public function ajax_particular_details_table_data() {
         if($this->check_permission() == true) {
             $this->load->model('Projects_m');
