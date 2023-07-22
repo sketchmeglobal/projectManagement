@@ -77,6 +77,7 @@ Response: Not Completed
     Chnage Bill to Invoice  
 Response: Completed
     Bill No. -> automatic
+Response: Completed
     Remove Bill date  
 Response: Completed
     When added 'flash message' is showing added but table not populating

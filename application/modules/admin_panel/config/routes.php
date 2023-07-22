@@ -142,15 +142,18 @@
 	$route['admin/form-add-login-info'] = 'admin_panel/Projects/form_add_login_info';
 	$route['admin/form-add-invoice-info'] = 'admin_panel/Projects/form_add_invoice_info';
 	$route['admin/form-add-invoice-particular-info'] = 'admin_panel/Projects/form_add_invoice_particular_info';
+	$route['admin/form-edit-invoice-particular-info'] = 'admin_panel/Projects/form_edit_invoice_particular_info';
 	$route['admin/form-invoice-receive-payment'] = 'admin_panel/Projects/form_invoice_receive_payment';
 	$route['admin/form-add-client-details'] = 'admin_panel/Projects/form_add_client_details';
 	$route['admin/form-gather-requirement'] = 'admin_panel/Projects/form_gather_requirement';
 	$route['admin/form-parti-basic-info-add'] = 'admin_panel/Projects/form_particular_basic_info_add';
 	$route['admin/form-parti-basic-info-edit'] = 'admin_panel/Projects/form_particular_basic_info_edit';
+	$route['admin/form-invoice-basic-info-edit'] = 'admin_panel/Projects/form_invoice_basic_info_edit';
 	$route['admin/form-particular-add'] = 'admin_panel/Projects/form_particular_add';
 	$route['admin/form-particular-edit'] = 'admin_panel/Projects/form_particular_edit';
 	$route['admin/form-tax-add'] = 'admin_panel/Projects/form_tax_add';
 	$route['admin/form-invoice-tax-add'] = 'admin_panel/Projects/form_invoice_tax_add';
+	$route['admin/form-invoice-tax-edit'] = 'admin_panel/Projects/form_invoice_tax_edit';
 	$route['admin/form-tax-edit'] = 'admin_panel/Projects/form_tax_edit';
 	$route['admin/form-commission-add'] = 'admin_panel/Projects/form_commission_add';
 	$route['admin/form-commission-edit'] = 'admin_panel/Projects/form_commission_edit';
@@ -168,12 +171,14 @@
 	$route['admin/del-row-quotation-details'] = 'admin_panel/Projects/del_row_quotation_details';
 	$route['admin/del-row-invoice-details'] = 'admin_panel/Projects/del_row_invoice_details';
 	$route['admin/del-row-particular-details'] = 'admin_panel/Projects/del_row_particular_details';
+	$route['admin/del-row-inv-particular-details'] = 'admin_panel/Projects/del_row_inv_particular_details';
 	$route['admin/del-row-commission-details'] = 'admin_panel/Projects/del_row_commission_details';
 	$route['admin/del-row-invoicepayment-details'] = 'admin_panel/Projects/del_row_invoicepayment_details';
 	$route['admin/fetch-quotation-details-on-pk'] = 'admin_panel/Projects/fetch_quotation_details_on_pk';
 	$route['admin/fetch-invoice-details-on-pk'] = 'admin_panel/Projects/fetch_invoice_details_on_pk';
 	$route['admin/calculate-tax'] = 'admin_panel/Projects/calculate_tax';
 	$route['admin/calculate-invoice-tax'] = 'admin_panel/Projects/calculate_invoice_tax';
+	$route['admin/calculate-invoice-tax-edit'] = 'admin_panel/Projects/calculate_invoice_tax_edit';
 	//print
 	$route['admin/print-quotation/(:num)/(:num)'] = 'admin_panel/Projects/print_quotation_details/$1/$2';
 	$route['admin/print-invoice/(:num)/(:num)'] = 'admin_panel/Projects/print_invoice_details/$1/$2';

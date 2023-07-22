@@ -243,6 +243,15 @@ class Projects extends My_Controller {
         }
     }
 
+    public function form_edit_invoice_particular_info(){        
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->form_edit_invoice_particular_info();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
     public function form_invoice_receive_payment(){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Projects_m');
@@ -306,6 +315,15 @@ class Projects extends My_Controller {
         }
     }
 
+    public function form_invoice_basic_info_edit(){        
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->form_invoice_basic_info_edit();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
     public function form_particular_add(){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Projects_m');
@@ -337,6 +355,15 @@ class Projects extends My_Controller {
         if($this->check_permission(array()) == true) {
             $this->load->model('Projects_m');
             $data = $this->Projects_m->form_invoice_tax_add();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
+    public function form_invoice_tax_edit(){        
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->form_invoice_tax_edit();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }
@@ -477,6 +504,15 @@ class Projects extends My_Controller {
         }
     }
 
+    public function del_row_inv_particular_details() {
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->del_row_inv_particular_details();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
     public function del_row_commission_details() {
         if($this->check_permission(array()) == true) {
             $this->load->model('Projects_m');
@@ -508,6 +544,15 @@ class Projects extends My_Controller {
         if($this->check_permission(array()) == true) {
             $this->load->model('Projects_m');
             $data = $this->Projects_m->calculate_invoice_tax();
+            echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
+            exit();
+        }
+    }
+
+    public function calculate_invoice_tax_edit() {
+        if($this->check_permission(array()) == true) {
+            $this->load->model('Projects_m');
+            $data = $this->Projects_m->calculate_invoice_tax_edit();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
         }

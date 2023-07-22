@@ -1404,7 +1404,7 @@
                                         <thead>
                                             <tr>
                                                 <th>SL.No</th>
-                                                <th>Party Name</th>
+                                                <th>Quotation No</th>
                                                 <th>Invoice No</th>
                                                 <th>Invoice Date</th>
                                                 <th>Gross Amount</th>                                            
@@ -1419,7 +1419,7 @@
                                         <tfoot>
                                             <tr>
                                                 <th>SL.No</th>
-                                                <th>Party Name</th>
+                                                <th>Quotation No</th>
                                                 <th>Invoice No</th>
                                                 <th>Invoice Date</th>
                                                 <th>Gross Amount</th>                                            
@@ -1441,10 +1441,11 @@
                                                 <div class="col-lg-3">
                                                     <label for="inv_QuotationNo" class="control-label">Quotation No</label>
                                                     <select name="inv_QuotationNo" id="inv_QuotationNo" class="form-control"></select>
+                                                    <input type="hidden" name="inv_QuotationNoText" id="inv_QuotationNoText" value="">
                                                 </div>    
                                                 <div class="col-lg-3">
                                                     <label for="inv_BillNo" class="control-label">Invoice No</label>
-                                                    <input type="text" name="inv_BillNo" id="inv_BillNo" class="form-control">
+                                                    <input type="text" name="inv_BillNo" id="inv_BillNo" class="form-control" value="<?=$inv_BillNo?>" readonly>
                                                 </div>   
                                                 <div class="col-lg-3">
                                                     <label for="inv_InvoiceDate" class="control-label">Invoice Date</label>
@@ -1484,43 +1485,40 @@
                                             </select>
                                             <input type="hidden" value="" name="inv_particular_name" id="inv_particular_name">
                                         </div> 
-                                    </div>              
+                                    </div> 
                                     
-                                    
-                                        <div class="form-group " style="float: left;">   
-                                            <h4>Particular Table</h4>
-                                            <div id="invoice_particular_list" class="tab-pane fade in active">
-                                                <table id="invoice_particular_details_table" class="table data-table dataTable" style="width: 100%;">
-                                                <thead>
-                                                    <tr>
-                                                        <th>SL.No</th>
-                                                        <th>Task Type</th>
-                                                        <th>HSN Code</th>
-                                                        <th>Duration</th>
-                                                        <th>Start Date</th>                                            
-                                                        <th>Amount</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                                    <div class="form-group " style="float: left;">   
+                                        <h4>Particular Table</h4>
+                                        <div id="invoice_particular_list" class="tab-pane fade in active">
+                                            <table id="invoice_particular_details_table" class="table data-table dataTable" style="width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th>SL.No</th>
+                                                    <th>Task Type</th>
+                                                    <th>HSN Code</th>
+                                                    <th>Duration</th>
+                                                    <th>Start Date</th>                                            
+                                                    <th>Amount</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
 
-                                                </tbody>
-                                                <tfoot>
-                                                    <tr>
-                                                        <th>SL.No</th>
-                                                        <th>Task Type</th>
-                                                        <th>HSN Code</th>
-                                                        <th>Duration</th>
-                                                        <th>Start Date</th>                                            
-                                                        <th>Amount</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </tfoot>                                          
-                                                </table>
-                                            </div>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>SL.No</th>
+                                                    <th>Task Type</th>
+                                                    <th>HSN Code</th>
+                                                    <th>Duration</th>
+                                                    <th>Start Date</th>                                            
+                                                    <th>Amount</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </tfoot>                                          
+                                            </table>
                                         </div>
-
-                                    
+                                    </div>
                                         
                                     <div class="form-group " style="float: left;"> 
                                         <form autocomplete="off" id="form_invoice_tax_add" method="post" action="<?=base_url('admin/form-invoice-tax-add')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
@@ -1612,16 +1610,17 @@
                                     <br/>
                                     <h4 >Basic Info</h4>
                                     <div class="form-group " style="float: left;">                                        
-                                        <form autocomplete="off" id="edit_invoice_form" method="post" action="<?=base_url('admin/form-edit-invoice-info')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
+                                        <form autocomplete="off" id="edit_invoice_form" method="post" action="<?=base_url('admin/form-invoice-basic-info-edit')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
                                             <div class="form-group "> 
                                                 <div class="col-lg-3">
-                                                    <label for="e_inv_BillNo" class="control-label">Bill No</label>
-                                                    <input type="text" name="e_inv_BillNo" id="e_inv_BillNo" class="form-control">
-                                                </div>   
+                                                    <label for="inv_QuotationNo_e" class="control-label">Quotation No</label>
+                                                    <select name="inv_QuotationNo_e" id="inv_QuotationNo_e" class="form-control"></select>
+                                                    <input type="hidden" name="e_inv_QuotationNoText" id="e_inv_QuotationNoText" value="">
+                                                </div>
                                                 <div class="col-lg-3">
-                                                    <label for="e_inv_BillDate" class="control-label">Bill Date</label>
-                                                    <input type="date" name="e_inv_BillDate" id="e_inv_BillDate" class="form-control">
-                                                </div>   
+                                                    <label for="e_inv_BillNo" class="control-label">Invoice No</label>
+                                                    <input type="text" name="e_inv_BillNo" id="e_inv_BillNo" class="form-control" readonly>
+                                                </div>    
                                                 <div class="col-lg-3">
                                                     <label for="e_inv_InvoiceDate" class="control-label">Invoice Date</label>
                                                     <input type="date" name="e_inv_InvoiceDate" id="e_inv_InvoiceDate" class="form-control">
@@ -1651,12 +1650,147 @@
                                                     <label for="" class="control-label"></label>
                                                     <input type="submit" name="e_invoice_submit" class="btn btn-success text-center" id="e_invoice_submit" value="Update"> 
                                                     <input type="hidden" value="" name="e_inv_obj_id" id="e_inv_obj_id">
+                                                    <input type="hidden" name="inv_project_id_e" id="inv_project_id_e" value="<?=$project_id?>">
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
-                                    <h4 >Receive Payment</h4>
-                                    <div class="form-group " style="float: left;">                                        
+
+ 
+                                    <div class="form-group " style="float: left;">   
+                                        <h4 >Particulars</h4>
+
+                                        <div class="col-lg-12">
+                                            <label for="e_inv_particular" class="control-label">Particulars</label>
+                                            <select name="e_inv_particular" id="e_inv_particular" class="form-control select2">
+                                                <option value="0" >-- Select Particular --</option>                                                
+                                            </select>
+                                            <input type="hidden" value="" name="e_inv_particular_name" id="e_inv_particular_name">
+                                        </div> 
+                                    </div> 
+
+                                    <div class="form-group " style="float: left;">   
+                                        <h4>Particular Table</h4>
+                                        <div id="invoice_particular_list" class="tab-pane fade in active">
+                                            <table id="e_invoice_particular_details_table" class="table data-table dataTable" style="width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th>SL.No</th>
+                                                    <th>Task Type</th>
+                                                    <th>HSN Code</th>
+                                                    <th>Duration</th>
+                                                    <th>Start Date</th>                                            
+                                                    <th>Amount</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>SL.No</th>
+                                                    <th>Task Type</th>
+                                                    <th>HSN Code</th>
+                                                    <th>Duration</th>
+                                                    <th>Start Date</th>                                            
+                                                    <th>Amount</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </tfoot>                                          
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                        
+                                    <div class="form-group " style="float: left;"> 
+                                        <form autocomplete="off" id="form_invoice_tax_edit" method="post" action="<?=base_url('admin/form-invoice-tax-edit')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
+                                            <h4 style="margin-left: 15px;">TAX Calculation</h4>
+                                            <div class="col-lg-3">
+                                                <label for="e_inv_tax_GrossAmount" class="control-label">Gross Amount</label>
+                                                <input value="0" id="e_inv_tax_GrossAmount" name="e_inv_tax_GrossAmount" type="text" placeholder="Gross Amount" class="form-control" readonly="readonly" />
+                                            </div> 
+                                            <div class="col-lg-3">
+                                                <label for="e_inv_tax_DiscountPercentage" class="control-label">Discount Percentage</label>
+                                                <input value="0" id="e_inv_tax_DiscountPercentage" name="e_inv_tax_DiscountPercentage" type="text" placeholder="Discount Percentage" class="form-control" />
+                                            </div> 
+                                            <div class="col-lg-3">
+                                                <label for="e_inv_tax_DiscountAmount" class="control-label">Discount Amount</label>
+                                                <input value="0" id="e_inv_tax_DiscountAmount" name="e_inv_tax_DiscountAmount" type="text" placeholder="Discount Amount" class="form-control" readonly="readonly" />
+                                            </div> 
+                                            <div class="col-lg-3">
+                                                <label for="e_inv_tax_TaxableAmount" class="control-label">Taxable Amount</label>
+                                                <input value="0" id="e_inv_tax_TaxableAmount" name="e_inv_tax_TaxableAmount" type="text" placeholder="Taxable Amount" class="form-control" readonly="readonly" />
+                                            </div> 
+                                            
+                                            <div class="col-lg-3">
+                                                <label for="e_inv_tax_SGST_Rate" class="control-label">SGST (in %)</label>
+                                                <input value="0" id="e_inv_tax_SGST_Rate" name="e_inv_tax_SGST_Rate" type="text" placeholder="SGST(in %)" class="form-control" readonly="readonly" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="e_inv_tax_SGST_Amount" class="control-label">SGST Amount</label>
+                                                <input value="0" id="e_inv_tax_SGST_Amount" name="e_inv_tax_SGST_Amount" type="text" placeholder="SGST Amount" class="form-control" readonly="readonly" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="e_inv_tax_CGST_Rate" class="control-label">CGST (in %)</label>
+                                                <input value="0" id="e_inv_tax_CGST_Rate" name="e_inv_tax_CGST_Rate" type="text" placeholder="CGST (in %)" class="form-control" readonly="readonly" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="e_inv_tax_CGST_Amount" class="control-label">CGST Amount</label>
+                                                <input value="0" id="e_inv_tax_CGST_Amount" name="e_inv_tax_CGST_Amount" type="text" placeholder="CGST Amount" class="form-control" readonly="readonly" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="e_inv_tax_IGST_Rate" class="control-label">IGST (in %)</label>
+                                                <input value="0" id="e_inv_tax_IGST_Rate" name="e_inv_tax_IGST_Rate" type="text" placeholder="IGST (in %)" class="form-control" readonly="readonly" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="e_inv_tax_IGST_Amount" class="control-label">IGST Amount</label>
+                                                <input value="0" id="e_inv_tax_IGST_Amount" name="e_inv_tax_IGST_Amount" type="text" placeholder="IGST Amount" class="form-control" readonly="readonly" />
+                                            </div>
+                                            
+                                            <div class="col-lg-3">
+                                                <label for="e_inv_tax_NetAmount" class="control-label">Net Amount</label>
+                                                <input value="0" id="e_inv_tax_NetAmount" name="e_inv_tax_NetAmount" type="text" placeholder="Net Amount" class="form-control" readonly="readonly" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="e_inv_tax_TotalTax" class="control-label">Total Tax.</label>
+                                                <input value="0" id="e_inv_tax_TotalTax" name="e_inv_tax_TotalTax" type="text" placeholder="Total Tax." class="form-control" readonly="readonly" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="e_inv_tax_Bank" class="control-label">Bank</label>
+                                                <select name="e_inv_tax_Bank" id="e_inv_tax_Bank" class="form-control select2">
+                                                    <option value="0" >-- Select Bank --</option>
+                                                        <?php
+                                                        if(sizeof($bank_account) > 0){
+                                                            foreach($bank_account as $val){
+                                                        ?>
+                                                        <option value="<?=$val->ba_id?>" ><?=$val->bank_name?></option>
+                                                        <?php } 
+                                                        }?>
+                                                </select>
+                                                <input type="hidden" name="e_inv_tax_BankName" id="e_inv_tax_BankName" value="">
+                                            </div> 
+                                            <div class="col-lg-3">
+                                                <label for="e_inv_tax_ShowStamp" class="control-label">Show Stamp</label>
+                                                <select name="e_inv_tax_ShowStamp" id="e_inv_tax_ShowStamp" class="form-control select2">
+                                                    <option value="1" >YES</option>
+                                                    <option value="2" >NO</option>
+                                                </select>
+                                                <input type="hidden" name="e_inv_tax_ShowStampName" id="e_inv_tax_ShowStampName" value="">
+                                            </div> 
+                                            <div class="col-lg-3" style="margin-top: 25px;">
+                                                <label for="e_inv_tax_details_submit" class="control-label"></label>
+                                                <input type="submit" name="e_inv_tax_details_submit" class="btn btn-success text-center" id="e_inv_tax_details_submit" value="Update Tax">
+                                                <input type="hidden" name="e_inv_tax_project_id" id="e_inv_tax_project_id" value="<?=$project_id?>">
+                                                <input type="hidden" name="e_tax_inv_obj_id" id="tax_inv_obj_id" value="">
+                                            </div> 
+                                        </form>
+                                    </div>
+
+
+                                    
+                                    <div class="form-group " style="float: left;">   
+                                    <h4 >Receive Payment</h4>                                     
                                         <form autocomplete="off" id="invoice_receive_payment" method="post" action="<?=base_url('admin/form-invoice-receive-payment')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
                                             <div class="form-group "> 
                                                 <div class="col-lg-2">
@@ -1752,6 +1886,55 @@
                                                     <label for="" class="control-label"></label>
                                                     <input type="submit" name="invoice_parti_submit" class="btn btn-success text-center" id="invoice_parti_submit" value="Add"> 
                                                     <input type="hidden" value="<?=$project_id?>" name="inv_project_id" id="inv_project_id">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>                                                        
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <!-- <button type="button" class="btn btn-primary" id="saveInvoiceParticular" >Save changes</button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal End -->
+
+            <!-- Modal Start -->
+            <div id="e_invoiceModal" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="e_myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="e_invoiceModalTitle"> </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="row"> 
+                                <div class="col-md-12">
+                                    <div class="form">                                      
+                                        <form autocomplete="off" id="edit_invoice_parti_form" method="post" action="<?=base_url('admin/form-edit-invoice-particular-info')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">   
+                                            <div class="form-group "> 
+                                                <div class="col-lg-3">
+                                                    <label for="e_inv_Amount" class="control-label">Amount</label>
+                                                    <input type="text" name="e_inv_Amount" id="e_inv_Amount" class="form-control">
+                                                    <input type="hidden" name="e_inv_parti_obj" id="e_inv_parti_obj" class="form-control">
+                                                    <input type="hidden" name="e_inv_par_TaskType" id="e_inv_par_TaskType" class="form-control">
+                                                    <input type="hidden" name="e_inv_par_TaskType_name" id="e_inv_par_TaskType_name" class="form-control">
+                                                    <input type="hidden" name="e_inv_par_HSNCode" id="e_inv_par_HSNCode" class="form-control">
+                                                    <input type="hidden" name="e_inv_par_Duration" id="e_inv_par_Duration" class="form-control">
+                                                    <input type="hidden" name="e_inv_par_StartDate" id="e_inv_par_StartDate" class="form-control">
+                                                    <input type="hidden" name="e_inv_obj_id_modal" id="e_inv_obj_id_modal" class="form-control">
+                                                </div> 
+                                                <div class="col-lg-3" style="margin-top: 25px;">
+                                                    <label for="" class="control-label"></label>
+                                                    <input type="submit" name="e_invoice_parti_submit" class="btn btn-success text-center" id="e_invoice_parti_submit" value="Add"> 
+                                                    <input type="hidden" value="<?=$project_id?>" name="e_inv_project_id" id="e_inv_project_id">
                                                 </div>
                                             </div>
                                         </form>
@@ -1978,7 +2161,7 @@
                 //console.log('inv_QuotationNoList: ' + $inv_QuotationNoList)
 
                 $('#inv_QuotationNo').html($inv_QuotationNoList);
-                //$('#inv_QuotationNo_e').html($bi_PartyIdList);
+                $('#inv_QuotationNo_e').html($inv_QuotationNoList);
             },
             error: function (returnData) {
                 obj = JSON.parse(returnData);
@@ -1988,6 +2171,8 @@
 
     $('#inv_QuotationNo').on('change', function(){
         $inv_QuotationNo = $('#inv_QuotationNo').val();
+        $inv_QuotationNoText = $('#inv_QuotationNo option:selected').text();
+        $('#inv_QuotationNoText').val($inv_QuotationNoText);
         $project_id = $("#project_id").val();
 
         $.ajax({
@@ -2009,8 +2194,38 @@
 
                 $('#inv_particular').html($inv_particularList);
                 $('#inv_particular').val('0').trigger('change');
+            },
+            error: function (returnData) {
+                obj = JSON.parse(returnData);
+            }
+        });//end ajax
+    })
 
-                //$('#inv_QuotationNo_e').html($bi_PartyIdList);
+    $('#inv_QuotationNo_e').on('change', function(){
+        $inv_QuotationNo = $('#inv_QuotationNo_e').val();
+        $e_inv_QuotationNoText = $('#inv_QuotationNo_e option:selected').text();
+        $('#e_inv_QuotationNoText').val($e_inv_QuotationNoText);
+        $project_id = $("#project_id").val();
+
+        $.ajax({
+            url: "<?= base_url('admin/ajax-get-particulars-by-quotation-no/') ?>",
+            dataType: 'json',
+            type: 'POST',
+            data: { project_id: $project_id, inv_QuotationNo: $inv_QuotationNo },
+            success: function (returnData) {
+                console.log(' quotation list data: '+ JSON.stringify(returnData));
+                $particular_data_list = returnData.data;
+                $inv_particularList = '<option value="0" >-- Select Particular --</option>';
+
+                for($i = 0; $i < $particular_data_list.length; $i++){
+                    if($particular_data_list[$i].par_Taxable == '1'){
+                        $inv_particularList += '<option value="' + $particular_data_list[$i].parti_obj+'" par_TaskType="' + $particular_data_list[$i].par_TaskType+'" par_TaskType_name="' + $particular_data_list[$i].par_TaskType_name+'" par_HSNCode="' + $particular_data_list[$i].par_HSNCode+'" par_Duration="' + $particular_data_list[$i].par_Duration+'" par_StartDate="' + $particular_data_list[$i].par_StartDate+'" par_EndDate="' + $particular_data_list[$i].par_EndDate+'" par_Amount="' + $particular_data_list[$i].par_Amount+'" par_Taxable="' + $particular_data_list[$i].par_Taxable+'">'+$particular_data_list[$i].par_TaskType_name+'</option>';
+                    }
+                }//end for
+                console.log('inv particular List: ' + $inv_particularList)
+
+                $('#e_inv_particular').html($inv_particularList);
+                $('#e_inv_particular').val('0').trigger('change');
             },
             error: function (returnData) {
                 obj = JSON.parse(returnData);
@@ -2307,7 +2522,7 @@
             //will get these values from JSON 'data' variable
             "columns": [
                 { "data": "sl_no" },
-                { "data": "partyName" },
+                { "data": "inv_QuotationNoText" },
                 { "data": "invoiceNo" },
                 { "data": "invoiceDate" },
                 { "data": "grossAmount" },
@@ -2876,7 +3091,7 @@
     //end requirement gather edit
 
 
-    //QUOTATION Basic Info    
+    //Invoice Basic Info    
     $("#bi_PartyId").change(function(){
         $bi_PartyId_name = $("#bi_PartyId :selected").text();
         $('#bi_PartyId_name').val($bi_PartyId_name);
@@ -2926,8 +3141,56 @@
 			}
 		}
     });
-    //end QUOTATION basic info
+    //end Invoice basic info
+    
+    //Invoice Basic Info Edit  Start 
 
+    // $("#bi_PartyId_e").change(function(){
+    //     $bi_PartyId_name_e = $("#bi_PartyId_e :selected").text();
+    //     $('#bi_PartyId_name_e').val($bi_PartyId_name_e);
+    // });
+    // $("#bi_PaymentMode_e").change(function(){
+    //     $bi_PaymentModeName_e = $("#bi_PaymentMode_e :selected").text();
+    //     $('#bi_PaymentModeName_e').val($bi_PaymentModeName_e);
+    // });
+    $("#edit_invoice_form").validate({        
+        rules: {
+            inv_QuotationNo_e: {
+                required: true
+            },
+            e_inv_BillNo: {
+                required: true
+            },
+            e_inv_InvoiceDate: {
+                required: true
+            } 
+        },
+        messages: {
+
+        }
+    });
+    $('#edit_invoice_form').ajaxForm({
+        beforeSubmit: function () {
+            return $("#edit_invoice_form").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            obj = JSON.parse(returnData);
+            notification(obj);
+			if(parseInt(obj.update_id) > 0){
+                initInvoiceTable()
+                $('#bi_obj_e').val('');
+                //$('a[href="#contact_details_edit"]').tab('show');
+
+                console.log(JSON.stringify(obj));
+                if(obj.type == 'error'){
+                    console.log('Error from API')
+                }else{
+                    console.log('Document save success')
+                }            	
+			}
+		}
+    });
+    //end Invoice basic info Edit
     
     //QUOTATION Basic Info Edit   
     $("#bi_PartyId_e").change(function(){
@@ -3210,6 +3473,51 @@
 		}
     });
     //end Invoice TAX Part
+
+    //Start Invoice tax edit part
+    $("#e_inv_tax_Bank").change(function(){
+        $tax_BankName = $("#e_inv_tax_Bank :selected").text();
+        $('#e_inv_tax_BankName').val($tax_BankName);
+    });
+    $("#e_inv_tax_ShowStamp").change(function(){
+        $tax_ShowStampName = $("#e_inv_tax_ShowStamp :selected").text();
+        $('#e_inv_tax_ShowStampName').val($tax_ShowStampName);
+    });
+    $("#form_invoice_tax_edit").validate({        
+        rules: {
+            e_inv_tax_GrossAmount: {
+                required: true
+            },
+            e_inv_tax_NetAmount: {
+                required: true
+            },
+            e_inv_tax_Bank: {
+                required: true
+            }  
+        },
+        messages: {
+
+        }
+    });
+    $('#form_invoice_tax_edit').ajaxForm({
+        beforeSubmit: function () {
+            return $("#form_invoice_tax_edit").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            obj = JSON.parse(returnData);
+            notification(obj);
+			if(obj.db_updated == true){
+                console.log(JSON.stringify(obj));
+                if(obj.type == 'error'){
+                    console.log('Error from API')
+                }else{
+                    console.log('Document save success')
+                    initInvoiceTable()
+                }            	
+			}
+		}
+    });
+    //end Invoice TAX edit Part
 
     //Edit TAX calculation start
     $("#tax_Bank_e").change(function(){
@@ -3645,7 +3953,7 @@
         }        
     });
 
-    //Delete Particulars     
+    //Delete Quotation Particulars     
     $('#tableParticularsEdit').on('click', '.delete', function(){
         $project_id = $(this).data('project_id');
         $bi_obj = $(this).data('bi_obj');
@@ -3674,6 +3982,38 @@
             });
         }        
     });
+    
+
+    //Delete Invoice Particulars     
+    $('#e_invoice_particular_details_table').on('click', '.delete', function(){
+        $project_id = $(this).data('project_id');
+        $inv_obj_id = $(this).data('inv_obj_id');
+        $parti_obj_id = $(this).data('parti_obj_id');
+
+        if(confirm("Are You Sure? This Process Can\'t be Undone.")){
+            $pk = $(this).attr('data-pk');
+            
+            $.ajax({
+                url: "<?= base_url('admin/del-row-inv-particular-details/') ?>",
+                dataType: 'json',
+                type: 'POST',
+                data: { project_id: $project_id, inv_obj_id: $inv_obj_id, parti_obj_id: $parti_obj_id },
+                success: function (returnData) {
+                    console.log(returnData);
+                    $('#e_invoice_particular_details_table').closest('tr').remove();
+                    notification(returnData);
+                    //refresh table
+                    initInvoiceParticularTable($project_id, $inv_obj_id, 'e_invoice_particular_details_table');
+                    //calculateInvoiceTax($project_id, $inv_obj_id);
+                },
+                error: function (returnData) {
+                    obj = JSON.parse(returnData);
+                    notification(obj);
+                }
+            });
+        }        
+    });
+
 
     //Delete Commission     
     $('#p_commissionListEdit').on('click', '.delete', function(){
@@ -3791,6 +4131,42 @@
         });
     }//end
 
+
+    //Invoice Tax calculation
+    function calculateInvoiceTaxEdit($project_id, $inv_obj_id){
+        $.ajax({
+            url: "<?= base_url('admin/calculate-invoice-tax-edit/') ?>",
+            dataType: 'json',
+            type: 'POST',
+            data: { project_id: $project_id, inv_obj_id: $inv_obj_id },
+            success: function (returnData) {
+                notification(returnData);
+                $tax_obj = returnData.tax_obj;
+                
+                console.log(JSON.stringify(returnData.tax_obj))
+                
+                $('#e_inv_tax_GrossAmount').val($tax_obj.tax_GrossAmount);
+                $('#e_inv_tax_DiscountPercentage').val($tax_obj.tax_DiscountPercentage);
+                $('#e_inv_tax_DiscountAmount').val($tax_obj.tax_DiscountAmount);
+                $('#e_inv_tax_TaxableAmount').val($tax_obj.tax_TaxableAmount);
+                $('#e_inv_tax_SGST_Rate').val($tax_obj.tax_SGST_Rate);
+                $('#e_inv_tax_SGST_Amount').val($tax_obj.tax_SGST_Amount);
+                $('#e_inv_tax_CGST_Rate').val($tax_obj.tax_CGST_Rate);
+                $('#e_inv_tax_CGST_Amount').val($tax_obj.tax_CGST_Amount);
+                $('#e_inv_tax_IGST_Rate').val($tax_obj.tax_IGST_Rate);
+                $('#e_inv_tax_IGST_Amount').val($tax_obj.tax_IGST_Amount);
+                $('#e_inv_tax_NetAmount').val($tax_obj.tax_NetAmount);
+                $('#e_inv_tax_TotalTax').val($tax_obj.tax_TotalTax);  
+                $('#e_tax_inv_obj_id').val($inv_obj_id);                      
+
+            },
+            error: function (returnData) {
+                obj = JSON.parse(returnData);
+                notification(obj);
+            }
+        });
+    }//end
+
     //TAX calculation for Dicount
     $('#tax_DiscountPercentage_e').blur(function(){
         $tax_GrossAmount_e = $('#tax_GrossAmount_e').val();
@@ -3850,6 +4226,34 @@
         }
     });
 
+    //Invoice Particular edit
+    $('#e_inv_particular').on('change', function(){
+        $inv_particular = $('#e_inv_particular').val();
+        $inv_particular_text = $('#e_inv_particular option:selected').text();
+
+        if(parseInt($inv_particular) > 0){
+            $parti_obj = $('#e_inv_particular').val();
+            $par_TaskType = $('#e_inv_particular option:selected').attr('par_TaskType');
+            $par_TaskType_name = $('#e_inv_particular option:selected').attr('par_TaskType_name');
+            $par_HSNCode = $('#e_inv_particular option:selected').attr('par_HSNCode');
+            $par_Duration = $('#e_inv_particular option:selected').attr('par_Duration');
+            $par_StartDate = $('#e_inv_particular option:selected').attr('par_StartDate');
+            $par_Amount = $('#e_inv_particular option:selected').attr('par_Amount');
+            $par_Taxable = $('#e_inv_particular option:selected').attr('par_Taxable');
+
+            $('#e_invoiceModalTitle').html($inv_particular_text);
+            $('#e_inv_parti_obj').val($parti_obj);
+            $('#e_inv_par_TaskType').val($par_TaskType);
+            $('#e_inv_par_TaskType_name').val($par_TaskType_name);
+            $('#e_inv_par_HSNCode').val($par_HSNCode);
+            $('#e_inv_par_Duration').val($par_Duration);
+            $('#e_inv_par_StartDate').val($par_StartDate);
+            $('#e_inv_Amount').val($par_Amount);
+            
+            $('#e_invoiceModal').modal('show');
+        }
+    });
+
     //Add Invoice Basic Info
     $("#add_invoice_form").validate({        
         rules: {
@@ -3877,6 +4281,8 @@
             notification(obj);
             if(parseInt(obj.update_id) > 0){
                 $('#inv_obj_id').val(obj.inv_obj_id);
+                $('#add_invoice_form')[0].reset();
+                $('#inv_BillNo').val(obj.inv_BillNo);
 
                 console.log(JSON.stringify(obj));
                 if(obj.type == 'error'){
@@ -3910,6 +4316,7 @@
 			if(parseInt(obj.update_id) > 0){
                 $('#invoiceModal').modal('hide');
                 initInvoiceParticularTable(obj.project_id, obj.inv_obj_id, 'invoice_particular_details_table');
+
                 calculateInvoiceTax(obj.project_id, obj.inv_obj_id);
 
                 console.log(JSON.stringify(obj));
@@ -3921,12 +4328,50 @@
 			}
 		}
     });
+
+    //Edit Invoice particular to Table
+    $("#edit_invoice_parti_form").validate({        
+        rules: {
+            inv_Amount: {
+                required: true
+            }    
+        },
+        messages: {
+
+        }
+    });
+    $('#edit_invoice_parti_form').ajaxForm({
+        beforeSubmit: function () {
+            return $("#edit_invoice_parti_form").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            //console.log(returnData);
+            obj = JSON.parse(returnData);
+            notification(obj);
+			if(parseInt(obj.update_id) > 0){
+                $('#e_invoiceModal').modal('hide');
+                initInvoiceParticularTable(obj.project_id, obj.inv_obj_id, 'e_invoice_particular_details_table');
+                
+                calculateInvoiceTaxEdit(obj.project_id, obj.inv_obj_id);
+
+                console.log(JSON.stringify(obj));
+                if(obj.type == 'error'){
+                    console.log('Error from API')
+                }else{
+                    console.log('Login Info save success')
+                }            	
+			}
+		}
+    });
+    //end invoice particular edit
     
     //Edit Invoice
     $('#invoice_details_table').on('click', '.edit_inv_obj_id', function(){
         $inv_obj_id = $(this).data('inv_obj_id');
         $project_id = $('#project_id').val();
         $('#e_inv_obj_id').val($inv_obj_id); 
+        $('#e_inv_obj_id_modal').val($inv_obj_id); 
+        $('#inv_obj_id').val($inv_obj_id); 
         $('#e_inv_obj_id1').val($inv_obj_id); 
         
         $.ajax({
@@ -3938,6 +4383,7 @@
                 console.log(returnData); 
                 
                 //Basic info part
+                $("#inv_QuotationNo_e").val(returnData.inv_QuotationNo).trigger('change');
                 $("#e_inv_BillNo").val(returnData.inv_BillNo);
                 $("#e_inv_BillDate").val(returnData.inv_BillDate);
                 $("#e_inv_InvoiceDate").val(returnData.inv_InvoiceDate);
@@ -3951,6 +4397,31 @@
                 }
                 $("#e_inv_status").val($inv_status).trigger('change');
 
+
+                //Tax Calculation part
+                $("#e_inv_tax_GrossAmount").val(returnData.tax_GrossAmount);
+                $("#e_inv_tax_DiscountPercentage").val(returnData.tax_DiscountPercentage);
+                $("#e_inv_tax_DiscountAmount").val(returnData.tax_DiscountAmount);
+                $("#e_inv_tax_TaxableAmount").val(returnData.tax_TaxableAmount);
+                $("#e_inv_tax_SGST_Rate").val(returnData.tax_SGST_Rate);
+                $("#e_inv_tax_SGST_Amount").val(returnData.tax_SGST_Amount);
+                $("#e_inv_tax_CGST_Rate").val(returnData.tax_CGST_Rate);
+                $("#e_inv_tax_CGST_Amount").val(returnData.tax_CGST_Amount);
+                $("#e_inv_tax_IGST_Rate").val(returnData.tax_IGST_Rate);
+                $("#e_inv_tax_IGST_Amount").val(returnData.tax_IGST_Amount);
+                $("#e_inv_tax_NetAmount").val(returnData.tax_NetAmount);
+                $("#e_inv_tax_TotalTax").val(returnData.tax_TotalTax);
+                $("#e_inv_tax_Bank").val(returnData.tax_Bank).trigger('change');
+                $("#e_inv_tax_BankName").val(returnData.tax_BankName);
+                $("#e_inv_tax_ShowStamp").val(returnData.tax_ShowStamp).trigger('change');
+                $("#e_inv_tax_ShowStampName").val(returnData.tax_ShowStampName);
+                $("#tax_inv_obj_id").val(returnData.inv_obj_id);
+
+
+                //Populate invoice particular table
+                initInvoiceParticularTable($project_id, $inv_obj_id, 'e_invoice_particular_details_table');
+
+                //Populate invoice payment table
                 initInvoicePaymentTable($project_id, $inv_obj_id)
 
                 $('a[href="#invoice_details_edit"]').tab('show');
@@ -4035,7 +4506,6 @@
             }]
         });
     }//end 
-
 
     //Delete payment history     
     $('#invoice_received_payment_table').on('click', '.delete', function(){
