@@ -1782,7 +1782,7 @@
                                                 <label for="e_inv_tax_details_submit" class="control-label"></label>
                                                 <input type="submit" name="e_inv_tax_details_submit" class="btn btn-success text-center" id="e_inv_tax_details_submit" value="Update Tax">
                                                 <input type="hidden" name="e_inv_tax_project_id" id="e_inv_tax_project_id" value="<?=$project_id?>">
-                                                <input type="hidden" name="e_tax_inv_obj_id" id="tax_inv_obj_id" value="">
+                                                <input type="hidden" name="e_tax_inv_obj_id" id="e_tax_inv_obj_id" value="">
                                             </div> 
                                         </form>
                                     </div>
@@ -4415,7 +4415,7 @@
                 $("#e_inv_tax_BankName").val(returnData.tax_BankName);
                 $("#e_inv_tax_ShowStamp").val(returnData.tax_ShowStamp).trigger('change');
                 $("#e_inv_tax_ShowStampName").val(returnData.tax_ShowStampName);
-                $("#tax_inv_obj_id").val(returnData.inv_obj_id);
+                $("#e_tax_inv_obj_id").val(returnData.inv_obj_id);
 
 
                 //Populate invoice particular table

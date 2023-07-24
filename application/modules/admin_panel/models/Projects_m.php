@@ -2923,6 +2923,7 @@ class Projects_m extends CI_Model {
 
         $status = true;
         $commissionsNew = array();
+        $client_details = array();
 
         $tax_GrossAmount = 0;
         $tax_DiscountPercentage = 0;
@@ -2944,9 +2945,13 @@ class Projects_m extends CI_Model {
                 $project_description1 = $result[0]->project_description;
                 $project_description = json_decode($project_description1); 
                 $quotationDetail = $project_description->quotationDetail;
+                if(isset($project_description->client_details)){
+                    $client_details = $project_description->client_details;
+                }
 
                 for($i = 0; $i < sizeof($quotationDetail); $i++){
                     if($quotationDetail[$i]->bi_obj == $bi_obj){
+                        $bi_PartyId = $quotationDetail[$i]->bi_PartyId;
                         if(isset($quotationDetail[$i]->particulars)){
                             $particulars = $quotationDetail[$i]->particulars;
                         }
@@ -2954,8 +2959,16 @@ class Projects_m extends CI_Model {
                     }//end if
                 }//end for
 
-                if(isset($project_description->client->account_gst_no)){
-                    $account_gst_no = $project_description->client->account_gst_no;
+                //client_details
+                if(sizeof($client_details) > 0){
+                    for($j = 0; $j < sizeof($client_details); $j++){
+                        if($client_details[$j]->client_obj == $bi_PartyId){
+                            $account_gst_no = $client_details[$j]->account_gst_no;
+                        }
+                    }//end j
+                }//end if
+
+                if($account_gst_no != ''){
                     $first_two = substr($account_gst_no, 0, 2);
 
                     if($first_two == "19"){
@@ -3050,18 +3063,42 @@ class Projects_m extends CI_Model {
                 $project_description1 = $result[0]->project_description;
                 $project_description = json_decode($project_description1); 
                 $invoice_details = $project_description->invoice_details;
+                if(isset($project_description->client_details)){
+                    $client_details = $project_description->client_details;
+                }
+                if(isset($project_description->quotationDetail)){
+                    $quotationDetail = $project_description->quotationDetail;
+                }
 
+                //Invoice
                 for($i = 0; $i < sizeof($invoice_details); $i++){
                     if($invoice_details[$i]->inv_obj_id == $inv_obj_id){
+                        $inv_QuotationNo = $invoice_details[$i]->inv_QuotationNo;
                         if(isset($invoice_details[$i]->inv_particulars)){
                             $particulars = $invoice_details[$i]->inv_particulars;
                         }
-
                     }//end if
                 }//end for
 
-                if(isset($project_description->client->account_gst_no)){
-                    $account_gst_no = $project_description->client->account_gst_no;
+                //quotation
+                if(sizeof($quotationDetail) > 0){
+                    for($j = 0; $j < sizeof($quotationDetail); $j++){
+                        if($quotationDetail[$j]->bi_obj == $inv_QuotationNo){
+                            $bi_PartyId = $quotationDetail[$j]->bi_PartyId;
+                        }
+                    }//end j
+                }//end if
+
+                //client_details
+                if(sizeof($client_details) > 0){
+                    for($j = 0; $j < sizeof($client_details); $j++){
+                        if($client_details[$j]->client_obj == $bi_PartyId){
+                            $account_gst_no = $client_details[$j]->account_gst_no;
+                        }
+                    }//end j
+                }//end if
+
+                if($account_gst_no != ''){
                     $first_two = substr($account_gst_no, 0, 2);
 
                     if($first_two == "19"){
@@ -3155,9 +3192,17 @@ class Projects_m extends CI_Model {
                 $project_description1 = $result[0]->project_description;
                 $project_description = json_decode($project_description1); 
                 $invoice_details = $project_description->invoice_details;
+                if(isset($project_description->client_details)){
+                    $client_details = $project_description->client_details;
+                }
+                if(isset($project_description->quotationDetail)){
+                    $quotationDetail = $project_description->quotationDetail;
+                }
 
+                //Invoice
                 for($i = 0; $i < sizeof($invoice_details); $i++){
                     if($invoice_details[$i]->inv_obj_id == $inv_obj_id){
+                        $inv_QuotationNo = $invoice_details[$i]->inv_QuotationNo;
                         if(isset($invoice_details[$i]->inv_particulars)){
                             $particulars = $invoice_details[$i]->inv_particulars;
                         }
@@ -3165,8 +3210,25 @@ class Projects_m extends CI_Model {
                     }//end if
                 }//end for
 
-                if(isset($project_description->client->account_gst_no)){
-                    $account_gst_no = $project_description->client->account_gst_no;
+                //quotation
+                if(sizeof($quotationDetail) > 0){
+                    for($j = 0; $j < sizeof($quotationDetail); $j++){
+                        if($quotationDetail[$j]->bi_obj == $inv_QuotationNo){
+                            $bi_PartyId = $quotationDetail[$j]->bi_PartyId;
+                        }
+                    }//end j
+                }//end if
+
+                //client_details
+                if(sizeof($client_details) > 0){
+                    for($j = 0; $j < sizeof($client_details); $j++){
+                        if($client_details[$j]->client_obj == $bi_PartyId){
+                            $account_gst_no = $client_details[$j]->account_gst_no;
+                        }
+                    }//end j
+                }//end if
+
+                if($account_gst_no != ''){
                     $first_two = substr($account_gst_no, 0, 2);
 
                     if($first_two == "19"){
