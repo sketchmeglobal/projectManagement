@@ -392,6 +392,7 @@ class Projects_m extends CI_Model {
             $tax->tax_SGST_Amount = $quotation->tax_SGST_Amount;
             $tax->tax_IGST_Rate = $quotation->tax_IGST_Rate;
             $tax->tax_IGST_Amount = $quotation->tax_IGST_Amount;
+            $tax->tax_ShowStamp = $quotation->tax_ShowStamp;
         }else{
             $tax->tax_GrossAmount = 0.00;
             $tax->tax_DiscountPercentage = 0.00;
@@ -402,6 +403,7 @@ class Projects_m extends CI_Model {
             $tax->tax_SGST_Amount = 0.00;
             $tax->tax_IGST_Rate = 0.00;
             $tax->tax_IGST_Amount = 0.00;
+            $tax->tax_ShowStamp = 0;
         }
 
         array_push($taxes, $tax);
@@ -2239,20 +2241,25 @@ class Projects_m extends CI_Model {
             $project_description = json_decode($project_description1); 
             $quotationDetail = $project_description->quotationDetail;
 
-            for($i = 0; $i < sizeof($quotationDetail); $i++){
-                if($quotationDetail[$i]->bi_obj == $bi_obj){
-                    if(isset($quotationDetail[$i]->particulars)){
-                        $particulars = $quotationDetail[$i]->particulars;
-                    }else{
-                        $quotationDetail[$i]->particulars = array();
-                        $particulars = array();
+            if($bi_obj > 0){
+                for($i = 0; $i < sizeof($quotationDetail); $i++){                
+                    if($quotationDetail[$i]->bi_obj == $bi_obj){
+                        if(isset($quotationDetail[$i]->particulars)){
+                            $particulars = $quotationDetail[$i]->particulars;
+                        }else{
+                            $quotationDetail[$i]->particulars = array();
+                            $particulars = array();
+                        }//end if
+                        array_push($particulars, $particular);
+                        $quotationDetail[$i]->particulars = $particulars;
                     }//end if
-                    array_push($particulars, $particular);
-
-                    $quotationDetail[$i]->particulars = $particulars;
-
-                }//end if
-            }//end for
+                }//end for
+            }else{
+                $quotationDetail[$i]->particulars = array();
+                $particulars = array();
+                array_push($particulars, $particular);
+                $quotationDetail[$i]->particulars = $particulars;                
+            }
         }
         
         $project_description->quotationDetail = $quotationDetail;

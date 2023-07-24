@@ -476,9 +476,9 @@ function convertNumberToWord($number) {
                                 </div>
                             </div>
                             <div class="col-sm-12 text-center">
-                                <?php //if($cbill_header_details[0]->is_stamp == 'yes') { ?>
+                                <?php if($taxes[0]->tax_ShowStamp == '1') { ?>
                                 <img class="m-auto" src="<?= base_url('assets/img/stamp.png') ?>" style="height: 100px;">
-                                <?php //} ?>
+                                <?php } ?>
                             </div>
                         </div>
                             <p class="mar_0" style="position: absolute; bottom: 0; right: 10px;"><b>Sayak Mukherjee</b><br/>(Signatur Authority)</p> 

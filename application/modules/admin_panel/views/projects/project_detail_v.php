@@ -4044,7 +4044,6 @@
         }        
     });
 
-
     //Tax calculation
     function calculateTax($add_edit, $project_id, $bi_obj){
         $.ajax({
@@ -4094,7 +4093,70 @@
             }
         });
     }//end
+    
 
+    //Inv TAX Discount calculation for Add
+    $('#inv_tax_DiscountPercentage').blur(function(){
+        $tax_GrossAmount_e = $('#inv_tax_GrossAmount').val();
+        $tax_DiscountPercentage_e = $('#inv_tax_DiscountPercentage').val();
+        console.log('inv_tax_DiscountPercentage: ' + $tax_DiscountPercentage_e)
+
+        $tax_DiscountAmount_e = parseFloat($tax_GrossAmount_e) * parseFloat($tax_DiscountPercentage_e) * 0.01;
+        $('#inv_tax_DiscountAmount').val($tax_DiscountAmount_e);
+
+        $tax_TaxableAmount_e = parseFloat($tax_GrossAmount_e) - parseFloat($tax_DiscountAmount_e);
+        $('#inv_tax_TaxableAmount').val($tax_TaxableAmount_e);
+
+        $tax_SGST_Rate_e = $('#inv_tax_SGST_Rate').val();
+        $tax_CGST_Rate_e = $('#inv_tax_CGST_Rate').val();
+        $tax_IGST_Rate_e = $('#inv_tax_IGST_Rate').val();
+
+        $tax_SGST_Amount_e = parseFloat($tax_TaxableAmount_e) * parseFloat($tax_SGST_Rate_e) * 0.01;
+        $tax_CGST_Amount_e = parseFloat($tax_TaxableAmount_e) * parseFloat($tax_CGST_Rate_e) * 0.01;
+        $tax_IGST_Amount_e = parseFloat($tax_TaxableAmount_e) * parseFloat($tax_IGST_Rate_e) * 0.01;
+
+        $('#inv_tax_SGST_Amount').val($tax_SGST_Amount_e);
+        $('#inv_tax_CGST_Amount').val($tax_CGST_Amount_e);
+        $('#inv_tax_IGST_Amount').val($tax_IGST_Amount_e);
+
+        $tax_TotalTax_e = parseFloat($tax_SGST_Amount_e) + parseFloat($tax_CGST_Amount_e) + parseFloat($tax_IGST_Amount_e);
+        $('#inv_tax_TotalTax').val($tax_TotalTax_e);
+
+        $tax_NetAmount_e = parseFloat($tax_TaxableAmount_e) + parseFloat($tax_TotalTax_e);
+        $('#inv_tax_NetAmount').val($tax_NetAmount_e);
+    });//end 
+    
+
+    //Inv TAX Discount calculation for Edit
+    $('#e_inv_tax_DiscountPercentage').blur(function(){
+        $tax_GrossAmount_e = $('#e_inv_tax_GrossAmount').val();
+        $tax_DiscountPercentage_e = $('#e_inv_tax_DiscountPercentage').val();
+        console.log('e_inv_tax_DiscountPercentage: ' + $tax_DiscountPercentage_e)
+
+        $tax_DiscountAmount_e = parseFloat($tax_GrossAmount_e) * parseFloat($tax_DiscountPercentage_e) * 0.01;
+        $('#e_inv_tax_DiscountAmount').val($tax_DiscountAmount_e);
+
+        $tax_TaxableAmount_e = parseFloat($tax_GrossAmount_e) - parseFloat($tax_DiscountAmount_e);
+        $('#e_inv_tax_TaxableAmount').val($tax_TaxableAmount_e);
+
+        $tax_SGST_Rate_e = $('#e_inv_tax_SGST_Rate').val();
+        $tax_CGST_Rate_e = $('#e_inv_tax_CGST_Rate').val();
+        $tax_IGST_Rate_e = $('#e_inv_tax_IGST_Rate').val();
+
+        $tax_SGST_Amount_e = parseFloat($tax_TaxableAmount_e) * parseFloat($tax_SGST_Rate_e) * 0.01;
+        $tax_CGST_Amount_e = parseFloat($tax_TaxableAmount_e) * parseFloat($tax_CGST_Rate_e) * 0.01;
+        $tax_IGST_Amount_e = parseFloat($tax_TaxableAmount_e) * parseFloat($tax_IGST_Rate_e) * 0.01;
+
+        $('#e_inv_tax_SGST_Amount').val($tax_SGST_Amount_e);
+        $('#e_inv_tax_CGST_Amount').val($tax_CGST_Amount_e);
+        $('#e_inv_tax_IGST_Amount').val($tax_IGST_Amount_e);
+
+        $tax_TotalTax_e = parseFloat($tax_SGST_Amount_e) + parseFloat($tax_CGST_Amount_e) + parseFloat($tax_IGST_Amount_e);
+        $('#e_inv_tax_TotalTax').val($tax_TotalTax_e);
+
+        $tax_NetAmount_e = parseFloat($tax_TaxableAmount_e) + parseFloat($tax_TotalTax_e);
+        $('#e_inv_tax_NetAmount').val($tax_NetAmount_e);
+    });//end 
 
     //Invoice Tax calculation
     function calculateInvoiceTax($project_id, $inv_obj_id){
@@ -4168,14 +4230,49 @@
     }//end
 
     //TAX calculation for Dicount
+    $('#tax_DiscountPercentage').blur(function(){
+        $tax_GrossAmount_e = $('#tax_GrossAmount').val();
+        $tax_DiscountPercentage_e = $('#tax_DiscountPercentage').val();
+        console.log('tax_DiscountPercentage: ' + $tax_DiscountPercentage_e)
+
+        $tax_DiscountAmount_e = parseFloat($tax_GrossAmount_e) * parseFloat($tax_DiscountPercentage_e) * 0.01;
+        $('#tax_DiscountAmount').val($tax_DiscountAmount_e);
+
+        $tax_TaxableAmount_e = parseFloat($tax_GrossAmount_e) - parseFloat($tax_DiscountAmount_e);
+        $('#tax_TaxableAmount').val($tax_TaxableAmount_e);
+
+        $tax_SGST_Rate_e = $('#tax_SGST_Rate').val();
+        $tax_CGST_Rate_e = $('#tax_CGST_Rate').val();
+        $tax_IGST_Rate_e = $('#tax_IGST_Rate').val();
+
+        $tax_SGST_Amount_e = parseFloat($tax_TaxableAmount_e) * parseFloat($tax_SGST_Rate_e) * 0.01;
+        $tax_CGST_Amount_e = parseFloat($tax_TaxableAmount_e) * parseFloat($tax_CGST_Rate_e) * 0.01;
+        $tax_IGST_Amount_e = parseFloat($tax_TaxableAmount_e) * parseFloat($tax_IGST_Rate_e) * 0.01;
+
+        $('#tax_SGST_Amount').val($tax_SGST_Amount_e);
+        $('#tax_CGST_Amount').val($tax_CGST_Amount_e);
+        $('#tax_IGST_Amount').val($tax_IGST_Amount_e);
+
+        $tax_TotalTax_e = parseFloat($tax_SGST_Amount_e) + parseFloat($tax_CGST_Amount_e) + parseFloat($tax_IGST_Amount_e);
+        $('#tax_TotalTax').val($tax_TotalTax_e);
+
+        $tax_NetAmount_e = parseFloat($tax_TaxableAmount_e) + parseFloat($tax_TotalTax_e);
+        $('#tax_NetAmount').val($tax_NetAmount_e);
+    });//end 
+
+    //TAX calculation for Dicount
     $('#tax_DiscountPercentage_e').blur(function(){
         $tax_GrossAmount_e = $('#tax_GrossAmount_e').val();
         $tax_DiscountPercentage_e = $('#tax_DiscountPercentage_e').val();
 
-       $tax_DiscountAmount_e = parseFloat($tax_GrossAmount_e) * parseFloat($tax_DiscountPercentage_e) * 0.01;
+        console.log('tax_DiscountPercentage_e: ' + $tax_DiscountPercentage_e)
+
+        $tax_DiscountAmount_e = parseFloat($tax_GrossAmount_e) * parseFloat($tax_DiscountPercentage_e) * 0.01;
         $('#tax_DiscountAmount_e').val($tax_DiscountAmount_e);
 
-         /*$tax_TaxableAmount_e = parseFloat($tax_GrossAmount_e) - parseFloat($tax_DiscountAmount_e);
+
+
+        $tax_TaxableAmount_e = parseFloat($tax_GrossAmount_e) - parseFloat($tax_DiscountAmount_e);
         $('#tax_TaxableAmount_e').val($tax_TaxableAmount_e);
 
         $tax_SGST_Rate_e = $('#tax_SGST_Rate_e').val();
@@ -4194,7 +4291,7 @@
         $('#tax_TotalTax_e').val($tax_TotalTax_e);
 
         $tax_NetAmount_e = parseFloat($tax_TaxableAmount_e) + parseFloat($tax_TotalTax_e);
-        $('#tax_NetAmount_e').val($tax_NetAmount_e);*/
+        $('#tax_NetAmount_e').val($tax_NetAmount_e);
 
     });//end 
 
