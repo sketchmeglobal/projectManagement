@@ -2820,6 +2820,10 @@
         $cbill_payment_mode_text = $('#cbill_payment_mode option:selected').text();
         $('#cbill_payment_mode_text').val($cbill_payment_mode_text);
     })
+    $('#cbill_payment_mode_e').on('change', function(){
+        $cbill_payment_mode_text = $('#cbill_payment_mode_e option:selected').text();
+        $('#cbill_payment_mode_text_e').val($cbill_payment_mode_text);
+    })
 
     $("#form_add_client_details").validate({        
         rules: {

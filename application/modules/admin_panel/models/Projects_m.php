@@ -430,6 +430,7 @@ class Projects_m extends CI_Model {
         $project_description = array();
         $invoice_details = array();
         $particulars = array();
+        $quotationDetail = array();
         $quotation = '';
 
         if($project_id > 0){
@@ -440,6 +441,7 @@ class Projects_m extends CI_Model {
                 $project_description1 = $result[0]->project_description;
                 $project_description = json_decode($project_description1);
                 $invoice_details = $project_description->invoice_details;
+                $quotationDetail = $project_description->quotationDetail;
             }
         }
 
@@ -452,17 +454,36 @@ class Projects_m extends CI_Model {
             }
         }
 
+        $inv_QuotationNo = $invoice_detail->inv_QuotationNo;
+        for($j = 0; $j < sizeof($quotationDetail); $j++){
+            if($quotationDetail[$j]->bi_obj == $inv_QuotationNo){
+                $bi_PartyId = $quotationDetail[$j]->bi_PartyId;
+                $bi_PaymentModeName = $quotationDetail[$j]->bi_PaymentModeName;
+            }
+        }//end for
+        
+        $client_detail = '';
+        $bi_PaymentModeName = '';
+        if(isset($project_description->client_details)){
+            $client_details = $project_description->client_details;
+            for($p = 0; $p < sizeof($client_details); $p++){
+                if($client_details[$p]->client_obj == $bi_PartyId){
+                    $client_detail = $client_details[$p];
+                }//end if
+            }//end for
+        }
+
         //Header details/Client Details
-        if(isset($project_description->client)){
-            $client = $project_description->client;
-            $account_name = $client->account_name;
-            $account_address1 = $client->account_address1;
-            $account_address2 = $client->account_address2;
-            $account_gst_no = $client->account_gst_no;
-            $account_telephone = $client->account_telephone;
-            $cbill_payment_mode = $client->cbill_payment_mode;
-            $important_note = $client->important_note;
-            $other_client_details = $client->other_client_details;
+        if($client_detail != ''){
+            //$client = $project_description->client;
+            $account_name = $client_detail->account_name;
+            $account_address1 = $client_detail->account_address1;
+            $account_address2 = $client_detail->account_address2;
+            $account_gst_no = $client_detail->account_gst_no;
+            $account_telephone = $client_detail->account_telephone;
+            $cbill_payment_mode = $client_detail->cbill_payment_mode_text;
+            $important_note = $client_detail->important_note;
+            $other_client_details = $client_detail->other_client_details;
         }else{
             $account_name = '';
             $account_address1 = '';
@@ -622,6 +643,8 @@ class Projects_m extends CI_Model {
         $data['quotation'] = $invoice_detail;
         $data['particulars'] = $particulars;
         $data['taxes'] = $taxes;
+
+        
 
         return array('page' => 'projects/invoice_print', 'data' => $data);
     }//end print Invoice
