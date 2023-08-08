@@ -3006,11 +3006,15 @@ class Projects_m extends CI_Model {
                         $tax_IGST_Rate = 0;
                         $tax_SGST_Rate = 9;
                     }else{
-                        $tax_CGST_Rate = 0;
-                        $tax_IGST_Rate = 18;
+                        $tax_CGST_Rate = 9;
+                        $tax_IGST_Rate = 9;
                         $tax_SGST_Rate = 0;
                     }//end
-                }
+                }else{
+                    $tax_CGST_Rate = 9;
+                    $tax_IGST_Rate = 9;
+                    $tax_SGST_Rate = 0;
+                }//end
 
                 for($j = 0; $j < sizeof($particulars); $j++){                      
                     $tax_GrossAmount = $tax_GrossAmount + $particulars[$j]->par_Amount; 
@@ -3136,11 +3140,15 @@ class Projects_m extends CI_Model {
                         $tax_IGST_Rate = 0;
                         $tax_SGST_Rate = 9;
                     }else{
-                        $tax_CGST_Rate = 0;
-                        $tax_IGST_Rate = 18;
+                        $tax_CGST_Rate = 9;
+                        $tax_IGST_Rate = 9;
                         $tax_SGST_Rate = 0;
                     }//end
-                }
+                }else{
+                    $tax_CGST_Rate = 9;
+                    $tax_IGST_Rate = 9;
+                    $tax_SGST_Rate = 0;
+                }//end
 
                 for($j = 0; $j < sizeof($particulars); $j++){                      
                     $tax_GrossAmount = $tax_GrossAmount + $particulars[$j]->inv_Amount;                      
@@ -3266,11 +3274,15 @@ class Projects_m extends CI_Model {
                         $tax_IGST_Rate = 0;
                         $tax_SGST_Rate = 9;
                     }else{
-                        $tax_CGST_Rate = 0;
-                        $tax_IGST_Rate = 18;
+                        $tax_CGST_Rate = 9;
+                        $tax_IGST_Rate = 9;
                         $tax_SGST_Rate = 0;
                     }//end
-                }
+                }else{
+                    $tax_CGST_Rate = 9;
+                    $tax_IGST_Rate = 9;
+                    $tax_SGST_Rate = 0;
+                }//end
 
                 for($j = 0; $j < sizeof($particulars); $j++){                      
                     $tax_GrossAmount = $tax_GrossAmount + $particulars[$j]->inv_Amount;                      

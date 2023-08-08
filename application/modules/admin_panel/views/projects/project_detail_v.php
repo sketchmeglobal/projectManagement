@@ -984,6 +984,7 @@
                                                 <div class="col-lg-3">
                                                     <label for="comi_rate_type" class="control-label">Rate Type</label>
                                                     <select name="comi_rate_type" id="comi_rate_type" class="form-control select2">
+                                                        <option value="0" >Select</option>
                                                         <option value="1" >Flate Rate</option>
                                                         <option value="2" >Percentage</option>
                                                     </select>
@@ -1316,6 +1317,7 @@
                                             <div class="col-lg-3">
                                                 <label for="comi_rate_type_e" class="control-label">Rate Type</label>
                                                 <select name="comi_rate_type_e" id="comi_rate_type_e" class="form-control select2">
+                                                    <option value="0" >Select</option>
                                                     <option value="1" >Flate Rate</option>
                                                     <option value="2" >Percentage</option>
                                                 </select>
@@ -1409,7 +1411,7 @@
                                                 <th>Invoice Date</th>
                                                 <th>Gross Amount</th>                                            
                                                 <th>Net Amount</th>
-                                                <th>Paid</th>
+                                                <th>Invoice Status</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -1424,7 +1426,7 @@
                                                 <th>Invoice Date</th>
                                                 <th>Gross Amount</th>                                            
                                                 <th>Net Amount</th>
-                                                <th>Paid</th>
+                                                <th>Invoice Status</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </tfoot>  
@@ -1641,6 +1643,7 @@
                                                     <label for="e_inv_status" class="control-label">Invoice Status</label>
                                                     <select name="e_inv_status" id="e_inv_status" class="form-control select2">
                                                         <option value="0" >-- Select Status --</option>
+                                                        <option value="1" >Preparing</option>
                                                         <option value="1" >Sent</option>
                                                         <option value="2" >Partially Paid</option>
                                                         <option value="3" >Full Paid</option>
@@ -3734,8 +3737,10 @@
                 //obj = JSON.parse(returnData);                 
                 notification(returnData);
                 if(returnData.type == 'success'){
-                    console.log('project_id: '+returnData.project_id);
-                    $('#project_id').val(returnData.project_id);
+                    console.log('project_id: '+returnData.project_id);                    
+                    window.location.href = '<?=base_url()?>admin/project-detail/' + returnData.project_id;
+                
+                    /*$('#project_id').val(returnData.project_id);
                     $('#cli_project_id').val(returnData.project_id);
                     $('#cont_project_id').val(returnData.project_id);
                     $('#gr_project_id').val(returnData.project_id);
@@ -3743,7 +3748,7 @@
                     $('#parti_bi_project_id').val(returnData.project_id);
                     $('#tax_project_id').val(returnData.project_id);
                     $('#commi_project_id').val(returnData.project_id);
-                    $('#li_project_id').val(returnData.project_id);
+                    $('#li_project_id').val(returnData.project_id);*/
                 }
 
             },
@@ -4008,7 +4013,7 @@
                     notification(returnData);
                     //refresh table
                     initInvoiceParticularTable($project_id, $inv_obj_id, 'e_invoice_particular_details_table');
-                    //calculateInvoiceTax($project_id, $inv_obj_id);
+                    calculateInvoiceTaxEdit($project_id, $inv_obj_id);
                 },
                 error: function (returnData) {
                     obj = JSON.parse(returnData);
@@ -4075,6 +4080,10 @@
                     $('#tax_IGST_Amount').val($tax_obj.tax_IGST_Amount);
                     $('#tax_NetAmount').val($tax_obj.tax_NetAmount);
                     $('#tax_TotalTax').val($tax_obj.tax_TotalTax);
+
+                    $('#tax_Bank').val('1').trigger('change');
+                    $('#tax_details_submit').trigger('click');
+
                 }else{
                     $('#tax_GrossAmount_e').val($tax_obj.tax_GrossAmount);
                     $('#tax_DiscountPercentage_e').val($tax_obj.tax_DiscountPercentage);
@@ -4087,7 +4096,12 @@
                     $('#tax_IGST_Rate_e').val($tax_obj.tax_IGST_Rate);
                     $('#tax_IGST_Amount_e').val($tax_obj.tax_IGST_Amount);
                     $('#tax_NetAmount_e').val($tax_obj.tax_NetAmount);
-                    $('#tax_TotalTax_e').val($tax_obj.tax_TotalTax);                    
+                    $('#tax_TotalTax_e').val($tax_obj.tax_TotalTax);  
+
+                    $('#tax_Bank_e').val('1').trigger('change');
+                    $('#tax_details_submit_e').trigger('click');  
+
+                    initTableParticulars($project_id, $bi_obj, 'tableParticularsEdit');       
                 }//end if
 
             },
@@ -4187,7 +4201,10 @@
                 $('#inv_tax_IGST_Amount').val($tax_obj.tax_IGST_Amount);
                 $('#inv_tax_NetAmount').val($tax_obj.tax_NetAmount);
                 $('#inv_tax_TotalTax').val($tax_obj.tax_TotalTax);  
-                $('#tax_inv_obj_id').val($inv_obj_id);                      
+                $('#tax_inv_obj_id').val($inv_obj_id);  
+                
+                $('#inv_tax_Bank').val('1').trigger('change');
+                $('#inv_tax_details_submit').trigger('click');
 
             },
             error: function (returnData) {
@@ -4223,7 +4240,10 @@
                 $('#e_inv_tax_IGST_Amount').val($tax_obj.tax_IGST_Amount);
                 $('#e_inv_tax_NetAmount').val($tax_obj.tax_NetAmount);
                 $('#e_inv_tax_TotalTax').val($tax_obj.tax_TotalTax);  
-                $('#e_tax_inv_obj_id').val($inv_obj_id);                      
+                $('#e_tax_inv_obj_id').val($inv_obj_id);    
+                
+                $('#e_inv_tax_Bank').val('1').trigger('change');
+                $('#e_inv_tax_details_submit').trigger('click');                    
 
             },
             error: function (returnData) {

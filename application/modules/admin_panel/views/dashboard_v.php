@@ -78,7 +78,7 @@
             </div>
 
         
-            <div class="form-group " style="float: left;width: 100%;"> 
+            <div class="form-group " style="float: left;width: 100%; display: none"> 
             <h4>Project Summary Table</h4>
             <table id="datatable" class="table data-table dataTable" style="width: 100%;">
                 <thead>
