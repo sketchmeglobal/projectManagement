@@ -873,6 +873,58 @@ class Projects_m extends CI_Model {
     }//end login info
     
 
+    //Login Info part
+    public function form_add_misc_cost(){  
+        $daya = array();
+        $status = true;
+
+        $project_id = $this->input->post('mcost_project_id');
+
+        if($project_id > 0){
+            $misc_date = $this->input->post('misc_date');
+            $misc_amount = $this->input->post('misc_amount');
+            $misc_note = $this->input->post('misc_note');
+
+            $created_by = $this->session->user_id;
+            $mcost_obj_id = rand(1000, 9999);
+            $mcosts = array();
+
+            $mcost_obj = new stdClass();
+            $mcost_obj->mcost_obj_id = $mcost_obj_id;
+            $mcost_obj->misc_date = $misc_date;
+            $mcost_obj->misc_amount = $misc_amount;
+            $mcost_obj->misc_note = $misc_note;
+
+            //check existing data
+            $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1); 
+                if(isset($project_description->mcosts)){
+                    $mcosts = $project_description->mcosts;
+                }
+            }
+                    
+            array_push($mcosts, $mcost_obj);
+            $project_description->mcosts = $mcosts;
+
+            $updateArray = array(
+                'project_description' => json_encode($project_description)
+            );
+
+            $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+            $data['file_updated'] = $val;  
+        }    
+        
+        $data['type'] = 'success';
+        $data['msg'] = 'Misc. Cost added Properly';
+        $data['title'] = 'Misc. Cost';
+        $data['update_id'] = $project_id;
+        return $data;
+
+    }//end Misc. Cost
+    
+
     //Invoice Basic Info Add
     public function form_add_invoice_info(){  
         $daya = array();
@@ -1523,6 +1575,47 @@ class Projects_m extends CI_Model {
             $data['title'] = 'Deleted!';
             $data['type'] = 'success';
             $data['msg'] = 'Login Deleted Successfully';
+        }
+        return $data;        
+    }//end fun  
+
+
+    //Misc Cost delete
+    public function del_row_misc_cost_details(){
+        $project_id = $this->input->post('project_id');
+        $mcost_obj_id = $this->input->post('mcost_obj_id');
+        $status = true;
+        
+        if($mcost_obj_id > 0){
+            //check existing data
+            $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
+            if(count($result) > 0){
+                $project_description1 = $result[0]->project_description;
+                $project_description = json_decode($project_description1);            
+                $mcosts = $project_description->mcosts;
+                $newMCost = array();
+
+                for($i = 0; $i < sizeof($mcosts); $i++){
+                    if($mcosts[$i]->mcost_obj_id != $mcost_obj_id){
+                        array_push($newMCost, $mcosts[$i]);
+                    }
+                }//end for
+            }//end if
+            
+            $project_description->mcosts = $newMCost;
+
+            $updateArray = array(
+                'project_description' => json_encode($project_description)
+            );
+
+            $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
+            $data['file_updated'] = $val;   
+        }   
+
+        if ($status == true) {
+            $data['title'] = 'Deleted!';
+            $data['type'] = 'success';
+            $data['msg'] = 'Misc. Cost Deleted Successfully';
         }
         return $data;        
     }//end fun 
@@ -3542,6 +3635,47 @@ class Projects_m extends CI_Model {
                 $nestedData['login_url'] = $value->li_url;
                 $nestedData['note'] = $value->li_note;
                 $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" data-login_obj_id="'.$value->login_obj_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
+
+                array_push($data, $nestedData);
+                $slno++;
+            }//end foreach
+        }//end if
+
+        $json_data = array(
+            "recordsTotal"    => sizeof($data),
+            "recordsFiltered" => sizeof($data),
+            "data"            => $data
+        );
+        
+        return $json_data;
+    }   //end fun
+     
+
+    //Misc Cost Details
+    public function ajax_misc_cost_table_data() {     
+        $project_id = $this->input->post('project_id');
+        $data = array();
+        $logins = array();
+
+        $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
+        //print_r($result);
+
+        if(count($result) > 0){
+            $project_description1 = $result[0]->project_description;
+            $project_description = json_decode($project_description1);
+            if(isset($project_description->mcosts)){
+                $mcosts = $project_description->mcosts;
+            }
+        }
+
+        if(sizeof($mcosts) > 0){
+            $slno = 1;
+            foreach($mcosts as $key => $value){
+                $nestedData['sl_no'] = $slno;
+                $nestedData['misc_note'] = $value->misc_note;
+                $nestedData['misc_amount'] = number_format($value->misc_amount, 2);
+                $nestedData['misc_date'] = date('d-m-Y', strtotime($value->misc_date));
+                $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" data-mcost_obj_id="'.$value->mcost_obj_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
                 array_push($data, $nestedData);
                 $slno++;

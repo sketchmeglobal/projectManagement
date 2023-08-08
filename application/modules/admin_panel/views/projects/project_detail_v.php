@@ -2061,6 +2061,86 @@
                 </div>
             </div>
             <!-- End Login Info part -->
+
+            <!-- Start Miscelleneous Cost part -->
+            <div class="row"> 
+                <div class="col-md-12">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            Miscelleneous Cost
+                            <span class="tools pull-right">
+                                <a class="t-collapse fa fa-chevron-down" href="javascript:;"></a>
+                            </span>
+                        </header>
+                        <div class="panel-body collapse">
+                            <!--Tabs-->
+                            <ul id="misc_cost_tabs" class="nav nav-tabs nav-justified">
+                                <li class="active"><a href="#misc_cost_list" data-toggle="tab">List</a></li>
+                                <li  id="misc_cost_details_add_tab"><a href="#misc_cost_details_add" data-toggle="tab">Add</a></li>
+                                <!-- <li id="contact_details_edit_tab" class="disabled" ><a href="#contact_details_edit" data-toggle="tab">Edit</a></li> -->
+                            </ul>
+                            <!--Tab Content-->
+                            <div class="tab-content">
+                            <img style="display:none; position: absolute;margin: auto;left: 0;right: 0;" src="<?=base_url('assets/img/ellipsis.gif')?>" id="loading_div"><span class="sr-only">Processing...</span>                            
+                                <div id="misc_cost_list" class="tab-pane fade in active">
+                                    <table id="misc_cost_details_table" class="table data-table dataTable" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th>SL.No</th>
+                                                <th>Note</th>
+                                                <th>Amount</th>
+                                                <th>Date</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>SL.No</th>
+                                                <th>Note</th>
+                                                <th>Amount</th>
+                                                <th>Date</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </tfoot>  
+                                        
+                                    </table>
+                                </div>
+
+                                <div id="misc_cost_details_add" class="tab-pane fade">
+                                    <br/>
+                                    <div class="form">                                       
+                                    <form autocomplete="off" id="add_misc_cost_form" method="post" action="<?=base_url('admin/form-add-misc-cost')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
+                                        <div class="form-group "> 
+                                            <div class="col-lg-3">
+                                                <label for="misc_date" class="control-label">Date</label>
+                                                <input type="date" name="misc_date" id="misc_date" class="form-control">
+                                            </div>   
+                                            <div class="col-lg-3">
+                                                <label for="misc_amount" class="control-label">Amount</label>
+                                                <input type="number" name="misc_amount" id="misc_amount" class="form-control">
+                                            </div>   
+                                            <div class="col-lg-3">
+                                                <label for="misc_note" class="control-label">Note</label>
+                                                <input type="text" name="misc_note" id="misc_note" class="form-control">
+                                            </div>  
+                                            <div class="col-lg-3" style="margin-top: 25px;">
+                                                <label for="" class="control-label"></label>
+                                                <input type="submit" name="mcost_submit" class="btn btn-success text-center" id="mcost_submit" value="Add"> 
+                                                <input type="hidden" value="<?=$project_id?>" name="mcost_project_id" id="mcost_project_id">
+                                            </div>
+                                        </div>
+                                    </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <!-- End Miscellaneous Cost part -->
             
         </div>
 
@@ -2119,6 +2199,7 @@
         initQuotationListTable()
         initLoginInfoTable()
         initInvoiceTable()
+        initMiscCostTable()
     } );
     
     //Quotation
@@ -2588,6 +2669,43 @@
             //column initialisation properties
             "columnDefs": [{
                 "targets": [0,1,2,3,4,5,6],
+                "orderable": false,
+            }]
+        });
+    }//end fun
+
+    //Login Info Table
+    function initMiscCostTable(){
+        $('#misc_cost_details_table').dataTable().fnClearTable();
+        $('#misc_cost_details_table').dataTable().fnDestroy();
+        
+        $('#misc_cost_details_table').DataTable( {
+            "processing": true,
+            "language": {
+                processing: '<img src="<?=base_url('assets/img/ellipsis.gif')?>"><span class="sr-only">Processing...</span>',
+            },
+            "serverSide": true,
+            "ajax": {
+                "url": "<?=base_url('admin/ajax-misc-cost-details-table-data')?>",
+                "type": "POST",
+                "dataType": "json",
+                data: {
+                    project_id: function () {
+                        return $("#project_id").val();
+                    },
+                },
+            },
+            //will get these values from JSON 'data' variable
+            "columns": [
+                { "data": "sl_no" },
+                { "data": "misc_note" },
+                { "data": "misc_amount" },
+                { "data": "misc_date" },
+                { "data": "action" },
+            ],
+            //column initialisation properties
+            "columnDefs": [{
+                "targets": [0,1,2,3,4],
                 "orderable": false,
             }]
         });
@@ -3735,6 +3853,48 @@
 		}
     });
     //Login Info Part end
+    
+
+    //Misc Cost Add Part
+    $("#add_misc_cost_form").validate({        
+        rules: {
+            misc_date: {
+                required: true
+            },
+            misc_amount: {
+                required: true
+            },
+            misc_note: {
+                required: true
+            }    
+        },
+        messages: {
+
+        }
+    });
+    $('#add_misc_cost_form').ajaxForm({
+        beforeSubmit: function () {
+            return $("#add_misc_cost_form").valid(); // TRUE when form is valid, FALSE will cancel submit
+        },
+        success: function (returnData) {
+            //console.log(returnData);
+            obj = JSON.parse(returnData);
+            notification(obj);
+			if(parseInt(obj.update_id) > 0){
+                $('#add_misc_cost_form')[0].reset();
+                
+                initMiscCostTable()
+
+                console.log(JSON.stringify(obj));
+                if(obj.type == 'error'){
+                    console.log('Error from API')
+                }else{
+                    console.log('Login Info save success')
+                }            	
+			}
+		}
+    });
+    //Misc Cost Part end
 
 
     function updateProjectDescription(){
@@ -3862,6 +4022,35 @@
                 }
             });
         }        
+    });//end
+
+    //Delete Misc Cost
+    $('#misc_cost_details_table').on('click', '.delete', function(){
+    $mcost_obj_id = $(this).data('mcost_obj_id');
+    $project_id = $('#project_id').val();
+
+    if(confirm("Are You Sure? This Process Can\'t be Undone.")){
+        $pk = $(this).attr('data-pk');
+        
+        $.ajax({
+            url: "<?= base_url('admin/del-row-misc-cost-details/') ?>",
+            dataType: 'json',
+            type: 'POST',
+            data: {project_id: $project_id, mcost_obj_id: $mcost_obj_id},
+            success: function (returnData) {
+                console.log(returnData);
+                $('#misc_cost_details_table').closest('tr').remove();
+                notification(returnData);
+                //refresh table
+                initMiscCostTable()
+
+            },
+            error: function (returnData) {
+                obj = JSON.parse(returnData);
+                notification(obj);
+            }
+        });
+    }        
     });//end
 
     //Delete Requirement  
