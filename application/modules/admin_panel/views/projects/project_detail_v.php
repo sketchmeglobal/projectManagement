@@ -834,6 +834,10 @@
                                                     </select>
                                                     <input type="hidden" name="par_TaxableName" id="par_TaxableName" value="">
                                                 </div> 
+                                                <div class="col-lg-3">
+                                                    <label for="par_Note" class="control-label">Note</label>
+                                                    <input value="" id="par_Note" name="par_Note" type="text"  class="form-control" />
+                                                </div>
                                                 <div class="col-lg-3" style="margin-top: 25px;">
                                                     <label for="product_line_po" class="control-label"></label>
                                                     <input type="submit" name="particular_details_submit" class="btn btn-success text-center" id="particular_details_submit" value="Add Particular">
@@ -856,7 +860,8 @@
                                                             <th>End Date</th>   
                                                             <th>Duration</th>                                            
                                                             <th>Amount</th>                                           
-                                                            <th>Taxable</th>
+                                                            <th>Taxable</th>                                         
+                                                            <th>Note</th>
                                                             <th>Actions</th>
                                                         </tr>
                                                     </thead>
@@ -872,7 +877,8 @@
                                                             <th>End Date</th>   
                                                             <th>Duration</th>                                            
                                                             <th>Amount</th>                                           
-                                                            <th>Taxable</th>
+                                                            <th>Taxable</th>                                       
+                                                            <th>Note</th>
                                                             <th>Actions</th>
                                                         </tr>
                                                     </tfoot>                                                   
@@ -1165,6 +1171,10 @@
                                                 </select>
                                                 <input type="hidden" name="par_TaxableName_e" id="par_TaxableName_e" value="">
                                             </div> 
+                                            <div class="col-lg-3">
+                                                <label for="par_Note_e" class="control-label">Note</label>
+                                                <input value="" id="par_Note_e" name="par_Note_e" type="text"  class="form-control" />
+                                            </div>
                                             <div class="col-lg-3" style="margin-top: 25px;">
                                                 <label for="product_line_po_e" class="control-label"></label>
                                                 <input type="submit" name="particular_details_submit_e" class="btn btn-success text-center" id="particular_details_submit_e" value="Add Particular">
@@ -1187,7 +1197,8 @@
                                                         <th>End Date</th>   
                                                         <th>Duration</th>                                        
                                                         <th>Amount</th>                                           
-                                                        <th>Taxable</th>
+                                                        <th>Taxable</th>                                         
+                                                        <th>Note</th>
                                                         <th>Actions</th>
                                                     </tr>
                                                 </thead>
@@ -1203,7 +1214,8 @@
                                                         <th>End Date</th>   
                                                         <th>Duration</th>                                            
                                                         <th>Amount</th>                                           
-                                                        <th>Taxable</th>
+                                                        <th>Taxable</th>                                        
+                                                        <th>Note</th>
                                                         <th>Actions</th>
                                                     </tr>
                                                 </tfoot>                                                   
@@ -1648,6 +1660,7 @@
                                                         <option value="2" >Partially Paid</option>
                                                         <option value="3" >Full Paid</option>
                                                     </select>
+                                                    <input type="hidden" name="e_inv_status_text" id="e_inv_status_text" value="">
                                                 </div> 
                                                 <div class="col-lg-3" style="margin-top: 25px;">
                                                     <label for="" class="control-label"></label>
@@ -2190,7 +2203,7 @@
 
                 for($i = 0; $i < $particular_data_list.length; $i++){
                     if($particular_data_list[$i].par_Taxable == '1'){
-                        $inv_particularList += '<option value="' + $particular_data_list[$i].parti_obj+'" par_TaskType="' + $particular_data_list[$i].par_TaskType+'" par_TaskType_name="' + $particular_data_list[$i].par_TaskType_name+'" par_HSNCode="' + $particular_data_list[$i].par_HSNCode+'" par_Duration="' + $particular_data_list[$i].par_Duration+'" par_StartDate="' + $particular_data_list[$i].par_StartDate+'" par_EndDate="' + $particular_data_list[$i].par_EndDate+'" par_Amount="' + $particular_data_list[$i].par_Amount+'" par_Taxable="' + $particular_data_list[$i].par_Taxable+'">'+$particular_data_list[$i].par_TaskType_name+'</option>';
+                        $inv_particularList += '<option value="' + $particular_data_list[$i].parti_obj+'" par_TaskType="' + $particular_data_list[$i].par_TaskType+'" par_TaskType_name="' + $particular_data_list[$i].par_TaskType_name+'" par_HSNCode="' + $particular_data_list[$i].par_HSNCode+'" par_Duration="' + $particular_data_list[$i].par_Duration+'" par_StartDate="' + $particular_data_list[$i].par_StartDate+'" par_EndDate="' + $particular_data_list[$i].par_EndDate+'" par_Amount="' + $particular_data_list[$i].par_Amount+'" par_Taxable="' + $particular_data_list[$i].par_Taxable+'">'+$particular_data_list[$i].par_TaskType_name+' ['+$particular_data_list[$i].par_Note+']</option>';
                     }
                 }//end for
                 console.log('inv particular List: ' + $inv_particularList)
@@ -2658,8 +2671,7 @@
 
     //Populate Particular table    
     function initTableParticulars($project_id, $bi_obj, $tableId){
-        //$('#tableParticularsEdit').dataTable().fnClearTable();
-        //$('#tableParticularsEdit').dataTable().fnDestroy();
+        console.log('calling... initTableParticulars...' + $project_id+' == '+$bi_obj+' == '+$tableId)
         $('#'+$tableId).dataTable().fnClearTable();
         $('#'+$tableId).dataTable().fnDestroy();
         
@@ -2692,11 +2704,12 @@
                 { "data": "Duration" },
                 { "data": "amount" },
                 { "data": "taxable" },
+                { "data": "par_Note" },
                 { "data": "action" },
             ],
             //column initialisation properties
             "columnDefs": [{
-                "targets": [0, 1, 2, 3, 4, 5, 6, 7],
+                "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
                 "orderable": false,
             }]
         });
@@ -3306,7 +3319,9 @@
                     $('#par_HSNCode').val('');
                     $('#par_Duration').val('');
                     $('#par_StartDate').val('');
+                    $('#par_EndDate').val('');
                     $('#par_Amount').val('');
+                    $('#par_Note').val('');
                     $('#par_Taxable').val('1').trigger('change');
 
                     calculateTax('add', obj.project_id, obj.bi_obj)
@@ -4321,29 +4336,32 @@
 
     //Invoice Part
     $('#inv_particular').on('change', function(){
-        $inv_particular = $('#inv_particular').val();
-        $inv_particular_text = $('#inv_particular option:selected').text();
+        $inv_obj_id = $('#inv_obj_id').val();
+        if($inv_obj_id > 0){
+            $inv_particular = $('#inv_particular').val();
+            $inv_particular_text = $('#inv_particular option:selected').text();
 
-        if(parseInt($inv_particular) > 0){
-            $parti_obj = $('#inv_particular').val();
-            $par_TaskType = $('#inv_particular option:selected').attr('par_TaskType');
-            $par_TaskType_name = $('#inv_particular option:selected').attr('par_TaskType_name');
-            $par_HSNCode = $('#inv_particular option:selected').attr('par_HSNCode');
-            $par_Duration = $('#inv_particular option:selected').attr('par_Duration');
-            $par_StartDate = $('#inv_particular option:selected').attr('par_StartDate');
-            $par_Amount = $('#inv_particular option:selected').attr('par_Amount');
-            $par_Taxable = $('#inv_particular option:selected').attr('par_Taxable');
+            if(parseInt($inv_particular) > 0){
+                $parti_obj = $('#inv_particular').val();
+                $par_TaskType = $('#inv_particular option:selected').attr('par_TaskType');
+                $par_TaskType_name = $('#inv_particular option:selected').attr('par_TaskType_name');
+                $par_HSNCode = $('#inv_particular option:selected').attr('par_HSNCode');
+                $par_Duration = $('#inv_particular option:selected').attr('par_Duration');
+                $par_StartDate = $('#inv_particular option:selected').attr('par_StartDate');
+                $par_Amount = $('#inv_particular option:selected').attr('par_Amount');
+                $par_Taxable = $('#inv_particular option:selected').attr('par_Taxable');
 
-            $('#invoiceModalTitle').html($inv_particular_text);
-            $('#inv_parti_obj').val($parti_obj);
-            $('#inv_par_TaskType').val($par_TaskType);
-            $('#inv_par_TaskType_name').val($par_TaskType_name);
-            $('#inv_par_HSNCode').val($par_HSNCode);
-            $('#inv_par_Duration').val($par_Duration);
-            $('#inv_par_StartDate').val($par_StartDate);
-            $('#inv_Amount').val($par_Amount);
-            
-            $('#invoiceModal').modal('show');
+                $('#invoiceModalTitle').html($inv_particular_text);
+                $('#inv_parti_obj').val($parti_obj);
+                $('#inv_par_TaskType').val($par_TaskType);
+                $('#inv_par_TaskType_name').val($par_TaskType_name);
+                $('#inv_par_HSNCode').val($par_HSNCode);
+                $('#inv_par_Duration').val($par_Duration);
+                $('#inv_par_StartDate').val($par_StartDate);
+                $('#inv_Amount').val($par_Amount);
+                
+                $('#invoiceModal').modal('show');
+            }
         }
     });
 
@@ -4486,6 +4504,11 @@
     });
     //end invoice particular edit
     
+    $('#e_inv_status').on('change', function(){
+        $e_inv_status_text = $('#e_inv_status option:selected').text();
+        $('#e_inv_status_text').val($e_inv_status_text);
+    })
+    
     //Edit Invoice
     $('#invoice_details_table').on('click', '.edit_inv_obj_id', function(){
         $inv_obj_id = $(this).data('inv_obj_id');
@@ -4517,6 +4540,7 @@
                     $inv_status = returnData.inv_status;
                 }
                 $("#e_inv_status").val($inv_status).trigger('change');
+                $("#e_inv_status_text").val(returnData.inv_status_text);
 
 
                 //Tax Calculation part

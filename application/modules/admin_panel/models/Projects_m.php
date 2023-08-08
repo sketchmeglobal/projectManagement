@@ -2184,6 +2184,7 @@ class Projects_m extends CI_Model {
         $inv_SubPartyName = $this->input->post('e_inv_SubPartyName'); 
         $inv_Remarks = $this->input->post('e_inv_Remarks'); 
         $inv_status = $this->input->post('e_inv_status'); 
+        $inv_status_text = $this->input->post('e_inv_status_text'); 
 
 
         //check existing data
@@ -2206,6 +2207,7 @@ class Projects_m extends CI_Model {
                 $invoice_details[$i]->inv_SubPartyName = $inv_SubPartyName;
                 $invoice_details[$i]->inv_Remarks = $inv_Remarks;
                 $invoice_details[$i]->inv_status = $inv_status;
+                $invoice_details[$i]->inv_status_text = $inv_status_text;
             }
         }//end for
 
@@ -2242,7 +2244,8 @@ class Projects_m extends CI_Model {
         $par_StartDate = $this->input->post('par_StartDate'); 
         $par_EndDate = $this->input->post('par_EndDate'); 
         $par_Amount = $this->input->post('par_Amount'); 
-        $par_Taxable = $this->input->post('par_Taxable'); 
+        $par_Taxable = $this->input->post('par_Taxable');
+        $par_Note = $this->input->post('par_Note');  
         $parti_obj = rand(1000, 9999);
 
         
@@ -2256,6 +2259,7 @@ class Projects_m extends CI_Model {
         $particular->par_EndDate = $par_EndDate;
         $particular->par_Amount = $par_Amount;
         $particular->par_Taxable = $par_Taxable;
+        $particular->par_Note = $par_Note;
 
         //check existing data
         $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $parti_project_id))->result();
@@ -2320,6 +2324,7 @@ class Projects_m extends CI_Model {
         $par_EndDate = $this->input->post('par_EndDate_e'); 
         $par_Amount = $this->input->post('par_Amount_e'); 
         $par_Taxable = $this->input->post('par_Taxable_e'); 
+        $par_Note = $this->input->post('par_Note_e'); 
         $parti_obj = rand(1000, 9999);
 
         
@@ -2333,6 +2338,7 @@ class Projects_m extends CI_Model {
         $particular->par_EndDate = $par_EndDate;
         $particular->par_Amount = $par_Amount;
         $particular->par_Taxable = $par_Taxable;
+        $particular->par_Note = $par_Note;
 
         //check existing data
         $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $parti_project_id))->result();
@@ -3461,7 +3467,7 @@ class Projects_m extends CI_Model {
             }else{
                 $partyName = '';
             }
-            $paid = 'Pending';
+            $paid = '';
 
             if(sizeof($invoice_details) > 0){
                 $slno = 1;
@@ -3476,6 +3482,10 @@ class Projects_m extends CI_Model {
                     }else{
                         $tax_NetAmount = 0;
                     }
+                    if(isset($value->inv_status_text)){
+                        $paid = $value->inv_status_text;
+                    }
+                    
 
                     $nestedData['sl_no'] = $slno;
                     $nestedData['partyName'] = $partyName;
@@ -3763,6 +3773,7 @@ class Projects_m extends CI_Model {
                 $par_HSNCode = $value->par_HSNCode;
                 $par_Duration = $value->par_Duration;
                 $par_StartDate = $value->par_StartDate;
+                
                 if(isset($value->par_EndDate)){
                     $par_EndDate = $value->par_EndDate;
                 }else{
@@ -3770,6 +3781,12 @@ class Projects_m extends CI_Model {
                 }
                 $par_Amount = $value->par_Amount;
                 $par_Taxable = $value->par_Taxable;
+
+                if(isset($value->par_Note)){
+                    $par_Note = $value->par_Note;
+                }else{
+                    $par_Note = '';
+                }
 
                 $nestedData['slNo'] = $counter;
                 $nestedData['taskType'] = $par_TaskType_name;
@@ -3779,6 +3796,7 @@ class Projects_m extends CI_Model {
                 $nestedData['Duration'] = $par_Duration;
                 $nestedData['amount'] = number_format($par_Amount, 2);
                 $nestedData['taxable'] = ($par_Taxable == 1) ? 'Yes' : 'No';
+                $nestedData['par_Note'] = $par_Note;
                 $nestedData['action'] = '<a href="javascript:void(0)" data-project_id="'.$project_id.'" data-bi_obj="'.$bi_obj.'" data-parti_obj="'.$parti_obj.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
 
                 $counter++;
