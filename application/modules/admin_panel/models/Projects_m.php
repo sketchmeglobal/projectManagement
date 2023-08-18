@@ -3656,6 +3656,7 @@ class Projects_m extends CI_Model {
         $project_id = $this->input->post('project_id');
         $data = array();
         $logins = array();
+        $mcosts = array();
 
         $result = $this->db->get_where('project_detail', array('project_id' => $project_id))->result();
         //print_r($result);

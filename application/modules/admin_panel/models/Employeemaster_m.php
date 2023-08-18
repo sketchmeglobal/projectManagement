@@ -80,7 +80,7 @@ class employeemaster_m extends CI_Model {
                 $nestedData['emailId'] = $val->email_id;
                 $nestedData['employeeType'] = $employeeType;
                 $nestedData['designation'] = $designation;
-                $nestedData['action'] = '<a href="'. base_url('admin/edit-employee/'.$emp_id).'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
+                $nestedData['action'] = '<a href="'. base_url('admin/edit-employee-master/'.$emp_id).'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
                 <a href="javascript:void(0)" data-emp_id="'.$emp_id.'" class="btn btn-danger delete"><i class="fa fa-times"></i> Delete</a>';
                             
                 array_push($data, $nestedData);
