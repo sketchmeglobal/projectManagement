@@ -92,6 +92,16 @@ $user_type = $this->session->usertype;
                 </ul>
             </li>
             <!-- For Employee -->
+
+            <!-- For Report -->            
+            <li class="menu-list <?=($class_name == 'Projectreport') ? 'active' : ''; ?>"><a href=""><i class="fa fa-vcard-o"></i> <span>Reports</span></a>
+                <ul class="child-list">
+                    <li class="<?=(($class_name == 'Projectreport')) ? 'active' : ''; ?>">
+                        <a href="<?=base_url();?>admin/project-report"><i class="fa fa-caret-right"></i> <span>Project Report</span></a>
+                    </li>
+                </ul>
+            </li>
+            <!-- For Report -->
             
             <?php } ?>
 

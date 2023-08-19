@@ -187,6 +187,13 @@
 	$route['admin/print-invoice/(:num)/(:num)'] = 'admin_panel/Projects/print_invoice_details/$1/$2';
 	$route['admin/print-salaryslip/(:num)'] = 'admin_panel/Employeesalary/print_salaryslip/$1';
 	//'Admin_dashboard/Admin_print/cbill';
+
+	
+	
+	//REPORTS
+	$route['admin/project-report'] = 'admin_panel/Projectreport/project_report';	
+	$route['admin/form-search-project-report'] = 'admin_panel/Projectreport/form_search_project_report';
+	$route['admin/ajax-project-report-table-data'] = 'admin_panel/Projectreport/ajax_project_report_table_data';
 	
 
 
