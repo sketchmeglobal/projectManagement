@@ -52,7 +52,7 @@
                         <label for="toDate" class="control-label">To Date</label>
                         <input type="date" name="toDate" id="toDate" class="form-control">
                     </div> 
-                    <div class="col-lg-3">
+                    <!-- <div class="col-lg-3">
                         <label for="empId" class="control-label">Employee Name</label>
                         <select name="empId" id="empId" class="form-control select2">
                             <option value="0" >-- Select Employee --</option>
@@ -67,7 +67,7 @@
                             <option value="1" >Completed</option>
                             <option value="2" >Inprogress</option>
                         </select>
-                    </div> 
+                    </div>  -->
 
                     <div class="col-lg-3" style="margin-top: 25px;">
                         <label for="product_line_po" class="control-label"></label>
@@ -94,6 +94,9 @@
                                         <th>Taxable Amount</th>
                                         <th>Total Tax</th>
                                         <th>Net Amount</th>
+                                        <th>Commission</th>
+                                        <th>Other expanses</th>
+                                        <th>Comments</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -211,7 +214,10 @@
                 { "data": "grossAmount" },
                 { "data": "taxableAmount" },
                 { "data": "totalTax" },
-                { "data": "netAmount" }
+                { "data": "netAmount" },
+                { "data": "commission" },
+                { "data": "otherExpanses" },
+                { "data": "comments" }
             ],
             //column initialisation properties
             
