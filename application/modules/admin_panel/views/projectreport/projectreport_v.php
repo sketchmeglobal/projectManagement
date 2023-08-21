@@ -90,6 +90,10 @@
                                         <th>Project Name</th>
                                         <th>Created on</th>
                                         <th>Project status</th>
+                                        <th>Gross Amount</th>
+                                        <th>Taxable Amount</th>
+                                        <th>Total Tax</th>
+                                        <th>Net Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -197,22 +201,17 @@
             },
             "rowCallback": function (row, data) {
                 // console.log(data);
-                if (data.usertype == 'Resource Developer') {
-                    $(row).addClass('bg-green1');
-                }
-                if (data.usertype == 'Exporter') {
-                    $(row).addClass('bg-green2');
-                }
-                if (data.usertype == 'Marketing') {
-                    $(row).addClass('bg-green3');
-                }
             },
             //will get these values from JSON 'data' variable
             "columns": [
                 { "data": "slNo" },
                 { "data": "projectName" },
                 { "data": "created_at" },
-                { "data": "projectStatus" }
+                { "data": "projectStatus" },
+                { "data": "grossAmount" },
+                { "data": "taxableAmount" },
+                { "data": "totalTax" },
+                { "data": "netAmount" }
             ],
             //column initialisation properties
             
