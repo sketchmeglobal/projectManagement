@@ -92,7 +92,51 @@ class employeesalary_m extends CI_Model {
         $data['employees'] = 'Add Salary';
 
         $employees = $this->db->get('employee')->result();
-        $data['employees'] = $employees;
+
+        $filteredEmp = array();
+
+        for($i = 0; $i < sizeof($employees); $i++){
+            $emp_id = $employees[$i]->emp_id;
+            $emp_type = $employees[$i]->emp_type;
+            $emp_desig = $employees[$i]->emp_desig;
+            $first_name = $employees[$i]->first_name;
+            $last_name = $employees[$i]->last_name;
+            $email_id = $employees[$i]->email_id;
+            $ph_number = $employees[$i]->ph_number;
+            $basic_pay = $employees[$i]->basic_pay;
+            $active_loan = $employees[$i]->active_loan;
+            $active_loan_emi = $employees[$i]->active_loan_emi;
+            $last_month_salary = $employees[$i]->last_month_salary;
+            $loan_amount_remaining = $employees[$i]->loan_amount_remaining;
+
+            if($loan_amount_remaining > 0){
+                $loan_granted = $active_loan;
+                $loan_paid = ($active_loan - $loan_amount_remaining);
+                $loan_pending = $loan_amount_remaining;
+                $loan_emi = $active_loan_emi;
+            }else{
+                $loan_granted = 0;
+                $loan_paid = 0;
+                $loan_pending = 0;
+                $loan_emi = 0;
+            }
+
+            $filteredEmpObj = new stdClass();
+            $filteredEmpObj->emp_id = $emp_id;
+            $filteredEmpObj->basic_pay = $basic_pay;
+            $filteredEmpObj->first_name = $first_name;
+            $filteredEmpObj->last_name = $last_name;
+            $filteredEmpObj->loan_granted = $loan_granted;
+            $filteredEmpObj->loan_paid = $loan_paid;
+            $filteredEmpObj->loan_pending = $loan_pending;
+            $filteredEmpObj->loan_emi = $loan_emi;
+
+            array_push($filteredEmp, $filteredEmpObj);
+        }
+
+        //echo json_encode($filteredEmp);
+        //die;
+        $data['employees'] = $filteredEmp;
 
         return array('page'=>'employee/employee_salary_add_v', 'data'=>$data);
     }
@@ -185,9 +229,12 @@ class employeesalary_m extends CI_Model {
         $all_deduction->medicalInsurancePremiumDeduct = $this->input->post('medicalInsurancePremiumDeduct');
         $all_deduction->otherDeductions = $this->input->post('otherDeductions');
         $all_deduction->miscDeduction = $this->input->post('miscDeduction');
-        $all_deduction->loan = $this->input->post('loan');
+        $all_deduction->loan_granted = $this->input->post('loan_granted');
+        $all_deduction->loan_paid = $this->input->post('loan_paid');
+        $all_deduction->loan_pending = $this->input->post('loan_pending');
+        $all_deduction->loan_emi = $this->input->post('loan_emi');
 
-        $total_deduction = ($this->input->post('employees_PF_PPF') + $this->input->post('employeesESIC') + $this->input->post('professionalTax') + $this->input->post('incomeTax') + $this->input->post('ltaDeduction') + $this->input->post('festivalBonusDeduction') + $this->input->post('medicalInsurancePremiumDeduct') + $this->input->post('otherDeductions') + $this->input->post('miscDeduction') + $this->input->post('loan'));
+        $total_deduction = ($this->input->post('employees_PF_PPF') + $this->input->post('employeesESIC') + $this->input->post('professionalTax') + $this->input->post('incomeTax') + $this->input->post('ltaDeduction') + $this->input->post('festivalBonusDeduction') + $this->input->post('medicalInsurancePremiumDeduct') + $this->input->post('otherDeductions') + $this->input->post('miscDeduction') + $this->input->post('loan_emi'));
 
         $total_pay = ($total_allowance - $total_deduction);
 
@@ -206,16 +253,18 @@ class employeesalary_m extends CI_Model {
             $data['salary_id'] = $salary_id;
 
             //Update Loan amount
-            $loan = $this->input->post('loan');
-            $rs = $this->db->get_where('employee', array('emp_id' => $emp_id))->result();
-            $loan_amount_remaining = $rs[0]->loan_amount_remaining;
-            $loan_amount_remaining = $loan_amount_remaining - $loan;
+            $loan = $this->input->post('loan_emi');
+            if($loan > 0){
+                $rs = $this->db->get_where('employee', array('emp_id' => $emp_id))->result();
+                $loan_amount_remaining = $rs[0]->loan_amount_remaining;
+                $loan_amount_remaining = $loan_amount_remaining - $loan;
 
-            $updateArray2 = array(
-                'loan_amount_remaining' => $loan_amount_remaining
-            );
-    
-            $val = $this->db->update('employee', $updateArray2, array('emp_id' => $emp_id));
+                $updateArray2 = array(
+                    'loan_amount_remaining' => $loan_amount_remaining
+                );
+        
+                $val = $this->db->update('employee', $updateArray2, array('emp_id' => $emp_id));
+            }
 
 
             $data['type'] = 'success';
@@ -363,9 +412,12 @@ class employeesalary_m extends CI_Model {
         $all_deduction->medicalInsurancePremiumDeduct = $this->input->post('medicalInsurancePremiumDeduct');
         $all_deduction->otherDeductions = $this->input->post('otherDeductions');
         $all_deduction->miscDeduction = $this->input->post('miscDeduction');
-        $all_deduction->loan = $this->input->post('loan'); 
+        $all_deduction->loan_granted = $this->input->post('loan_granted');
+        $all_deduction->loan_paid = $this->input->post('loan_paid');
+        $all_deduction->loan_pending = $this->input->post('loan_pending');
+        $all_deduction->loan_emi = $this->input->post('loan_emi');
 
-        $total_deduction = ($this->input->post('employees_PF_PPF') + $this->input->post('employeesESIC') + $this->input->post('professionalTax') + $this->input->post('incomeTax') + $this->input->post('ltaDeduction') + $this->input->post('festivalBonusDeduction') + $this->input->post('medicalInsurancePremiumDeduct') + $this->input->post('otherDeductions') + $this->input->post('miscDeduction') + $this->input->post('loan'));
+        $total_deduction = ($this->input->post('employees_PF_PPF') + $this->input->post('employeesESIC') + $this->input->post('professionalTax') + $this->input->post('incomeTax') + $this->input->post('ltaDeduction') + $this->input->post('festivalBonusDeduction') + $this->input->post('medicalInsurancePremiumDeduct') + $this->input->post('otherDeductions') + $this->input->post('miscDeduction') + $this->input->post('loan_emi'));
 
         $total_pay = ($total_allowance - $total_deduction);
 

@@ -203,6 +203,7 @@ class employee_m extends CI_Model {
             'basic_pay' => $this->input->post('basic_pay'),
             'active_loan' => $active_loan,
             'loan_duration' => $this->input->post('loan_duration'),
+            'active_loan_emi' => $this->input->post('active_loan_emi'),
             'loan_amount_remaining' => $active_loan,
             'last_incriment_date' => $this->input->post('last_incriment_date')
         );   
@@ -343,7 +344,8 @@ class employee_m extends CI_Model {
             'basic_pay' => $this->input->post('basic_pay'),
             'active_loan' => $this->input->post('active_loan'),
             'loan_duration' => $this->input->post('loan_duration'),
-            'loan_amount_remaining' => $this->input->post('active_loan'),
+            'active_loan_emi' => $this->input->post('active_loan_emi'),
+            'loan_amount_remaining' => $this->input->post('loan_amount_remaining'),
             'last_incriment_date' => $this->input->post('last_incriment_date')
         );
 

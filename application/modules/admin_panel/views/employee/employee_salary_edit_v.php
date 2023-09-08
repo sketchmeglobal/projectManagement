@@ -223,9 +223,24 @@
                                     </div>
 
                                     <div class="col-lg-3">
-                                        <label for="loan" class="control-label">Loan</label>
-                                        <input value="<?=$all_deduction->loan?>" id="loan" name="loan" type="number" placeholder="Loan" class="form-control round-input" />
-                                    </div>  
+                                        <label for="loan_granted" class="control-label">Loan Granted(Rs.)</label>
+                                        <input value="<?=$all_deduction->loan_granted?>" id="loan_granted" name="loan_granted" type="number" class="form-control round-input" />
+                                    </div> 
+
+                                    <div class="col-lg-3">
+                                        <label for="loan_paid" class="control-label">Loan Paid(Rs.)</label>
+                                        <input value="<?=$all_deduction->loan_paid?>" id="loan_paid" name="loan_paid" type="number" class="form-control round-input" />
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="loan_pending" class="control-label">Loan Pending(Rs.)</label>
+                                        <input value="<?=$all_deduction->loan_pending?>" id="loan_pending" name="loan_pending" type="number" class="form-control round-input" />
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="loan_emi" class="control-label">Loan EMI(Rs.)</label>
+                                        <input value="<?=$all_deduction->loan_emi?>" id="loan_emi" name="loan_emi" type="number" class="form-control round-input" />
+                                    </div> 
                                 </div>
                                    
 

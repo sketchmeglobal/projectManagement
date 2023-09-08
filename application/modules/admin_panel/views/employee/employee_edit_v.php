@@ -99,14 +99,44 @@
                                         <input value="<?=$employee_details[0]->ph_number?>" id="ph_number" name="ph_number" type="tel" placeholder="Mobile Number" class="form-control round-input" />
                                     </div> 
 
+                                    <?php
+                                    $loan_amount_remaining = $employee_details[0]->loan_amount_remaining;
+                                    if($loan_amount_remaining > 0){
+                                        $active_loan = $employee_details[0]->active_loan;
+                                        $active_loan_repay = $active_loan - $loan_amount_remaining;
+                                        $loan_duration = $employee_details[0]->loan_duration;
+                                        $active_loan_emi = $employee_details[0]->active_loan_emi;
+                                    }else{
+                                        $active_loan = 0.00;
+                                        $active_loan_repay = 0.00;
+                                        $loan_duration = 0;
+                                        $active_loan_emi = 0;
+                                    }
+                                    ?>
+
                                     <div class="col-lg-3">
-                                        <label for="active_loan" class="control-label">Active Loan Amount</label>
-                                        <input value="<?=$employee_details[0]->active_loan?>" id="active_loan" name="active_loan" type="number" placeholder="Active Loan Amount" class="form-control round-input" />
+                                        <label for="active_loan" class="control-label">Loan Granted(Rs.)</label>
+                                        <input value="<?=$active_loan?>" id="active_loan" name="active_loan" type="number" class="form-control round-input" />
                                     </div> 
 
                                     <div class="col-lg-3">
+                                        <label for="active_loan_repay" class="control-label">Loan Paid(Rs.)</label>
+                                        <input value="<?=$active_loan_repay?>" id="active_loan_repay" name="active_loan_repay" type="number"  class="form-control round-input" />
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="loan_amount_remaining" class="control-label">Loan Pending(Rs.)</label>
+                                        <input value="<?=$loan_amount_remaining?>" id="loan_amount_remaining" name="loan_amount_remaining" type="number" placeholder="Loan Remaining(Rs.)" class="form-control round-input" />
+                                    </div>
+
+                                    <div class="col-lg-3">
                                         <label for="loan_duration" class="control-label">Loan Duration(in month)</label>
-                                        <input value="<?=$employee_details[0]->loan_duration?>" id="loan_duration" name="loan_duration" type="number" placeholder="Loan Duration" class="form-control round-input" />
+                                        <input value="<?=$loan_duration?>" id="loan_duration" name="loan_duration" type="number" placeholder="Loan Duration" class="form-control round-input" />
+                                    </div>  
+
+                                    <div class="col-lg-3">
+                                        <label for="active_loan_emi" class="control-label">Loan EMI(Rs.)</label>
+                                        <input value="<?=$active_loan_emi?>" id="active_loan_emi" name="active_loan_emi" type="number" class="form-control round-input" />
                                     </div>  
                                 </div>
                                

@@ -52,15 +52,23 @@
                             <form autocomplete="off" id="form_add_salary" method="post" action="<?=base_url('admin/form-add-salary')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
                                 <h4>Allowance</h4>
                                 <div class="form-group ">
-                                    <div class="col-lg-3">                                        
+                                    <div class="col-lg-3">
+                                        <?php //echo $employees[0]->first_name; ?>                       
                                         <label for="emp_id" class="control-label text-danger">Employee Name *</label>
                                         <select name="emp_id" id="emp_id" class="form-control select2">
                                             <option value="" >Select Employee</option>
                                             <?php 
                                             if(sizeof($employees) > 0){
-                                                foreach($employees as $employee){
+                                                for($i = 0; $i < sizeof($employees); $i++){
                                             ?>
-                                            <option value="<?=$employee->emp_id?>" data-loan_amount_remaining="<?=$employee->loan_amount_remaining?>" data-basic_pay="<?=$employee->basic_pay?>"><?=$employee->first_name.' '.$employee->last_name?></option>
+                                            <option value="<?=$employees[$i]->emp_id?>" 
+                                            data-loan_granted="<?=$employees[$i]->loan_granted?>" 
+                                            data-loan_paid="<?=$employees[$i]->loan_paid?>"
+                                            data-loan_pending="<?=$employees[$i]->loan_pending?>"
+                                            data-loan_emi="<?=$employees[$i]->loan_emi?>"
+                                            data-basic_pay="<?=$employees[$i]->basic_pay?>">
+                                            <?=$employees[$i]->first_name.' '.$employees[$i]->last_name?>
+                                        </option>
                                             <?php 
                                                 } 
                                             }
@@ -221,9 +229,24 @@
                                     </div>
 
                                     <div class="col-lg-3">
-                                        <label for="loan" class="control-label">Loan</label>
-                                        <input value="0.00" id="loan" name="loan" type="number" placeholder="Loan" class="form-control round-input" />
-                                    </div>  
+                                        <label for="loan_granted" class="control-label">Loan Granted(Rs.)</label>
+                                        <input value="0.00" id="loan_granted" name="loan_granted" type="number" class="form-control round-input" />
+                                    </div> 
+
+                                    <div class="col-lg-3">
+                                        <label for="loan_paid" class="control-label">Loan Paid(Rs.)</label>
+                                        <input value="0.00" id="loan_paid" name="loan_paid" type="number" class="form-control round-input" />
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="loan_pending" class="control-label">Loan Pending(Rs.)</label>
+                                        <input value="0.00" id="loan_pending" name="loan_pending" type="number" class="form-control round-input" />
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="loan_emi" class="control-label">Loan EMI(Rs.)</label>
+                                        <input value="0.00" id="loan_emi" name="loan_emi" type="number" class="form-control round-input" />
+                                    </div>
                                 </div>
                                    
 
@@ -270,13 +293,19 @@
 <script>
     $('#emp_id').on('change', function(){
         $emp_name = $('#emp_id option:selected').text();
-        $('#emp_name').val($emp_name);
-
-        $loan_amount_remaining = $('#emp_id option:selected').data('loan_amount_remaining');
-        $('#loan').val($loan_amount_remaining);
 
         $basic_pay = $('#emp_id option:selected').data('basic_pay');
+        $loan_granted = $('#emp_id option:selected').data('loan_granted');
+        $loan_paid = $('#emp_id option:selected').data('loan_paid');
+        $loan_pending = $('#emp_id option:selected').data('loan_pending');
+        $loan_emi = $('#emp_id option:selected').data('loan_emi');
+
+        $('#emp_name').val($emp_name);
         $('#basic').val($basic_pay);
+        $('#loan_granted').val($loan_granted);
+        $('#loan_paid').val($loan_paid);
+        $('#loan_pending').val($loan_pending);
+        $('#loan_emi').val($loan_emi);
     })
 
     //add-item-form validation and submit

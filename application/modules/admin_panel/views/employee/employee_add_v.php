@@ -101,14 +101,19 @@
                                     </div> 
 
                                     <div class="col-lg-3">
-                                        <label for="active_loan" class="control-label">Active Loan Amount</label>
-                                        <input value="" id="active_loan" name="active_loan" type="number" placeholder="Active Loan Amount" class="form-control round-input" />
+                                        <label for="active_loan" class="control-label">Loan Granted(Rs.)</label>
+                                        <input value="" id="active_loan" name="active_loan" type="number" class="form-control round-input" />
                                     </div> 
 
                                     <div class="col-lg-3">
                                         <label for="loan_duration" class="control-label">Loan Duration(in month)</label>
-                                        <input value="" id="loan_duration" name="loan_duration" type="number" placeholder="Loan Duration" class="form-control round-input" />
-                                    </div>  
+                                        <input value="" id="loan_duration" name="loan_duration" type="number" class="form-control round-input" />
+                                    </div>   
+
+                                    <div class="col-lg-3">
+                                        <label for="active_loan_emi" class="control-label">Loan EMI(Rs.)</label>
+                                        <input value="" id="active_loan_emi" name="active_loan_emi" type="number" class="form-control round-input" />
+                                    </div> 
                                 </div>
                                
                                 <div class="form-group">
