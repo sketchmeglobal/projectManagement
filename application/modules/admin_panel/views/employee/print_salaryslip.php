@@ -237,10 +237,6 @@ function convertNumberToWord($number) {
                         <div class="col-4">
                             <img class="img-fluid" src="lp.jpg" alt="">
                         </div>
-                        
-                        
-                        
-                        
                         <div class="col-8">
                             <p class="m-0 py-1">32/A Vivekananda Road</p>
                             <p class="m-0 py-1">Dunlop, Kolkata, West Bengal</p> 
@@ -277,7 +273,7 @@ function convertNumberToWord($number) {
                                         <p class="m-0 p-0">Name:</p>
                                     </div>
                                     <div class="col-6">
-                                        <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$salary_details[0]->emp_name?>">
+                                        <input class="w-100 py-1 border-rd-10 form-control" value="<?=$salary_details[0]->emp_name?>">
                                     </div>
                                 </div>
                             </div>
@@ -288,7 +284,7 @@ function convertNumberToWord($number) {
                                         <p class="m-0 p-0">Employee No:</p>
                                     </div>
                                     <div class="col-6">
-                                        <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field">
+                                        <input class="w-100 py-1 border-rd-10 form-control">
                                     </div>
                                 </div>
                             </div>
@@ -299,7 +295,7 @@ function convertNumberToWord($number) {
                                         <p class="m-0 p-0">Pay Period:</p>
                                     </div>
                                     <div class="col-6">
-                                        <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field">
+                                        <input class="w-100 py-1 border-rd-10 form-control" value="<?=date('d-m-Y', strtotime($salary_details[0]->for_the_month_of))?>">
                                     </div>
                                 </div>
                             </div>
@@ -310,7 +306,7 @@ function convertNumberToWord($number) {
                                         <p class="m-0 p-0">No of Days Month:</p>
                                     </div>
                                     <div class="col-6">
-                                        <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field">
+                                        <input class="w-100 py-1 border-rd-10 form-control">
                                     </div>
                                 </div>
                             </div>
@@ -324,7 +320,7 @@ function convertNumberToWord($number) {
                                         <p class="m-0 p-0">Company:</p>
                                     </div>
                                     <div class="col-6">
-                                        <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field">
+                                        <input class="w-100 py-1 border-rd-10 form-control">
                                     </div>
                                 </div>
                             </div>
@@ -335,7 +331,7 @@ function convertNumberToWord($number) {
                                         <p class="m-0 p-0">Department:</p>
                                     </div>
                                     <div class="col-6">
-                                        <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field">
+                                        <input class="w-100 py-1 border-rd-10 form-control">
                                     </div>
                                 </div>
                             </div>
@@ -346,7 +342,7 @@ function convertNumberToWord($number) {
                                         <p class="m-0 p-0">PAN No:</p>
                                     </div>
                                     <div class="col-6">
-                                        <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field">
+                                        <input class="w-100 py-1 border-rd-10 form-control">
                                     </div>
                                 </div>
                             </div>
@@ -357,7 +353,7 @@ function convertNumberToWord($number) {
                                         <p class="m-0 p-0">No of Days Paid:</p>
                                     </div>
                                     <div class="col-6">
-                                        <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field">
+                                        <input class="w-100 py-1 border-rd-10 form-control">
                                     </div>
                                 </div>
                             </div>
@@ -368,7 +364,7 @@ function convertNumberToWord($number) {
                                         <p class="m-0 p-0">Joining Date:</p>
                                     </div>
                                     <div class="col-6">
-                                        <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field">
+                                        <input class="w-100 py-1 border-rd-10 form-control">
                                     </div>
                                 </div>
                             </div>
@@ -382,7 +378,7 @@ function convertNumberToWord($number) {
                                         <p class="m-0 p-0">Designation:</p>
                                     </div>
                                     <div class="col-6">
-                                        <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field">
+                                        <input class="w-100 py-1 border-rd-10 form-control">
                                     </div>
                                 </div>
                             </div>
@@ -393,7 +389,7 @@ function convertNumberToWord($number) {
                                         <p class="m-0 p-0">Location:</p>
                                     </div>
                                     <div class="col-6">
-                                        <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field">
+                                        <input class="w-100 py-1 border-rd-10 form-control">
                                     </div>
                                 </div>
                             </div>
@@ -404,7 +400,7 @@ function convertNumberToWord($number) {
                                         <p class="m-0 p-0">P.F A/C No:</p>
                                     </div>
                                     <div class="col-6">
-                                        <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field">
+                                        <input class="w-100 py-1 border-rd-10 form-control">
                                     </div>
                                 </div>
                             </div>
@@ -415,7 +411,7 @@ function convertNumberToWord($number) {
                                         <p class="m-0 p-0">Off days: 4 of 14</p>
                                     </div>
                                     <div class="col-6">
-                                        <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field">
+                                        <input class="w-100 py-1 border-rd-10 form-control">
                                     </div>
                                 </div>
                             </div>
@@ -432,11 +428,11 @@ function convertNumberToWord($number) {
                         <div class="row">
                             <div class="col-md-6"><div class="row">
                                 <div class="col-md-12"><p class="m-0 p-0">Month of</p></div>
-                                <div class="col-md-12"><input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=date('M Y', strtotime($salary_details[0]->payout_date))?>"></div>
+                                <div class="col-md-12"><input class="w-100 py-1 border-rd-10 form-control" value="<?=date('M Y', strtotime($salary_details[0]->payout_date))?>"></div>
                             </div></div>
                             <div class="col-md-6"><div class="row">
                                 <div class="col-md-12"><p class="m-0 p-0">Bank Name</p></div>
-                                <div class="col-md-12"><input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="SBI"></div>
+                                <div class="col-md-12"><input class="w-100 py-1 border-rd-10 form-control" value="SBI"></div>
                             </div></div>
                         </div>
                     </div>
@@ -444,11 +440,11 @@ function convertNumberToWord($number) {
                         <div class="row">
                             <div class="col-md-6"><div class="row">
                                 <div class="col-md-12"><p class="m-0 p-0">A/C Number</p></div>
-                                <div class="col-md-12"><input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="38702257903"></div>
+                                <div class="col-md-12"><input class="w-100 py-1 border-rd-10 form-control" value="38702257903"></div>
                             </div></div>
                             <div class="col-md-6"><div class="row">
                                 <div class="col-md-12"><p class="m-0 p-0">Earnings</p></div>
-                                <div class="col-md-12"><input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$salary_details[0]->total_pay?>"></div>
+                                <div class="col-md-12"><input class="w-100 py-1 border-rd-10 form-control" value="<?=$salary_details[0]->total_pay?>"></div>
                             </div></div>
                         </div>
                     </div>
@@ -457,11 +453,11 @@ function convertNumberToWord($number) {
                         <div class="row">
                             <div class="col-md-6"><div class="row">
                                 <div class="col-md-12"><p class="m-0 p-0">Deductions</p></div>
-                                <div class="col-md-12"><input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$salary_details[0]->total_deduction?>"></div>
+                                <div class="col-md-12"><input class="w-100 py-1 border-rd-10 form-control" value="<?=$salary_details[0]->total_deduction?>"></div>
                             </div></div>
                             <div class="col-md-6"><div class="row">
                                 <div class="col-md-12"><p class="m-0 p-0">Adjustments</p></div>
-                                <div class="col-md-12"><input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="0.00"></div>
+                                <div class="col-md-12"><input class="w-100 py-1 border-rd-10 form-control" value="0.00"></div>
                             </div></div>
                         </div>
                     </div>
@@ -469,7 +465,7 @@ function convertNumberToWord($number) {
                         <div class="row">
                             <div class="col-md-10"><div class="row">
                                 <div class="col-md-12"><p class="m-0 p-0">Total Pay</p></div>
-                                <div class="col-md-12"><input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$salary_details[0]->total_pay?>"></div>
+                                <div class="col-md-12"><input class="w-100 py-1 border-rd-10 form-control" value="<?=$salary_details[0]->total_pay?>"></div>
                             </div></div>
                             
                         </div>
@@ -495,7 +491,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Basic</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_allowance->basic?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_allowance->basic?>">
                             </div>
                         </div>
                         <div class="row my-1">
@@ -503,7 +499,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">HRA </p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_allowance->hra?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_allowance->hra?>">
                             </div>
                         </div>
                         <div class="row my-1">
@@ -511,7 +507,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Conveyance Allowance</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_allowance->conveyanceAllowance?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_allowance->conveyanceAllowance?>">
                             </div>
                         </div>
                         <div class="row my-1">
@@ -519,7 +515,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Prof. Development Allowance</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_allowance->ProfDevelopmentAllowance?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_allowance->ProfDevelopmentAllowance?>">
                             </div>
                         </div>
                         <div class="row my-1">
@@ -527,7 +523,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Books and Periodicals</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_allowance->booksAndPeriodicals?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_allowance->booksAndPeriodicals?>">
                             </div>
                         </div>
                         <div class="row my-1">
@@ -535,7 +531,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Medical Reimbursement</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_allowance->medicalReimbursement?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_allowance->medicalReimbursement?>">
                             </div>
                         </div>
                         <div class="row my-1">
@@ -543,7 +539,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Child Education Allowance</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_allowance->childEducationAllowance?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_allowance->childEducationAllowance?>">
                             </div>
                         </div>
                         <div class="row my-1">
@@ -551,7 +547,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Performance Pay Allowance</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_allowance->PerformancePayAllowance?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_allowance->PerformancePayAllowance?>">
                             </div>
                         </div>
                         <div class="row my-1">
@@ -559,7 +555,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Special Allowance</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_allowance->specialAllowance?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_allowance->specialAllowance?>">
                             </div>
                         </div>
                         <div class="row my-1">
@@ -567,7 +563,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Entertainment Allowance</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_allowance->entertainmentAllowance?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_allowance->entertainmentAllowance?>">
                             </div>
                         </div>
                         <div class="row my-1">
@@ -575,7 +571,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Fuel and Maintenance (F&M) - Car</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_allowance->fuelAndMaintenance?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_allowance->fuelAndMaintenance?>">
                             </div>
                         </div>
                         <div class="row my-1">
@@ -583,7 +579,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Other Allowance</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_allowance->otherAllowance?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_allowance->otherAllowance?>">
                             </div>
                         </div>
                         <div class="row my-1">
@@ -591,7 +587,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Variable Pay</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_allowance->variablePay?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_allowance->variablePay?>">
                             </div>
                         </div>
                         <div class="row my-1">
@@ -599,7 +595,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">LTA (Annual Benefit)</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_allowance->lta_AnnualBenefit?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_allowance->lta_AnnualBenefit?>">
                             </div>
                         </div>
                         <div class="row my-1">
@@ -607,7 +603,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Festival Bonus (Annual Benefit)</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_allowance->festivalBonus?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_allowance->festivalBonus?>">
                             </div>
                         </div>
                         <div class="row my-1">
@@ -615,7 +611,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Medical Insurance Premium<br>(Annual Benefit)<br>Arrear</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_allowance->medicalInsurancePremium?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_allowance->medicalInsurancePremium?>">
                             </div>
                         </div>
                         
@@ -635,7 +631,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Employee's PF/PPF</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_deduction->employees_PF_PPF?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_deduction->employees_PF_PPF?>">
                             </div>
                         </div>
                         <div class="row my-1">                       
@@ -643,7 +639,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Employees ESIC</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_deduction->employeesESIC?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_deduction->employeesESIC?>">
                             </div>
                         </div>
                         <div class="row my-1">                       
@@ -651,7 +647,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Professional Tax</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_deduction->professionalTax?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_deduction->professionalTax?>">
                             </div>
                         </div>
                         <div class="row my-1">                       
@@ -659,7 +655,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Income Tax</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_deduction->incomeTax?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_deduction->incomeTax?>">
                             </div>
                         </div>
                         <div class="row my-1">                       
@@ -667,7 +663,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">LTA (Deduction)</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_deduction->ltaDeduction?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_deduction->ltaDeduction?>">
                             </div>
                         </div>
                         <div class="row my-1">                       
@@ -675,7 +671,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Festival Bonus (Deduction)</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_deduction->festivalBonusDeduction?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_deduction->festivalBonusDeduction?>">
                             </div>
                         </div>
                         <div class="row my-1">                       
@@ -683,7 +679,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Medical Insurance Premium<br>(Annual Benefit)</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_deduction->medicalInsurancePremiumDeduct?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_deduction->medicalInsurancePremiumDeduct?>">
                             </div>
                         </div>
                         <div class="row my-1">                       
@@ -691,7 +687,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Other Deductions</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_deduction->otherDeductions?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_deduction->otherDeductions?>">
                             </div>
                         </div>
                         <div class="row my-1">                       
@@ -699,7 +695,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Misc. Deduction</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_deduction->miscDeduction?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_deduction->miscDeduction?>">
                             </div>
                         </div>
                         <div class="row my-1">                       
@@ -707,7 +703,7 @@ function convertNumberToWord($number) {
                                 <p class="m-0 p-0">Loan</p>
                             </div>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field" value="<?=$all_deduction->loan?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_deduction->loan_emi?>">
                             </div>
                         </div>
                      
@@ -722,10 +718,8 @@ function convertNumberToWord($number) {
                             </div>
                         </div>
                         <div class="row justify-content-end">
-                       
-                            
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" placeholder="Field">
+                                <input class="w-100 py-1 border-rd-10 form-control">
                             </div>
                         </div>
                   </div>

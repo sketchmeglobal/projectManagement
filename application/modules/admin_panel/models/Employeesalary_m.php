@@ -24,12 +24,13 @@ class employeesalary_m extends CI_Model {
             foreach($p_data as $index => $val){
                 $salary_id = $val->salary_id;
                 $emp_name = $val->emp_name;
+                $for_the_month_of = $val->for_the_month_of;
                 $payout_date = $val->payout_date;
                 $total_pay = $val->total_pay;
 
                 $nestedData['slNo'] = $slNo;
                 $nestedData['employeeName'] = $emp_name;
-                $nestedData['payoutMonth'] = date('d-m-Y', strtotime($payout_date));
+                $nestedData['payoutMonth'] = date('d-m-Y', strtotime($for_the_month_of));
                 $nestedData['totalPay'] = number_format($total_pay);
                 $nestedData['action'] = '<a href="'. base_url('admin/print-salaryslip/'.$salary_id).'" target="_blank" data-salary_id="'.$salary_id.'" class="btn bg-yellow print_salaryslip"><i class="fa fa-eye"></i> View</a>
                 <a href="'. base_url('admin/edit-salary/'.$salary_id).'" class="btn btn-info"><i class="fa fa-pencil"></i> Edit</a>
@@ -141,17 +142,25 @@ class employeesalary_m extends CI_Model {
         return array('page'=>'employee/employee_salary_add_v', 'data'=>$data);
     }
 
-    public function ajax_unique_username(){
-        
-        $username = $this->input->post('username');
-        $rs = $this->db->get_where('users', array('username' => $username))->num_rows();
-        // echo $this->db->last_query();die;
-        
-        if($rs != '0') {
-            $data = 'Username already exists.';
-        }else{
-            $data='true';
+    public function getMiscCost(){        
+        $emp_id = $this->input->post('emp_id');   
+        $for_the_month_of = $this->input->post('for_the_month_of');
+        $y = date('Y', strtotime($for_the_month_of));
+        $m1 = date('m', strtotime($for_the_month_of));
+        $m = $m1 - 1;
+
+        $searchByFromdate = $y.'-'.$m.'-01';
+        $searchByTodate = $y.'-'.$m.'-31';
+
+        $mcost = $this->db->get_where('employee_misc_cost', array('emp_id' => $emp_id, 'offer_date BETWEEN "'. date('Y-m-d', strtotime($searchByFromdate)). '" and "'. date('Y-m-d', strtotime($searchByTodate)).'"'))->result();
+
+        $total_expences = 0;
+        foreach($mcost as $val){
+            $total_expences = $total_expences  + $val->expence_amount;
         }
+        $data['total_expences'] = $total_expences;
+        $data['mcost'] = $mcost;
+        $data['for_the_month_of'] = $for_the_month_of;
 
         return $data;
 
@@ -188,6 +197,7 @@ class employeesalary_m extends CI_Model {
     }
 
     public function form_add_salary(){ 
+        $for_the_month_of = $this->input->post('for_the_month_of');
         $emp_id = $this->input->post('emp_id');
         $emp_name = $this->input->post('emp_name');
 
@@ -241,6 +251,7 @@ class employeesalary_m extends CI_Model {
         $insertArray = array(
             'emp_id' => $emp_id,
             'emp_name' => $emp_name,
+            'for_the_month_of' => $for_the_month_of,
             'all_allowance' => json_encode($all_allowance),
             'all_deduction' => json_encode($all_deduction),
             'total_allowance' => $total_allowance,
@@ -371,6 +382,7 @@ class employeesalary_m extends CI_Model {
 
     public function form_edit_salary(){   
         $salary_id = $this->input->post('salary_id'); 
+        $for_the_month_of = $this->input->post('for_the_month_of');
         $emp_id = $this->input->post('emp_id');
         $emp_name = $this->input->post('emp_name');
 
@@ -424,6 +436,7 @@ class employeesalary_m extends CI_Model {
         $updateArray1 = array(
             'emp_id' => $emp_id,
             'emp_name' => $emp_name,
+            'for_the_month_of' => $for_the_month_of,
             'all_allowance' => json_encode($all_allowance),
             'all_deduction' => json_encode($all_deduction),
             'total_allowance' => $total_allowance,

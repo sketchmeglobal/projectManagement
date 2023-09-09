@@ -54,6 +54,11 @@
                         <form autocomplete="off" id="form_edit_salary" method="post" action="<?=base_url('admin/form-edit-salary')?>" enctype="multipart/form-data" class="cmxform form-horizontal tasi-form">
                                 <h4>Allowance</h4>
                                 <div class="form-group ">
+                                    <div class="col-lg-3">
+                                        <label for="for_the_month_of" class="control-label text-danger">For the month of *</label>
+                                        <input id="for_the_month_of" name="for_the_month_of" type="date" class="form-control round-input" value="<?=$salary_details[0]->for_the_month_of?>" />
+                                    </div>
+
                                     <div class="col-lg-3">                                        
                                         <label for="emp_id" class="control-label text-danger">Employee Name *</label>
                                         <select name="emp_id" id="emp_id" class="form-control select2">
@@ -288,13 +293,38 @@
 <script>
     $('#emp_id').on('change', function(){
         $emp_name = $('#emp_id option:selected').text();
-        $('#emp_name').val($emp_name);
-
-        $loan_amount_remaining = $('#emp_id option:selected').data('loan_amount_remaining');
-        $('#loan').val($loan_amount_remaining);
 
         $basic_pay = $('#emp_id option:selected').data('basic_pay');
+        $loan_granted = $('#emp_id option:selected').data('loan_granted');
+        $loan_paid = $('#emp_id option:selected').data('loan_paid');
+        $loan_pending = $('#emp_id option:selected').data('loan_pending');
+        $loan_emi = $('#emp_id option:selected').data('loan_emi');
+
+        $('#emp_name').val($emp_name);
         $('#basic').val($basic_pay);
+        $('#loan_granted').val($loan_granted);
+        $('#loan_paid').val($loan_paid);
+        $('#loan_pending').val($loan_pending);
+        $('#loan_emi').val($loan_emi);
+
+        $emp_id = $('#emp_id').val();
+        $for_the_month_of = $('#for_the_month_of').val();
+
+        //Get Misc codet
+        $.ajax({
+            url: "<?= base_url('admin/get-emp-misc-cost/') ?>",
+            dataType: 'json',
+            type: 'POST',
+            data: {emp_id: $emp_id, for_the_month_of: $for_the_month_of},
+            success: function (returnData) {                
+                //console.log(returnData);                
+                $('#otherAllowance').val(returnData.total_expences);
+            },
+            error: function (returnData) {
+                obj = JSON.parse(returnData);
+                //notification(obj);
+            }
+        });
     })
 
     //add-item-form validation and submit

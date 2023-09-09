@@ -53,6 +53,11 @@
                                 <h4>Allowance</h4>
                                 <div class="form-group ">
                                     <div class="col-lg-3">
+                                        <label for="for_the_month_of" class="control-label text-danger">For the month of *</label>
+                                        <input id="for_the_month_of" name="for_the_month_of" type="date" class="form-control round-input" />
+                                    </div>
+
+                                    <div class="col-lg-3">
                                         <?php //echo $employees[0]->first_name; ?>                       
                                         <label for="emp_id" class="control-label text-danger">Employee Name *</label>
                                         <select name="emp_id" id="emp_id" class="form-control select2">
@@ -66,9 +71,7 @@
                                             data-loan_paid="<?=$employees[$i]->loan_paid?>"
                                             data-loan_pending="<?=$employees[$i]->loan_pending?>"
                                             data-loan_emi="<?=$employees[$i]->loan_emi?>"
-                                            data-basic_pay="<?=$employees[$i]->basic_pay?>">
-                                            <?=$employees[$i]->first_name.' '.$employees[$i]->last_name?>
-                                        </option>
+                                            data-basic_pay="<?=$employees[$i]->basic_pay?>"><?=$employees[$i]->first_name.' '.$employees[$i]->last_name?></option>
                                             <?php 
                                                 } 
                                             }
@@ -306,11 +309,33 @@
         $('#loan_paid').val($loan_paid);
         $('#loan_pending').val($loan_pending);
         $('#loan_emi').val($loan_emi);
+
+        $emp_id = $('#emp_id').val();
+        $for_the_month_of = $('#for_the_month_of').val();
+
+        //Get Misc codet
+        $.ajax({
+            url: "<?= base_url('admin/get-emp-misc-cost/') ?>",
+            dataType: 'json',
+            type: 'POST',
+            data: {emp_id: $emp_id, for_the_month_of: $for_the_month_of},
+            success: function (returnData) {                
+                //console.log(returnData);                
+                $('#otherAllowance').val(returnData.total_expences);
+            },
+            error: function (returnData) {
+                obj = JSON.parse(returnData);
+                //notification(obj);
+            }
+        });
     })
 
     //add-item-form validation and submit
     $("#form_add_salary").validate({        
         rules: {
+            for_the_month_of: {
+                required: true,
+            },  
             emp_id: {
                 required: true,
             },            

@@ -163,23 +163,6 @@ class Projects_m extends CI_Model {
         $data['bi_QuotationNo'] = $bi_QuotationNo;
         $data['inv_BillNo'] = $inv_BillNo;
 
-        //Invoice particular
-        /*$particulars = array();
-        if(isset($project_description->quotationDetail)){
-            $quotationDetail = $project_description->quotationDetail;
-            
-            if(sizeof($quotationDetail) > 0){
-                for($i = 0; $i < sizeof($quotationDetail); $i++){
-                    if(isset($quotationDetail[$i]->bi_finalQuote)){
-                        if($quotationDetail[$i]->bi_finalQuote == '1'){
-                            $particulars = $quotationDetail[$i]->particulars;
-                        }//end if
-                    }
-                }//end for
-            }//end if
-        }//end if
-        $data['particulars'] = $particulars; */
-
         //Payment mode
         $payment_mode = $this->db->get('master_payment_mode')->result();
         $data['payment_mode'] = $payment_mode;  
@@ -190,7 +173,11 @@ class Projects_m extends CI_Model {
 
         //Employee/Party Master
         $party_list = $this->db->get('employee_master')->result();
-        $data['party_list'] = $party_list;  
+        $data['party_list'] = $party_list;   
+
+        //Salaried Employee
+        $salaried_emp = $this->db->get('employee')->result();
+        $data['salaried_emp'] = $salaried_emp;   
 
         //Task Type Master
         $task_types = $this->db->get('master_task_type')->result();
@@ -884,6 +871,8 @@ class Projects_m extends CI_Model {
             $misc_date = $this->input->post('misc_date');
             $misc_amount = $this->input->post('misc_amount');
             $misc_note = $this->input->post('misc_note');
+            $salaried_emp = $this->input->post('salaried_emp');
+            $salaried_emp_name = $this->input->post('salaried_emp_name');
 
             $created_by = $this->session->user_id;
             $mcost_obj_id = rand(1000, 9999);
@@ -894,6 +883,8 @@ class Projects_m extends CI_Model {
             $mcost_obj->misc_date = $misc_date;
             $mcost_obj->misc_amount = $misc_amount;
             $mcost_obj->misc_note = $misc_note;
+            $mcost_obj->salaried_emp = $salaried_emp;
+            $mcost_obj->salaried_emp_name = $salaried_emp_name;
 
             //check existing data
             $result = $this->db->select('project_description')->get_where('project_detail', array('project_id' => $project_id))->result();
@@ -914,12 +905,26 @@ class Projects_m extends CI_Model {
 
             $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
             $data['file_updated'] = $val;  
+
+            //Insert into employee_misc_cost Table            
+            $insertArray = array(
+                'mcost_obj_id' => $mcost_obj_id,
+                'emp_id' => $salaried_emp,
+                'project_id' => $project_id,
+                'expence_date' => $misc_date,
+                'expence_amount' => $misc_amount,
+                'note' => $misc_note
+            );
+            if($this->db->insert('employee_misc_cost', $insertArray)){
+                $emp_misc_cost_id = $this->db->insert_id();
+            }
         }    
         
         $data['type'] = 'success';
         $data['msg'] = 'Misc. Cost added Properly';
         $data['title'] = 'Misc. Cost';
         $data['update_id'] = $project_id;
+        $data['emp_misc_cost_id'] = $emp_misc_cost_id;
         return $data;
 
     }//end Misc. Cost
@@ -1609,7 +1614,10 @@ class Projects_m extends CI_Model {
             );
 
             $val = $this->db->update('project_detail', $updateArray, array('project_id' => $project_id));
-            $data['file_updated'] = $val;   
+            $data['file_updated'] = $val;  
+            
+            //Delete data from employee_misc_cost Table
+            $this->db->where('mcost_obj_id', $mcost_obj_id)->delete('employee_misc_cost');
         }   
 
         if ($status == true) {
@@ -3672,7 +3680,13 @@ class Projects_m extends CI_Model {
         if(sizeof($mcosts) > 0){
             $slno = 1;
             foreach($mcosts as $key => $value){
+                if(isset($value->salaried_emp_name)){
+                    $salaried_emp_name = $value->salaried_emp_name;
+                }else{
+                    $salaried_emp_name = '';
+                }
                 $nestedData['sl_no'] = $slno;
+                $nestedData['salaried_emp_name'] = $salaried_emp_name;
                 $nestedData['misc_note'] = $value->misc_note;
                 $nestedData['misc_amount'] = number_format($value->misc_amount, 2);
                 $nestedData['misc_date'] = date('d-m-Y', strtotime($value->misc_date));

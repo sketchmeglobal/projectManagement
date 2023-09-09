@@ -70,15 +70,13 @@ class Employeesalary extends My_Controller {
 
     }
 
-    public function ajax_unique_username(){
-        
+    public function getMiscCost(){        
         if($this->check_permission(array()) == true) {
             $this->load->model('Employeesalary_m');
-            $data = $this->Employeesalary_m->ajax_unique_username();
+            $data = $this->Employeesalary_m->getMiscCost();
             echo json_encode($data, JSON_HEX_QUOT | JSON_HEX_TAG);
             exit();
-        }        
-
+        } 
     }
 
     public function ajax_delete_salary(){

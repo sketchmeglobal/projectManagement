@@ -586,12 +586,12 @@
                                                 <label for="req_gather_by" class="control-label">Employee</label>
                                                 <select name="req_gather_by" id="req_gather_by" class="form-control select2">
                                                     <option value="0" >-- Select Employee --</option><?php
-                                                            if(sizeof($party_list) > 0){
-                                                                foreach($party_list as $val){
-                                                            ?>
-                                                            <option value="<?=$val->emp_id?>" ><?=$val->first_name.' '.$val->last_name?></option>
-                                                            <?php } 
-                                                            }?>
+                                                    if(sizeof($salaried_emp) > 0){
+                                                        foreach($salaried_emp as $val){
+                                                    ?>
+                                                    <option value="<?=$val->emp_id?>" ><?=$val->first_name.' '.$val->last_name?></option>
+                                                    <?php } 
+                                                    }?>
                                                 </select>
                                                 <input type="hidden" value="" name="req_gather_by_name" id="req_gather_by_name">
                                             </div>  
@@ -636,12 +636,12 @@
                                                     <label for="e_req_gather_by" class="control-label">Employee</label>
                                                     <select name="e_req_gather_by" id="e_req_gather_by" class="form-control select2">
                                                         <option value="0" >-- Select Employee --</option><?php
-                                                            if(sizeof($party_list) > 0){
-                                                                foreach($party_list as $val){
-                                                            ?>
-                                                            <option value="<?=$val->emp_id?>" ><?=$val->first_name.' '.$val->last_name?></option>
-                                                            <?php } 
-                                                            }?>
+                                                        if(sizeof($salaried_emp) > 0){
+                                                            foreach($salaried_emp as $val){
+                                                        ?>
+                                                        <option value="<?=$val->emp_id?>" ><?=$val->first_name.' '.$val->last_name?></option>
+                                                        <?php } 
+                                                        }?>
                                                     </select>
                                                     <input type="hidden" value="" name="e_req_gather_by_name" id="e_req_gather_by_name">
                                                 </div>  
@@ -977,8 +977,8 @@
                                                     <select name="comi_emp_id" id="comi_emp_id" class="form-control select2">
                                                         <option value="0" >-- Select Employee --</option>
                                                         <?php
-                                                        if(sizeof($party_list) > 0){
-                                                            foreach($party_list as $val){
+                                                        if(sizeof($salaried_emp) > 0){
+                                                            foreach($salaried_emp as $val){
                                                         ?>
                                                         <option value="<?=$val->emp_id?>" ><?=$val->first_name.' '.$val->last_name?></option>
                                                             <?php 
@@ -1316,8 +1316,8 @@
                                                 <select name="comi_emp_id_e" id="comi_emp_id_e" class="form-control select2">
                                                     <option value="0" >-- Select Employee --</option>
                                                     <?php
-                                                    if(sizeof($party_list) > 0){
-                                                        foreach($party_list as $val){
+                                                    if(sizeof($salaried_emp) > 0){
+                                                        foreach($salaried_emp as $val){
                                                     ?>
                                                     <option value="<?=$val->emp_id?>" ><?=$val->first_name.' '.$val->last_name?></option>
                                                         <?php
@@ -2087,6 +2087,7 @@
                                         <thead>
                                             <tr>
                                                 <th>SL.No</th>
+                                                <th>Emp. Name</th>
                                                 <th>Note</th>
                                                 <th>Amount</th>
                                                 <th>Date</th>
@@ -2099,6 +2100,7 @@
                                         <tfoot>
                                             <tr>
                                                 <th>SL.No</th>
+                                                <th>Emp. Name</th>
                                                 <th>Note</th>
                                                 <th>Amount</th>
                                                 <th>Date</th>
@@ -2125,12 +2127,27 @@
                                             <div class="col-lg-3">
                                                 <label for="misc_note" class="control-label">Note</label>
                                                 <input type="text" name="misc_note" id="misc_note" class="form-control">
+                                            </div> 
+
+                                            <div class="col-lg-3">
+                                                <label for="salaried_emp" class="control-label">Employee</label>
+                                                <select name="salaried_emp" id="salaried_emp" class="form-control">
+                                                    <option value="0" >-- Select Employee --</option><?php
+                                                    if(sizeof($salaried_emp) > 0){
+                                                        foreach($salaried_emp as $val){
+                                                    ?>
+                                                    <option value="<?=$val->emp_id?>" ><?=$val->first_name.' '.$val->last_name?></option>
+                                                    <?php } 
+                                                    }?>        
+                                                </select>
+                                                <input type="hidden" value="" name="salaried_emp_name" id="salaried_emp_name">
                                             </div>  
                                             <div class="col-lg-3" style="margin-top: 25px;">
                                                 <label for="" class="control-label"></label>
                                                 <input type="submit" name="mcost_submit" class="btn btn-success text-center" id="mcost_submit" value="Add"> 
                                                 <input type="hidden" value="<?=$project_id?>" name="mcost_project_id" id="mcost_project_id">
-                                            </div>
+                                            </div> 
+
                                         </div>
                                     </form>
                                     </div>
@@ -2698,6 +2715,7 @@
             //will get these values from JSON 'data' variable
             "columns": [
                 { "data": "sl_no" },
+                { "data": "salaried_emp_name" },
                 { "data": "misc_note" },
                 { "data": "misc_amount" },
                 { "data": "misc_date" },
@@ -2705,7 +2723,7 @@
             ],
             //column initialisation properties
             "columnDefs": [{
-                "targets": [0,1,2,3,4],
+                "targets": [0,1,2,3,4,5],
                 "orderable": false,
             }]
         });
@@ -3856,6 +3874,12 @@
     
 
     //Misc Cost Add Part
+    $('#salaried_emp').on('change', function(){
+        $salaried_emp_name = $('#salaried_emp option:selected').text();
+        console.log('salaried_emp_name: ' + $salaried_emp_name)
+        $('#salaried_emp_name').val($salaried_emp_name)
+    });
+
     $("#add_misc_cost_form").validate({        
         rules: {
             misc_date: {
