@@ -702,8 +702,18 @@ function convertNumberToWord($number) {
                             <div class="col-6 d-flex align-items-center">
                                 <p class="m-0 p-0">Loan</p>
                             </div>
+                            <?php
+                            $loan_emi = 0;
+                            if(isset($all_deduction->loan_emi)){
+                                $loan_emi = $all_deduction->loan_emi;
+                            }else{
+                                if(isset($all_deduction->loan_emi)){
+                                    $loan_emi = $all_deduction->loan;
+                                }
+                            }
+                            ?>
                             <div class="col-6">
-                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$all_deduction->loan_emi?>">
+                                <input class="w-100 py-1 border-rd-10 form-control" value="<?=$loan_emi?>">
                             </div>
                         </div>
                      
