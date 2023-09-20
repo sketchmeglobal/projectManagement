@@ -187,10 +187,21 @@
 	$route['admin/print-invoice/(:num)/(:num)'] = 'admin_panel/Projects/print_invoice_details/$1/$2';
 	$route['admin/print-salaryslip/(:num)'] = 'admin_panel/Employeesalary/print_salaryslip/$1';
 	$route['admin/get-emp-misc-cost'] = 'admin_panel/Employeesalary/getMiscCost';
-	//'Admin_dashboard/Admin_print/cbill';
+	//'Admin_dashboard/Admin_print/cbill';	
+	
+	//CASHBOOK MANAGEMENT
+	//list
+	$route['admin/cashbook-management'] = 'admin_panel/Cashbook/cashbook_managemnt';
+	$route['admin/ajax-cashbook-table-data'] = 'admin_panel/Cashbook/ajax_cashbook_table_data';
 
-	
-	
+	//add
+	$route['admin/add-cashbook'] = 'admin_panel/Cashbook/add_cashbook';	
+	$route['admin/form-add-cashbook'] = 'admin_panel/Cashbook/form_add_cashbook';		
+
+	//edit
+	$route['admin/edit-cashbook/(:num)'] = 'admin_panel/Cashbook/edit_cashbook/$1';	
+ 	$route['admin/form-edit-cashbook'] = 'admin_panel/Cashbook/form_edit_cashbook';
+		
 	//REPORTS
 	$route['admin/project-report'] = 'admin_panel/Projectreport/project_report';	
 	$route['admin/form-search-project-report'] = 'admin_panel/Projectreport/form_search_project_report';

@@ -93,6 +93,16 @@ $user_type = $this->session->usertype;
             </li>
             <!-- For Employee -->
 
+            <!-- For Cashbook -->            
+            <li class="menu-list <?=($class_name == 'Cashbook') ? 'active' : ''; ?>"><a href=""><i class="fa fa-vcard-o"></i> <span>Accounts</span></a>
+                <ul class="child-list">
+                    <li class="<?=(($class_name == 'Cashbook')) ? 'active' : ''; ?>">
+                        <a href="<?=base_url();?>admin/cashbook-management"><i class="fa fa-caret-right"></i> <span>Cashbook List</span></a>
+                    </li>
+                </ul>
+            </li>
+            <!-- For Cashbook -->
+
             <!-- For Report -->            
             <li class="menu-list <?=($class_name == 'Projectreport') ? 'active' : ''; ?>"><a href=""><i class="fa fa-vcard-o"></i> <span>Reports</span></a>
                 <ul class="child-list">
